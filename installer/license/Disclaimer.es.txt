@@ -1,0 +1,42 @@
+﻿Aviso legal
+
+Gracias por utilizar GeoChemistry Nexus. Lea atentamente el siguiente aviso legal antes de usar este software. Al descargar, instalar o utilizar este software, usted reconoce que ha comprendido y aceptado las condiciones siguientes.
+
+1. Finalidad del software
+
+GeoChemistry Nexus es una herramienta de apoyo a la investigación destinada a investigadores en geoquímica, petrología, mineralogía y geología de yacimientos. Su objetivo es facilitar el procesamiento de datos geológicos, el análisis mediante cálculo y la visualización.
+
+Los resultados de cálculo, los diagramas y la información analítica relacionada que proporciona este software se ofrecen únicamente como referencia para la investigación, la docencia y el uso técnico. No pueden sustituir directamente el juicio independiente de profesionales cualificados, la verificación experimental ni una evaluación profesional formal.
+
+2. Resultados de cálculo y exactitud
+
+Este software implementa sus funciones de cálculo, en la medida de lo posible, de acuerdo con la literatura científica publicada, los métodos académicos y las normas pertinentes. No obstante, distintos métodos de cálculo pueden adoptar supuestos teóricos, condiciones de aplicación, ajustes de parámetros y reglas de tratamiento de datos diferentes, por lo que los resultados pueden diferir.
+
+Los usuarios deben:
+
+- garantizar la exactitud y la integridad de los datos de entrada;
+- seleccionar métodos de cálculo y parámetros adecuados al objeto real de estudio;
+- verificar de forma independiente los resultados de cálculo importantes y valorarlos junto con la literatura pertinente;
+- comprobar, en artículos académicos, informes de investigación u otros resultados formales, los métodos, los parámetros y los resultados de cálculo utilizados.
+
+GeoChemistry Nexus no garantiza que todos los resultados de cálculo sean completamente exactos o aplicables en cualesquiera condiciones de datos y escenarios de uso.
+
+3. Riesgos de uso y responsabilidad
+
+Los usuarios deben valorar por sí mismos si los resultados de cálculo del software son adecuados para su finalidad de investigación concreta, y asumen la responsabilidad correspondiente por los datos, diagramas y resultados de análisis generados por este software y por su uso posterior.
+
+Por las desviaciones en las conclusiones científicas, el uso indebido de datos, los errores de análisis u otras pérdidas relacionadas que se deriven del uso de este software o de la confianza en sus resultados de cálculo, el desarrollador asumirá la responsabilidad correspondiente en la medida permitida por la legislación aplicable.
+
+4. Actualizaciones del software y recursos de terceros
+
+Este software puede contener o utilizar algoritmos, datos, plantillas de diagramas, componentes de código abierto y otros recursos de terceros. Los derechos de propiedad intelectual y los permisos de uso de dichos contenidos pertenecen a sus respectivos titulares.
+
+Las plantillas en la nube, los algoritmos de cálculo y las funciones del software pueden cambiar con las actualizaciones de versión. El desarrollador se reserva el derecho de modificar, actualizar o dejar de ofrecer las funciones, los métodos de cálculo, la interfaz y los recursos relacionados del software.
+
+5. Actualización de este aviso legal
+
+Este aviso legal puede revisarse en función de los cambios en las funciones del software, los servicios ofrecidos y las leyes y normativas aplicables. El contenido actualizado se publicará en el sitio web oficial o en las páginas correspondientes.
+
+Si tiene alguna pregunta sobre este aviso legal o sobre el uso del software, puede enviar sus comentarios a través del repositorio de GitHub del proyecto.
+
+Recordatorio final: GeoChemistry Nexus es una herramienta de apoyo a la investigación, y no la base definitiva de las conclusiones científicas. Verifique e interprete siempre los resultados de cálculo combinando el contexto geológico, los datos experimentales, la literatura académica y el conocimiento profesional.

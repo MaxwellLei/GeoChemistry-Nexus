@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -118,9 +119,21 @@ namespace GeoChemistryNexus.Models
         public List<string> Units { get; set; } = new();
 
         /// <summary>
+        /// 各列的分组标题（格式 1.3 新增，可选）：按位置与 <see cref="Headers"/> 一一对应，
+        /// 每项是“语言代码 → 标题”，没有分组的列为空字典；旧模板或完全没有分组时为空列表。
+        /// </summary>
+        public List<Dictionary<string, string>> Groups { get; set; } = new();
+
+        /// <summary>
         /// 示例数据行
         /// </summary>
         public List<string> ExampleRow { get; set; } = new();
+
+        /// <summary>
+        /// 附加示例行（第 2 条示例起，格式 1.3 新增，可选）：每行与 <see cref="Headers"/> 等长，只填输入列的值，
+        /// 输出列由 <see cref="ExampleRow"/> 中的公式按行推算；没有更多示例时为空列表。
+        /// </summary>
+        public List<List<string>> ExtraExampleRows { get; set; } = new();
 
         /// <summary>
         /// 已注册的公式函数名称
@@ -171,38 +184,27 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [JsonIgnore]
         public bool IsNotInstalled =>
-            string.Equals(Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal);
+            string.Equals(Status, ContentInstallStatus.NotInstalled, StringComparison.Ordinal);
 
         /// <summary>
         /// 有可更新版本或本地相对官方有改动
         /// </summary>
         [JsonIgnore]
         public bool IsUpdateAvailable =>
-            string.Equals(Status, GeothermometerInstallStatus.Outdated, StringComparison.Ordinal);
+            string.Equals(Status, ContentInstallStatus.Outdated, StringComparison.Ordinal);
 
         /// <summary>
         /// 服务器版本高于当前软件支持的格式：不能下载/更新；本地没有安装时也不能使用，已有旧版时仍可使用旧版
         /// </summary>
         [JsonIgnore]
         public bool IsRequiresAppUpgrade =>
-            string.Equals(Status, GeothermometerInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
+            string.Equals(Status, ContentInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
 
         /// <summary>
         /// 本地是否已有脚本（已安装），来自数据库摘要投影，无需再读库
         /// </summary>
         [JsonIgnore]
         public bool IsInstalledLocally { get; set; }
-    }
-
-    /// <summary>
-    /// 温压计官方目录安装状态常量（与图解模板 Status 对齐）
-    /// </summary>
-    public static class GeothermometerInstallStatus
-    {
-        public const string NotInstalled = "NOT_INSTALLED";
-        public const string UpToDate = "UP_TO_DATE";
-        public const string Outdated = "OUTDATED";
-        public const string RequiresAppUpgrade = "REQUIRES_APP_UPGRADE";
     }
 
     /// <summary>
@@ -377,6 +379,9 @@ namespace GeoChemistryNexus.Models
         /// <summary>当前未安装的官方项数量</summary>
         public int NotInstalledCount { get; set; }
 
+        /// <summary>本次同步新增的官方项占位数量（与图解的 AddedCount 一致）</summary>
+        public int AddedCount { get; set; }
+
         /// <summary>当前可更新（OUTDATED）的官方项数量</summary>
         public int OutdatedCount { get; set; }
 
@@ -426,6 +431,9 @@ namespace GeoChemistryNexus.Models
         public int SuccessCount { get; init; }
 
         public int RemovalCount { get; init; }
+
+        /// <summary>用户中途取消，后续条目未处理</summary>
+        public bool Cancelled { get; init; }
 
         public IReadOnlyList<GeothermometerDownloadItemResult> Failures { get; init; } =
             Array.Empty<GeothermometerDownloadItemResult>();

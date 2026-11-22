@@ -381,6 +381,19 @@
         </Style.Triggers>
     </Style>
 
+    <!-- 示例行的删除按钮：只有多于一条示例时才显示 -->
+    <Style x:Key="GeoTRemoveExample" TargetType="Button" BasedOn="{StaticResource GeoTRemoveColumn}">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="ToolTip" Value="{Binding [epma_editor_remove_example], Source={x:Static lg:LanguageService.Instance}}"/>
+        <Setter Property="AutomationProperties.Name" Value="{Binding [epma_editor_remove_example], Source={x:Static lg:LanguageService.Instance}}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding DataContext.ExampleRows.Count, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="1">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- 帮助文档语言胶囊 -->
     <Style x:Key="GeoTLanguageTab" TargetType="ListBoxItem">
         <Setter Property="Margin" Value="0,0,8,8"/>

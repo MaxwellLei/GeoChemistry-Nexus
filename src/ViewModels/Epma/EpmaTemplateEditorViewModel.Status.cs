@@ -52,6 +52,8 @@ public partial class EpmaTemplateEditorViewModel
                     if (!string.IsNullOrWhiteSpace(Description) && string.IsNullOrWhiteSpace(translation?.Description)) missing.Add(EpmaLocalizer.Format("epma_editor_description"));
                     if (tags.Count > 0 && (translation is null || tags.Where((_, index) => index >= translation.Tags.Count || string.IsNullOrWhiteSpace(translation.Tags[index])).Any()))
                         missing.Add(EpmaLocalizer.Format("epma_editor_search_tags"));
+                    if (EpmaColumnGroupEditing.IsMissing(InputColumns.Concat(OutputColumns), part.Text))
+                        missing.Add(EpmaLocalizer.Format("epma_json_field_group"));
                 }
                 if (hasHelp && (!_helpDocuments.TryGetValue(part.Text, out string? document) || string.IsNullOrWhiteSpace(document))) missing.Add(EpmaLocalizer.Format("epma_editor_documents"));
                 if (missing.Count > 0) Add("epma_editor_state_translation_missing", LanguageName(part.Text),

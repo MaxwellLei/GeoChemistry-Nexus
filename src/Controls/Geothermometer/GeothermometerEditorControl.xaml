@@ -97,20 +97,20 @@
                 <ListBox x:Name="EditorNavigation" SelectedIndex="{Binding CurrentStep, Mode=TwoWay}"
                          ItemContainerStyle="{StaticResource GeoTNavigationItem}"
                          Background="Transparent" BorderThickness="0" VerticalAlignment="Top">
-                    <ListBoxItem>
+                    <ListBoxItem Style="{StaticResource GeoTNavigationItem}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Path Style="{StaticResource GeoTNavigationIcon}"
                                   Data="M 1,3 H 4 M 7,3 H 15 M 4,3 A 1.5,1.5 0 1 0 7,3 A 1.5,1.5 0 1 0 4,3 M 1,8 H 9 M 12,8 H 15 M 9,8 A 1.5,1.5 0 1 0 12,8 A 1.5,1.5 0 1 0 9,8 M 1,13 H 3 M 6,13 H 15 M 3,13 A 1.5,1.5 0 1 0 6,13 A 1.5,1.5 0 1 0 3,13"/>
                             <TextBlock Text="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem>
+                    <ListBoxItem Style="{StaticResource GeoTNavigationItem}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Path Style="{StaticResource GeoTNavigationIcon}" Data="M 5,3 L 1,8 L 5,13 M 11,3 L 15,8 L 11,13 M 9.5,1.5 L 6.5,14.5"/>
                             <TextBlock Text="{Binding [geo_step_script], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem>
+                    <ListBoxItem Style="{StaticResource GeoTNavigationItem}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Path Style="{StaticResource GeoTNavigationIcon}"
                                   Data="M 3,2 A 1,1 0 0 1 4,1 H 9 L 13,5 V 14 A 1,1 0 0 1 12,15 H 4 A 1,1 0 0 1 3,14 Z M 9,1 V 5 H 13 M 6,8 H 10 M 6,11 H 9"/>

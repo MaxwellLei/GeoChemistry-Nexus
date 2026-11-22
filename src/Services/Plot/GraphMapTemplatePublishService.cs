@@ -82,6 +82,37 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 本地尚未下载内容的官方图解（只有目录占位）。发布会以本地已安装的官方图解重建线上清单，
+        /// 这些占位项会因此被从清单中撤掉，所以发布前必须先下载（或移除）。
+        /// </summary>
+        public static List<string> GetNotDownloadedOfficialTemplates()
+        {
+            return GraphMapDatabaseService.Instance.GetSummaries()
+                .Where(x => !x.IsCustom && !x.IsInstalled)
+                .Select(x => string.IsNullOrWhiteSpace(x.Name) ? x.GraphMapPath : x.Name!)
+                .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        /// <summary>
+        /// 生成“存在未下载官方图解，禁止发布”的提示文案；没有未下载项时返回 null。
+        /// </summary>
+        public static string? BuildNotDownloadedPublishBlockMessage()
+        {
+            var missing = GetNotDownloadedOfficialTemplates();
+            if (missing.Count == 0)
+                return null;
+
+            string names = string.Join(", ", missing.Take(5)) + (missing.Count > 5 ? ", ..." : string.Empty);
+            return string.Format(
+                LanguageService.GetString(
+                    "official_publisher_diagrams_not_downloaded",
+                    "{0} official diagram(s) have not been downloaded, so publishing is blocked: {1}. Download them first."),
+                missing.Count,
+                names);
+        }
+
+        /// <summary>
         /// 增量导出官方模板发布包到指定目录
         /// </summary>
         public static PublishResult ExportToDirectory(string outputDir, PublishOptions? options = null)
@@ -89,6 +120,11 @@ namespace GeoChemistryNexus.Services
             options ??= new PublishOptions();
             if (string.IsNullOrWhiteSpace(outputDir))
                 throw new ArgumentException("Output directory is required.", nameof(outputDir));
+
+            // 兜底：界面已在发布前拦截，这里保证命令行发布等其他入口同样不会撤掉未下载的官方图解
+            string? notDownloadedMessage = BuildNotDownloadedPublishBlockMessage();
+            if (notDownloadedMessage != null)
+                throw new InvalidOperationException(notDownloadedMessage);
 
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);

@@ -397,11 +397,10 @@
                                     </Border>
                                     <StackPanel Grid.Column="1" Margin="10,0,8,0" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"
-                                                   FontSize="14" FontWeight="SemiBold" Foreground="#333"
-                                                   TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis"/>
-                                        <Border Style="{StaticResource LibraryCardBadgeBorderStyle}" HorizontalAlignment="Left" Padding="6,2" Margin="0,6,0,0">
-                                            <TextBlock Text="{Binding Id}" Style="{StaticResource ThemeTagChipTextStyle}"/>
-                                        </Border>
+                                                   FontSize="16" FontWeight="SemiBold" Foreground="#333"
+                                                   TextWrapping="Wrap" MaxHeight="46" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Id}" ToolTip="{Binding Id}"
+                                                   Style="{StaticResource ContentPackageIdTextStyle}" Margin="0,0,0,0"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" VerticalAlignment="Top">
                                         <TextBlock Text="{Binding Version}" Foreground="#888" FontSize="12" HorizontalAlignment="Right"/>
@@ -522,6 +521,9 @@
                     </Grid>
                     <ProgressBar Style="{StaticResource FlatProgressBarStyle}" Maximum="100"
                                  Value="{Binding UpdateProgress}" IsIndeterminate="{Binding IsUpdateProgressIndeterminate}"/>
+                    <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Cancel}"
+                            Command="{Binding CancelUpdateCommand}" HorizontalAlignment="Center" MinWidth="110" Margin="0,18,0,0" Padding="16,6"
+                            Visibility="{Binding IsUpdateCancelable, Converter={StaticResource Show}}"/>
                 </StackPanel>
             </Border>
         </Border>

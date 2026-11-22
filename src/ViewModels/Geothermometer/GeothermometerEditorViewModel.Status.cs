@@ -138,6 +138,13 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
+            // 分组标题只影响翻译完成度，不影响脚本验证
+            if (e.PropertyName == nameof(EpmaEditorColumn.Group))
+            {
+                RefreshTemplateStatus();
+                return;
+            }
+
             // 示例测试只读取输入列的示例值；输出列示例公式跟随主公式名变化，不要求重新验证脚本。
             if (e.PropertyName == nameof(EpmaEditorColumn.ExampleValue)
                 && sender is EpmaEditorColumn column
@@ -212,8 +219,8 @@ namespace GeoChemistryNexus.ViewModels
                     var wording = TranslationOf(part.Text, defaults);
                     if (!string.IsNullOrWhiteSpace(Name) && string.IsNullOrWhiteSpace(wording.Name))
                         missing.Add(Label("geo_field_name"));
-                    if (!string.IsNullOrWhiteSpace(Reference) && string.IsNullOrWhiteSpace(wording.Reference))
-                        missing.Add(Label("geo_field_reference"));
+                    if (EpmaColumnGroupEditing.IsMissing(_layout, part.Text))
+                        missing.Add(Label("epma_json_field_group"));
                 }
 
                 if (hasHelp && !HasHelp(part.Text))

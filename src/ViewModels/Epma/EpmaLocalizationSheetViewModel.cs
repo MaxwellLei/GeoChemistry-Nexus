@@ -13,7 +13,7 @@ using Microsoft.Win32;
 
 namespace GeoChemistryNexus.ViewModels;
 
-public enum EpmaLocalizationRowKind { Name, Description, Tag }
+public enum EpmaLocalizationRowKind { Name, Description, Tag, Group }
 
 public enum EpmaLocalizationColumnState { Empty, Partial, Complete }
 
@@ -27,6 +27,8 @@ public sealed class EpmaLocalizationRow
     public EpmaLocalizationRowKind Kind { get; }
     public string Label { get; }
     public string[] Values { get; }
+    /// <summary>What the row stands for, for the owner that applies the table (a group row keeps the group's default-language title here).</summary>
+    public object? Tag { get; init; }
 }
 
 /// <summary>The editable wording of one item in one language.</summary>
@@ -59,6 +61,9 @@ public sealed partial class EpmaLocalizationTableRow : ObservableObject
     public string Label => Source.Label;
     public bool IsDescription => Source.Kind == EpmaLocalizationRowKind.Description;
     public bool IsTag => Source.Kind == EpmaLocalizationRowKind.Tag;
+    public bool IsGroup => Source.Kind == EpmaLocalizationRowKind.Group;
+    /// <summary>Tags and groups are removed when their default-language wording is cleared, so such a row stops counting then.</summary>
+    public bool IsRemovedWhenDefaultEmpty => IsTag || IsGroup;
     public IReadOnlyList<EpmaLocalizationCell> Cells { get; }
     /// <summary>The default language cell, shown in the frozen column.</summary>
     public EpmaLocalizationCell DefaultCell => Cells[0];
@@ -137,12 +142,12 @@ public partial class EpmaLocalizationSheetViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Counts the filled items per language. A tag row stops counting when its default-language tag is cleared,
-    /// because that tag is removed when the table is confirmed.
+    /// Counts the filled items per language. A tag or group row stops counting when its default-language wording is cleared,
+    /// because that tag or group is removed when the table is confirmed.
     /// </summary>
     private void RefreshProgress()
     {
-        var used = TableRows.Where(row => !row.IsTag || !string.IsNullOrWhiteSpace(row.Cells[0].Text)).ToList();
+        var used = TableRows.Where(row => !row.IsRemovedWhenDefaultEmpty || !string.IsNullOrWhiteSpace(row.Cells[0].Text)).ToList();
         for (int column = 0; column < Columns.Count; column++)
         {
             int filled = used.Count(row => !string.IsNullOrWhiteSpace(row.Cells[column].Text));

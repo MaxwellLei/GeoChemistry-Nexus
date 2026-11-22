@@ -1013,7 +1013,7 @@ namespace GeoChemistryNexus.ViewModels
 
         #region 数据表
 
-        /// <summary>按设置页配置准备 Harker 数据表：Category + X + Y（按绘图顺序），列头带单位。</summary>
+        /// <summary>按设置页配置准备 Harker 数据表：Category + Sample + X + Y（按绘图顺序），列头带单位。</summary>
         private void PrepareHarkerDataGrid()
         {
             if (_dataGrid == null)
@@ -1024,23 +1024,26 @@ namespace GeoChemistryNexus.ViewModels
             columns.AddRange(settings.PlotOrderItems.Select(i => i.Variable));
 
             var sheet = _dataGrid.CurrentWorksheet;
+            _rowStatus.Reset();
             SetDataColumnUnits(null);
             sheet.Reset();
             sheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
-            sheet.ColumnCount = columns.Count + 1;
+            sheet.ColumnCount = columns.Count + DataGridLeadingColumnCount;
             ReoGridTableAppearance.StyleColumnHeaders(_dataGrid);
 
-            sheet.ColumnHeaders[0].Text = "Category";
+            sheet.ColumnHeaders[0].Text = CategoryColumnName;
+            sheet.ColumnHeaders[1].Text = SampleColumnName;
             for (int i = 0; i < columns.Count; i++)
             {
-                sheet.ColumnHeaders[i + 1].Text = columns[i].Key;
+                sheet.ColumnHeaders[i + DataGridLeadingColumnCount].Text = columns[i].Key;
             }
 
-            sheet.SetColumnsWidth(0, 1, 80);
+            sheet.SetColumnsWidth(0, 1, GetDataGridHeaderWidth(0, CategoryColumnName, 80));
+            sheet.SetColumnsWidth(1, 1, GetDataGridHeaderWidth(1, SampleColumnName, 80));
             for (int i = 0; i < columns.Count; i++)
             {
-                sheet.SetColumnsWidth(i + 1, 1, 70);
+                sheet.SetColumnsWidth(i + DataGridLeadingColumnCount, 1, 70);
             }
 
             SetDataColumnUnits(columns.Select(c => string.IsNullOrEmpty(c.Unit) ? null : c.Unit));
@@ -1060,7 +1063,6 @@ namespace GeoChemistryNexus.ViewModels
             if (_dataGrid == null || WpfPlot1 == null || _harkerLayout == null || _harkerPanels.Count == 0)
                 return;
 
-            ClearDataGridPlotRefreshPending();
             StopDataLinkFlash();
 
             var worksheet = _dataGrid.CurrentWorksheet;
@@ -1081,7 +1083,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            int categoryColumn = columnMap.TryGetValue("Category", out int c) ? c : -1;
+            int categoryColumn = columnMap.TryGetValue(CategoryColumnName, out int c) ? c : -1;
             int panelCount = _harkerPanels.Count;
             int[] yColumns = _harkerPanels
                 .Select(p => columnMap.TryGetValue(p.Variable.Key, out int yc) ? yc : -1)
@@ -1098,7 +1100,10 @@ namespace GeoChemistryNexus.ViewModels
             for (int row = 0; row <= worksheet.MaxContentRow; row++)
             {
                 if (!InvariantNumberParser.TryParseCell(worksheet[row, xColumn], out double x))
+                {
+                    _rowStatus.MarkSkippedIfHasContent(row, DiagramRowSkipReason.NoValidData);
                     continue;
+                }
 
                 var rowYs = new double[panelCount];
                 bool hasAnyY = false;
@@ -1113,7 +1118,10 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 if (!hasAnyY)
+                {
+                    _rowStatus.MarkSkippedIfHasContent(row, DiagramRowSkipReason.NoValidData);
                     continue;
+                }
 
                 string category = categoryColumn >= 0 ? (worksheet[row, categoryColumn]?.ToString() ?? string.Empty).Trim() : string.Empty;
                 if (category.Length == 0)
@@ -1139,6 +1147,7 @@ namespace GeoChemistryNexus.ViewModels
                     ys[p].Add(rowYs[p]);
                 groupIndices.Add(groupIndex);
                 sourceRows.Add(row);
+                _rowStatus.MarkPlotted(row);
             }
 
             if (xs.Count == 0)

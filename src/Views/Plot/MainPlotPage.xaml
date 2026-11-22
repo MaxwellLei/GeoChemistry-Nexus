@@ -1363,14 +1363,48 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </MultiDataTrigger>
+                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </MenuItem.Style>
                                         </MenuItem>
-                                        <!--导出图解模板-->
+                                        <!--只读查看官方图解模板 (非开发者模式 + 已下载的官方图解)-->
+                                        <MenuItem Header="{Binding [view_diagram_template],Source={x:Static lg:LanguageService.Instance}}"
+                                                  Command="{Binding PlacementTarget.Tag.ViewTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                                <Condition Binding="{Binding IsNotDownloaded}" Value="False"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
+                                        <!--导出图解模板 (未下载的官方图解隐藏)-->
                                         <MenuItem Header="{Binding [export_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}"/>
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                         <!--强制更新 (开发者模式 + 官方图解)-->
                                         <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
                                                   Command="{Binding PlacementTarget.Tag.ForceUpdateTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -1386,6 +1420,10 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </MultiDataTrigger>
+                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </MenuItem.Style>
@@ -1409,6 +1447,29 @@
                                                 </Style>
                                             </MenuItem.Style>
                                         </MenuItem>
+                                        <!--降级为个人图解 (开发者模式 + 官方图解)-->
+                                        <MenuItem Header="{Binding [demote_to_custom_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='降级为个人图解'}"
+                                                  Command="{Binding PlacementTarget.Tag.DemoteToCustomCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                         <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Tag="Danger"
                                                   Command="{Binding PlacementTarget.Tag.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -1420,13 +1481,6 @@
                                                         <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </DataTrigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </MenuItem.Style>
@@ -2970,7 +3024,6 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <!-- Layer Panel Header -->
@@ -3309,43 +3362,15 @@
                             <rg:ReoGridControl x:Name="DataGrid" SheetTabVisible="False" SizeChanged="DataGrid_SizeChanged"/>
                         </uc:ReoGridTableHost>
 
-                        <!-- 数据表格底部状态栏：数据已修改提示 -->
-                        <Border Grid.Row="2" Background="#FFFBE6" BorderBrush="#FFE58F" BorderThickness="0,1,0,0" Padding="10,4">
+                        <!-- 数据表格底部状态栏：行头状态点图例 + 计算详情展开/收起（仅数据状态显示） -->
+                        <Border Grid.Row="2" Background="#FAFBFE" BorderBrush="#E8EAF2" BorderThickness="0,1,0,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RibbonTabIndex}" Value="1"/>
-                                                <Condition Binding="{Binding IsDataGridPlotRefreshPending}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
+                                        <DataTrigger Binding="{Binding RibbonTabIndex}" Value="1">
                                             <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <TextBlock Text="{Binding [data_grid_plot_refresh_pending], Source={x:Static lg:LanguageService.Instance}, FallbackValue='数据已修改，请刷新投图。'}"
-                                       FontSize="12"
-                                       Foreground="#AD6800"
-                                       VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
-                        </Border>
-
-                        <!-- 计算过程验证区域 -->
-                        <Border Grid.Row="3" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <!-- 仅在数据状态(RibbonTabIndex=1)且计算验证可见时显示 -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RibbonTabIndex}" Value="1"/>
-                                                <Condition Binding="{Binding IsCalculationVerificationVisible}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
@@ -3355,63 +3380,93 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- 收缩状态：显示计算结果摘要 -->
-                                <Border Grid.Row="0" Padding="10,0" Background="#FAFAFA">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                <!-- 状态栏：状态点图例 | 计算结果摘要 | 展开/收起按钮 -->
+                                <Grid Grid.Row="0" Margin="10,0,6,0" MinHeight="26">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                        <!-- 结果摘要 -->
-                                        <TextBlock Grid.Column="0" Text="{Binding CalculationResultSummary}" 
-                                                   FontSize="12" Foreground="#333" VerticalAlignment="Center"
-                                                   TextTrimming="CharacterEllipsis"/>
+                                    <!-- 状态点图例 -->
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Ellipse Style="{StaticResource DataRowStatusOkDotStyle}"/>
+                                        <TextBlock Style="{StaticResource DataRowStatusLegendTextStyle}"
+                                                   Text="{Binding [data_row_status_ok], Source={x:Static lg:LanguageService.Instance}, FallbackValue='已投图'}"/>
+                                        <Ellipse Style="{StaticResource DataRowStatusErrorDotStyle}"/>
+                                        <TextBlock Style="{StaticResource DataRowStatusLegendTextStyle}"
+                                                   Text="{Binding [data_row_status_error], Source={x:Static lg:LanguageService.Instance}, FallbackValue='无法投图'}"/>
+                                        <Ellipse Style="{StaticResource DataRowStatusStaleDotStyle}"/>
+                                        <TextBlock Style="{StaticResource DataRowStatusLegendTextStyle}"
+                                                   Text="{Binding [data_row_status_stale], Source={x:Static lg:LanguageService.Instance}, FallbackValue='投图后已修改'}"/>
+                                        <Ellipse Style="{StaticResource DataRowStatusIdleDotStyle}"/>
+                                        <TextBlock Style="{StaticResource DataRowStatusLegendTextStyle}"
+                                                   Text="{Binding [data_row_status_pending], Source={x:Static lg:LanguageService.Instance}, FallbackValue='未投图'}"/>
+                                    </StackPanel>
 
-                                        <!-- 展开/收缩按钮 -->
-                                        <Button Grid.Column="1" Command="{Binding ToggleCalculationDetailCommand}" 
-                                                Width="24" Height="24" Background="Transparent" BorderThickness="0" Cursor="Hand"
-                                                ToolTip="{Binding [toggle_details_expand_collapse],Source={x:Static lg:LanguageService.Instance}}">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" 
-                                                                   Foreground="#666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Text" Value="&#xe624;"/><!-- 展开图标 -->
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsCalculationDetailExpanded}" Value="True">
-                                                                            <Setter Property="Text" Value="&#xe8fc;"/><!-- 收起图标 -->
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="#F0F0F0"/>
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
-                                    </Grid>
-                                </Border>
+                                    <!-- 展开/收起计算详情按钮（仅计算验证可见时显示） -->
+                                    <Button Grid.Column="2" Command="{Binding ToggleCalculationDetailCommand}"
+                                            Width="24" Height="24" Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            VerticalAlignment="Center"
+                                            Visibility="{Binding IsCalculationVerificationVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                            ToolTip="{Binding [toggle_details_expand_collapse],Source={x:Static lg:LanguageService.Instance}}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"
+                                                               Foreground="#666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="&#xe624;"/><!-- 展开图标 -->
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsCalculationDetailExpanded}" Value="True">
+                                                                        <Setter Property="Text" Value="&#xe8fc;"/><!-- 收起图标 -->
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
 
                                 <!-- 展开状态：显示详细计算过程 -->
-                                <Border Grid.Row="1" Padding="10,0,10,10" Background="#FAFAFA"
-                                        Visibility="{Binding IsCalculationDetailExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Border Grid.Row="1" Padding="10,0,10,10" Background="#FAFAFA">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsCalculationVerificationVisible}" Value="True"/>
+                                                        <Condition Binding="{Binding IsCalculationDetailExpanded}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <ScrollViewer MaxHeight="{Binding DataGridMaxVerificationHeight}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                        <ItemsControl ItemsSource="{Binding CalculationLogs}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding}" FontSize="11" Foreground="#555" 
-                                                               FontFamily="Consolas" Margin="0,2" TextWrapping="Wrap"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
+                                        <StackPanel>
+                                            <!-- 计算结果摘要：作为计算详情的第一行 -->
+                                            <TextBlock Text="{Binding CalculationResultSummary}" FontSize="12" Foreground="#333"
+                                                       Margin="0,2,0,4" TextWrapping="Wrap"/>
+                                            <ItemsControl ItemsSource="{Binding CalculationLogs}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" FontSize="11" Foreground="#555"
+                                                                   FontFamily="Consolas" Margin="0,2" TextWrapping="Wrap"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
                                     </ScrollViewer>
                                 </Border>
                             </Grid>

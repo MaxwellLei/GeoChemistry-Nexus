@@ -214,9 +214,9 @@
                                                 <UniformGrid Rows="1"/>
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
-                                        <ListBoxItem Tag="SingleClick"
+                                        <ListBoxItem Style="{StaticResource TemplateCardSizeSegmentedItemStyle}" Tag="SingleClick"
                                                      Content="{Binding [single_click],Source={x:Static lg:LanguageService.Instance}}"/>
-                                        <ListBoxItem Tag="DoubleClick"
+                                        <ListBoxItem Style="{StaticResource TemplateCardSizeSegmentedItemStyle}" Tag="DoubleClick"
                                                      Content="{Binding [double_click],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </ListBox>
                                 </Grid>
@@ -302,9 +302,9 @@
                                                 <UniformGrid Rows="1"/>
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
-                                        <ListBoxItem Tag="{x:Static models:TemplateCardAppearance.Regular}"
+                                        <ListBoxItem Style="{StaticResource TemplateCardSizeSegmentedItemStyle}" Tag="{x:Static models:TemplateCardAppearance.Regular}"
                                                      Content="{Binding [template_card_appearance_regular],Source={x:Static lg:LanguageService.Instance}}"/>
-                                        <ListBoxItem Tag="{x:Static models:TemplateCardAppearance.Frameless}"
+                                        <ListBoxItem Style="{StaticResource TemplateCardSizeSegmentedItemStyle}" Tag="{x:Static models:TemplateCardAppearance.Frameless}"
                                                      Content="{Binding [template_card_appearance_frameless],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </ListBox>
                                 </Grid>

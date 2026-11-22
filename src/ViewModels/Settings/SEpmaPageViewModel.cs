@@ -22,8 +22,8 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int defaultWorksheetRowCount;
 
-        /// <summary>当前软件支持的 EPMA 计算包格式版本（只读）。</summary>
-        public string CurrentEpmaVersion { get; } = EpmaScriptPackage.CurrentFormatVersion.ToString();
+        /// <summary>当前软件的 EPMA 模块版本 x.y（只读）；包版本 x.y.z 的 x.y 不高于它才能使用。</summary>
+        public string CurrentEpmaVersion { get; } = ContentVersionHelper.FormatBaseline(ContentVersionHelper.GetEpmaFormatVersion());
 
         public ObservableCollection<int> DefaultWorksheetRowCounts { get; } =
             new(WorksheetDefaultsHelper.AllowedRowCounts);

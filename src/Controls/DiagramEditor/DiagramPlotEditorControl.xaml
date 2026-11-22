@@ -34,29 +34,10 @@
         <ItemsPanelTemplate x:Key="DiagramLocColumnsPanel">
             <StackPanel Orientation="Horizontal"/>
         </ItemsPanelTemplate>
-        <Style x:Key="DiagramLocCellBox" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#0D000000"/>
-            <Setter Property="BorderThickness" Value="1,0,0,0"/>
-        </Style>
-        <Style x:Key="DiagramLocRowLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12.5"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Foreground" Value="#515154"/>
-            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="16,14,8,14"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-        <Style x:Key="DiagramLocCellInput" TargetType="TextBox" BasedOn="{StaticResource EpmaLocInputBox}">
-            <Setter Property="Text" Value="{Binding Text,UpdateSourceTrigger=PropertyChanged}"/>
-            <Setter Property="Tag" Value="{Binding Placeholder}"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
-        </Style>
+        <!-- 多语言表格的单元格容器 / 输入框 / 字段项标签：与 EPMA、地质温压计的多语言窗口共用 Themes/Styles.xaml 中的 LocCellBox、LocCellInput、LocRowLabel -->
         <DataTemplate x:Key="DiagramLocColumnHeader">
             <Grid Width="{Binding Width}">
-            <Border Style="{StaticResource DiagramLocCellBox}" Height="46" Padding="14,0">
+            <Border Style="{StaticResource LocCellBox}" Height="46" Padding="14,0">
                 <DockPanel VerticalAlignment="Center">
                     <Border DockPanel.Dock="Right" Margin="8,0,0,0" Padding="8,2" VerticalAlignment="Center" Background="White"
                             BorderBrush="#0F000000" BorderThickness="1" CornerRadius="10">
@@ -68,10 +49,11 @@
                     </Border>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Header}" VerticalAlignment="Center" FontSize="12.5" FontWeight="Normal" Foreground="#1D1D1F"
-                                   TextTrimming="CharacterEllipsis"/>
+                                   LineHeight="16" LineStackingStrategy="BlockLineHeight" TextTrimming="CharacterEllipsis"/>
                         <Border Margin="6,0,0,0" Height="16" Padding="6,0" VerticalAlignment="Center" Background="{DynamicResource ThemeAccentTintBrush}" CornerRadius="4"
                                 Visibility="{Binding IsDefault,Converter={StaticResource Show}}">
                             <TextBlock VerticalAlignment="Center" FontSize="10.5" FontWeight="Medium" Foreground="{DynamicResource ThemeAccentBrush}"
+                                       LineHeight="16" LineStackingStrategy="BlockLineHeight"
                                        Text="{Binding [epma_editor_default_badge],Source={x:Static lg:LanguageService.Instance}}"/>
                         </Border>
                     </StackPanel>
@@ -83,8 +65,8 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="DiagramLocCell">
-            <Border Style="{StaticResource DiagramLocCellBox}" Width="{Binding Column.Width}" Padding="6,5">
-                <TextBox Style="{StaticResource DiagramLocCellInput}"/>
+            <Border Style="{StaticResource LocCellBox}" Width="{Binding Column.Width}" Padding="6,4">
+                <TextBox Style="{StaticResource LocCellInput}"/>
             </Border>
         </DataTemplate>
         <!-- 主题色相关画刷：颜色取自 AppThemeHelper 写入的应用级资源，随主题切换更新 -->
@@ -999,6 +981,11 @@
                                             <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
                                                        Text="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
                                         </Border>
+                                        <!-- 分组（可选）：相邻且同名的列在数据表格表头上合并成一个分组带 -->
+                                        <Border Height="32">
+                                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
+                                                       Text="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
+                                        </Border>
                                     </StackPanel>
                                 </Border>
                                 <ScrollViewer Grid.Column="1" Style="{StaticResource EditorTableScroll}">
@@ -1029,6 +1016,13 @@
                                                                      Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}"
                                                                      Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
                                                                      AutomationProperties.Name="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
+                                                        </Border>
+                                                        <!-- 分组（可选）：默认语言的标题，其它语言在“多语言”页填写 -->
+                                                        <Border Height="32">
+                                                            <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                                     Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                                     AutomationProperties.Name="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
                                                         </Border>
                                                     </StackPanel>
                                                 </Border>
@@ -1160,7 +1154,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Background="#FCFCFD">
-                                                        <TextBlock Text="{Binding Label}" Style="{StaticResource DiagramLocRowLabel}"/>
+                                                        <TextBlock Text="{Binding Label}" Style="{StaticResource LocRowLabel}" TextWrapping="Wrap"/>
                                                     </Border>
                                                     <ContentControl Grid.Column="1" Content="{Binding DefaultCell}"
                                                                     ContentTemplate="{StaticResource DiagramLocCell}"

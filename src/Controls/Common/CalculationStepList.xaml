@@ -1,0 +1,151 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.CalculationStepList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter">
+    <!-- 右侧检查器的「分组 + 条目」列表：地质温压计与 EPMA 共用。
+         每项是 CalculationStep：分隔行是可折叠的分组标题，其余行为 名称 / 值 / 说明，
+         IsResult、IsHighlight 与自定义背景色决定行的强调方式。 -->
+    <UserControl.Resources>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:HexToBrushConverter x:Key="HexToBrushConverter"/>
+    </UserControl.Resources>
+
+    <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=local:CalculationStepList}}"
+                  Margin="8,4,8,8">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Border Margin="0,1" Padding="10,5" CornerRadius="4"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsHighlight}" Value="True">
+                                    <Setter Property="Background" Value="#FFFDE7"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                    <Setter Property="Background" Value="#FAFAFA"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HasCustomBackground}" Value="True">
+                                    <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F5F5F7"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick"
+                                      Command="{Binding ToggleCommand, RelativeSource={RelativeSource AncestorType=local:CalculationStepList}}"
+                                      CommandParameter="{Binding}"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 分组折叠箭头（仅分隔标题） -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,6,0"
+                                   FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource ThemeAccentBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Text" Value="&#xE70D;"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsCollapsed}" Value="True">
+                                            <Setter Property="Text" Value="&#xE76C;"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!-- 步骤名称 -->
+                        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Foreground" Value="#555"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="FontSize" Value="11"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Name, Mode=OneWay}"/>
+                        </TextBlock>
+
+                        <!-- 步骤值（分隔行隐藏） -->
+                        <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" MaxWidth="170">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="FontFamily" Value="Consolas"/>
+                                    <Setter Property="Foreground" Value="#333"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="FontSize" Value="13"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Value, Mode=OneWay}"/>
+                        </TextBlock>
+
+                        <!-- 描述：位于名称下方（分隔行 / 空描述隐藏） -->
+                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Description}" FontSize="11"
+                                   Foreground="#999" Margin="0,2,0,0" TextWrapping="Wrap"
+                                   ToolTip="{Binding Description}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Description}" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

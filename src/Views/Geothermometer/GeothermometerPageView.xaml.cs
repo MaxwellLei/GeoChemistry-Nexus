@@ -22,16 +22,6 @@ namespace GeoChemistryNexus.Views
         private readonly GeothermometerPageViewModel _viewModel;
         private Worksheet? _boundSelectionWorksheet;
 
-        /// <summary>
-        /// 面板正常展开时的记录高度（与 CIPW 计算详情一致）
-        /// </summary>
-        private double _normalDetailPanelHeight = 180;
-
-        /// <summary>
-        /// 计算详情面板最小高度
-        /// </summary>
-        private const double MinDetailPanelHeight = 80;
-
         public GeothermometerPageView()
         {
             InitializeComponent();
@@ -51,10 +41,7 @@ namespace GeoChemistryNexus.Views
             MyReoGrid.CurrentWorksheetChanged += OnCurrentWorksheetChanged;
             _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
 
-            // 默认状态：收缩为底部状态条
-            CollapseDetailPanel();
-
-            // 监听 ViewModel 属性变化，处理计算详情面板的布局切换
+            // 监听 ViewModel 属性变化，处理滚动复位
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -63,11 +50,7 @@ namespace GeoChemistryNexus.Views
         /// </summary>
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(GeothermometerPageViewModel.IsDetailPanelMinimized))
-            {
-                SyncDetailPanelLayoutFromViewModel();
-            }
-            else if (e.PropertyName == nameof(GeothermometerPageViewModel.DetailScrollResetToken))
+            if (e.PropertyName == nameof(GeothermometerPageViewModel.DetailScrollResetToken))
             {
                 ResetCalculationDetailScroll();
             }
@@ -98,87 +81,6 @@ namespace GeoChemistryNexus.Views
         {
             CalculationDetailScrollViewer?.ScrollToVerticalOffset(0);
             CalculationDetailScrollViewer?.ScrollToHorizontalOffset(0);
-        }
-
-        /// <summary>
-        /// 根据 ViewModel 状态同步计算详情面板布局
-        /// </summary>
-        private void SyncDetailPanelLayoutFromViewModel()
-        {
-            if (_viewModel.IsDetailPanelMinimized)
-            {
-                CollapseDetailPanel();
-            }
-            else
-            {
-                ExpandDetailPanel();
-            }
-        }
-
-        /// <summary>
-        /// 展开/收缩计算详情面板（与 CIPW 逻辑一致）
-        /// </summary>
-        private void OnToggleDetailExpandClick(object? sender, RoutedEventArgs e)
-        {
-            if (_viewModel.IsDetailPanelMinimized)
-            {
-                _viewModel.RestoreDetailPanelCommand.Execute(null);
-            }
-            else
-            {
-                _viewModel.MinimizeDetailPanelCommand.Execute(null);
-            }
-
-            SyncDetailPanelLayoutFromViewModel();
-        }
-
-        /// <summary>
-        /// 拖动分隔条结束后记录当前面板高度
-        /// </summary>
-        private void OnDetailSplitterDragCompleted(object? sender, DragCompletedEventArgs e)
-        {
-            RememberDetailPanelHeight();
-        }
-
-        /// <summary>
-        /// 展开：恢复正常高度
-        /// </summary>
-        private void ExpandDetailPanel()
-        {
-            TableRow.Height = new GridLength(1, GridUnitType.Star);
-            DetailRow.MinHeight = MinDetailPanelHeight;
-            DetailRow.Height = new GridLength(_normalDetailPanelHeight);
-            DetailSplitter.Visibility = Visibility.Visible;
-            MyReoGrid.Visibility = Visibility.Visible;
-            DetailExpandIcon.Text = "\uE70D";
-
-        }
-
-        /// <summary>
-        /// 收缩：仅保留标题栏状态条
-        /// </summary>
-        private void CollapseDetailPanel()
-        {
-            RememberDetailPanelHeight();
-
-            TableRow.Height = new GridLength(1, GridUnitType.Star);
-            DetailRow.MinHeight = 0;
-            DetailRow.Height = GridLength.Auto;
-            DetailSplitter.Visibility = Visibility.Collapsed;
-            MyReoGrid.Visibility = Visibility.Visible;
-            DetailExpandIcon.Text = "\uE70E";
-
-        }
-
-        /// <summary>
-        /// 记录当前计算详情面板高度，供下次展开时恢复
-        /// </summary>
-        private void RememberDetailPanelHeight()
-        {
-            if (DetailRow.Height.IsAbsolute && DetailRow.Height.Value >= MinDetailPanelHeight)
-            {
-                _normalDetailPanelHeight = DetailRow.Height.Value;
-            }
         }
 
         private void BindWorksheetEvents()
@@ -223,7 +125,7 @@ namespace GeoChemistryNexus.Views
             _viewModel.RefreshSelectedCellEditor(worksheet);
             _viewModel.OnRowSelected(worksheet, row);
 
-            // 选中数据行只刷新计算详情内容，不改变用户当前的展开/收缩状态。
+            // 选中数据行只刷新计算详情内容，不改变用户当前侧边栏的展开/收起状态。
         }
 
         /// <summary>

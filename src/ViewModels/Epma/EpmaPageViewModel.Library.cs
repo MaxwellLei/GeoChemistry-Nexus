@@ -176,8 +176,8 @@ public partial class EpmaPageViewModel
         try
         {
             if (!await MessageHelper.ShowAsyncDialog(EpmaLocalizer.Format("epma_library_delete_confirm", item.Name), EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("epma_library_delete"))) return;
-            if (!TryLoadTemplate(item, out var template)) return;
-            await EpmaCompositionRoot.Templates.DeleteAsync(template!);
+            // 不解析包：高版本（本程序无法读取）的个人模板也必须能删除
+            await EpmaCompositionRoot.Templates.DeleteAsync(item.Entity);
             try { _recentTemplates.Remove(item.Id, true); }
             catch (Exception ex) { MessageHelper.Warning(EpmaLocalizer.Format("epma_library_history_failed") + " " + ex.Message); }
             RefreshLibrary(); MessageHelper.Success(EpmaLocalizer.Format("epma_library_deleted", item.Name));
@@ -209,13 +209,15 @@ public partial class EpmaPageViewModel
         IsLibraryMutationBusy = true;
         try
         {
+            // 标识的随机部分不变，只把前缀换成 official_
+            string officialId = EpmaTemplateCatalog.GetConvertedPackageId(item.Id, true);
             string message = EpmaLocalizer.Format("epma_library_promote_confirm", item.Name);
-            if (EpmaCompositionRoot.Templates.Exists(item.Id, true)) message += "\n" + EpmaLocalizer.Format("epma_library_promote_replace", item.Id);
+            if (EpmaCompositionRoot.Templates.Exists(officialId, true)) message += "\n" + EpmaLocalizer.Format("epma_library_promote_replace", officialId);
             if (!await MessageHelper.ShowAsyncDialog(message, EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("epma_library_promote"))) return;
             await EpmaCompositionRoot.Templates.PromoteToOfficialAsync(item.Entity);
             try { _recentTemplates.Remove(item.Id, true); }
             catch (Exception ex) { MessageHelper.Warning(EpmaLocalizer.Format("epma_library_history_failed") + " " + ex.Message); }
-            ShowTemplateAfterMutation(item.Id, false);
+            ShowTemplateAfterMutation(officialId, false);
             MessageHelper.Success(EpmaLocalizer.Format("epma_library_promoted", item.Name));
         }
         catch (Exception ex) { MessageHelper.Error(EpmaLocalizer.Format("epma_library_failed") + " " + ex.Message); }
@@ -229,13 +231,16 @@ public partial class EpmaPageViewModel
         IsLibraryMutationBusy = true;
         try
         {
+            // 标识的随机部分不变，只把前缀换成 custom_
+            string customId = EpmaTemplateCatalog.GetConvertedPackageId(item.Id, false);
             string message = EpmaLocalizer.Format("epma_library_demote_confirm", item.Name);
-            if (EpmaCompositionRoot.Templates.Exists(item.Id, false)) message += "\n" + EpmaLocalizer.Format("epma_library_demote_replace", item.Id);
+            if (EpmaCompositionRoot.Templates.Exists(customId, false)) message += "\n" + EpmaLocalizer.Format("epma_library_demote_replace", customId);
             if (!await MessageHelper.ShowAsyncDialog(message, EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("epma_library_remove_official"))) return;
             await EpmaCompositionRoot.Templates.DemoteToCustomAsync(item.Entity);
             try { _recentTemplates.Remove(item.Id, false); }
             catch (Exception ex) { MessageHelper.Warning(EpmaLocalizer.Format("epma_library_history_failed") + " " + ex.Message); }
-            ShowTemplateAfterMutation(item.Id, true);
+            // 移除在线模板后不跳转，停留在当前列表
+            RefreshLibrary();
             MessageHelper.Success(EpmaLocalizer.Format("epma_library_demoted", item.Name));
         }
         catch (Exception ex) { MessageHelper.Error(EpmaLocalizer.Format("epma_library_failed") + " " + ex.Message); }

@@ -174,20 +174,8 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>삼원상 다이어그램의 합은 1이어야 합니다.</value>
   </data>
-  <data name="geo_btn_reset" xml:space="preserve">
-    <value>재설정</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>표시 여부</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>적용</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>획 색상</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>획 너비</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>자동 업데이트 확인</value>
@@ -237,9 +225,6 @@
   <data name="batch_downloading" xml:space="preserve">
     <value>일괄 다운로드 중</value>
   </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>부제목 굵게</value>
-  </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>다이어그램 가이드</value>
   </data>
@@ -267,11 +252,8 @@
   <data name="add_link" xml:space="preserve">
     <value>링크 추가</value>
   </data>
-  <data name="pattern" xml:space="preserve">
-    <value>패턴</value>
-  </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>공식으로 승격</value>
+    <value>온라인 온도압력계 템플릿으로 업그레이드</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>검사 실패:</value>
@@ -342,9 +324,6 @@
   <data name="syntax_validation_passed" xml:space="preserve">
     <value>구문 검사 통과</value>
   </data>
-  <data name="cipw_tooltip_expand" xml:space="preserve">
-    <value>펼치기 / 접기</value>
-  </data>
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>계산 결과를 CSV 파일로 내보내기</value>
   </data>
@@ -411,7 +390,7 @@
 • Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
-    <value>사용자 정의로 강등</value>
+    <value>온라인 온도압력계 템플릿 제거</value>
   </data>
   <data name="geo_ctx_delete" xml:space="preserve">
     <value>삭제</value>
@@ -422,8 +401,7 @@
 • 인회석(Ap): P₂O₅ + CaO
 • 크롬철석(Cm): Cr₂O₃ + FeO
 • 티탄철석(Ilm): TiO₂ + FeO
-• 티탄석(Tn): TiO₂ + CaO + SiO₂
-• 금홍석(Ru): 잔여 TiO₂</value>
+(티탄석과 금홍석은 회장석 할당 이후에 형성됩니다. 장석 단계 참조)</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>다이어그램 템플릿 소스 파일이 존재하지 않음</value>
@@ -436,9 +414,6 @@
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>온압계 편집</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>시작 좌표</value>
   </data>
   <data name="official_templates" xml:space="preserve">
     <value>온라인 다이어그램 템플릿</value>
@@ -461,11 +436,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>스크립트에서 trace(...) 함수를 사용하여 계산 과정을 기록할 수 있습니다.</value>
   </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>사용자 지정 앱</value>
-  </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>개인 도해 템플릿</value>
+    <value>내 도해 템플릿</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>다이어그램 템플릿 로드 실패</value>
@@ -484,9 +456,6 @@
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>유효하지 않은 공식</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>부제목 색상</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>광물 총량</value>
@@ -537,7 +506,7 @@
     <value>모든 템플릿</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>개인 다이어그램 템플릿</value>
+    <value>내 다이어그램 템플릿</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>기본 정보</value>
@@ -581,17 +550,8 @@
   <data name="logarithmic" xml:space="preserve">
     <value>로그</value>
   </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>화살표 머리 너비</value>
-  </data>
-  <data name="geo_btn_help" xml:space="preserve">
-    <value>도움말</value>
-  </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>스크립트 변수 이름 형식 오류:</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>타사 소프트웨어로 열기</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>돌아가기</value>
@@ -604,9 +564,6 @@
   </data>
   <data name="preparing_interface_content_status" xml:space="preserve">
     <value>페이지가 전환되었습니다. 화면 내용을 준비하는 중...</value>
-  </data>
-  <data name="fill_color" xml:space="preserve">
-    <value>채우기 색상</value>
   </data>
   <data name="cipw_iron_inconsistent" xml:space="preserve">
     <value>입력 불일치</value>
@@ -632,9 +589,6 @@
   <data name="geo_validate_formula_name_invalid" xml:space="preserve">
     <value>수식 이름에는 영문, 숫자, 밑줄만 사용할 수 있습니다.</value>
   </data>
-  <data name="border_width" xml:space="preserve">
-    <value>테두리 두께</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>내용 복사</value>
   </data>
@@ -646,9 +600,6 @@
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
     <value>계산 완료: {0}/{1}개 샘플 성공.</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>테두리 색상</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
     <value>언어 전환 성공</value>
@@ -700,9 +651,6 @@
   <data name="content" xml:space="preserve">
     <value>내용</value>
   </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>완성도 검사</value>
-  </data>
   <data name="line_width" xml:space="preserve">
     <value>선 두께</value>
   </data>
@@ -742,9 +690,6 @@
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>수식 이름은 비워둘 수 없습니다.</value>
   </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>부제목 기울임꼴</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>현재 템플릿 목록은 최신 버전입니다.</value>
   </data>
@@ -782,9 +727,12 @@
 ▶ 포화(SiO₂ 정확히 소진): 석영 없음, 준장석 없음
 ▶ 불포화(SiO₂ 부족): 우선순위에 따라 광물을 역방향으로 조정 ——
     • 자소휘석(En+Fs) → 감람석(Fo+Fa)
+    • 티탄석(Tn) → 페로브스카이트(Pf)
+    • 조장석(Ab) → 하석(Ne)
     • 정장석(Or) → 백류석(Le)
-    • 백류석(Le) → 가백류석(Kp)
-    • 조장석(Ab) → 하석(Ne)</value>
+    • 규회석(Wo) → 라르나이트(Cs)
+    • 투휘석/헤덴버자이트(Di+Hd) → 라르나이트(Cs) + 감람석(Fo+Fa)
+    • 백류석(Le) → 가백류석(Kp)</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>데이터 열이 정의되지 않음</value>
@@ -816,9 +764,6 @@
   <data name="cipw_step5_title" xml:space="preserve">
     <value>장석과 알칼리 규산염 형성</value>
   </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>파일 열기 실패:</value>
-  </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>질량 균형 오차(%)</value>
   </data>
@@ -849,14 +794,8 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>사용자 지정 프로그램 경로가 설정되지 않았습니다. 설정에서 구성하십시오.</value>
   </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>주 눈금 표시</value>
-  </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>메타알루미나</value>
-  </data>
-  <data name="geo_field_required_hint" xml:space="preserve">
-    <value>필수 항목은 *로 표시됩니다. 형식 기준 x.y는 소프트웨어 온압계 버전을 따르고, 수정 번호 z는 템플릿 내용 버전입니다. Grid 수식은 「데이터와 스크립트」 단계에서 설정합니다.</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>데이터 매개변수 형식이 올바르지 않음</value>
@@ -945,9 +884,6 @@
   <data name="geo_script_run_test" xml:space="preserve">
     <value>테스트 실행</value>
   </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>스크립트 설정</value>
-  </data>
   <data name="to" xml:space="preserve">
     <value>끝</value>
   </data>
@@ -982,7 +918,7 @@
     <value>레벨을 추가하면 여기에 분류 구조 미리보기가 표시됩니다.</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>개인 온압계 템플릿</value>
+    <value>내 온압계 템플릿</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y축</value>
@@ -1010,9 +946,6 @@
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 좌표</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>끝 좌표</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>스크립트 내용이 비어 있음</value>
@@ -1064,9 +997,6 @@
   </data>
   <data name="range" xml:space="preserve">
     <value>범위</value>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>스타일</value>
   </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>참고문헌</value>
@@ -1146,23 +1076,8 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>데이터가 지워졌습니다.</value>
   </data>
-  <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5초</value>
-  </data>
-  <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4초</value>
-  </data>
-  <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3초</value>
-  </data>
-  <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2초</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>개체가 성공적으로 삭제되었습니다.</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>눈금 레이블 표시</value>
   </data>
   <data name="cipw_tooltip_help" xml:space="preserve">
     <value>CIPW 표준 광물 계산의 알고리즘 흐름 설명을 봅니다</value>
@@ -1231,9 +1146,6 @@
   <data name="interval" xml:space="preserve">
     <value>눈금 간격</value>
   </data>
-  <data name="font_family" xml:space="preserve">
-    <value>글꼴</value>
-  </data>
   <data name="vertices" xml:space="preserve">
     <value>정점</value>
   </data>
@@ -1242,9 +1154,6 @@
   </data>
   <data name="point_count" xml:space="preserve">
     <value>샘플 포인트</value>
-  </data>
-  <data name="geo_label_official" xml:space="preserve">
-    <value>공식</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>최근 사용 기록</value>
@@ -1299,15 +1208,14 @@
 • 정장석(Or): K₂O + Al₂O₃ + 6SiO₂
 • 조장석(Ab): Na₂O + Al₂O₃ + 6SiO₂
 • 회장석(An): CaO + Al₂O₃ + 2SiO₂
+• 티탄석(Tn): TiO₂ + CaO + SiO₂ (회장석 할당 후 남은 CaO만 사용)
+• 금홍석(Ru): 잔여 TiO₂
 • 강옥(Cor): 잔여 Al₂O₃ (과알루미나의 경우)
 • 에지린(Ac): Na₂O + Fe₂O₃ + 4SiO₂ (과알칼리의 경우)
 • 잔여 알칼리 규산염 (ns, ks)</value>
   </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>기울임꼴 (Ctrl+I)</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>도움말 파일을 찾을 수 없습니다.</value>
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>도움말</value>
@@ -1341,9 +1249,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>우측 상단</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>설치되지 않은 새 템플릿 일괄 다운로드</value>
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>즐겨찾기</value>
@@ -1384,9 +1289,6 @@
   <data name="retry_action" xml:space="preserve">
     <value>재시도</value>
   </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>화살표 머리 길이</value>
-  </data>
   <data name="remove_point" xml:space="preserve">
     <value>이 정점 삭제</value>
   </data>
@@ -1398,9 +1300,6 @@
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>현재 계산 화면을 종료할까요?</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>내용 및 위치</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>화살표 추가 (Ctrl+4)</value>
@@ -1420,9 +1319,6 @@
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>기본값 0.15</value>
   </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>부제목 글꼴 크기</value>
-  </data>
   <data name="delete_object" xml:space="preserve">
     <value>개체 삭제 (Delete)</value>
   </data>
@@ -1434,9 +1330,6 @@
   </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>과알루미나</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>시작 좌표</value>
   </data>
   <data name="cipw_error" xml:space="preserve">
     <value>오류</value>
@@ -1470,9 +1363,6 @@
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>데이터 없음, 데이터를 추가하십시오</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>일괄 다운로드</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>새 템플릿 생성 중 오류 발생:</value>
@@ -1635,9 +1525,6 @@
   <data name="formula" xml:space="preserve">
     <value>공식</value>
   </data>
-  <data name="script_language" xml:space="preserve">
-    <value>스크립트 언어:</value>
-  </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>저장할 템플릿이 없거나 저장 경로가 지정되지 않았습니다. '다른 이름으로 저장'을 사용하십시오.</value>
   </data>
@@ -1673,12 +1560,6 @@
   </data>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>일괄 다운로드 취소됨</value>
-  </data>
-  <data name="batch_update_outdated_templates" xml:space="preserve">
-    <value>일괄 업데이트</value>
-  </data>
-  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
-    <value>새 버전이 있는 공식 템플릿 일괄 업데이트</value>
   </data>
   <data name="batch_update_title" xml:space="preserve">
     <value>일괄 업데이트</value>
@@ -1770,9 +1651,6 @@
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>지원되지 않는 파일 형식</value>
   </data>
-  <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>온압계 패키지. 여러 파일을 한 번에 놓을 수 있습니다.</value>
-  </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
     <value>다이어그램</value>
   </data>
@@ -1802,9 +1680,6 @@
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>부광물 형성</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>여러 데이터 계열은 쉼표로 구분하십시오. 예: SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>다각형 추가 (Ctrl+3)</value>
@@ -1906,7 +1781,7 @@
     <value>프로그램 종료</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_파일(F)</value>
+    <value>파일(_F)</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>데이터</value>
@@ -1928,12 +1803,6 @@
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>현재 소프트웨어 온압계 버전</value>
-  </data>
-  <data name="geo_current_template_version" xml:space="preserve">
-    <value>현재 온압계 템플릿 버전</value>
-  </data>
-  <data name="geo_editor_set_version" xml:space="preserve">
-    <value>온압계 버전 설정</value>
   </data>
   <data name="geo_tooltip_version_patch" xml:space="preserve">
     <value>개정 번호 z; 형식 기준선 x.y는 프로그램 버전을 따릅니다</value>
@@ -2126,9 +1995,6 @@
   <data name="filter_geothermometer_package" xml:space="preserve">
     <value>온압계 패키지</value>
   </data>
-  <data name="filter_geothermometer_import" xml:space="preserve">
-    <value>온압계 패키지</value>
-  </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>CSV 파일</value>
   </data>
@@ -2171,17 +2037,11 @@
   <data name="cos_credentials_required" xml:space="preserve">
     <value>먼저 COS 자격 증명을 구성하고 저장하세요.</value>
   </data>
-  <data name="cos_save_settings" xml:space="preserve">
-    <value>설정 저장</value>
-  </data>
   <data name="cos_secret_id_required" xml:space="preserve">
     <value>SecretId는 필수입니다.</value>
   </data>
   <data name="cos_settings_saved" xml:space="preserve">
     <value>COS 설정이 저장되었습니다.</value>
-  </data>
-  <data name="cos_test_connection" xml:space="preserve">
-    <value>연결 테스트</value>
   </data>
   <data name="cos_test_failed" xml:space="preserve">
     <value>COS 연결 테스트에 실패했습니다.</value>
@@ -2206,9 +2066,6 @@
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>다국어</value>
-  </data>
-  <data name="diagram_editor_new_version" xml:space="preserve">
-    <value>새 버전</value>
   </data>
   <data name="diagram_editor_saved_version" xml:space="preserve">
     <value>저장 후 버전:</value>
@@ -2239,9 +2096,6 @@
   </data>
   <data name="favorites_empty_hint" xml:space="preserve">
     <value>즐겨찾기한 템플릿이 아직 없습니다. 템플릿을 마우스 오른쪽 버튼으로 클릭하여 추가하세요.</value>
-  </data>
-  <data name="diagram_hint_no_favorites" xml:space="preserve">
-    <value>즐겨찾기한 도해 템플릿이 아직 없습니다.</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
     <value>이 범주에 온라인 다이어그램 템플릿이 없습니다.</value>
@@ -2280,7 +2134,19 @@
     <value>강제 업데이트</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>내장 템플릿으로 변환</value>
+    <value>온라인 다이어그램 템플릿으로 업그레이드</value>
+  </data>
+  <data name="demote_to_custom_template" xml:space="preserve">
+    <value>온라인 다이어그램 템플릿 제거</value>
+  </data>
+  <data name="confirm_demote_diagram_template" xml:space="preserve">
+    <value>이 다이어그램을 공식 라이브러리에서 제거하시겠습니까? 개인 다이어그램이 되며 다음 릴리스에는 포함되지 않습니다. 같은 경로의 개인 다이어그램은 교체됩니다.</value>
+  </data>
+  <data name="confirm_demote_geothermometer" xml:space="preserve">
+    <value>이 온압계를 공식 라이브러리에서 제거하시겠습니까? 사용자 정의 온압계가 되며 다음 릴리스에는 포함되지 않습니다.</value>
+  </data>
+  <data name="template_demote_success" xml:space="preserve">
+    <value>개인 다이어그램으로 강등되었습니다</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>강제 업데이트</value>
@@ -2366,9 +2232,6 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(비어 있음)</value>
   </data>
-  <data name="official_publisher_announcement_load" xml:space="preserve">
-    <value>서버에서 불러오기</value>
-  </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>서버에서 공지를 불러왔습니다.</value>
   </data>
@@ -2384,29 +2247,11 @@
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>게시하려면 개발자 모드가 필요합니다.</value>
   </data>
-  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
-    <value>도해: 신규 {0}, 업데이트 {1}, 제거 {2}, 변경 없음 {3}.</value>
-  </data>
-  <data name="official_publisher_diagram_section" xml:space="preserve">
-    <value>도해</value>
-  </data>
   <data name="official_publisher_export_done" xml:space="preserve">
     <value>내보내기가 완료되었습니다.</value>
   </data>
-  <data name="official_publisher_export_local" xml:space="preserve">
-    <value>로컬로 내보내기</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>{0}(으)로 내보내는 중...</value>
-  </data>
-  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>온압계: 신규 {0}, 업데이트 {1}, 제거 {2}, 변경 없음 {3}.</value>
-  </data>
-  <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>온압계</value>
-  </data>
-  <data name="official_publisher_home_add_group" xml:space="preserve">
-    <value>그룹 추가</value>
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>그룹 편집</value>
@@ -2414,26 +2259,11 @@
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>홈 링크 초안이 로컬에 저장되었습니다.</value>
   </data>
-  <data name="official_publisher_home_links_pending" xml:space="preserve">
-    <value>게시 대기</value>
-  </data>
-  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
-    <value>그룹: {0}, 링크: {1}, 로컬 hash: {2}, 원격 hash: {3}.</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>홈 링크 편집기가 다시 로드되었습니다.</value>
   </data>
-  <data name="official_publisher_home_links_section" xml:space="preserve">
-    <value>홈 링크</value>
-  </data>
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>홈 링크: {0}개 그룹, {1}개 링크, hash={2}.</value>
-  </data>
-  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
-    <value>서버가 이미 최신입니다.</value>
-  </data>
-  <data name="official_publisher_home_save_draft" xml:space="preserve">
-    <value>초안 저장</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>먼저 그룹을 선택하세요.</value>
@@ -2456,29 +2286,14 @@
   <data name="official_publisher_ready" xml:space="preserve">
     <value>공식 게시기가 준비되었습니다.</value>
   </data>
-  <data name="official_publisher_refresh" xml:space="preserve">
-    <value>미리보기 새로 고침</value>
-  </data>
-  <data name="official_publisher_refreshing" xml:space="preserve">
-    <value>게시 미리보기 새로 고침 중...</value>
-  </data>
   <data name="official_publisher_removed" xml:space="preserve">
     <value>제거됨</value>
-  </data>
-  <data name="official_publisher_staging_dir" xml:space="preserve">
-    <value>staging 디렉터리</value>
   </data>
   <data name="official_publisher_staging_required" xml:space="preserve">
     <value>staging 디렉터리를 선택하세요.</value>
   </data>
   <data name="official_publisher_start" xml:space="preserve">
     <value>게시를 시작하는 중...</value>
-  </data>
-  <data name="official_publisher_target_required" xml:space="preserve">
-    <value>게시 대상을 하나 이상 선택하세요.</value>
-  </data>
-  <data name="official_publisher_unchanged" xml:space="preserve">
-    <value>변경 없음</value>
   </data>
   <data name="official_publisher_updated" xml:space="preserve">
     <value>업데이트됨</value>
@@ -2684,12 +2499,6 @@
   <data name="shortcut_group_template_title" xml:space="preserve">
     <value>템플릿 카드 작업</value>
   </data>
-  <data name="shortcuts_hint" xml:space="preserve">
-    <value>팁: 일부 단축키는 관련 페이지가 활성화되거나 키보드 포커스가 있을 때만 작동합니다.</value>
-  </data>
-  <data name="shortcuts_intro" xml:space="preserve">
-    <value>이 페이지는 현재 버전에서 지원하는 단축키를 나열합니다. 읽기 전용이며 여기서는 편집할 수 없습니다.</value>
-  </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>단축키</value>
   </data>
@@ -2759,23 +2568,8 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>텍스트</value>
   </data>
-  <data name="official_publisher_plot_categories_section" xml:space="preserve">
-    <value>도표 분류</value>
-  </data>
-  <data name="official_publisher_plot_categories_level" xml:space="preserve">
-    <value>레벨</value>
-  </data>
-  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
-    <value>도표 분류 초안을 로컬에 저장했습니다.</value>
-  </data>
   <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
     <value>도표 분류 편집기를 다시 불러왔습니다.</value>
-  </data>
-  <data name="official_publisher_geot_categories_section" xml:space="preserve">
-    <value>GeoT 광물 태그</value>
-  </data>
-  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
-    <value>GeoT 광물 분류 초안을 로컬에 저장했습니다.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>GeoT 광물 분류 편집기를 다시 불러왔습니다.</value>
@@ -2852,9 +2646,6 @@
   <data name="geo_editor_readonly_hint" xml:space="preserve">
     <value>공식 온압계의 기본 정보, 데이터와 스크립트, 도움말 문서는 보기와 복사만 가능하며 수정할 수 없습니다.</value>
   </data>
-  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
-    <value>데이터가 수정되었습니다. 도표를 새로고침하세요.</value>
-  </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>{0}행: {1}</value>
   </data>
@@ -2922,7 +2713,7 @@
     <value>하석</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>칼실라이트</value>
+    <value>가백류석</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>애크마이트</value>
@@ -2985,7 +2776,7 @@
     <value>암염</value>
   </data>
   <data name="cipw_mineral_Th" xml:space="preserve">
-    <value>테나다이트</value>
+    <value>망초</value>
   </data>
   <data name="cipw_mineral_ns" xml:space="preserve">
     <value>메타규산나트륨</value>
@@ -3007,6 +2798,15 @@
   </data>
   <data name="cipw_warning_mno_to_feo" xml:space="preserve">
     <value>MnO가 몰 비율에 따라 FeO 등가량으로 변환되었습니다.</value>
+  </data>
+  <data name="cipw_mineral_Pf" xml:space="preserve">
+    <value>페로브스카이트</value>
+  </data>
+  <data name="cipw_mineral_Cs" xml:space="preserve">
+    <value>라르나이트</value>
+  </data>
+  <data name="cipw_warning_silica_deficit_residual" xml:space="preserve">
+    <value>표준 탈규산 반응 순서로도 규소 결핍을 완전히 해소하지 못했습니다(잔여 결핍: {0} mol/100 g). 노름 결과를 신뢰할 수 없습니다.</value>
   </data>
   <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
     <value>음수 산화물 {0}: {1}</value>
@@ -3100,11 +2900,6 @@
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>이 애플리케이션이 지원하는 다이어그램 템플릿 형식 버전(읽기 전용)</value>
-
-  </data>
-  <data name="custom_app_hint" xml:space="preserve">
-
-    <value>사용자 지정 타사 그래픽 편집기 실행 파일 경로</value>
 
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
@@ -3314,7 +3109,7 @@
   </data>
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
-    <value>가져오기 성공: {0}</value>
+    <value>온압계 템플릿 {0}개를 가져왔습니다</value>
 
   </data>
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
@@ -3415,19 +3210,9 @@
     <value>(비어 있음)</value>
 
   </data>
-  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
-
-    <value>형식: 1.2.3. 비워 두면 최소 버전 제한이 비활성화됩니다.</value>
-
-  </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>최소 지원 버전은 유효한 버전이어야 합니다(예: 1.2.3).</value>
-
-  </data>
-  <data name="official_publisher_minimum_version_label" xml:space="preserve">
-
-    <value>최소 지원 버전</value>
 
   </data>
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
@@ -3448,11 +3233,6 @@
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>라이브러리에서 다이어그램 템플릿 카드의 표시 크기</value>
-
-  </data>
-  <data name="ui_scale_auto" xml:space="preserve">
-
-    <value>자동</value>
 
   </data>
   <data name="ui_scale_mode" xml:space="preserve">
@@ -3644,9 +3424,6 @@
   <data name="black_body_radiation_calculator_desc" xml:space="preserve">
     <value>슈테판–볼츠만 복사 강도, 빈 피크 파장 및 흑체 스펙트럼 계산</value>
   </data>
-  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
-    <value>온도(K)를 입력하여 총 복사 강도, 피크 파장 및 정규화 스펙트럼 곡선을 계산합니다.</value>
-  </data>
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>온도</value>
   </data>
@@ -3740,9 +3517,6 @@
   <data name="periodic_table_field_abundance" xml:space="preserve">
     <value>지각 존재도</value>
   </data>
-  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
-    <value>Goldschmidt 분류</value>
-  </data>
   <data name="periodic_table_field_geochem_class" xml:space="preserve">
     <value>지구화학 분류</value>
   </data>
@@ -3815,39 +3589,6 @@
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>친기</value>
   </data>
-  <data name="official_publisher_section_targets" xml:space="preserve">
-    <value>게시 대상</value>
-  </data>
-  <data name="official_publisher_section_announcement" xml:space="preserve">
-    <value>공지 및 버전</value>
-  </data>
-  <data name="official_publisher_include_this" xml:space="preserve">
-    <value>이번 게시에 포함</value>
-  </data>
-  <data name="official_publisher_targets_hint" xml:space="preserve">
-    <value>동일한 내용이 목록 순서대로 활성화된 서버에 업로드됩니다. 국내 사용자가 새 주소에 바로 연결하려면 클라이언트 기본 목록에 추가하여 배포해야 합니다. 여기에만 저장된 주소는 기존 서버에 연결된 후에 감지됩니다.</value>
-  </data>
-  <data name="official_publisher_add_target" xml:space="preserve">
-    <value>서버 추가</value>
-  </data>
-  <data name="official_publisher_move_up" xml:space="preserve">
-    <value>위로 이동</value>
-  </data>
-  <data name="official_publisher_move_down" xml:space="preserve">
-    <value>아래로 이동</value>
-  </data>
-  <data name="official_publisher_target_name" xml:space="preserve">
-    <value>이름</value>
-  </data>
-  <data name="official_publisher_public_base_url" xml:space="preserve">
-    <value>공개 기본 URL</value>
-  </data>
-  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
-    <value>예: https://bucket.cos.region.myqcloud.com (끝에 슬래시 제외)</value>
-  </data>
-  <data name="official_publisher_enabled" xml:space="preserve">
-    <value>사용</value>
-  </data>
   <data name="official_publisher_no_target" xml:space="preserve">
     <value>먼저 서버를 추가하세요.</value>
   </data>
@@ -3859,9 +3600,6 @@
   </data>
   <data name="official_publisher_no_enabled_target" xml:space="preserve">
     <value>자격 증명이 완료되고 활성화된 서버가 없습니다.</value>
-  </data>
-  <data name="official_publisher_confirm_targets" xml:space="preserve">
-    <value>활성화된 {0}개 서버에 이 콘텐츠를 게시하시겠습니까?</value>
   </data>
   <data name="official_publisher_progress_server" xml:space="preserve">
     <value>{0}에 업로드 중 ({1}/{2})</value>
@@ -3878,23 +3616,11 @@
   <data name="official_publisher_upload_all_ok" xml:space="preserve">
     <value>활성화된 모든 서버에 게시되었습니다.</value>
   </data>
-  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
-    <value>활성화된 서버</value>
-  </data>
   <data name="official_publisher_default_target_name" xml:space="preserve">
     <value>홍콩</value>
   </data>
   <data name="official_publisher_new_target_name" xml:space="preserve">
     <value>새 서버</value>
-  </data>
-  <data name="official_publisher_publish_targets" xml:space="preserve">
-    <value>활성화된 서버에 게시</value>
-  </data>
-  <data name="official_publisher_latest_version_label" xml:space="preserve">
-    <value>최신 버전</value>
-  </data>
-  <data name="official_publisher_latest_version_hint" xml:space="preserve">
-    <value>server_info.json의 latest_app_version에 기록됩니다</value>
   </data>
   <data name="official_publisher_latest_version_pending" xml:space="preserve">
     <value>최신 버전 게시 대기 중</value>
@@ -3908,27 +3634,6 @@
   <data name="official_publisher_latest_version_preview" xml:space="preserve">
     <value>최신 버전: {0}</value>
   </data>
-  <data name="official_publisher_legacy_announcement" xml:space="preserve">
-    <value>기존 일반 텍스트 공지</value>
-  </data>
-  <data name="official_publisher_legacy_announcement_hint" xml:space="preserve">
-    <value>이전 버전 앱만 읽습니다(server_info.json의 announcement 필드). 현재 홈 화면은 공지 카탈로그가 비어 있을 때만 대체로 표시합니다.</value>
-  </data>
-  <data name="official_publisher_version_info" xml:space="preserve">
-    <value>버전 정보</value>
-  </data>
-  <data name="official_publisher_announcements_catalog" xml:space="preserve">
-    <value>공지 카탈로그(다국어)</value>
-  </data>
-  <data name="official_publisher_announcement_add" xml:space="preserve">
-    <value>공지 추가</value>
-  </data>
-  <data name="official_publisher_announcement_import" xml:space="preserve">
-    <value>가져오기</value>
-  </data>
-  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
-    <value>공지 카탈로그 JSON 파일을 가져와 현재 편집기 내용을 대체합니다.</value>
-  </data>
   <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
     <value>유효한 공지 카탈로그 파일이 아닙니다. announcements 배열이 포함된 JSON 개체여야 합니다.</value>
   </data>
@@ -3938,77 +3643,8 @@
   <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
     <value>다국어 공지 카탈로그 가져옴: {0}개 항목.</value>
   </data>
-  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
-    <value>이 항목을 포함하도록 선택하면 Announcements.json과 server_info.json이 함께 업로드됩니다.</value>
-  </data>
-  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>온라인 공지 카탈로그를 다시 불러옵니다(게시되지 않은 변경 사항은 취소됩니다).</value>
-  </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
     <value>다국어 공지 카탈로그: {0}개 항목. 원격 해시: {1}.</value>
-  </data>
-  <data name="official_publisher_plot_categories_note" xml:space="preserve">
-    <value>분류는 도표 색인과 함께 게시됩니다. 분류가 변경되면 도표를 선택하지 않아도 도표 색인이 포함됩니다.</value>
-  </data>
-  <data name="official_publisher_geot_categories_note" xml:space="preserve">
-    <value>광물 분류는 온압계 색인과 함께 게시됩니다. 변경되면 온압계를 선택하지 않아도 온압계 색인이 포함됩니다.</value>
-  </data>
-  <data name="official_publisher_ann_id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="official_publisher_ann_theme" xml:space="preserve">
-    <value>테마 색상</value>
-  </data>
-  <data name="official_publisher_ann_date" xml:space="preserve">
-    <value>표시 날짜</value>
-  </data>
-  <data name="official_publisher_ann_priority" xml:space="preserve">
-    <value>우선순위</value>
-  </data>
-  <data name="official_publisher_ann_start" xml:space="preserve">
-    <value>시작 날짜</value>
-  </data>
-  <data name="official_publisher_ann_end" xml:space="preserve">
-    <value>종료 날짜</value>
-  </data>
-  <data name="official_publisher_ann_tag" xml:space="preserve">
-    <value>상단 태그</value>
-  </data>
-  <data name="official_publisher_ann_title" xml:space="preserve">
-    <value>제목 *</value>
-  </data>
-  <data name="official_publisher_ann_body" xml:space="preserve">
-    <value>본문</value>
-  </data>
-  <data name="official_publisher_ann_action" xml:space="preserve">
-    <value>버튼 텍스트</value>
-  </data>
-  <data name="official_publisher_ann_action_url" xml:space="preserve">
-    <value>버튼 링크</value>
-  </data>
-  <data name="official_publisher_ann_background" xml:space="preserve">
-    <value>배경</value>
-  </data>
-  <data name="official_publisher_ann_background_hint" xml:space="preserve">
-    <value>기본: 밝은 그라데이션 배경. 색이 비어 있으면 앱 테마 색을 따르며 브랜드 도형을 표시. 사용자 정의: 이미지 URL로 카드를 채우고 글자는 흰색.</value>
-  </data>
-  <data name="official_publisher_ann_color" xml:space="preserve">
-    <value>색상</value>
-  </data>
-  <data name="official_publisher_ann_polygon" xml:space="preserve">
-    <value>도형 스타일</value>
-  </data>
-  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
-    <value>장식 다각형 표시</value>
-  </data>
-  <data name="official_publisher_ann_image_url" xml:space="preserve">
-    <value>이미지 URL</value>
-  </data>
-  <data name="official_publisher_background_default" xml:space="preserve">
-    <value>단색</value>
-  </data>
-  <data name="official_publisher_background_image" xml:space="preserve">
-    <value>사용자 정의 이미지</value>
   </data>
   <data name="developer_settings" xml:space="preserve">
     <value>개발자 옵션</value>
@@ -4245,7 +3881,7 @@
     <value>조장석</value>
   </data>
   <data name="niggli_mineral_Ac" xml:space="preserve">
-    <value>추석</value>
+    <value>에기린</value>
   </data>
   <data name="niggli_mineral_An" xml:space="preserve">
     <value>회장석</value>
@@ -4272,7 +3908,7 @@
     <value>적철석</value>
   </data>
   <data name="niggli_mineral_Hy" xml:space="preserve">
-    <value>자소휘석</value>
+    <value>사방휘석</value>
   </data>
   <data name="niggli_mineral_Il" xml:space="preserve">
     <value>티탄철석</value>
@@ -4401,10 +4037,10 @@
     <value>전암 각 산화물의 중량 백분율을 분자량으로 나누고 화학식의 양이온 수를 곱해 양이온 몰비(밀리케이션)를 구합니다. 전체 양이온 양을 합산해 100%로 정규화하여 이후 계산의 기준으로 삼습니다. FeO/Fe2O3를 측정하지 않은 경우, 조절 가능한 Fe³⁺/Fe 비율(기본 0.15)로 FeOT를 분할할 수 있습니다.</value>
   </data>
   <data name="niggli_step1_hy_ol_done" xml:space="preserve">
-    <value>탈규산 반응 Step 1: 자소휘석 -&gt; 감람석 (Hy → Ol), Hy {0}% 소모, 규산 결핍 완전 해소</value>
+    <value>탈규산 반응 Step 1: 사방휘석 -&gt; 감람석 (Hy → Ol), Hy {0}% 소모, 규산 결핍 완전 해소</value>
   </data>
   <data name="niggli_step1_hy_ol_part" xml:space="preserve">
-    <value>탈규산 반응 Step 1: 자소휘석 -&gt; 감람석 (Hy → Ol), 전체 Hy ({0}%)가 Ol로 전환됨, 잔여 결핍 D = {1}%</value>
+    <value>탈규산 반응 Step 1: 사방휘석 -&gt; 감람석 (Hy → Ol), 전체 Hy ({0}%)가 Ol로 전환됨, 잔여 결핍 D = {1}%</value>
   </data>
   <data name="niggli_step1_title" xml:space="preserve">
     <value>양이온 밀리케이션과 100% 정규화</value>
@@ -4446,7 +4082,7 @@
     <value>알칼리 장석, 회장석 및 과알칼리 광물</value>
   </data>
   <data name="niggli_step5_detail" xml:space="preserve">
-    <value>Fe³⁺는 Fe²⁺와 결합해 자철석(Mt)을 만들고, 남은 Fe³⁺는 적철석(Hm)이 됩니다. Ca, Mg, Fe²⁺는 각각 규회석(Wo), 엔스타타이트(En), 페로실라이트(Fs)를 이루며, En과 Fs는 하이퍼스틴(Hy)을 구성합니다. Wo와 Hy가 등몰로 결합해 투휘석(Di)이 됩니다.</value>
+    <value>Fe³⁺는 Fe²⁺와 결합해 자철석(Mt)을 만들고, 남은 Fe³⁺는 적철석(Hm)이 됩니다. Ca, Mg, Fe²⁺는 각각 규회석(Wo), 엔스타타이트(En), 페로실라이트(Fs)를 이루며, En과 Fs는 사방휘석(Hy)을 구성합니다. Wo와 Hy가 등몰로 결합해 투휘석(Di)이 됩니다.</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
     <value>탈규산 반응 Step 5: 백류석 -&gt; 칼실라이트 (Lc → Kp), Lc {0}% 소모, 규산 결핍 완전 해소</value>
@@ -4455,7 +4091,7 @@
     <value>탈규산 반응 Step 5: 백류석 -&gt; 칼실라이트 (Lc → Kp), 전체 Lc 전환됨, 잔여 결핍 D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
-    <value>철산화물 및 휘석류</value>
+    <value>철 산화물과 휘석류 광물의 배분</value>
   </data>
   <data name="niggli_step6_detail" xml:space="preserve">
     <value>남은 Si가 0 이상이면 석영(Q)을 만듭니다. Si &lt; 0이면 규소 결손 D = -Si로 두고 열역학적 안정 순서대로 탈규산합니다.
@@ -4502,9 +4138,6 @@
   </data>
   <data name="niggli_tooltip_example" xml:space="preserve">
     <value>예제 데이터 채우기 (화강암, 현무암, 향암)</value>
-  </data>
-  <data name="niggli_tooltip_expand" xml:space="preserve">
-    <value>계산 세부정보 패널 확장/축소</value>
   </data>
   <data name="niggli_tooltip_export" xml:space="preserve">
     <value>계산 결과를 CSV 파일로 내보내기</value>
@@ -4580,9 +4213,6 @@
   </data>
   <data name="geoscience_unit_converter_desc" xml:space="preserve">
     <value>품위/농도, 지압, 미세 스케일, 온도, 동위원소 연대의 실시간 환산 대시보드</value>
-  </data>
-  <data name="geoscience_unit_conv_hint" xml:space="preserve">
-    <value>분류를 선택하고 값과 기준 단위를 입력하면 모든 단위가 실시간으로 동기 환산됩니다. 행을 클릭하여 복사하거나 기준 단위로 설정할 수 있습니다.</value>
   </data>
   <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
     <value>품위 / 농도</value>
@@ -4732,7 +4362,7 @@
     <value>섭씨온도 (℃)</value>
   </data>
   <data name="geo_u_celsius_desc" xml:space="preserve">
-    <value>지구과학 일상온도 및 지온경사</value>
+    <value>지구과학에서 흔히 쓰는 온도와 지온 경사의 주요 단위</value>
   </data>
   <data name="geo_u_kelvin_name" xml:space="preserve">
     <value>켈빈 (K)</value>
@@ -4899,17 +4529,11 @@
   <data name="epma_cancelled" xml:space="preserve">
     <value>계산이 취소되었습니다.</value>
   </data>
-  <data name="epma_choose" xml:space="preserve">
-    <value>선택…</value>
-  </data>
   <data name="epma_clear" xml:space="preserve">
     <value>지우기</value>
   </data>
   <data name="epma_csv_formula_warning" xml:space="preserve">
     <value>텍스트 셀 {0}개가 스프레드시트 수식 접두사로 시작합니다. XLSX로 내보내는 것이 좋습니다. 원본 텍스트는 그대로 유지됩니다.</value>
-  </data>
-  <data name="epma_decimals" xml:space="preserve">
-    <value>표시 소수 자릿수</value>
   </data>
   <data name="epma_details" xml:space="preserve">
     <value>진단 세부 정보</value>
@@ -4917,23 +4541,8 @@
   <data name="epma_export" xml:space="preserve">
     <value>결과 내보내기</value>
   </data>
-  <data name="epma_fields" xml:space="preserve">
-    <value>필드 설명</value>
-  </data>
   <data name="epma_file_unsupported" xml:space="preserve">
     <value>CSV 또는 XLSX를 사용하세요.</value>
-  </data>
-  <data name="epma_numeric_DecimalComma" xml:space="preserve">
-    <value>소수점 쉼표</value>
-  </data>
-  <data name="epma_numeric_DecimalPoint" xml:space="preserve">
-    <value>소수점 마침표</value>
-  </data>
-  <data name="epma_numeric_format" xml:space="preserve">
-    <value>입력 숫자 형식</value>
-  </data>
-  <data name="epma_provenance" xml:space="preserve">
-    <value>계산 추적</value>
   </data>
   <data name="epma_stale" xml:space="preserve">
     <value>만료되었습니다. 다시 계산하세요</value>
@@ -4944,20 +4553,8 @@
   <data name="epma_column_Actual" xml:space="preserve">
     <value>실제값</value>
   </data>
-  <data name="epma_column_Code" xml:space="preserve">
-    <value>코드</value>
-  </data>
   <data name="epma_column_Expectation" xml:space="preserve">
     <value>기대값</value>
-  </data>
-  <data name="epma_column_Level" xml:space="preserve">
-    <value>수준</value>
-  </data>
-  <data name="epma_column_Message" xml:space="preserve">
-    <value>메시지</value>
-  </data>
-  <data name="epma_column_Source" xml:space="preserve">
-    <value>출처</value>
   </data>
   <data name="epma_column_Target" xml:space="preserve">
     <value>대상</value>
@@ -4968,15 +4565,13 @@
 
   <data name="epma_library_description" xml:space="preserve"><value>템플릿을 선택하고 열어 매개변수를 설정하고 계산하세요.</value></data>
   <data name="epma_library_import" xml:space="preserve"><value>EPMA 광물 계산 가져오기</value></data>
-  <data name="epma_library_refresh" xml:space="preserve"><value>라이브러리 새로 고침</value></data>
   <data name="epma_library_enter" xml:space="preserve"><value>계산 열기</value></data>
   <data name="epma_library_failed" xml:space="preserve"><value>패키지를 불러올 수 없습니다:</value></data>
   <data name="epma_library_imported" xml:space="preserve"><value>가져옴: {0}</value></data>
   <data name="epma_example_data" xml:space="preserve"><value>예제</value></data>
   <data name="epma_examples_loaded" xml:space="preserve"><value>예제 데이터 {0}행을 모두 불러왔습니다.</value></data>
   <data name="epma_qc_not_calculated" xml:space="preserve"><value>아직 계산하지 않았습니다. 데이터를 입력한 뒤 계산을 실행하세요.</value></data>
-  <data name="epma_qc_skipped_row" xml:space="preserve"><value>이 행은 계산에 실패했거나 건너뛰었습니다. 아래 진단을 확인하세요.</value></data>
-  <data name="epma_process_record" xml:space="preserve"><value>계산 과정 기록</value></data>
+  <data name="epma_qc_skipped_row" xml:space="preserve"><value>이 행은 계산에 실패했거나 건너뛰었습니다.</value></data>
   <data name="epma_library_search" xml:space="preserve"><value>템플릿 이름, 광물, 키워드 검색…</value></data>
 <data name="epma_library_no_matches" xml:space="preserve"><value>일치하는 템플릿을 찾지 못했습니다.</value></data>
   <data name="epma_library_tags" xml:space="preserve"><value>태그</value></data>
@@ -4985,7 +4580,6 @@
   <data name="epma_library_current_version" xml:space="preserve"><value>현재 버전</value></data>
   <data name="epma_library_update_date" xml:space="preserve"><value>업데이트 날짜</value></data>
   <data name="epma_library_author" xml:space="preserve"><value>작성자</value></data>
-  <data name="epma_fixed_package_columns" xml:space="preserve"><value>입력 열은 계산 패키지에서 정합니다. 있는 데이터는 입력하고, 없는 데이터는 비워 두세요. 빈칸, 0, 검출 한계 미만은 구분하여 기록합니다.</value></data>
 
   <data name="epma_package_replace_confirm" xml:space="preserve"><value>패키지 ID {0}이 이미 있습니다.
 설치됨: {1} (v{2})
@@ -4993,15 +4587,6 @@
 설치된 패키지를 교체할까요? 서로 다른 계산 방법에는 서로 다른 ID를 사용하세요.</value></data>
   <data name="epma_package_replace" xml:space="preserve"><value>패키지 교체</value></data>
   <data name="epma_column_InputRow" xml:space="preserve"><value>입력 행</value></data>
-  <data name="epma_column_Sample" xml:space="preserve"><value>시료명</value></data>
-  <data name="epma_column_Stale" xml:space="preserve"><value>이전 결과</value></data>
-  <data name="epma_result_unavailable" xml:space="preserve"><value>{0}을(를) 계산할 수 없습니다: {1}</value></data>
-  <data name="epma_qc_dataset_summary" xml:space="preserve"><value>총 {0}행. 진단 {1}건, {2}행에 해당. 오류 {3}건, 경고 {4}건, 정보 {5}건. {6}행의 결과가 무효입니다.</value></data>
-  <data name="epma_group_iron" xml:space="preserve"><value>철 처리</value></data>
-  <data name="epma_group_normalization" xml:space="preserve"><value>정규화</value></data>
-  <data name="epma_group_input_display" xml:space="preserve"><value>입력 및 표시</value></data>
-  <data name="epma_group_other" xml:space="preserve"><value>기타 계산 매개변수</value></data>
-  <data name="epma_template_rules_hint" xml:space="preserve"><value>계산 규칙은 현재 템플릿에 정의되어 있습니다.</value></data>
   <data name="epma_worksheet" xml:space="preserve"><value>데이터 시트</value></data>
   <data name="epma_input_editable" xml:space="preserve"><value>입력 데이터 (편집 가능)</value></data>
   <data name="epma_output_readonly" xml:space="preserve"><value>계산 결과 (읽기 전용)</value></data>
@@ -5011,8 +4596,6 @@
   <data name="epma_errors" xml:space="preserve"><value>오류</value></data>
   <data name="epma_warnings" xml:space="preserve"><value>경고</value></data>
   <data name="epma_information" xml:space="preserve"><value>정보</value></data>
-  <data name="epma_collapse_settings" xml:space="preserve"><value>설정 접기</value></data>
-  <data name="epma_expand_settings" xml:space="preserve"><value>설정 펼치기</value></data>
   <data name="epma_cell_content" xml:space="preserve"><value>선택한 셀 내용</value></data>
   <data name="epma_reset_worksheet_layout" xml:space="preserve"><value>기본 행 높이와 열 너비 복원</value></data>
   <data name="epma_editor_workflow" xml:space="preserve"><value>작업 흐름</value></data>
@@ -5038,11 +4621,6 @@
   <data name="epma_editor_strike" xml:space="preserve"><value>취소선</value></data>
   <data name="epma_editor_bullets" xml:space="preserve"><value>글머리 기호 목록</value></data>
   <data name="epma_editor_numbering" xml:space="preserve"><value>번호 목록</value></data>
-  <data name="epma_editor_link" xml:space="preserve"><value>링크</value></data>
-  <data name="epma_editor_clear_format" xml:space="preserve"><value>서식 지우기</value></data>
-  <data name="epma_editor_insert_link" xml:space="preserve"><value>링크 삽입</value></data>
-  <data name="epma_editor_link_invalid" xml:space="preserve"><value>유효한 HTTP, HTTPS 또는 mailto 주소를 입력하세요.</value></data>
-  <data name="epma_editor_link_selection" xml:space="preserve"><value>하나의 단락 안에서 텍스트를 선택하세요.</value></data>
   <data name="epma_editor_save_action" xml:space="preserve"><value>저장</value></data>
   <data name="epma_editor_edit_localization" xml:space="preserve"><value>번역 편집</value></data>
   <data name="epma_editor_search_tags" xml:space="preserve"><value>태그</value></data>
@@ -5240,7 +4818,6 @@
   <data name="home_search_placeholder" xml:space="preserve"><value>사이트 검색. 예: GEOROC, 광물...</value></data>
   <data name="home_search_no_results" xml:space="preserve"><value>일치하는 링크가 없습니다.</value></data>
   <data name="home_links_all_groups_hint" xml:space="preserve"><value>모든 그룹을 검색하는 중</value></data>
-  <data name="geo_loc_row_reference" xml:space="preserve"><value>참고 문헌</value></data>
   <data name="geo_validate_inputs_required" xml:space="preserve"><value>입력 열을 하나 이상 추가하세요.</value></data>
   <data name="epma_setting" xml:space="preserve"><value>EPMA 설정</value></data>
   <data name="epma_current_app_format_version" xml:space="preserve"><value>이 소프트웨어의 EPMA 계산 패키지 버전</value></data>
@@ -5290,64 +4867,34 @@
   <data name="epma_help_no_doc" xml:space="preserve"><value>이 계산 템플릿에는 아직 설명 문서가 없습니다.</value></data>
   <data name="epma_editor_localization_title" xml:space="preserve"><value>템플릿 다국어</value></data>
   <data name="epma_loc_row_name" xml:space="preserve"><value>이름</value></data>
-  <data name="epma_loc_row_description" xml:space="preserve"><value>설명</value></data>
   <data name="epma_loc_row_tag" xml:space="preserve"><value>태그 {0}</value></data>
+  <data name="epma_loc_row_group" xml:space="preserve"><value>그룹 {0}</value></data>
   <data name="epma_library_edit" xml:space="preserve"><value>편집</value></data>
   <data name="epma_library_delete" xml:space="preserve"><value>삭제</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>내보내기</value></data>
-  <data name="epma_library_promote" xml:space="preserve"><value>공식 계산 템플릿으로 승격</value></data>
-  <data name="epma_library_remove_official" xml:space="preserve"><value>공식 계산 템플릿에서 제거</value></data>
-  <data name="epma_library_not_implemented" xml:space="preserve"><value>이 기능은 아직 구현되지 않았습니다.</value></data>
+  <data name="epma_library_promote" xml:space="preserve">
+    <value>온라인 계산 템플릿으로 업그레이드</value>
+  </data>
+  <data name="epma_library_remove_official" xml:space="preserve">
+    <value>온라인 계산 템플릿 제거</value>
+  </data>
   <data name="epma_library_delete_confirm" xml:space="preserve"><value>“{0}”을(를) 삭제할까요? 이 작업은 해당 개인 계산 템플릿을 로컬 계산 라이브러리에서 삭제합니다.</value></data>
   <data name="epma_library_official_delete_denied" xml:space="preserve"><value>이 작업으로는 개인 계산 템플릿만 삭제할 수 있습니다.</value></data>
   <data name="epma_library_changed" xml:space="preserve"><value>템플릿이 수정되었거나 제거되었습니다. 계산 라이브러리를 새로 고친 뒤 다시 여세요.</value></data>
-  <data name="epma_library_export_outside" xml:space="preserve"><value>기존 템플릿을 덮어쓰지 않도록 계산 라이브러리 설치 폴더 밖으로 내보내세요.</value></data>
   <data name="epma_library_updated" xml:space="preserve"><value>“{0}”을(를) 저장했습니다. 계산에 다시 들어가면 갱신된 템플릿을 사용합니다.</value></data>
   <data name="epma_library_deleted" xml:space="preserve"><value>“{0}”을(를) 삭제했습니다.</value></data>
   <data name="epma_library_exported" xml:space="preserve"><value>“{0}”을(를) 내보냈습니다.</value></data>
-  <data name="epma_json_select_group" xml:space="preserve"><value>항목을 추가할 그룹을 먼저 선택하세요.</value></data>
-  <data name="epma_json_duplicate" xml:space="preserve"><value>필드가 중복되었습니다: {0}</value></data>
-  <data name="epma_json_unknown_field" xml:space="preserve"><value>지원하지 않는 필드입니다: {0}</value></data>
-  <data name="epma_json_item" xml:space="preserve"><value>{0}번째 항목</value></data>
-  <data name="epma_json_count" xml:space="preserve"><value>{0}개</value></data>
-  <data name="epma_json_invalid_boolean" xml:space="preserve"><value>예 또는 아니오를 선택하세요.</value></data>
-  <data name="epma_json_invalid_number" xml:space="preserve"><value>유한 수치를 입력하세요. 소수점은 마침표를 사용합니다.</value></data>
-  <data name="epma_json_kind_string" xml:space="preserve"><value>텍스트</value></data>
-  <data name="epma_json_kind_number" xml:space="preserve"><value>수치</value></data>
-  <data name="epma_json_kind_boolean" xml:space="preserve"><value>예 / 아니오</value></data>
-  <data name="epma_json_kind_object" xml:space="preserve"><value>그룹</value></data>
-  <data name="epma_json_kind_array" xml:space="preserve"><value>목록</value></data>
-  <data name="epma_json_kind_null" xml:space="preserve"><value>설정 안 함</value></data>
-  <data name="epma_json_value_number" xml:space="preserve"><value>수치</value></data>
-  <data name="epma_json_value_text" xml:space="preserve"><value>텍스트</value></data>
-  <data name="epma_json_value_true" xml:space="preserve"><value>예</value></data>
-  <data name="epma_json_value_false" xml:space="preserve"><value>아니오</value></data>
   <data name="epma_json_field_inputs" xml:space="preserve"><value>입력 열</value></data>
   <data name="epma_json_field_outputs" xml:space="preserve"><value>출력 열</value></data>
-  <data name="epma_json_field_parameters" xml:space="preserve"><value>계산 매개변수</value></data>
-  <data name="epma_json_field_id" xml:space="preserve"><value>식별자</value></data>
-  <data name="epma_json_field_type" xml:space="preserve"><value>필드 유형</value></data>
   <data name="epma_json_field_unit" xml:space="preserve"><value>단위</value></data>
-  <data name="epma_json_field_when" xml:space="preserve"><value>표시 조건</value></data>
-  <data name="epma_json_field_label" xml:space="preserve"><value>표시 이름</value></data>
-  <data name="epma_json_field_description" xml:space="preserve"><value>설명</value></data>
+  <data name="epma_json_field_group" xml:space="preserve"><value>그룹</value></data>
   <data name="epma_json_field_examples" xml:space="preserve"><value>예시 데이터</value></data>
   <data name="epma_json_field_resource" xml:space="preserve"><value>리소스 데이터</value></data>
-  <data name="epma_json_field_rows" xml:space="preserve"><value>데이터 행</value></data>
-  <data name="epma_json_field_definitions" xml:space="preserve"><value>입력과 출력</value></data>
-  <data name="epma_json_field_settings" xml:space="preserve"><value>매개변수 덮어쓰기</value></data>
-  <data name="epma_json_add_item" xml:space="preserve"><value>항목 추가</value></data>
-  <data name="epma_json_add_field" xml:space="preserve"><value>필드 추가</value></data>
   <data name="epma_editor_file_calculation" xml:space="preserve"><value>계산 스크립트</value></data>
   <data name="epma_editor_file_common" xml:space="preserve"><value>공통 스크립트</value></data>
   <data name="epma_editor_file_chemistry_script" xml:space="preserve"><value>화학 보조 스크립트</value></data>
   <data name="epma_editor_file_helper" xml:space="preserve"><value>보조 스크립트</value></data>
   <data name="epma_form_example" xml:space="preserve"><value>예시 값</value></data>
-  <data name="epma_iron_invalid" xml:space="preserve"><value>철 설정이 잘못되었습니다. 유효하고 중복되지 않는 보고 형식을 고르고, Fe³⁺/ΣFe는 0–1 사이여야 합니다.</value></data>
-  <data name="epma_iron_default_required" xml:space="preserve"><value>보고 형식을 하나 이상 선택하세요. 전철로 보고할 때는 사용 설정된 기본 처리 방법도 선택하세요.</value></data>
-  <data name="epma_iron_literal_required" xml:space="preserve"><value>시각적 편집에서는 getIronOptions()가 일반 JSON 객체를 직접 반환해야 합니다.</value></data>
-  <data name="epma_iron_settings_array_required" xml:space="preserve"><value>철 설정을 추가하려면 getSettings()가 배열을 직접 반환해야 합니다. 원래 스크립트는 수정되지 않았습니다.</value></data>
-  <data name="epma_iron_required" xml:space="preserve"><value>이 알고리즘은 철 설정에 의존합니다. 끄려면 먼저 계산 스크립트를 수정하세요.</value></data>
   <data name="epma_editor_add_column" xml:space="preserve"><value>열 추가</value></data>
   <data name="epma_editor_remove_column" xml:space="preserve"><value>열 삭제</value></data>
   <data name="epma_editor_column_placeholder" xml:space="preserve"><value>열 이름을 입력하세요</value></data>
@@ -5384,7 +4931,6 @@
   <data name="epma_update_overwrite_all_confirm" xml:space="preserve"><value>템플릿 {0}개를 다운로드하거나 업데이트할까요? 기존 템플릿은 공식 버전으로 덮어쓰입니다(로컬 수정 포함).</value></data>
   <data name="epma_status_not_downloaded" xml:space="preserve"><value>다운로드 안 됨</value></data>
   <data name="epma_status_update_available" xml:space="preserve"><value>업데이트 가능</value></data>
-  <data name="epma_status_requires_upgrade" xml:space="preserve"><value>소프트웨어 업그레이드 필요</value></data>
   <data name="status_requires_app_upgrade" xml:space="preserve"><value>소프트웨어 업그레이드 필요</value></data>
   <data name="status_update_requires_app_upgrade" xml:space="preserve"><value>새 버전 있음, 소프트웨어 업그레이드 필요</value></data>
   <data name="status_requires_app_upgrade_hint" xml:space="preserve"><value>이 템플릿은 소프트웨어를 업그레이드해야 다운로드하고 사용할 수 있습니다.</value></data>
@@ -5399,9 +4945,6 @@
   <data name="epma_reset_database_hint" xml:space="preserve"><value>로컬 EPMA 계산 템플릿 데이터베이스를 비우고 내장 공식 템플릿을 복원합니다</value></data>
   <data name="epma_confirm_reset_database" xml:space="preserve"><value>로컬 EPMA 계산 템플릿 데이터베이스를 비울까요? 개인 템플릿과 다운로드한 공식 템플릿이 모두 제거되며 되돌릴 수 없습니다.</value></data>
   <data name="epma_database_cleared" xml:space="preserve"><value>로컬 EPMA 계산 템플릿 데이터베이스를 재설정했습니다.</value></data>
-  <data name="official_publisher_epma_section" xml:space="preserve"><value>EPMA 계산 템플릿</value></data>
-  <data name="official_publisher_epma_hint" xml:space="preserve"><value>설치된 공식 EPMA 계산 템플릿(.epma.zip)을 게시합니다. EPMA 계산 라이브러리에서 개인 템플릿을 “공식 계산 템플릿으로 승격”하면 여기서 게시할 수 있습니다.</value></data>
-  <data name="official_publisher_epma_preview_summary" xml:space="preserve"><value>EPMA 계산 템플릿: 신규 {0}, 업데이트 {1}, 제거 {2}, 변경 없음 {3}.</value></data>
   <data name="official_publisher_progress_exporting_epma" xml:space="preserve"><value>EPMA 계산 템플릿을 내보내는 중...</value></data>
   <data name="shortcuts_subtitle" xml:space="preserve">
     <value>현재 버전에서 지원하는 단축키입니다. 일부 단축키는 해당 페이지가 활성화되었거나 포커스가 있을 때만 동작합니다.</value>
@@ -5456,7 +4999,6 @@
   <data name="axis_tab_ticks" xml:space="preserve"><value>눈금</value></data>
   <data name="tick_alignment" xml:space="preserve"><value>눈금 정렬</value></data>
   <data name="tick_align_strict" xml:space="preserve"><value>엄격</value></data>
-  <data name="axis_tab_labels" xml:space="preserve"><value>레이블</value></data>
   <data name="insp_more_colors" xml:space="preserve"><value>다른 색상</value></data>
   <data name="insp_eyedropper" xml:space="preserve"><value>화면에서 색 선택</value></data>
   <data name="insp_endpoints" xml:space="preserve"><value>끝점</value></data>
@@ -5505,16 +5047,11 @@
   <data name="add_mode_polygon_ready" xml:space="preserve"><value>다각형 추가 · 왼쪽 클릭으로 점 추가, 오른쪽 클릭으로 완료 후 계속</value></data>
   <data name="add_mode_text" xml:space="preserve"><value>텍스트 추가 · 그림 위를 클릭하여 배치. 계속 추가할 수 있습니다 · 오른쪽 클릭으로 종료</value></data>
   <data name="axis_line" xml:space="preserve"><value>축선</value></data>
-  <data name="axis_line_hint" xml:space="preserve"><value>이 축의 테두리입니다. 아래는 가로선, 왼쪽·오른쪽·위는 세로선입니다.</value></data>
-  <data name="ternary_axis_line_hint" xml:space="preserve"><value>삼각형에서 현재 선택한 변입니다.</value></data>
   <data name="tick_step" xml:space="preserve"><value>간격</value></data>
   <data name="tick_value" xml:space="preserve"><value>값</value></data>
   <data name="tick_fraction" xml:space="preserve"><value>비율 0–1</value></data>
   <data name="tick_percent" xml:space="preserve"><value>백분율 0–100</value></data>
-  <data name="tick_step_hint" xml:space="preserve"><value>변을 따라가는 간격입니다. 0.1은 0, 0.1, 0.2…1, 백분율 10은 0, 10, 20…100을 그립니다.</value></data>
   <data name="label_spacing" xml:space="preserve"><value>레이블 간격</value></data>
-  <data name="label_spacing_hint" xml:space="preserve"><value>눈금 숫자가 이 변에서 떨어지는 거리입니다.</value></data>
-  <data name="ternary_subtitle_hint" xml:space="preserve"><value>글꼴은 제목을 따릅니다. 삼각 도표 제목은 변마다 배치되므로 부제에는 자체 오프셋이 있습니다.</value></data>
   <data name="open_file_location" xml:space="preserve"><value>파일 위치 열기</value></data>
   <data name="open_file_location_failed" xml:space="preserve"><value>파일 위치를 열 수 없습니다.</value></data>
   <data name="grid_direction" xml:space="preserve">
@@ -5560,4 +5097,27 @@
   <data name="harker_missing_x_column" xml:space="preserve"><value>데이터 표에 X 변수 열이 없습니다: {0}</value></data>
   <data name="harker_export_format" xml:space="preserve"><value>하커 다연도에서는 이 내보내기 형식을 지원하지 않습니다. png, jpg, bmp, webp를 사용하세요.</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker: WpfPlot1.Plot가 첫 패널과 다릅니다. 내보내기와 마우스 동작이 어긋날 수 있습니다.</value></data>
+  <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
+    <value>온라인 다이어그램 템플릿 {0}개가 다운로드되지 않아 게시할 수 없습니다: {1}. 먼저 다운로드하세요.</value>
+  </data>
+  <data name="diagram_update_overwrite_confirm" xml:space="preserve">
+    <value>업데이트하면 "{0}"이(가) 공식 버전으로 덮어써집니다(로컬 수정 포함). 계속하시겠습니까?</value>
+  </data>
+  <data name="confirm_promote_diagram_template" xml:space="preserve">
+    <value>이 다이어그램을 온라인 다이어그램 템플릿으로 업그레이드하시겠습니까? 공식 라이브러리와 함께 게시됩니다.</value>
+  </data>
+  <data name="confirm_promote_geothermometer" xml:space="preserve">
+    <value>"{0}"을(를) 온라인 온도압력계 템플릿으로 업그레이드하시겠습니까? 공식 라이브러리와 함께 게시됩니다.</value>
+  </data>
+  <data name="view_diagram_template" xml:space="preserve">
+    <value>다이어그램 템플릿 보기(읽기 전용)</value>
+  </data>
+  <data name="data_row_status_ok" xml:space="preserve"><value>플롯됨</value></data>
+  <data name="data_row_status_error" xml:space="preserve"><value>플롯 불가</value></data>
+  <data name="data_row_status_stale" xml:space="preserve"><value>플롯 후 수정됨</value></data>
+  <data name="data_row_status_pending" xml:space="preserve"><value>미플롯</value></data>
+  <data name="plot_row_missing_category" xml:space="preserve"><value>이 행은 Category가 비어 있어 플롯되지 않았습니다.</value></data>
+  <data name="table_col_sample" xml:space="preserve"><value>시료</value></data>
+  <data name="table_col_category" xml:space="preserve"><value>그룹</value></data>
+  <data name="template_list_sync_light_tip" xml:space="preserve"><value>목록이 업데이트되었습니다. 신규 {0} / 업데이트 가능 {1} / 내려감 {2}</value></data>
 </root>

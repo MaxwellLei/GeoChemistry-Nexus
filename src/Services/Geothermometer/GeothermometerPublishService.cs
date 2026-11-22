@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace GeoChemistryNexus.Services
             var preview = new PublishPreview();
             var localOfficial = GeothermometerService.LoadedEntities
                 .Where(e => e.IsOfficial
-                    && !string.Equals(e.Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal))
+                    && !string.Equals(e.Status, ContentInstallStatus.NotInstalled, StringComparison.Ordinal))
                 .ToList();
 
             Dictionary<string, PluginIndexEntry> remoteMap = new();
@@ -158,6 +158,40 @@ namespace GeoChemistryNexus.Services
                 MineralCategoriesHash = mineralCategoriesHash,
                 ManifestEntries = manifestEntries
             };
+        }
+
+        /// <summary>
+        /// 发布成功后的本地写回：把已发布的官方温压计记为“已发布”（写入服务器哈希、清除待发布标记），
+        /// 此后目录同步才能正确判断它是否被服务器下架（与 EPMA 的 MarkPublishedAsync、图解的 ClearPendingPublishFlags 对应）。
+        /// </summary>
+        public static void ApplyPublishedResult(GeothermometerPublishResult? result)
+        {
+            if (result?.ManifestEntries == null || result.ManifestEntries.Count == 0)
+                return;
+
+            var db = GeothermometerDatabaseService.Instance;
+            foreach (var published in result.ManifestEntries)
+            {
+                if (string.IsNullOrWhiteSpace(published.GraphMapPath) || string.IsNullOrEmpty(published.FileHash))
+                    continue;
+
+                var entity = db.GetEntity(GeothermometerDatabaseService.GenerateId(published.GraphMapPath));
+                if (entity == null || !entity.IsOfficial || string.IsNullOrEmpty(entity.ScriptContent))
+                    continue;
+
+                if (string.Equals(entity.ServerHash, published.FileHash, StringComparison.OrdinalIgnoreCase)
+                    && !entity.PendingPublish)
+                    continue;
+
+                entity.ServerHash = published.FileHash;
+                entity.FileHash = published.FileHash;
+                entity.PendingPublish = false;
+                if (!ContentInstallStatus.IsRequiresAppUpgrade(entity.Status))
+                    entity.Status = ContentInstallStatus.UpToDate;
+
+                db.UpsertEntity(entity);
+                GeothermometerService.UpsertLoadedPlugin(entity);
+            }
         }
 
         private static Dictionary<string, string> LoadBaselineHashes(string outputDir)

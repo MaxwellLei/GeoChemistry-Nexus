@@ -206,10 +206,19 @@ namespace GeoChemistryNexus.ViewModels
                 if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                 {
                     var hideMinor = cartesianAxisDef.MinorTickWidth <= 0 || cartesianAxisDef.MinorTickLength <= 0;
+                    // 自动模式下轴范围两端带有边距（如 0.89125 / 11.22），端点标签应取用户设定的真实边界值；
+                    // 严格模式下范围两端即用户边界，二者一致。未设定的一端不强制显示端点。
+                    var endpointPositions = new List<double>();
+                    if (!double.IsNaN(cartesianAxisDef.Minimum) && cartesianAxisDef.Minimum > 0)
+                        endpointPositions.Add(Math.Log10(cartesianAxisDef.Minimum));
+                    if (!double.IsNaN(cartesianAxisDef.Maximum) && cartesianAxisDef.Maximum > 0)
+                        endpointPositions.Add(Math.Log10(cartesianAxisDef.Maximum));
+
                     targetAxis.TickGenerator = new LogDecadeTickGenerator
                     {
                         ShowMinorTicks = !hideMinor,
-                        ShowRangeEndpoints = true
+                        ShowRangeEndpoints = endpointPositions.Count > 0,
+                        EndpointPositions = endpointPositions.ToArray()
                     };
                 }
                 else

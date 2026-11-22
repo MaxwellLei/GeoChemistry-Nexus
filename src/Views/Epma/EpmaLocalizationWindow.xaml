@@ -19,41 +19,9 @@
     </Window.InputBindings>
     <Window.Resources>
         <cvs:BoolToVisibilityConverter x:Key="Show"/>
-        <!-- 单元格容器：左侧分隔线 -->
-        <Style x:Key="CellBox" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#0D000000"/>
-            <Setter Property="BorderThickness" Value="1,0,0,0"/>
-        </Style>
-        <Style x:Key="CellInput" TargetType="TextBox" BasedOn="{StaticResource EpmaLocInputBox}">
-            <Setter Property="Text" Value="{Binding Text,UpdateSourceTrigger=PropertyChanged}"/>
-            <Setter Property="Tag" Value="{Binding Placeholder}"/>
+        <!-- 单元格容器 / 输入框 / 字段项标签的公共样式见 Themes/Styles.xaml（LocCellBox、LocCellInput、LocRowLabel），三个模块共用；这里只补充只读绑定 -->
+        <Style x:Key="CellInput" TargetType="TextBox" BasedOn="{StaticResource LocCellInput}">
             <Setter Property="IsReadOnly" Value="{Binding DataContext.IsReadOnly,RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsMultiline}" Value="True">
-                    <Setter Property="AcceptsReturn" Value="True"/>
-                    <Setter Property="TextWrapping" Value="Wrap"/>
-                    <Setter Property="VerticalContentAlignment" Value="Top"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <!-- 左侧字段项名称：名称/说明为深色，标签为浅灰；说明行顶端对齐 -->
-        <Style x:Key="RowLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12.5"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Foreground" Value="#515154"/>
-            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="16,10,8,10"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsTag}" Value="True">
-                    <Setter Property="Foreground" Value="#6E6E73"/>
-                    <Setter Property="Margin" Value="16,8,8,8"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsDescription}" Value="True">
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                    <Setter Property="Margin" Value="16,14,8,14"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
         <ItemsPanelTemplate x:Key="LanguageColumnsPanel">
             <StackPanel Orientation="Horizontal"/>
@@ -62,7 +30,7 @@
         <!-- 列头：语言名 + 默认徽标（行高固定，文字与徽标同为固定行高并垂直居中）+ 填写进度 -->
         <DataTemplate x:Key="ColumnHeaderTemplate">
             <Grid Width="{Binding Width}">
-            <Border Style="{StaticResource CellBox}" Height="46" Padding="14,0">
+            <Border Style="{StaticResource LocCellBox}" Height="46" Padding="14,0">
                 <DockPanel VerticalAlignment="Center">
                     <Border DockPanel.Dock="Right" Margin="8,0,0,0" Padding="8,2" VerticalAlignment="Center" Background="White"
                             BorderBrush="#0F000000" BorderThickness="1" CornerRadius="10">
@@ -91,7 +59,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="CellTemplate">
-            <Border Style="{StaticResource CellBox}" Width="{Binding Column.Width}" Padding="6,5">
+            <Border Style="{StaticResource LocCellBox}" Width="{Binding Column.Width}" Padding="6,4">
                 <TextBox Style="{StaticResource CellInput}"/>
             </Border>
         </DataTemplate>
@@ -215,7 +183,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Border Background="#FCFCFD">
-                                                <TextBlock Text="{Binding Label}" Style="{StaticResource RowLabel}"/>
+                                                <TextBlock Text="{Binding Label}" Style="{StaticResource LocRowLabel}"/>
                                             </Border>
                                             <ContentControl Grid.Column="1" Content="{Binding DefaultCell}" ContentTemplate="{StaticResource CellTemplate}"
                                                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Focusable="False" IsTabStop="False"/>

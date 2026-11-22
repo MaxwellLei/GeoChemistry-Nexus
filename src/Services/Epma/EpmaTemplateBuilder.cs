@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Services.Epma;
 
@@ -17,16 +18,6 @@ public sealed class EpmaInputDraft
     public string Example { get; set; } = "0";
 }
 
-public sealed class EpmaParameterDraft
-{
-    public string Id { get; set; } = "";
-    public string Label { get; set; } = "";
-    public string Default { get; set; } = "1";
-    public string Min { get; set; } = "";
-    public string Max { get; set; } = "";
-    public string Unit { get; set; } = "";
-}
-
 public sealed class EpmaOutputDraft
 {
     public string Id { get; set; } = "";
@@ -36,17 +27,18 @@ public sealed class EpmaOutputDraft
     public string Expression { get; set; } = "";
 }
 
-/// <summary>Creates self-contained starter packages (current protocol version) and expression fixtures.</summary>
+/// <summary>Creates self-contained starter packages (current EPMA module version) and expression fixtures.</summary>
 public static class EpmaTemplateBuilder
 {
     public static EpmaScriptPackage CreateStarter(string id)
     {
-        var seed = Build(id, "New calculation", "1.0.0", "", "", "", "",
-            [new() { Id = "SiO2", Unit = "wt%", Example = "40" }, new() { Id = "MgO", Unit = "wt%", Example = "50" },
-             new() { Id = "FeOt", Unit = "wt%", Example = "10" }], [], [new() { Id = "Total", Unit = "wt%", Expression = "0" }]);
+        string version = ContentVersionHelper.WithAppEpmaFormat(0);
+        var seed = Build(id, "New calculation", version, "", "", "", "",
+            [new() { Id = EpmaScriptPackage.SampleInputId, Type = "text", Example = "Example" },
+                new() { Id = "SiO2", Unit = "wt%", Example = "40" }, new() { Id = "MgO", Unit = "wt%", Example = "50" }],
+            [new() { Id = "Total", Unit = "wt%", Expression = "0" }]);
         var document = new EpmaPackageEditorDocument(seed);
-        document.Files.Single(f => f.IsScript).Text = EpmaIronScriptEditor.Write("""
-            function getSettings() { return []; }
+        document.Files.Single(f => f.IsScript).Text = """
             function calculate(context) {
                 let total=0, supplied=false;
                 for(const [id,cell] of Object.entries(context.inputs)) {
@@ -56,11 +48,21 @@ public static class EpmaTemplateBuilder
                     total+=cell.number; supplied=true;
                 }
                 if(!supplied)return {status:'Skipped',flags:[{code:'FORMULA_INPUT_REQUIRED',severity:'Info',message:'No numeric composition supplied.'}]};
-                const iron=epmaIron(context);
-                return {values:{Total:total},trace:{iron:iron}};
+                return {values:{Total:total}};
             }
-            """, EpmaIronOptions.Starter);
-        return document.Build("New calculation", "1.0.0", "", "", "", document.DefinitionJson);
+
+            // Optional: the lines of the inspector for the selected row, same shape as the geothermometers' calculateDetailed.
+            // Each line: name / nameLang, value, desc / descLang, isResult, isHighlight, isSeparator (group heading), collapsed, backgroundColor.
+            function calculateDetailed(context) {
+                const steps = [{isSeparator:true, name:'Inputs', nameLang:{'zh-CN':'输入','en-US':'Inputs'}}];
+                for(const [id,cell] of Object.entries(context.inputs))
+                    if(cell.kind==='Number') steps.push({name:id, value:cell.number});
+                steps.push({isSeparator:true, name:'Result', nameLang:{'zh-CN':'结果','en-US':'Result'}});
+                steps.push({name:'Total', value:context.values.Total, isResult:true});
+                return steps;
+            }
+            """;
+        return document.Build("New calculation", version, "", "", "", document.DefinitionJson);
     }
     private static JsonElement Json<T>(T value) => JsonSerializer.SerializeToElement(value);
     public static double Number(string value, string field)
@@ -72,18 +74,17 @@ public static class EpmaTemplateBuilder
 
     public static EpmaScriptPackage Build(string id, string name, string version, string author, string description,
         string tags, string references, IEnumerable<EpmaInputDraft> inputRows,
-        IEnumerable<EpmaParameterDraft> parameterRows, IEnumerable<EpmaOutputDraft> outputRows)
+        IEnumerable<EpmaOutputDraft> outputRows)
     {
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(version))
             throw new InvalidDataException(EpmaLocalizer.Format("epma_editor_required"));
         var inputs = inputRows.ToArray();
-        var parameters = parameterRows.ToArray();
         var outputs = outputRows.ToArray();
         if (inputs.Length == 0 || outputs.Length == 0 || outputs.Any(o => string.IsNullOrWhiteSpace(o.Expression)))
             throw new InvalidDataException(EpmaLocalizer.Format("epma_editor_fields_required"));
         var manifest = new EpmaScriptManifest
         {
-            FormatVersion = EpmaScriptPackage.CurrentFormatVersion, PackageId = id.Trim(), Name = Json(name.Trim()),
+            PackageId = id.Trim(), Name = Json(name.Trim()),
             Version = version.Trim(), Author = author.Trim(), Description = Json(description.Trim()),
             UpdatedAt = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
             Tags = tags.Split(new[] { ',', '，' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(Json).ToArray(),
@@ -91,19 +92,15 @@ public static class EpmaTemplateBuilder
             Inputs = inputs.Select(i => new EpmaScriptInput { Id = i.Id.Trim(), Type = i.Type, Unit = Json(i.Unit.Trim()) }).ToArray(),
             Outputs = outputs.Select(o => new EpmaScriptOutput { Id = o.Id.Trim(), Label = Json(o.Label.Trim()), Type = o.Type, Unit = Json(o.Unit.Trim()) }).ToArray()
         };
-        var settings = parameters.Select(p => new EpmaScriptSetting
-            {
-                Id = p.Id.Trim(), Label = Json(p.Label.Trim()), Editable = true, Value = Json(Number(p.Default, p.Id)),
-                Min = string.IsNullOrWhiteSpace(p.Min) ? null : Number(p.Min, p.Id),
-                Max = string.IsNullOrWhiteSpace(p.Max) ? null : Number(p.Max, p.Id), Unit = Json(p.Unit.Trim())
-            }).ToArray();
         var example = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
-        var script = new StringBuilder("function getSettings() { return " + JsonSerializer.Serialize(settings, EpmaScriptPackage.JsonOptions) + "; }\nfunction calculate(context) {\n'use strict';\nconst input = Object.create(null);\nconst parameter = context.parameters;\nconst result = Object.create(null);\n");
+        var script = new StringBuilder("function calculate(context) {\n'use strict';\nconst input = Object.create(null);\nconst result = Object.create(null);\n");
         foreach (var input in inputs)
         {
             string key = JsonSerializer.Serialize(input.Id.Trim());
             if (!example.TryAdd(input.Id.Trim(), input.Type == "text" ? Json(input.Example) : Json(Number(input.Example, input.Id))))
                 throw new InvalidDataException(EpmaLocalizer.Format("epma_editor_duplicate", input.Id));
+            // The sample name only labels the row; it is never required and never part of the calculation.
+            if (input.Id.Trim() == EpmaScriptPackage.SampleInputId) continue;
             string kind = input.Type == "text" ? "Text" : "Number";
             script.AppendLine($"if (context.inputs[{key}].kind !== '{kind}') return {{status:'Skipped',flags:[{{code:'FORMULA_INPUT_REQUIRED',severity:'Error',target:{key},message:'Required input is missing, invalid or below detection limit.'}}]}};");
             script.AppendLine($"input[{key}] = context.inputs[{key}].{(input.Type == "text" ? "raw" : "number")};");

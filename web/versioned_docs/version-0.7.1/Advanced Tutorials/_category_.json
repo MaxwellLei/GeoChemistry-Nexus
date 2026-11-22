@@ -1,0 +1,14 @@
+{
+  "position": 3,
+  "label": "🌟 Advanced Tutorials",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "green",
+  "link": {
+    "type": "generated-index",
+    "title": "Tutorial overview"
+  },
+  "customProps": {
+    "description": "This description can be used in the swizzled DocCard"
+  }
+}

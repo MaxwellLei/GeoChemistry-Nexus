@@ -433,7 +433,17 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                GraphMapDatabaseService.Instance.ClearDatabase();
+                await Task.Run(() =>
+                {
+                    GraphMapDatabaseService.Instance.ClearDatabase();
+                    // 一并清除本地缓存的 GraphMapList.json，使下次检查重新下载目录（与 EPMA 一致）
+                    try
+                    {
+                        string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
+                        if (System.IO.File.Exists(localListPath)) System.IO.File.Delete(localListPath);
+                    }
+                    catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException) { }
+                });
                 WeakReferenceMessenger.Default.Send(new DiagramDatabaseResetMessage());
                 MessageHelper.Success(LanguageService.Instance["diagram_database_cleared"] ?? "Local diagram template database cleared successfully.");
             }

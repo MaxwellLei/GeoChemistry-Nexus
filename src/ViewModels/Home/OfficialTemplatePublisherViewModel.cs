@@ -953,6 +953,7 @@ namespace GeoChemistryNexus.ViewModels
             SavePlotCategoriesToLocal();
             SaveGeoTMineralCategoriesToLocal();
             if (!await EnsurePublishTargetSelectedAsync()) return;
+            if (!EnsureDiagramsDownloadedForPublish()) return;
 
             string? outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
@@ -1049,6 +1050,7 @@ namespace GeoChemistryNexus.ViewModels
             SavePlotCategoriesToLocal();
             SaveGeoTMineralCategoriesToLocal();
             if (!await EnsurePublishTargetSelectedAsync()) return;
+            if (!EnsureDiagramsDownloadedForPublish()) return;
 
             ApplyPendingSecretKey();
             var targets = GetConfiguredTargets();
@@ -1255,6 +1257,12 @@ namespace GeoChemistryNexus.ViewModels
                     WeakReferenceMessenger.Default.Send(new OfficialTemplatesPublishedMessage());
                 }
 
+                if (exportGeothermometers && geoResult != null)
+                {
+                    var publishedGeoResult = geoResult;
+                    await Task.Run(() => GeothermometerPublishService.ApplyPublishedResult(publishedGeoResult));
+                }
+
                 if (PublishEpma && epmaResult != null)
                 {
                     await EpmaPublishService.ApplyPublishedResultAsync(epmaResult);
@@ -1456,6 +1464,19 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (IsDeveloperMode) return true;
             ShowWarning(LanguageService.Instance["official_publisher_dev_mode_required"] ?? "Developer mode is required.");
+            return false;
+        }
+
+        /// <summary>
+        /// 发布图解前检查：存在尚未下载的官方图解（仅目录占位）时禁止发布。
+        /// </summary>
+        private bool EnsureDiagramsDownloadedForPublish()
+        {
+            if (!PublishDiagrams) return true;
+            string? message = GraphMapTemplatePublishService.BuildNotDownloadedPublishBlockMessage();
+            if (message == null) return true;
+            Log(message);
+            ShowWarning(message);
             return false;
         }
 

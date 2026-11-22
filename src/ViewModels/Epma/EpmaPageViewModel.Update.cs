@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Services.Epma;
 namespace GeoChemistryNexus.ViewModels;
 
@@ -22,6 +24,12 @@ public partial class EpmaPageViewModel
     [ObservableProperty] private double _updateProgress;
     [ObservableProperty] private string _updateStatusText = "";
     [ObservableProperty] private string _updateOverlayTitle = "";
+    /// <summary>批量下载 / 更新进行中，遮罩上显示“取消”按钮。</summary>
+    [ObservableProperty] private bool _isUpdateCancelable;
+    private CancellationTokenSource? _updateCts;
+
+    [RelayCommand]
+    private void CancelUpdate() => _updateCts?.Cancel();
 
     public int PendingUpdateCount => _libraryItems.Count(i => i.NeedsDownload);
     public bool HasPendingUpdates => PendingUpdateCount > 0;
@@ -44,11 +52,12 @@ public partial class EpmaPageViewModel
     private void HideUpdateOverlay()
     {
         IsUpdateOverlayVisible = false;
+        IsUpdateCancelable = false;
         IsUpdateProgressIndeterminate = true;
         UpdateProgress = 0;
     }
 
-    /// <summary>Runs once per launch when the user enabled automatic checks; failures stay silent.</summary>
+    /// <summary>Runs once per launch when the user enabled automatic checks; failures are reported like the manual check (same as diagram and geothermobarometer).</summary>
     public async Task CheckUpdatesIfNeededAsync()
     {
         if (_hasAutoCheckedUpdate) return;
@@ -85,7 +94,7 @@ public partial class EpmaPageViewModel
 
             if (result.Status == EpmaUpdateCheckStatus.Failed)
             {
-                if (!silent) MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {result.ErrorMessage}");
+                MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {result.ErrorMessage}");
                 return;
             }
 
@@ -97,7 +106,13 @@ public partial class EpmaPageViewModel
 
             if (result.ListDownloaded || result.CatalogChanged)
             {
-                if (silent) MessageHelper.Info(summary); else MessageHelper.Success(summary);
+                // 自动检查：与图解一致，用轻量提示给出 新增 / 可更新 / 下架 数量
+                if (silent)
+                    MessageHelper.Info(string.Format(
+                        LanguageService.GetString("template_list_sync_light_tip", "列表已更新，新增 {0} / 可更新 {1} / 下架 {2}"),
+                        result.AddedCount, result.OutdatedCount, result.RemovalCount));
+                else
+                    MessageHelper.Success(summary);
             }
             else if (!silent)
             {
@@ -107,7 +122,7 @@ public partial class EpmaPageViewModel
         }
         catch (Exception ex)
         {
-            if (!silent) MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {ex.Message}");
+            MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {ex.Message}");
         }
         finally
         {
@@ -162,17 +177,38 @@ public partial class EpmaPageViewModel
     private async Task DownloadAllPending()
     {
         if (IsUpdateBusy || Workbench.IsBusy) return;
-        var entries = EpmaUpdateService.GetNotInstalledEntries().Concat(EpmaUpdateService.GetOutdatedEntries())
-            .Where(e => e.FormatVersion <= EpmaScriptPackage.CurrentFormatVersion)
+        static bool Downloadable(EpmaIndexEntry e) => !EpmaScriptPackage.RequiresAppUpgrade(e.Version, e.Requires);
+        var newEntries = EpmaUpdateService.GetNotInstalledEntries().Where(Downloadable)
             .GroupBy(e => e.Id, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToList();
-        if (entries.Count == 0) { RefreshLibrary(); return; }
+        var outdatedEntries = EpmaUpdateService.GetOutdatedEntries().Where(Downloadable)
+            .GroupBy(e => e.Id, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToList();
+        var entries = newEntries.Concat(outdatedEntries).GroupBy(e => e.Id, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToList();
+        int incompatible = EpmaUpdateService.GetRequiresAppUpgradeCount();
+        if (entries.Count == 0)
+        {
+            // 与图解一致：只剩需要升级软件的模板时给出提示
+            if (incompatible > 0)
+                MessageHelper.Warning(string.Format(
+                    LanguageService.GetString("update_blocked_need_app_upgrade", "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"), incompatible));
+            RefreshLibrary();
+            return;
+        }
 
-        if (_libraryItems.Any(i => i.IsUpdateAvailable) && !await MessageHelper.ShowAsyncDialog(
-                EpmaLocalizer.Format("epma_update_overwrite_all_confirm", entries.Count),
-                EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("Confirm"))) return;
+        // 下载前总是确认一次（只有新模板时也一样，与图解、温压计一致）
+        string confirmMessage = outdatedEntries.Count == 0
+            ? string.Format(LanguageService.GetString("batch_download_confirm_message", "检测到 {0} 个未下载的新模板，是否批量下载？"), entries.Count)
+            : newEntries.Count == 0
+                ? EpmaLocalizer.Format("epma_update_overwrite_all_confirm", entries.Count)
+                : string.Format(LanguageService.GetString("batch_download_update_all_confirm",
+                    "检测到 {0} 个未下载的模板和 {1} 个有新版本的模板，是否全部下载 / 更新？更新会覆盖本地模板。"), newEntries.Count, outdatedEntries.Count);
+        if (!await MessageHelper.ShowAsyncDialog(confirmMessage, EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("Confirm"))) return;
 
+        _updateCts?.Dispose();
+        _updateCts = new CancellationTokenSource();
+        var token = _updateCts.Token;
         IsUpdateBusy = true;
         ShowUpdateOverlay(false, EpmaLocalizer.Format("epma_update_downloading"));
+        IsUpdateCancelable = true;
         try
         {
             var progress = new Progress<(int current, int total, string name)>(p =>
@@ -180,10 +216,15 @@ public partial class EpmaPageViewModel
                 UpdateProgress = p.total == 0 ? 0 : (p.current - 1) * 100.0 / p.total;
                 UpdateStatusText = $"{p.current}/{p.total}  {p.name}";
             });
-            var result = await EpmaUpdateService.DownloadAndReloadAsync(entries, progress);
+            var result = await EpmaUpdateService.DownloadAndReloadAsync(entries, progress, token);
             UpdateProgress = 100;
             RefreshLibrary();
-            ReportBatchResult(result);
+            if (result.Cancelled)
+            {
+                if (result.SuccessCount > 0) MessageHelper.Success(EpmaLocalizer.Format("epma_update_download_done", result.SuccessCount));
+                MessageHelper.Info(LanguageService.GetString(newEntries.Count == 0 ? "batch_update_cancelled" : "batch_download_cancelled", "已取消"));
+            }
+            else ReportBatchResult(result, incompatible);
         }
         catch (Exception ex) { MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {ex.Message}"); }
         finally
@@ -193,14 +234,53 @@ public partial class EpmaPageViewModel
         }
     }
 
-    private static void ReportBatchResult(EpmaBatchDownloadResult result)
+    /// <summary>Developer action: re-download one installed official template from the server, replacing local changes.</summary>
+    public async Task ForceUpdateLibraryTemplateAsync(EpmaLibraryItem item)
+    {
+        if (item.IsCustom || !item.IsInstalled || IsUpdateBusy || Workbench.IsBusy || !AppCultureRegistry.IsDeveloperModeEnabled()) return;
+        if (!await MessageHelper.ShowAsyncDialog(EpmaLocalizer.Format("epma_update_overwrite_confirm", item.Name),
+                EpmaLocalizer.Format("Cancel"), EpmaLocalizer.Format("Confirm"))) return;
+
+        IsUpdateBusy = true;
+        ShowUpdateOverlay(true, EpmaLocalizer.Format("epma_update_downloading"), item.Name);
+        try
+        {
+            var (entry, error) = await EpmaUpdateService.FetchFreshEntryAsync(item.Id);
+            if (entry == null)
+            {
+                MessageHelper.Error(error is null
+                    ? EpmaLocalizer.Format("force_update_template_not_found")
+                    : $"{EpmaLocalizer.Format("epma_update_check_failed")}: {error}");
+                return;
+            }
+
+            var result = await EpmaUpdateService.DownloadAsync(entry);
+            RefreshLibrary();
+            if (result.Success) MessageHelper.Success(EpmaLocalizer.Format("epma_update_download_done", 1));
+            else MessageHelper.Error(EpmaLocalizer.Format("epma_update_download_failed", result.PackageId, result.ErrorMessage));
+        }
+        catch (Exception ex) { MessageHelper.Error($"{EpmaLocalizer.Format("epma_update_check_failed")}: {ex.Message}"); }
+        finally
+        {
+            HideUpdateOverlay();
+            IsUpdateBusy = false;
+        }
+    }
+
+    private static void ReportBatchResult(EpmaBatchDownloadResult result, int incompatibleCount = 0)
     {
         var message = new StringBuilder(EpmaLocalizer.Format("epma_update_download_done", result.SuccessCount));
+        // 与图解一致：汇总里提示因版本过高、需升级软件后才能更新的数量
+        if (incompatibleCount > 0)
+            message.Append('\n').Append(string.Format(
+                LanguageService.GetString("update_incompatible_need_app_upgrade_count", "另有 {0} 个因版本过高，当前软件不兼容，请升级软件后再更新。"),
+                incompatibleCount));
         foreach (var failure in result.Failures.Take(10))
             message.Append('\n').Append(EpmaLocalizer.Format("epma_update_download_failed", failure.PackageId, failure.ErrorMessage));
         if (result.Failures.Count > 10) message.Append("\n...");
 
-        if (result.Failures.Count == 0) MessageHelper.Success(message.ToString());
+        if (result.Failures.Count == 0 && incompatibleCount == 0) MessageHelper.Success(message.ToString());
+        else if (result.Failures.Count == 0) MessageHelper.Warning(message.ToString());
         else if (result.SuccessCount == 0) MessageHelper.Error(message.ToString());
         else MessageHelper.Warning(message.ToString());
     }

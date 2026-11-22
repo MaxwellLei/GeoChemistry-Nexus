@@ -115,8 +115,8 @@ public static class EpmaPublishService
                 entries.Add(new EpmaIndexEntry
                 {
                     Id = manifest.PackageId,
-                    FormatVersion = manifest.FormatVersion,
                     Version = manifest.Version,
+                    Requires = manifest.Requires,
                     Name = manifest.Name,
                     Description = manifest.Description,
                     Tags = JsonSerializer.SerializeToElement(manifest.Tags),

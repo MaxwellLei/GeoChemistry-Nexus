@@ -85,8 +85,8 @@ namespace GeoChemistryNexus.Services
                 // 投影字段缺失时回退到状态判断。
                 entity.IsInstalled = doc.TryGetValue("ContentIsNull", out var contentIsNull) && contentIsNull.IsBoolean
                     ? !contentIsNull.AsBoolean
-                    : !string.Equals(entity.Status, "NOT_INSTALLED", StringComparison.Ordinal)
-                        && !string.Equals(entity.Status, "REQUIRES_APP_UPGRADE", StringComparison.Ordinal);
+                    : !string.Equals(entity.Status, ContentInstallStatus.NotInstalled, StringComparison.Ordinal)
+                        && !string.Equals(entity.Status, ContentInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
 
                 entity.Content = null;
                 entity.HelpDocuments = new Dictionary<string, string>();

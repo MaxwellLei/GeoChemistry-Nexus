@@ -344,10 +344,8 @@ public partial class EpmaTemplateEditorWindow : Window, INotificationCenterHost
     }
     private void ColumnCellPasting(object sender, DataObjectPastingEventArgs e)
     {
-        if (!e.DataObject.GetDataPresent(DataFormats.UnicodeText)
-            || e.DataObject.GetData(DataFormats.UnicodeText) is not string text
-            || (text.IndexOf('\r') < 0 && text.IndexOf('\n') < 0)) return;
-        e.DataObject = new DataObject(DataFormats.UnicodeText, text.Replace("\r\n", " ").Replace('\r', ' ').Replace('\n', ' '));
+        // 多行多列内容（如从 Excel 复制）按行列铺开到表格，而不是塞进同一个单元格
+        EditorColumnGridPasteHelper.HandlePasting(sender as TextBox, InputsEditor, OutputsEditor, e, Editor.PasteGrid);
     }
     private void RemoveLanguage_Click(object sender, RoutedEventArgs e)
     {

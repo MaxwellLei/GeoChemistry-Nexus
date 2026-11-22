@@ -18,8 +18,8 @@
             <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ctrl:EpmaCodeEditor">
                 <Grid Background="{TemplateBinding Background}">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                    <views:EpmaCodeCurrentLine x:Name="PART_CurrentLine" Grid.ColumnSpan="2" IsHitTestVisible="False" ClipToBounds="True"/>
-                    <views:EpmaCodeLineNumbers x:Name="PART_LineNumbers" Width="48" ClipToBounds="True" IsHitTestVisible="False"/>
+                    <ctrl:EpmaCodeCurrentLine x:Name="PART_CurrentLine" Grid.ColumnSpan="2" IsHitTestVisible="False" ClipToBounds="True"/>
+                    <ctrl:EpmaCodeLineNumbers x:Name="PART_LineNumbers" Width="48" ClipToBounds="True" IsHitTestVisible="False"/>
                     <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Focusable="False"/>
                     <ctrl:EpmaCodeSyntaxLayer x:Name="PART_Syntax" Grid.Column="1" IsHitTestVisible="False" ClipToBounds="True"/>
                 </Grid>
@@ -146,6 +146,7 @@
     </DataTemplate>
     <Style x:Key="EditorLanguageTab" TargetType="ListBoxItem">
         <Setter Property="Margin" Value="0,0,8,8"/><Setter Property="Padding" Value="10,5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="#758195"/><Setter Property="FontSize" Value="12"/>
         <Setter Property="ContentTemplate" Value="{StaticResource EditorLanguageContent}"/>
         <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">

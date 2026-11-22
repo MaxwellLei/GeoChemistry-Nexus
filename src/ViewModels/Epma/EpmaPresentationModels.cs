@@ -34,22 +34,3 @@ public sealed record EpmaChoice<T>(T Value, string Key) : INotifyPropertyChanged
     public void RefreshLabel() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Label)));
     public override string ToString() => Label;
 }
-public sealed record EpmaDiagnosticInfo(int InputRow, string Sample, string Level, string Code, string Target, string Actual, string Expectation, string Source, string Message, bool Stale)
-{
-    public string LevelLabel => Level switch
-    {
-        "Error" => EpmaLocalizer.Format("epma_errors"),
-        "Warning" => EpmaLocalizer.Format("epma_warnings"),
-        "Info" => EpmaLocalizer.Format("epma_information"),
-        _ => Level,
-    };
-}
-public static class EpmaDiagnosticSummary
-{
-    public static string Format(int rows, IEnumerable<EpmaDiagnosticInfo> diagnostics, int stale)
-    {
-        var items=diagnostics.ToArray();
-        return EpmaLocalizer.Format("epma_qc_dataset_summary", rows, items.Length, items.Select(d=>d.InputRow).Distinct().Count(),
-            items.Count(d=>d.Level=="Error"),items.Count(d=>d.Level=="Warning"),items.Count(d=>d.Level=="Info"),stale);
-    }
-}

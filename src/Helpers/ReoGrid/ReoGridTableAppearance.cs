@@ -503,6 +503,12 @@ namespace GeoChemistryNexus.Helpers
                 if (selected) graphics.DrawRectangle(theme.Accent, null, new Rect(0, size.Height - 2, size.Width, 2));
 
                 string label = _header.Text ?? ToAlphaName(column);
+                // 内置列（样品 / 分组）：Text 是程序使用的列标识，这里只替换显示出来的文字。
+                if (_header.Text != null && decorations?.Columns is IWorksheetColumnHeaderLabelProvider labelProvider)
+                {
+                    string? display = labelProvider.GetLabel(column, _header.Text);
+                    if (!string.IsNullOrEmpty(display)) label = display;
+                }
                 if (label.Length == 0 || size.Width <= 2 || main.Height <= 2) return;
                 double fontSize = _fontSizeOverride ?? HeaderFontSize;
                 string culture = CultureInfo.CurrentUICulture.Name;
@@ -576,7 +582,7 @@ namespace GeoChemistryNexus.Helpers
         /// </summary>
         private sealed class RowHeaderBody : HeaderBody
         {
-            private static readonly Brush OkDot = FrozenBrush(Color.FromRgb(27, 154, 138));
+            private static readonly Brush OkDot = FrozenBrush(Color.FromRgb(46, 160, 67));
             private static readonly Brush WarningDot = FrozenBrush(Color.FromRgb(224, 138, 0));
             private static readonly Brush ErrorDot = FrozenBrush(Color.FromRgb(194, 54, 75));
             private static readonly Pen StaleRing = FrozenPen(Color.FromRgb(224, 138, 0), 1.5);

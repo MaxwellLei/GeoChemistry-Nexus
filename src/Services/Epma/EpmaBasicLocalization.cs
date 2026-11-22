@@ -31,7 +31,11 @@ public sealed class EpmaBasicLocalization
             Name = Read(manifest.Name, fallbackLanguage), Description = Read(manifest.Description, fallbackLanguage),
             Tags = manifest.Tags.Select(tag => Read(tag, fallbackLanguage)).ToList(),
         };
-        foreach (string language in result.Name.Keys.Concat(result.Description.Keys).Concat(result.Tags.SelectMany(tag => tag.Keys)))
+        // A group heading written as a language dictionary also brings its languages along, so they are not dropped when saved.
+        // A plain-string heading carries no language of its own and adds none.
+        var groupLanguages = manifest.Inputs.Select(input => input.Group).Concat(manifest.Outputs.Select(output => output.Group))
+            .Where(group => group.ValueKind == JsonValueKind.Object).SelectMany(group => Read(group, fallbackLanguage).Keys);
+        foreach (string language in result.Name.Keys.Concat(result.Description.Keys).Concat(result.Tags.SelectMany(tag => tag.Keys)).Concat(groupLanguages))
             if (!result.Languages.Contains(language)) result.Languages.Add(language);
         return result;
     }

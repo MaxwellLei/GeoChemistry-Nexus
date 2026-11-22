@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="700">
 
-    <!-- 输入列 / 输出列表格：与 EPMA 新建计算模板窗口同款控件，示例为单行 -->
+    <!-- 输入列 / 输出列表格：与 EPMA 新建计算模板窗口同款控件；输入列支持多条示例，输出列只写第 1 条示例公式 -->
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,6 +30,11 @@
                     Command="{Binding AddInputCommand}"
                     Content="{Binding [epma_editor_add_column], Source={x:Static lg:LanguageService.Instance}}"
                     Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+            <!-- 添加示例：新增一条示例数据（输入列各多一行，输出列的公式按行推算） -->
+            <Button DockPanel.Dock="Right" Style="{StaticResource EditorLink}" Margin="0,0,16,0"
+                    Command="{Binding AddExampleCommand}"
+                    Content="{Binding [epma_editor_add_example], Source={x:Static lg:LanguageService.Instance}}"
+                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
         </DockPanel>
         <Border BorderBrush="#D6E1EE" BorderThickness="1" CornerRadius="8" Background="White" Margin="0,0,0,8"
                 ClipToBounds="True" HorizontalAlignment="Stretch">
@@ -49,11 +54,28 @@
                             <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
                                        Text="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
                         </Border>
+                        <!-- 第 3 行：分组（可选），相邻且同名的列在表头上合并成一个分组条 -->
                         <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
-                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B">
-                                <Run Text="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/><Run Text=" 1"/>
-                            </TextBlock>
+                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
+                                       Text="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
                         </Border>
+                        <!-- 示例行：每条示例一行，多于一条时可逐行删除 -->
+                        <ItemsControl ItemsSource="{Binding ExampleRows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
+                                        <DockPanel Margin="0,0,6,0">
+                                            <Button DockPanel.Dock="Right" Style="{StaticResource GeoTRemoveExample}"
+                                                    Command="{Binding DataContext.RemoveExampleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B">
+                                                <Run Text="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Border>
                 <ScrollViewer x:Name="InputColumnsScroll" Grid.Column="1" Style="{StaticResource EditorTableScroll}">
@@ -88,8 +110,9 @@
                                             <DockPanel>
                                                 <Button DockPanel.Dock="Right" Style="{StaticResource GeoTRemoveColumn}"
                                                         Command="{Binding DataContext.RemoveInputCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                        CommandParameter="{Binding}"/>
-                                                <TextBox Style="{StaticResource GeoTColumnCell}" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
+                                                        CommandParameter="{Binding}"
+                                                        Visibility="{Binding IsFixed, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                                <TextBox Style="{StaticResource GeoTColumnCell}" IsReadOnly="{Binding IsFixed}" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
                                                          Tag="{Binding [epma_editor_column_placeholder], Source={x:Static lg:LanguageService.Instance}}"
                                                          AutomationProperties.Name="{Binding [epma_editor_row_header], Source={x:Static lg:LanguageService.Instance}}"/>
                                             </DockPanel>
@@ -101,12 +124,26 @@
                                                      Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
                                                      AutomationProperties.Name="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
                                         </Border>
+                                        <!-- 分组（可选），其它语言的标题在“多语言”窗口中填写 -->
                                         <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
                                             <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
-                                                     Text="{Binding ExampleValue, UpdateSourceTrigger=PropertyChanged}"
-                                                     Tag="{Binding [epma_editor_sample_placeholder], Source={x:Static lg:LanguageService.Instance}}"
-                                                     AutomationProperties.Name="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}}"/>
+                                                     Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                     AutomationProperties.Name="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
                                         </Border>
+                                        <!-- 示例值：每条示例一格，与左侧的示例行号一一对应 -->
+                                        <ItemsControl ItemsSource="{Binding Examples}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
+                                                        <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                                 Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Tag="{Binding [epma_editor_sample_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                                 AutomationProperties.Name="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}}"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -137,6 +174,10 @@
                         <Border Height="33" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
                             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Foreground="#475569"
                                        Text="{Binding [epma_json_field_outputs], Source={x:Static lg:LanguageService.Instance}}"/>
+                        </Border>
+                        <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
+                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
+                                       Text="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
                         </Border>
                         <Border Height="32">
                             <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B">
@@ -182,6 +223,12 @@
                                                          Tag="{Binding [epma_editor_column_placeholder], Source={x:Static lg:LanguageService.Instance}}"
                                                          AutomationProperties.Name="{Binding [epma_json_field_outputs], Source={x:Static lg:LanguageService.Instance}}"/>
                                             </DockPanel>
+                                        </Border>
+                                        <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
+                                            <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                     Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                     AutomationProperties.Name="{Binding [epma_json_field_group], Source={x:Static lg:LanguageService.Instance}}"/>
                                         </Border>
                                         <Border Height="32">
                                             <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"

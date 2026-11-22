@@ -29,7 +29,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=dist
 OutputBaseFilename={#MyAppOutputBase}
-SetupIconFile=logo.ico
+SetupIconFile=GeoChemistryNexus_Icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64
 SolidCompression=yes
@@ -40,17 +40,20 @@ UsePreviousAppDir=yes
 DisableProgramGroupPage=yes
 ; 升级会删掉旧的 .gndiag / .gngtm 关联，装完后通知资源管理器刷新
 ChangesAssociations=yes
+; 安装声明（免责声明）页：默认英文，各语言在 [Languages] 中覆盖
+LicenseFile=license\Disclaimer.en.txt
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "german"; MessagesFile: "compiler:Languages\German.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
-Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
-Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
-Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
-Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
-Name: "chinesetrad"; MessagesFile: "compiler:Languages\ChineseTraditional.isl"
+Name: "german"; MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "license\Disclaimer.de.txt"
+Name: "french"; MessagesFile: "compiler:Languages\French.isl"; LicenseFile: "license\Disclaimer.fr.txt"
+Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"; LicenseFile: "license\Disclaimer.es.txt"
+Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"; LicenseFile: "license\Disclaimer.ru.txt"
+Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"; LicenseFile: "license\Disclaimer.ja.txt"
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"; LicenseFile: "license\Disclaimer.ko.txt"
+Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"; LicenseFile: "license\Disclaimer.zh-CN.txt"
+Name: "chinesetrad"; MessagesFile: "compiler:Languages\ChineseTraditional.isl"; LicenseFile: "license\Disclaimer.zh-TW.txt"
+Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; LicenseFile: "license\Disclaimer.pt-BR.txt"
 
 [CustomMessages]
 english.UninstallOptionsTitle=Uninstall Options
@@ -98,6 +101,11 @@ korean.UninstallOptionsPrompt=GeoChemistry Nexus를 제거하려고 합니다.%n
 korean.DeleteUserData=로컬 사용자 데이터도 삭제
 korean.UninstallContinue=계속
 korean.UninstallCancel=취소
+brazilianportuguese.UninstallOptionsTitle=Opções de desinstalação
+brazilianportuguese.UninstallOptionsPrompt=Você está prestes a desinstalar o GeoChemistry Nexus.%n%nVocê também pode remover os dados locais do usuário armazenados no seu perfil (configurações, bancos de dados de modelos, logs etc.). Esta ação não pode ser desfeita.
+brazilianportuguese.DeleteUserData=Excluir também os dados locais do usuário
+brazilianportuguese.UninstallContinue=Continuar
+brazilianportuguese.UninstallCancel=Cancelar
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"

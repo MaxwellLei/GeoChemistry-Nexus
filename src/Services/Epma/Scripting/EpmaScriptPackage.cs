@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using GeoChemistryNexus.Helpers;
@@ -17,31 +18,85 @@ namespace GeoChemistryNexus.Services.Epma;
 public sealed class EpmaScriptPackage
 {
     public const string Extension = TemplatePackageFileExtensions.EpmaPrimary;
-    // One protocol version covers both the manifest and the synchronous script contract.
-    public const int CurrentFormatVersion = 5;
-    /// <summary>Oldest manifest protocol this build still reads. Version 5 only adds the optional input unit row of the editor,
-    /// so version 4 packages (including every bundled template) keep working unchanged.</summary>
-    public const int MinimumReadableFormatVersion = 4;
     public const int MaximumBytes = 10 * 1024 * 1024;
+    /// <summary>
+    /// Id of the first input of every template: a text column that only names the sample of a row (same convention as the geothermometers).
+    /// It never takes part in the calculation, and a row holding nothing but a sample name counts as empty.
+    /// </summary>
+    public const string SampleInputId = "Sample";
+    /// <summary>
+    /// Unknown properties are skipped everywhere (manifest, flags, script results, examples), so a package written for a newer
+    /// build can still be read by this one as long as the fields it adds are optional presentation data.
+    /// Anything that changes calculation semantics must instead be declared in <c>requires</c> (see <see cref="SupportedCapabilities"/>).
+    /// </summary>
     internal static readonly JsonSerializerOptions JsonOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase, UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow, MaxDepth = 48,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase, UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip, MaxDepth = 48,
     };
+    /// <summary>Capability names this build understands. A package listing any other name in <c>requires</c> is refused with an upgrade message.</summary>
+    public static readonly IReadOnlySet<string> SupportedCapabilities = new HashSet<string>(StringComparer.Ordinal);
+    /// <summary>
+    /// True when this build cannot run a package: its version "x.y.z" has an x.y above the EPMA module version of the app
+    /// (<c>EpmaFormatVersion</c> in the project file), or it requires a capability this build does not know.
+    /// The package revision (z) never matters.
+    /// </summary>
+    public static bool RequiresAppUpgrade(string? version, IEnumerable<string>? requires)
+        => ContentVersionHelper.RequiresAppUpgrade(version, ContentVersionHelper.GetEpmaFormatVersion())
+           || (requires ?? []).Any(capability => !SupportedCapabilities.Contains(capability));
     private readonly byte[] _bytes;
     public EpmaScriptManifest Manifest { get; }
     public string Sha256 { get; }
     public IReadOnlyDictionary<string, string> Scripts { get; }
-    public IReadOnlyList<EpmaScriptSetting> Settings { get; private set; } = [];
     public EpmaExampleDataset Examples { get; }
-    public EpmaIronOptions? IronOptions { get; private set; }
     private EpmaScriptPackage(byte[] bytes, EpmaScriptManifest manifest, Dictionary<string, string> scripts,
         EpmaExampleDataset examples)
     {
-        _bytes = bytes.ToArray(); Manifest = manifest; Sha256 = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+        _bytes = bytes.ToArray(); Manifest = manifest; Sha256 = HashOf(bytes);
         Scripts = new ReadOnlyDictionary<string, string>(scripts);
         Examples = examples;
     }
     public byte[] CopyBytes() => _bytes.ToArray();
+
+    /// <summary>SHA-256 of the package bytes (lower-case hex), the same value as <see cref="Sha256"/> of a package read from them.</summary>
+    public static string HashOf(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+
+    private static readonly JsonSerializerOptions PrettyJson = new() { WriteIndented = true };
+
+    /// <summary>
+    /// Rewrites only <c>packageId</c> in the manifest and copies every other entry byte for byte.
+    /// The package is not parsed or validated beyond the new identifier, so a package that needs a newer app
+    /// (and therefore cannot be read here) can still move between the official and personal catalogs.
+    /// </summary>
+    internal static byte[] WithPackageId(byte[] bytes, string newPackageId)
+    {
+        Identifier(newPackageId);
+        if (bytes.Length > MaximumBytes) throw new InvalidDataException("EPMA package exceeds 10 MiB.");
+        using var source = new ZipArchive(new MemoryStream(bytes), ZipArchiveMode.Read);
+        using var output = new MemoryStream();
+        using (var target = new ZipArchive(output, ZipArchiveMode.Create, true))
+        {
+            bool rewritten = false;
+            foreach (var entry in source.Entries)
+            {
+                using var input = entry.Open();
+                using var buffer = new MemoryStream();
+                input.CopyTo(buffer);
+                byte[] content = buffer.ToArray();
+                if (entry.FullName == "package.json")
+                {
+                    using var reader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true);
+                    var manifest = JsonNode.Parse(reader.ReadToEnd())?.AsObject() ?? throw new InvalidDataException("Empty manifest.");
+                    manifest["packageId"] = newPackageId;
+                    content = new UTF8Encoding(false).GetBytes(manifest.ToJsonString(PrettyJson));
+                    rewritten = true;
+                }
+                using var stream = target.CreateEntry(entry.FullName).Open();
+                stream.Write(content);
+            }
+            if (!rewritten) throw new InvalidDataException("The package has no manifest.");
+        }
+        return output.ToArray();
+    }
     public static EpmaScriptPackage Read(string path)
     {
         if (new FileInfo(path).Length > MaximumBytes) throw new InvalidDataException("EPMA package exceeds 10 MiB.");
@@ -79,23 +134,22 @@ public sealed class EpmaScriptPackage
             if (examples.Inputs is null || examples.Inputs.Length is 0 or > 100) throw new InvalidDataException("Provide 1–100 examples.");
             bool InvalidInput(Dictionary<string, JsonElement>? input) => input is null || input.Any(p =>
                 !manifest.Inputs.Any(i => i.Id == p.Key) || p.Value.ValueKind is not (JsonValueKind.Number or JsonValueKind.String or JsonValueKind.Null));
-            if (examples.Parameters is null || examples.Inputs.Any(InvalidInput)) throw new InvalidDataException("Invalid example input.");
-            var package = new EpmaScriptPackage(bytes, manifest, scripts, examples);
-            package.Settings = Array.AsReadOnly(new EpmaScriptRuntime().ReadSettings(package, out var ironOptions));
-            package.IronOptions = ironOptions;
-            ValidateSettings(package);
-            return package;
+            if (examples.Inputs.Any(InvalidInput)) throw new InvalidDataException("Invalid example input.");
+            return new EpmaScriptPackage(bytes, manifest, scripts, examples);
         }
         catch (Exception ex) when (ex is ArgumentException or JsonException or KeyNotFoundException or InvalidOperationException or NullReferenceException)
         { throw new InvalidDataException("Invalid EPMA package: " + ex.Message, ex); }
     }
     private static EpmaScriptManifest ReadManifest(JsonElement json)
     {
-        if (!json.TryGetProperty("formatVersion", out var version) || !version.TryGetInt32(out int format))
-            throw new InvalidDataException("EPMA formatVersion must be declared as an integer.");
-        if(format < MinimumReadableFormatVersion || format > CurrentFormatVersion)
-            throw new InvalidDataException($"Unsupported EPMA formatVersion; versions {MinimumReadableFormatVersion} to {CurrentFormatVersion} are supported.");
-        return json.Deserialize<EpmaScriptManifest>(JsonOptions) ?? throw new InvalidDataException("Empty manifest.");
+        var manifest = json.Deserialize<EpmaScriptManifest>(JsonOptions) ?? throw new InvalidDataException("Empty manifest.");
+        if (manifest.Requires is null || manifest.Requires.Length > 32 || manifest.Requires.Any(string.IsNullOrWhiteSpace))
+            throw new InvalidDataException("Invalid requires list.");
+        if (RequiresAppUpgrade(manifest.Version, manifest.Requires))
+            throw new InvalidDataException("This package needs a newer version of the application (package version " + manifest.Version
+                + ", application EPMA version " + ContentVersionHelper.FormatBaseline(ContentVersionHelper.GetEpmaFormatVersion())
+                + (manifest.Requires.Length > 0 ? ", requires " + string.Join(", ", manifest.Requires) : "") + ").");
+        return manifest;
     }
     private static JsonElement Parse(byte[] bytes)
     {
@@ -128,83 +182,28 @@ public sealed class EpmaScriptPackage
             throw new InvalidDataException("A template icon must contain at most three plain-text characters.");
         if(m.Tags.Length>16)throw new InvalidDataException("Too many search tags.");
         EpmaHelpDocuments.Validate(m.Help);
-        if (string.IsNullOrWhiteSpace(m.Version) || string.IsNullOrWhiteSpace(EpmaScriptText.Format(m.Name))) throw new InvalidDataException("Missing package name/version.");
+        if (string.IsNullOrWhiteSpace(m.Version) || !Regex.IsMatch(m.Version, @"\A\d{1,4}\.\d{1,4}\.\d{1,4}\z"))
+            throw new InvalidDataException("The package version must be \"x.y.z\": x.y is the EPMA module version, z the package revision.");
+        if (string.IsNullOrWhiteSpace(EpmaScriptText.Format(m.Name))) throw new InvalidDataException("Missing package name.");
         if (m.Scripts.Length != 1 || m.Inputs.Length is 0 or > 256 || m.Outputs.Length is 0 or > 512)
             throw new InvalidDataException("Invalid declaration size.");
+        if (m.Inputs[0].Id != SampleInputId || m.Inputs[0].Type != "text")
+            throw new InvalidDataException("The first input must be the text column \"" + SampleInputId + "\".");
         Unique(m.Scripts); Unique(m.Inputs.Select(i => i.Id));
         Unique(m.Outputs.Select(o => o.Id));
         foreach (string path in m.Scripts) CheckPath(path);
         if (m.Scripts.Any(p => !p.EndsWith(".js", StringComparison.Ordinal))) throw new InvalidDataException("Incorrect script extension.");
-        foreach (var i in m.Inputs) { Identifier(i.Id); if (i.Type is not ("number" or "text")) throw new InvalidDataException("Invalid input."); }
+        foreach (var i in m.Inputs)
+        {
+            Identifier(i.Id);
+            if (i.Type is not ("number" or "text")) throw new InvalidDataException("Invalid input.");
+            if (!EpmaScriptText.ValidGroup(i.Group)) throw new InvalidDataException("Invalid input group.");
+        }
         foreach (var f in m.Outputs)
         {
             Identifier(f.Id);
             if (f.Type is not ("number" or "text")) throw new InvalidDataException("Invalid output declaration.");
-        }
-    }
-
-    private static void ValidateSettings(EpmaScriptPackage package)
-    {
-        var m = package.Manifest;
-        if (package.Settings.Count > 128) throw new InvalidDataException("Too many settings.");
-        Unique(package.Settings.Select(p => p.Id));
-        if (package.IronOptions is { } iron)
-        {
-            iron.Validate();
-            var form = package.Settings.SingleOrDefault(p => p.Id == "ironForm");
-            var method = package.Settings.SingleOrDefault(p => p.Id == "ironMethod");
-            if (iron.Enabled)
-            {
-                if (!EpmaInputPolicy.IronForms(m).ToHashSet(StringComparer.Ordinal).SetEquals(iron.Forms))
-                    throw new InvalidDataException("getIronOptions forms must match iron columns FeOt, Fe2O3t, or FeO together with Fe2O3.");
-                if (form is null || form.Type != "choice" || !form.Choices.Select(c => c.Value).SequenceEqual(iron.Forms)
-                    || form.Value.GetString() != iron.DefaultForm)
-                    throw new InvalidDataException("getSettings must use the script's iron reporting options.");
-                var methods = iron.Methods.Where(option => option.Enabled).Select(option => option.Id).ToArray();
-                if (iron.Forms.Any(f => f != "Separated") && (method is null || method.Type != "choice"
-                    || !method.Choices.Select(c => c.Value).SequenceEqual(methods) || method.Value.GetString() != iron.DefaultMethod))
-                    throw new InvalidDataException("getSettings must use the script's iron treatment methods.");
-            }
-            else if (form is not null || method is not null) throw new InvalidDataException("Disabled iron options must not generate settings.");
-        }
-
-        void When(IReadOnlyDictionary<string, string[]>? condition)
-        {
-            if (condition is null) return;
-            if (condition.Count != 1) throw new InvalidDataException("A condition must have exactly one controller.");
-            var (key, values) = condition.Single();
-            var controller = package.Settings.SingleOrDefault(p => p.Id == key && p.Type == "choice" && p.When is null)
-                ?? throw new InvalidDataException("Conditions must reference an unconditional choice parameter.");
-            if (values is null || values.Length == 0 || values.Any(v => !controller.Choices.Any(c => c.Value == v)))
-                throw new InvalidDataException("Condition must contain an array of declared choice values.");
-        }
-        foreach (var i in m.Inputs) { Identifier(i.Id); if (i.Type is not ("number" or "text")) throw new InvalidDataException("Invalid input."); When(i.When); }
-        foreach (var p in package.Settings)
-        {
-            Identifier(p.Id); When(p.When);
-            if (p.Value.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
-                throw new InvalidDataException("Settings need an initial value.");
-            if (p.Type == "number" && (p.Value.ValueKind != JsonValueKind.Number || !double.IsFinite(p.Value.GetDouble()) || p.Value.GetDouble() < p.Min || p.Value.GetDouble() > p.Max)
-                || p.Type == "choice" && (p.Value.ValueKind != JsonValueKind.String || !p.Choices.Any(c => c.Value == p.Value.GetString())))
-                throw new InvalidDataException("Invalid setting value.");
-            switch (p.Type)
-            {
-                case "number":
-                    if (p.Choices.Length > 0) throw new InvalidDataException("Number parameters cannot declare choices.");
-                    if (p.Min is { } min && !double.IsFinite(min) || p.Max is { } max && !double.IsFinite(max)
-                        || p.Min > p.Max) throw new InvalidDataException("Invalid numeric parameter bounds.");
-                    break;
-                case "choice":
-                    if (p.When is not null) throw new InvalidDataException("Choice parameters cannot have conditions.");
-                    if (p.Min is not null || p.Max is not null) throw new InvalidDataException("Choice parameters cannot declare numeric bounds.");
-                    if (p.Choices.Length == 0) throw new InvalidDataException("Empty parameter choices.");
-                    if (p.Choices.Any(c => string.IsNullOrWhiteSpace(c.Value)))
-                        throw new InvalidDataException("Choices need nonempty values.");
-                    Unique(p.Choices.Select(c => c.Value));
-                    break;
-                default:
-                    throw new InvalidDataException("Invalid parameter type.");
-            }
+            if (!EpmaScriptText.ValidGroup(f.Group)) throw new InvalidDataException("Invalid output group.");
         }
     }
 

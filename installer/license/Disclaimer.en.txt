@@ -1,0 +1,42 @@
+﻿Disclaimer
+
+Thank you for using GeoChemistry Nexus. Please read the following disclaimer carefully before using this software. By downloading, installing, or using this software, you acknowledge that you have understood and accepted the terms below.
+
+1. Purpose of the Software
+
+GeoChemistry Nexus is a research support tool for researchers in geochemistry, petrology, mineralogy, and ore deposit geology. It is designed to facilitate geological data processing, computational analysis, and visualization.
+
+The calculation results, diagrams, and related analytical information provided by this software are for research, teaching, and technical reference only. They cannot directly replace the independent judgment of qualified professionals, experimental verification, or formal professional assessment.
+
+2. Calculation Results and Accuracy
+
+This software implements its calculation functions, as far as possible, according to published scientific literature, academic methods, and relevant standards. However, different calculation methods may adopt different theoretical assumptions, applicability conditions, parameter settings, and data processing rules, so calculation results may differ.
+
+Users should:
+
+- Ensure the accuracy and completeness of the input data;
+- Select calculation methods and parameters appropriate to the actual subject of study;
+- Independently verify important calculation results and evaluate them against relevant literature;
+- Verify the methods, parameters, and calculation results used in academic papers, research reports, or other formal outputs.
+
+GeoChemistry Nexus does not guarantee that all calculation results are completely accurate or applicable under all data conditions and application scenarios.
+
+3. Risks and Responsibilities
+
+Users shall judge for themselves whether the software's calculation results are suitable for their specific research purposes, and shall bear corresponding responsibility for the data, diagrams, and analytical results output by this software and their subsequent use.
+
+For deviations in research conclusions, misuse of data, analytical errors, or other related losses arising from the use of this software or reliance on its calculation results, the developer will bear corresponding responsibility to the extent permitted by applicable law.
+
+4. Software Updates and Third-Party Resources
+
+This software may contain or use third-party algorithms, data, diagram templates, open-source components, and other related resources. The intellectual property rights and usage permissions of such content belong to their respective rights holders.
+
+Cloud templates, calculation algorithms, and software features may change with version updates. The developer reserves the right to modify, update, or discontinue the software's features, calculation methods, interface, and related resources.
+
+5. Updates to This Disclaimer
+
+This disclaimer may be revised in response to changes in software functionality, services, and relevant laws and regulations. Updated content will be published on the official website or related pages.
+
+If you have any questions about this disclaimer or the use of the software, you are welcome to submit feedback through the project's GitHub repository.
+
+Final reminder: GeoChemistry Nexus is a research support tool, not the final basis for scientific conclusions. Please always combine geological context, experimental data, academic literature, and professional knowledge to reasonably verify and interpret calculation results.

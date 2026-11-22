@@ -179,6 +179,18 @@ namespace GeoChemistryNexus.ViewModels
         public ObservableCollection<EpmaEditorColumn> OutputColumns { get; } = new();
 
         /// <summary>
+        /// 示例行号（1、2、3…），数量即示例条数。每个输入列的 <see cref="EpmaEditorColumn.Examples"/>
+        /// 与之等长；输出列只有第 1 条示例（公式），第 2 条起的输出由该公式按行推算。
+        /// </summary>
+        public ObservableCollection<int> ExampleRows { get; } = new() { 1 };
+
+        /// <summary>示例条数上限（含第 1 条）。</summary>
+        public const int MaximumExampleRows = GeoTExampleHelper.MaxExampleRows;
+
+        /// <summary>是否还能再添加示例。</summary>
+        public bool CanAddExample => CanEdit && ExampleRows.Count < MaximumExampleRows;
+
+        /// <summary>
         /// 表头真实顺序（输入/输出可交错）。保存时按此顺序写出 Headers / ExampleRow，
         /// 以免旧模板里按列字母引用的示例公式错位。
         /// </summary>
@@ -186,6 +198,9 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>新增列后由命令触发，供表格控件滚动并聚焦到新列（true = 输入列）。</summary>
         public event Action<EpmaEditorColumn, bool>? ColumnAdded;
+
+        /// <summary>新增示例后由命令触发（参数为新示例的行索引），供表格控件滚动并聚焦到新示例。</summary>
+        public event Action<int>? ExampleAdded;
 
         [ObservableProperty]
         private string scriptContent = string.Empty;
@@ -270,14 +285,13 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>“管理语言”：回到基本信息页的语言设置。</summary>
         public void ShowLanguageSettings() => CurrentStep = 0;
 
-        // ==================== 多语言（名称、参考文献） ====================
+        // ==================== 多语言（名称） ====================
 
-        // Name / Reference 属性始终存放“默认语言（LanguageParts 第一项）”的文字，
-        // 其余语言的文字保存在 _translations 中。
+        // Name 属性始终存放“默认语言（LanguageParts 第一项）”的文字，
+        // 其余语言的文字保存在 _translations 中。参考文献不分语言，只有一份 Reference。
         private sealed class GeoTTranslation
         {
             public string Name { get; init; } = string.Empty;
-            public string Reference { get; init; } = string.Empty;
         }
 
         private readonly Dictionary<string, GeoTTranslation> _translations = new(StringComparer.Ordinal);
@@ -360,6 +374,7 @@ namespace GeoChemistryNexus.ViewModels
             AddAdditionalFormulaCommand.NotifyCanExecuteChanged();
             RemoveAdditionalFormulaCommand.NotifyCanExecuteChanged();
             NotifyColumnCommands();
+            OnPropertyChanged(nameof(CanAddExample));
             OnPropertyChanged(nameof(CanShowSave));
             OnPropertyChanged(nameof(CanEdit));
             OnPropertyChanged(nameof(IsReadOnly));
@@ -461,7 +476,7 @@ function calculateDetailed(inputs) {
             foreach (var option in AppCultureRegistry.GetOptions(false))
                 LanguageCandidates.Add(new EpmaEditorLanguageOption(option.Code, EpmaTemplateEditorViewModel.LanguageName(option.Code)));
             LanguageParts.CollectionChanged += LanguagePartsChanged;
-            LoadLanguages(new[] { _sourceLanguage }, new Dictionary<string, string>(), new Dictionary<string, string>());
+            LoadLanguages(new[] { _sourceLanguage }, new Dictionary<string, string>());
 
             // 默认列：一个输入列 + 一个输出列
             AddDefaultColumns();
@@ -498,6 +513,7 @@ function calculateDetailed(inputs) {
             ShowSuccessMessage = null;
             OnTagSuggestionsNeedRefresh = null;
             ColumnAdded = null;
+            ExampleAdded = null;
             GetCurrentRtfContent = null;
             SetCurrentRtfContent = null;
         }
@@ -1073,6 +1089,71 @@ function calculateDetailed(inputs) {
             AddOutputCommand.NotifyCanExecuteChanged();
             RemoveInputCommand.NotifyCanExecuteChanged();
             RemoveOutputCommand.NotifyCanExecuteChanged();
+            NotifyExampleCommands();
+        }
+
+        private bool CanAddExampleRow() => CanAddExample;
+
+        [RelayCommand(CanExecute = nameof(CanAddExampleRow))]
+        private void AddExample()
+        {
+            if (!CanAddExample) return;
+
+            foreach (var column in InputColumns)
+                column.Examples.Add(new EpmaEditorExampleCell { Value = "0" });
+            ExampleRows.Add(ExampleRows.Count + 1);
+            NotifyExampleCommands();
+            if (!_isPastingGrid) ExampleAdded?.Invoke(ExampleRows.Count - 1);
+        }
+
+        private bool CanRemoveExampleRow(int number)
+            => CanEdit && ExampleRows.Count > 1 && ExampleRows.Contains(number);
+
+        [RelayCommand(CanExecute = nameof(CanRemoveExampleRow))]
+        private void RemoveExample(int number)
+        {
+            if (!CanRemoveExampleRow(number)) return;
+
+            int index = ExampleRows.IndexOf(number);
+            foreach (var column in InputColumns)
+            {
+                // 输出列只有第 1 条示例；输入列与示例行号一一对应
+                if (index < column.Examples.Count)
+                    column.Examples.RemoveAt(index);
+            }
+
+            // 删除第 1 条时，输出列的公式仍留在原来的位置，不随输入列移动，因此保持输出列不变。
+            ExampleRows.RemoveAt(index);
+            for (int row = index; row < ExampleRows.Count; row++)
+                ExampleRows[row] = row + 1;
+            NotifyExampleCommands();
+        }
+
+        /// <summary>粘贴期间自动补列/补示例行时，不触发“新增后聚焦”的界面事件。</summary>
+        private bool _isPastingGrid;
+
+        /// <summary>把从 Excel 等复制的多行多列内容按行列铺开写入输入/输出表格，列或示例行不够时自动补足。</summary>
+        public void PasteGrid(EditorGridTable table, int row, int column, string[][] cells)
+        {
+            if (IsContentReadOnly) return;
+
+            _isPastingGrid = true;
+            try
+            {
+                EditorColumnGridPasteHelper.Apply(table, row, column, cells, InputColumns, OutputColumns, ExampleRows,
+                    MaximumExampleRows, AddInput, AddOutput, AddExample);
+            }
+            finally
+            {
+                _isPastingGrid = false;
+            }
+        }
+
+        private void NotifyExampleCommands()
+        {
+            OnPropertyChanged(nameof(CanAddExample));
+            AddExampleCommand?.NotifyCanExecuteChanged();
+            RemoveExampleCommand?.NotifyCanExecuteChanged();
         }
 
         private static string NextColumnId(IEnumerable<EpmaEditorColumn> columns, string prefix)
@@ -1137,6 +1218,8 @@ function calculateDetailed(inputs) {
         private void AddInput()
         {
             var column = new EpmaEditorColumn { Id = NextColumnId(_layout, "Input"), ExampleValue = "0" };
+            for (int row = 1; row < ExampleRows.Count; row++)
+                column.Examples.Add(new EpmaEditorExampleCell { Value = "0" });
             MutateLayout(() =>
             {
                 // 新输入列紧跟最后一个输入列，保持“输入在前、输出在后”的习惯顺序
@@ -1144,7 +1227,7 @@ function calculateDetailed(inputs) {
                 _layout.Insert(lastInput + 1, column);
                 InputColumns.Add(column);
             });
-            ColumnAdded?.Invoke(column, true);
+            if (!_isPastingGrid) ColumnAdded?.Invoke(column, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanEditColumns))]
@@ -1157,7 +1240,7 @@ function calculateDetailed(inputs) {
                 OutputColumns.Add(column);
             });
             column.ExampleValue = BuildDefaultOutputFormula();
-            ColumnAdded?.Invoke(column, false);
+            if (!_isPastingGrid) ColumnAdded?.Invoke(column, false);
         }
 
         [RelayCommand(CanExecute = nameof(CanRemoveInput))]
@@ -1189,8 +1272,7 @@ function calculateDetailed(inputs) {
         /// </summary>
         private void LoadLanguages(
             IReadOnlyList<string> languages,
-            IReadOnlyDictionary<string, string> names,
-            IReadOnlyDictionary<string, string> references)
+            IReadOnlyDictionary<string, string> names)
         {
             static string Wording(IReadOnlyDictionary<string, string> values, string code)
                 => values.TryGetValue(code, out var text) ? text ?? string.Empty : string.Empty;
@@ -1207,13 +1289,11 @@ function calculateDetailed(inputs) {
                     LanguageParts.Add(new LanguageTagModel { Text = codes[i], IsDefault = i == 0 });
 
                 Name = Wording(names, _activeDefaultLanguage);
-                Reference = Wording(references, _activeDefaultLanguage);
                 foreach (string code in codes.Skip(1))
                 {
                     _translations[code] = new GeoTTranslation
                     {
-                        Name = Wording(names, code),
-                        Reference = Wording(references, code)
+                        Name = Wording(names, code)
                     };
                 }
             }
@@ -1244,7 +1324,7 @@ function calculateDetailed(inputs) {
             RefreshLanguageDisplayOptions();
         }
 
-        private GeoTTranslation CaptureDefault() => new() { Name = Name, Reference = Reference };
+        private GeoTTranslation CaptureDefault() => new() { Name = Name };
 
         private GeoTTranslation TranslationOf(string code, GeoTTranslation defaults)
             => code == _activeDefaultLanguage
@@ -1340,15 +1420,17 @@ function calculateDetailed(inputs) {
             string value = LanguageParts[0].Text;
             if (value != _activeDefaultLanguage)
             {
-                // 第一项变了：新默认语言的文字换入名称/参考文献输入框，旧默认语言的文字存入字典。
+                // 第一项变了：新默认语言的文字换入名称输入框，旧默认语言的文字存入字典。
                 _switchingLanguage = true;
                 try
                 {
-                    _translations[_activeDefaultLanguage] = CaptureDefault();
+                    string previous = _activeDefaultLanguage;
+                    _translations[previous] = CaptureDefault();
                     var target = _translations.TryGetValue(value, out var known) ? known : new GeoTTranslation();
                     _activeDefaultLanguage = value;
                     Name = target.Name;
-                    Reference = target.Reference;
+                    // 各列分组标题的默认语言文字随默认语言一起切换
+                    foreach (var column in _layout) EpmaColumnGroupEditing.SwitchDefault(column, previous, value);
                     OnPropertyChanged(nameof(DefaultLanguage));
                 }
                 finally
@@ -1371,16 +1453,17 @@ function calculateDetailed(inputs) {
 
             var rows = new List<EpmaLocalizationRow>
             {
-                new(EpmaLocalizationRowKind.Name, EpmaLocalizer.Format("epma_loc_row_name"), languages.Count),
-                new(EpmaLocalizationRowKind.Description, LanguageService.Instance["geo_loc_row_reference"] ?? "Reference", languages.Count)
+                new(EpmaLocalizationRowKind.Name, EpmaLocalizer.Format("epma_loc_row_name"), languages.Count)
             };
 
             for (int column = 0; column < languages.Count; column++)
             {
                 var wording = TranslationOf(languages[column].Code, defaults);
                 rows[0].Values[column] = wording.Name;
-                rows[1].Values[column] = wording.Reference;
             }
+
+            // 每个不同的分组标题一行，列顺序与表头真实顺序一致
+            EpmaColumnGroupEditing.AddSheetRows(rows, languages, DefaultLanguage, _layout);
 
             return new EpmaLocalizationSheetViewModel(languages, rows, IsContentReadOnly);
         }
@@ -1391,7 +1474,6 @@ function calculateDetailed(inputs) {
             if (sheet.IsReadOnly || IsContentReadOnly) return;
 
             var name = sheet.Rows.FirstOrDefault(row => row.Kind == EpmaLocalizationRowKind.Name);
-            var reference = sheet.Rows.FirstOrDefault(row => row.Kind == EpmaLocalizationRowKind.Description);
 
             for (int column = 1; column < sheet.Languages.Count; column++)
             {
@@ -1399,13 +1481,12 @@ function calculateDetailed(inputs) {
                 var previous = _translations.TryGetValue(code, out var known) ? known : new GeoTTranslation();
                 _translations[code] = new GeoTTranslation
                 {
-                    Name = name?.Values[column] ?? previous.Name,
-                    Reference = reference?.Values[column] ?? previous.Reference
+                    Name = name?.Values[column] ?? previous.Name
                 };
             }
 
             if (name != null) Name = name.Values[0];
-            if (reference != null) Reference = reference.Values[0];
+            EpmaColumnGroupEditing.ApplySheetRows(sheet, _layout);
             RefreshTemplateStatus();
         }
 
@@ -1483,7 +1564,7 @@ function calculateDetailed(inputs) {
 
         /// <summary>
         /// 载入模板的多语言设置。新格式模板使用保存的语言列表；旧模板没有语言信息，
-        /// 以软件当前语言作为默认语言，名称与参考文献视为该语言的文字。
+        /// 以软件当前语言作为默认语言，名称视为该语言的文字。参考文献不分语言，直接使用 Reference。
         /// </summary>
         private void LoadEntityLanguages(GeothermometerEntity entity)
         {
@@ -1497,13 +1578,10 @@ function calculateDetailed(inputs) {
 
             string defaultLanguage = languages[0];
             var names = new Dictionary<string, string>(entity.NameLang ?? new Dictionary<string, string>(), StringComparer.Ordinal);
-            var references = new Dictionary<string, string>(entity.ReferenceLang ?? new Dictionary<string, string>(), StringComparer.Ordinal);
 
-            // Name / Reference 本身就是默认语言文字
+            // Name 本身就是默认语言文字
             if (!names.TryGetValue(defaultLanguage, out var defaultName) || string.IsNullOrWhiteSpace(defaultName))
                 names[defaultLanguage] = entity.Name ?? string.Empty;
-            if (!references.TryGetValue(defaultLanguage, out var defaultReference) || string.IsNullOrWhiteSpace(defaultReference))
-                references[defaultLanguage] = entity.Reference ?? string.Empty;
 
             // 只有帮助文档的语言也保留为可编辑语言
             foreach (string code in _helpDocuments.Keys)
@@ -1512,7 +1590,8 @@ function calculateDetailed(inputs) {
                     languages.Add(code);
             }
 
-            LoadLanguages(languages, names, references);
+            LoadLanguages(languages, names);
+            Reference = entity.Reference ?? string.Empty;
             SelectedLanguage = AddedLanguages.FirstOrDefault();
         }
 
@@ -1528,8 +1607,16 @@ function calculateDetailed(inputs) {
 
             var headers = entity.Headers ?? new List<string>();
             var units = entity.Units ?? new List<string>();
+            var groups = entity.Groups ?? new List<Dictionary<string, string>>();
             var exampleRow = entity.ExampleRow ?? new List<string>();
             var inputColumns = entity.InputColumns ?? new List<string>();
+
+            // 附加示例行（格式 1.3）：第 1 条示例是 ExampleRow，其余各行只含输入列的值；没有时即单行示例
+            var extraRows = GeoTExampleHelper.NormalizeExtraRows(headers, entity.ExtraExampleRows);
+            ExampleRows.Clear();
+            for (int row = 0; row <= extraRows.Count; row++)
+                ExampleRows.Add(row + 1);
+            NotifyExampleCommands();
 
             // 与运行时一致：输入列按从左到右的出现顺序匹配（表头可重复）。
             var inputIndices = new HashSet<int>();
@@ -1555,9 +1642,21 @@ function calculateDetailed(inputs) {
                     Unit = index < units.Count ? units[index] ?? string.Empty : string.Empty,
                     ExampleValue = index < exampleRow.Count ? exampleRow[index] ?? string.Empty : string.Empty
                 };
+                // 分组标题（格式 1.3）：默认语言文字进输入框，其余语言留在列里，由多语言文字表编辑
+                if (index < groups.Count && groups[index] != null)
+                    EpmaColumnGroupEditing.Load(column, groups[index], _activeDefaultLanguage);
                 _layout.Add(column);
                 if (inputIndices.Contains(index))
+                {
+                    foreach (var extraRow in extraRows)
+                    {
+                        column.Examples.Add(new EpmaEditorExampleCell
+                        {
+                            Value = index < extraRow.Count ? extraRow[index] ?? string.Empty : string.Empty
+                        });
+                    }
                     InputColumns.Add(column);
+                }
                 else
                     OutputColumns.Add(column);
             }
@@ -1585,32 +1684,41 @@ function calculateDetailed(inputs) {
                 return;
             }
 
-            var testInputs = new List<double>();
-            foreach (var column in InputColumns)
+            // 逐条示例运行；有多条示例时每行结果前标注序号。
+            bool multipleExamples = ExampleRows.Count > 1;
+            var lines = new List<string>();
+            for (int row = 0; row < ExampleRows.Count; row++)
             {
-                if (!InvariantNumberParser.TryParse(column.ExampleValue?.Trim(), out double value))
+                string rowLabel = multipleExamples ? $"#{row + 1}: " : string.Empty;
+
+                var testInputs = new List<double>();
+                foreach (var column in InputColumns)
                 {
-                    SetScriptStatus(
-                        EpmaLocalizer.Format("epma_editor_invalid_number", column.ExampleValue ?? string.Empty),
-                        true);
+                    string? text = row < column.Examples.Count ? column.Examples[row].Value : null;
+                    if (!InvariantNumberParser.TryParse(text?.Trim(), out double value))
+                    {
+                        SetScriptStatus(
+                            rowLabel + EpmaLocalizer.Format("epma_editor_invalid_number", text ?? string.Empty),
+                            true);
+                        return;
+                    }
+
+                    testInputs.Add(value);
+                }
+
+                var (success, result, error) = GeothermometerService.TestScript(ScriptContent, testInputs.ToArray());
+                if (!success)
+                {
+                    SetScriptStatus(rowLabel + string.Format(LanguageService.Instance["geo_msg_test_error"], error), true);
                     return;
                 }
 
-                testInputs.Add(value);
+                lines.Add($"{rowLabel}calculate([{string.Join(", ", testInputs.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)))}]) = {result}");
             }
 
-            var (success, result, error) = GeothermometerService.TestScript(ScriptContent, testInputs.ToArray());
-            if (success)
-            {
-                SetScriptStatus(
-                    EpmaLocalizer.Format("epma_editor_test_passed") + Environment.NewLine +
-                    $"calculate([{string.Join(", ", testInputs.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)))}]) = {result}",
-                    false);
-            }
-            else
-            {
-                SetScriptStatus(string.Format(LanguageService.Instance["geo_msg_test_error"], error), true);
-            }
+            SetScriptStatus(
+                EpmaLocalizer.Format("epma_editor_test_passed") + Environment.NewLine + string.Join(Environment.NewLine, lines),
+                false);
         }
 
         private void SetScriptStatus(string? message, bool isError)
@@ -1627,23 +1735,30 @@ function calculateDetailed(inputs) {
         {
             var headers = _layout.Select(column => column.Id.Trim()).ToList();
             var exampleRow = _layout.Select(column => column.ExampleValue?.Trim() ?? string.Empty).ToList();
+            // 第 2 条示例起：只记录输入列的值，输出列留空（其公式由 ExampleRow 中的公式按行推算）
+            var extraExampleRows = new List<List<string>>();
+            for (int row = 1; row < ExampleRows.Count; row++)
+            {
+                extraExampleRows.Add(_layout
+                    .Select(column => InputColumns.Contains(column) && row < column.Examples.Count
+                        ? column.Examples[row].Value?.Trim() ?? string.Empty
+                        : string.Empty)
+                    .ToList());
+            }
             var inputColumns = _layout
                 .Where(column => InputColumns.Contains(column))
                 .Select(column => column.Id.Trim())
                 .ToList();
 
-            // 默认语言文字 = Name / Reference；其余语言来自 _translations
+            // 默认语言名称 = Name；其余语言来自 _translations
             var languages = LanguageParts.Select(part => part.Text).ToList();
             var defaults = CaptureDefault();
             var nameLang = new Dictionary<string, string>(StringComparer.Ordinal);
-            var referenceLang = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (string code in languages)
             {
                 var wording = TranslationOf(code, defaults);
                 string nameText = wording.Name?.Trim() ?? string.Empty;
-                string referenceText = wording.Reference?.Trim() ?? string.Empty;
                 if (nameText.Length > 0) nameLang[code] = nameText;
-                if (referenceText.Length > 0) referenceLang[code] = referenceText;
             }
 
             var entity = new GeothermometerEntity
@@ -1655,11 +1770,10 @@ function calculateDetailed(inputs) {
                 Category = GeoTCategoryHelper.NormalizeCategoryKey(SelectedCategory),
                 Tags = TagParts.Select(t => t.StorageName).Where(t => t.Length > 0).Distinct(StringComparer.OrdinalIgnoreCase).ToList(),
                 Capabilities = GeoTCapabilityHelper.NormalizeList(CapabilityParts.Select(c => c.StorageName)),
-                // Name / Reference 保持为默认语言文字，旧版软件仍可读取
+                // Name 保持为默认语言文字，旧版软件仍可读取；参考文献不分语言
                 Name = Name.Trim(),
                 Languages = languages,
                 NameLang = nameLang,
-                ReferenceLang = referenceLang,
                 Author = Author.Trim(),
                 Year = Year,
                 Reference = Reference.Trim(),
@@ -1667,7 +1781,13 @@ function calculateDetailed(inputs) {
                 Headers = headers,
                 // 单位与表头同序；没有任何单位时为空列表（与格式 1.3 之前的模板一致）
                 Units = CommaSeparatedListHelper.NormalizeUnits(headers, _layout.Select(column => column.Unit?.Trim() ?? string.Empty).ToList()),
+                // 分组标题与表头同序，每列是“语言 → 标题”；没有任何分组时为空列表（与没有分组的旧模板一致）
+                Groups = GeoTLocalizationHelper.NormalizeGroups(
+                    headers,
+                    _layout.Select(column => EpmaColumnGroupEditing.Wording(column, languages, DefaultLanguage)).ToList(),
+                    languages),
                 ExampleRow = exampleRow,
+                ExtraExampleRows = GeoTExampleHelper.NormalizeExtraRows(headers, extraExampleRows),
                 InputColumns = inputColumns,
                 AdditionalFormulas = AdditionalFormulaItems
                     .Select(item => new

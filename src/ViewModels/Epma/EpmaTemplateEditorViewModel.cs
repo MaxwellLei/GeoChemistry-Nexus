@@ -50,10 +50,18 @@ public partial class EpmaEditorExampleCell : ObservableObject
 public partial class EpmaEditorColumn : ObservableObject
 {
     [ObservableProperty] private string _id = "";
+    /// <summary>The mandatory first "Sample" input: its name cannot be changed and the column cannot be removed.</summary>
+    [ObservableProperty] private bool _isFixed;
     /// <summary>Optional unit text of the column (empty means no unit). Shown under the column name in the worksheet header.</summary>
     [ObservableProperty] private string _unit = "";
     /// <summary>Unit text when the template was loaded; used to tell whether the user changed it (a stored unit may be a localized object).</summary>
     public string UnitBaseline { get; set; } = "";
+    /// <summary>Optional group heading of a column in the template's default language (empty means none); neighbouring columns with the same text share one band.</summary>
+    [ObservableProperty] private string _group = "";
+    /// <summary>Group heading in every other language, kept here until the template is saved. Edited in the localization table.</summary>
+    public Dictionary<string, string> GroupTranslations { get; } = new(StringComparer.Ordinal);
+    /// <summary>Group wording per language when the template was loaded; the stored group is rewritten only when the wording differs from it.</summary>
+    public Dictionary<string, string> GroupBaseline { get; set; } = new(StringComparer.Ordinal);
     public ObservableCollection<EpmaEditorExampleCell> Examples { get; } = [new()];
     public string[] ExampleValues => Examples.Select(cell => cell.Value).ToArray();
     public string ExampleValue { get => Examples[0].Value; set => Examples[0].Value = value; }
@@ -99,7 +107,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         "zh-CN" => "简体中文", "zh-TW" => "繁體中文", "en-US" => "English",
         _ => AppCultureRegistry.GetDisplayName(code, false),
     };
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _templateId = "MyCalculation_" + Guid.NewGuid().ToString("N")[..8];
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _templateId = ContentPackageIdHelper.CreateNew(false);
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _templateName = "";
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _version = "1.0.0";
     private const int MaxContentPatch = 9999;
@@ -260,8 +268,17 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         while (columns.Count > 0) columns.RemoveAt(columns.Count - 1);
         foreach (string id in text.Split(new[] { ',', '，' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
         {
-            var column = new EpmaEditorColumn { Id = id };
             var old = previous.FirstOrDefault(item => item.Id == id);
+            var column = new EpmaEditorColumn
+            {
+                Id = id, Unit = old?.Unit ?? "", UnitBaseline = old?.UnitBaseline ?? "",
+                Group = old?.Group ?? "",
+            };
+            if (old is not null)
+            {
+                foreach (var pair in old.GroupTranslations) column.GroupTranslations[pair.Key] = pair.Value;
+                column.GroupBaseline = new Dictionary<string, string>(old.GroupBaseline, StringComparer.Ordinal);
+            }
             column.ExampleValue = old?.ExampleValue ?? "";
             for (int row = 1; row < ExampleRows.Count; row++)
                 column.Examples.Add(new() { Value = old is not null && row < old.Examples.Count ? old.Examples[row].Value : "" });
@@ -300,7 +317,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
     private void AddExample()
     {
         if (!CanAddExample) return;
-        foreach (var column in InputColumns) column.Examples.Add(new() { Value = "0" });
+        foreach (var column in InputColumns) column.Examples.Add(new() { Value = column.IsFixed ? "Example" : "0" });
         ExampleRows.Add(ExampleRows.Count + 1);
         NotifyExampleCommands();
     }
@@ -315,6 +332,13 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         for (int row = index; row < ExampleRows.Count; row++) ExampleRows[row] = row + 1;
         NotifyExampleCommands();
     }
+    /// <summary>把从 Excel 等复制的多行多列内容按行列铺开写入输入/输出表格，列或示例行不够时自动补足。</summary>
+    public void PasteGrid(EditorGridTable table, int row, int column, string[][] cells)
+    {
+        if (!CanEdit) return;
+        EditorColumnGridPasteHelper.Apply(table, row, column, cells, InputColumns, OutputColumns, ExampleRows,
+            MaximumExampleRows, AddInput, AddOutput, AddExample);
+    }
     private void NotifyExampleCommands()
     {
         OnPropertyChanged(nameof(CanAddExample)); AddExampleCommand.NotifyCanExecuteChanged();
@@ -322,7 +346,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
     }
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void AddOutput() => OutputColumns.Add(new() { Id = NextColumnId(OutputColumns, "Output") });
-    private bool CanRemoveInput(EpmaEditorColumn? column) => CanEdit && InputColumns.Count > 1 && column is not null && InputColumns.Contains(column);
+    private bool CanRemoveInput(EpmaEditorColumn? column) => CanEdit && InputColumns.Count > 1 && column is { IsFixed: false } && InputColumns.Contains(column);
     private bool CanRemoveOutput(EpmaEditorColumn? column) => CanEdit && OutputColumns.Count > 1 && column is not null && OutputColumns.Contains(column);
     [RelayCommand(CanExecute = nameof(CanRemoveInput))]
     private void RemoveInput(EpmaEditorColumn? column) { if (CanRemoveInput(column)) InputColumns.Remove(column!); }
@@ -395,7 +419,6 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         OutputColumns.CollectionChanged += ColumnsChanged;
         LoadColumns(m);
         Files.Single(file => file.Path == "examples.json").PropertyChanged += ExamplesFileChanged;
-        foreach (var file in Files.Where(file => file.IsJson)) ConfigureJsonEditor(file.JsonEditor!);
         InitializeTemplateStatus(template is null);
     }
     private void LoadLanguages(EpmaBasicLocalization? localization)
@@ -524,6 +547,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
             for (int i = tags.Count; i < captured.Tags.Count; i++) tags.Add(captured.Tags[i]);
             _activeDefaultLanguage = value;
             TemplateName = target.Name; Description = target.Description; Tags = string.Join(", ", tags);
+            foreach (var column in InputColumns.Concat(OutputColumns)) EpmaColumnGroupEditing.SwitchDefault(column, previous, value);
             OnPropertyChanged(nameof(DefaultLanguage));
         }
         finally { _switchingLanguage = false; }
@@ -550,12 +574,14 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         var languages = LanguageParts.Select(part => new CultureOption(part.Text, AppCultureRegistry.GetDisplayName(part.Text))).ToList();
         var defaults = CaptureDefault();
         EpmaTranslation Of(string code) => code == DefaultLanguage ? defaults : _translations.TryGetValue(code, out var known) ? known : new();
-        // The table follows the basic information page: an item without default wording there has no row here.
-        var rows = new List<EpmaLocalizationRow>();
-        if (!string.IsNullOrWhiteSpace(defaults.Name))
-            rows.Add(new(EpmaLocalizationRowKind.Name, EpmaLocalizer.Format("epma_loc_row_name"), languages.Count));
-        if (!string.IsNullOrWhiteSpace(defaults.Description))
-            rows.Add(new(EpmaLocalizationRowKind.Description, EpmaLocalizer.Format("epma_loc_row_description"), languages.Count));
+        // Name and description always have a row, so a new template with nothing filled in yet still has cells to type into.
+        // Tags and groups only exist where the basic information page or the column tables already hold default wording.
+        var rows = new List<EpmaLocalizationRow>
+        {
+            // Row labels reuse the basic information page wording (template name / description); the page marks the name as required with "*".
+            new(EpmaLocalizationRowKind.Name, EpmaLocalizer.Format("epma_editor_name").TrimEnd('*', ' '), languages.Count),
+            new(EpmaLocalizationRowKind.Description, EpmaLocalizer.Format("epma_editor_description"), languages.Count),
+        };
         for (int i = 0; i < defaults.Tags.Count; i++)
             rows.Add(new(EpmaLocalizationRowKind.Tag, EpmaLocalizer.Format("epma_loc_row_tag", i + 1), languages.Count));
         for (int column = 0; column < languages.Count; column++)
@@ -570,8 +596,10 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
                     _ => tagIndex < wording.Tags.Count ? wording.Tags[tagIndex++] : "",
                 };
         }
+        EpmaColumnGroupEditing.AddSheetRows(rows, languages, DefaultLanguage, InputColumns.Concat(OutputColumns));
         return new EpmaLocalizationSheetViewModel(languages, rows, IsReadOnly);
     }
+    private void ApplyGroupRows(EpmaLocalizationSheetViewModel sheet) => EpmaColumnGroupEditing.ApplySheetRows(sheet, InputColumns.Concat(OutputColumns));
     /// <summary>Takes the table back. Clearing a default-language tag removes that tag in every language.</summary>
     public void ApplyLocalizationSheet(EpmaLocalizationSheetViewModel sheet)
     {
@@ -595,6 +623,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         if (description is not null) Description = description.Values[0];
         // The default tags live in a comma separated box, so a comma inside one tag would split it.
         if (hasTagRows) Tags = string.Join(", ", tags.Select(row => row.Values[0].Replace(',', ' ').Replace('，', ' ').Trim()));
+        ApplyGroupRows(sheet);
         RefreshTemplateStatus();
     }
     private void LoadColumns(EpmaScriptManifest manifest)
@@ -602,10 +631,30 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         foreach (var input in manifest.Inputs)
         {
             string unit = EpmaScriptText.Format(input.Unit);
-            InputColumns.Add(new() { Id = input.Id, Unit = unit, UnitBaseline = unit });
+            var column = new EpmaEditorColumn { Id = input.Id, Unit = unit, UnitBaseline = unit, IsFixed = InputColumns.Count == 0 && input.Id == EpmaScriptPackage.SampleInputId };
+            LoadGroup(column, input.Group);
+            InputColumns.Add(column);
         }
         LoadExamples();
-        foreach (var output in manifest.Outputs) OutputColumns.Add(new() { Id = output.Id });
+        foreach (var output in manifest.Outputs)
+        {
+            var column = new EpmaEditorColumn { Id = output.Id };
+            LoadGroup(column, output.Group);
+            OutputColumns.Add(column);
+        }
+    }
+    /// <summary>
+    /// Reads a stored group heading: text in the default language box, the other languages in <see cref="EpmaEditorColumn.GroupTranslations"/>.
+    /// A plain string belongs to the default language. A heading without default wording shows its first available wording instead (like a tag).
+    /// </summary>
+    private void LoadGroup(EpmaEditorColumn column, JsonElement group)
+    {
+        var wording = EpmaBasicLocalization.Read(group, DefaultLanguage);
+        if (wording.Count > 0 && !wording.ContainsKey(DefaultLanguage)) wording[DefaultLanguage] = wording.Values.First();
+        column.Group = wording.TryGetValue(DefaultLanguage, out var text) ? text : "";
+        foreach (var pair in wording)
+            if (pair.Key != DefaultLanguage) column.GroupTranslations[pair.Key] = pair.Value;
+        column.GroupBaseline = new Dictionary<string, string>(wording, StringComparer.Ordinal);
     }
     private void ExamplesFileChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -624,33 +673,6 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
             for (int row = 1; row < rows.Count; row++) column.Examples.Add(new() { Value = FormatCell(rows[row]?[column.Id]) });
         }
         NotifyExampleCommands();
-    }
-    private void ConfigureJsonEditor(EpmaJsonDocument editor)
-    {
-        // Settings live in the current JS draft. Read them on demand so example overrides
-        // follow script edits without keeping a second editable declaration in the manifest.
-        EpmaScriptSetting[] ScriptSettings()
-        {
-            try { return EpmaInputPolicy.Parameters(BuildRawPackage(false)); } catch { return []; }
-        }
-        editor.FieldSuggestions = shape =>
-        {
-            try
-            {
-                if (shape == "values") return Names(InputColumns);
-                if (shape == "settings") return ScriptSettings().Where(setting => setting.Editable).Select(setting => setting.Id);
-                return [];
-            }
-            catch (InvalidDataException) { return []; }
-        };
-        editor.ConditionOptions = id => ScriptSettings().Where(setting => setting.Id == id).SelectMany(setting => setting.Choices).Select(choice => choice.Value);
-        editor.NewInputRow = () =>
-        {
-            var row = new JsonObject();
-            try { foreach (string id in Names(InputColumns)) row[id] = JsonValue.Create(0); }
-            catch (InvalidDataException) { }
-            return row;
-        };
     }
     public void Release()
     {
@@ -708,12 +730,17 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
     private string ComposeDefinitions(string[] inputs, string[] outputs)
     {
         var previous = JsonNode.Parse(_definitionSnapshot)!.AsObject();
-        var definitions = new JsonObject { ["inputs"] = Columns("inputs", inputs, previous, InputColumns), ["outputs"] = Columns("outputs", outputs, previous) };
+        var definitions = new JsonObject
+        {
+            ["inputs"] = Columns("inputs", inputs, previous, InputColumns, ApplyInputFields),
+            ["outputs"] = Columns("outputs", outputs, previous, OutputColumns, ApplyOutputFields),
+        };
         return definitions.ToJsonString(new() { WriteIndented = true });
     }
-    private static JsonArray Columns(string group, string[] ids, JsonObject previous, IReadOnlyList<EpmaEditorColumn>? editable = null)
+    private static JsonArray Columns(string section, string[] ids, JsonObject previous, IReadOnlyList<EpmaEditorColumn>? editable = null,
+        Action<JsonObject, EpmaEditorColumn, bool>? apply = null)
     {
-        var existing = previous[group] as JsonArray;
+        var existing = previous[section] as JsonArray;
         var columns = new JsonArray();
         for (int index = 0; index < ids.Length; index++)
         {
@@ -722,7 +749,10 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
             var copy = old?.DeepClone().AsObject() ?? new JsonObject { ["id"] = id };
             copy["id"] = id;
             copy.Remove("type");
-            if (editable is not null && index < editable.Count) ApplyUnit(copy, editable[index], old is not null);
+            // The first input is always the text column "Sample"; every other column is numeric by default.
+            if (section == "inputs" && index == 0) copy["type"] = "text";
+            copy.Remove("when"); // conditional columns no longer exist; an old package loses them here
+            if (editable is not null && apply is not null && index < editable.Count) apply(copy, editable[index], old is not null);
             columns.Add(copy);
         }
         return columns;
@@ -732,29 +762,64 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
     /// (it may be a localized object); a changed one replaces the text shown for the current language.
     /// </summary>
     private static void ApplyUnit(JsonObject definition, EpmaEditorColumn column, bool storedBefore)
+        => ApplyText(definition, "unit", column.Unit, column.UnitBaseline, storedBefore);
+    /// <summary>Same as <see cref="ApplyUnit"/> for the optional group heading of a column.</summary>
+    /// <summary>
+    /// The wording of a column's group heading in the languages of the template, default language first; empty wording is left out.
+    /// A group that was not changed since loading keeps its stored form; otherwise it is written as plain text when only the
+    /// default language has wording, and as a language dictionary when there are more.
+    /// </summary>
+    private void ApplyGroup(JsonObject definition, EpmaEditorColumn column, bool storedBefore)
     {
-        string unit = column.Unit?.Trim() ?? "";
+        var after = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var part in LanguageParts)
+        {
+            string text = (part.Text == DefaultLanguage ? column.Group : column.GroupTranslations.TryGetValue(part.Text, out var known) ? known : "").Trim();
+            if (text.Length > 0) after[part.Text] = text;
+        }
+        var before = column.GroupBaseline;
+        if (storedBefore && before.Count == after.Count && after.All(pair => before.TryGetValue(pair.Key, out var text) && text == pair.Value)) return;
+        if (after.Count == 0) definition.Remove("group");
+        else if (after.Count == 1 && after.TryGetValue(DefaultLanguage, out var only)) definition["group"] = only;
+        else
+        {
+            var localized = new JsonObject();
+            foreach (var pair in after) localized[pair.Key] = pair.Value;
+            definition["group"] = localized;
+        }
+    }
+    private void ApplyInputFields(JsonObject definition, EpmaEditorColumn column, bool storedBefore)
+    {
+        ApplyUnit(definition, column, storedBefore);
+        ApplyGroup(definition, column, storedBefore);
+    }
+    private void ApplyOutputFields(JsonObject definition, EpmaEditorColumn column, bool storedBefore)
+    {
+        ApplyGroup(definition, column, storedBefore);
+    }
+    internal static void ApplyText(JsonObject definition, string property, string? text, string? baseline, bool storedBefore)
+    {
+        text = text?.Trim() ?? "";
         if (storedBefore)
         {
-            if (unit == (column.UnitBaseline ?? "").Trim()) return;
-            if (unit.Length == 0) { definition.Remove("unit"); return; }
-            if (definition["unit"] is JsonObject localized)
+            if (text == (baseline ?? "").Trim()) return;
+            if (text.Length == 0) { definition.Remove(property); return; }
+            if (definition[property] is JsonObject localized)
             {
                 string[] candidates = [CultureInfo.CurrentUICulture.Name, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "en-US", "en"];
                 string key = candidates.FirstOrDefault(localized.ContainsKey) ?? localized.Select(pair => pair.Key).FirstOrDefault() ?? "en-US";
-                localized[key] = unit;
+                localized[key] = text;
                 return;
             }
         }
-        if (unit.Length > 0) definition["unit"] = unit;
-        else definition.Remove("unit");
+        if (text.Length > 0) definition[property] = text;
+        else definition.Remove(property);
     }
     private void SyncExamples(string[] inputIds)
     {
         if (_exampleTokenCount is int count && count != inputIds.Length) throw new InvalidDataException(EpmaLocalizer.Format("epma_editor_example_count"));
         var file = Files.Single(item => item.Path == "examples.json");
         var examples = JsonNode.Parse(file.CaptureText())!.AsObject();
-        examples["parameters"] ??= new JsonObject();
         var rows = new JsonArray();
         for (int rowIndex = 0; rowIndex < ExampleRows.Count; rowIndex++)
         {
@@ -767,7 +832,6 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         _syncingExamples = true;
         try { file.Text = examples.ToJsonString(new() { WriteIndented = true }); }
         finally { _syncingExamples = false; }
-        ConfigureJsonEditor(file.JsonEditor!);
     }
     private static JsonNode JsonCell(string token)
     {
@@ -830,7 +894,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
             else
             {
                 string[] inputs = Names(InputColumns);
-                SyncExamples(inputs);
+                        SyncExamples(inputs);
                 var definitions = JsonNode.Parse(ComposeDefinitions(inputs, Names(OutputColumns)))!;
                 columns = columns with
                 {
@@ -839,10 +903,10 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
                 };
                 examples = JsonSerializer.Deserialize<EpmaExampleDataset>(Files.Single(file => file.Path == "examples.json").CaptureText(), EpmaScriptPackage.JsonOptions)!;
             }
-            var rows = await new EpmaScriptRuntime().TestScriptAsync(ScriptFile.Path, ScriptFile.Text, columns, examples, operation.Token);
+            var rows = await EpmaScriptRuntime.TestScriptAsync(ScriptFile.Path, ScriptFile.Text, columns, examples, operation.Token);
             operation.Token.ThrowIfCancellationRequested();
             foreach (var row in rows)
-                foreach (var output in columns.Outputs)
+                foreach (var output in columns.Outputs.Where(output => row.Result.Values.ContainsKey(output.Id)))
                     TrialValues.Add(new(rows.Count > 1 ? row.InputRow + " · " + output.DisplayLabel : output.DisplayLabel, EpmaScriptText.Scalar(row.Result.Values[output.Id]), output.DisplayUnit));
             var errors = rows.SelectMany(row => row.Flags.Where(flag => flag.Severity == "Error").Select(flag => flag.Text))
                 .Concat(rows.Where(row => row.Result.Status != "Computed").Select(row => row.Result.Status))
@@ -880,7 +944,7 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
         try
         {
             var package = BuildPackage();
-            await Task.Run(() => new EpmaScriptRuntime().ValidateAsync(package, operation.Token), operation.Token);
+            await Task.Run(() => EpmaScriptRuntime.ValidateAsync(package, operation.Token), operation.Token);
             operation.Token.ThrowIfCancellationRequested();
             if (IsReadOnly) throw new InvalidOperationException(EpmaLocalizer.Format("epma_editor_readonly_hint"));
             CreatedTemplate = _original is null ? await _catalog.CreateAsync(package, operation.Token)

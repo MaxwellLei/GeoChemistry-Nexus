@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -402,10 +402,10 @@ namespace GeoChemistryNexus.ViewModels
         private ObservableCollection<CalculationStep> calculationSteps = new();
 
         /// <summary>
-        /// 计算详情面板是否最小化（仅显示标题栏）
+        /// 右侧检查器（计算详情侧边栏）是否展开；与表格控件的 IsInspectorOpen 双向绑定，默认收起。
         /// </summary>
         [ObservableProperty]
-        private bool isDetailPanelMinimized = true;
+        private bool isInspectorOpen = false;
 
         /// <summary>
         /// 是否有可显示的计算数据
@@ -519,9 +519,6 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化 GTM 服务
             GeothermometerService.Initialize();
 
-            // 若本地已有 GeoT-List，静默对账一次（创建未安装占位 / 刷新状态，不访问网络）
-            TryReconcileLocalCatalog();
-
             // 每次进入页面默认展开「官方温压计」一级区块、不选中任何温压计（类别展开状态仍沿用上次）
             var initialSidebarState = GeoTSidebarStateHelper.Load();
             initialSidebarState.ExpandedSection = GeoTSidebarSectionKeys.Official;
@@ -529,6 +526,9 @@ namespace GeoChemistryNexus.ViewModels
 
             // 加载分组数据（内部会按当前搜索刷新筛选项与列表）
             LoadSidebarSections();
+
+            // 若本地已有 GeoT-List，在后台静默对账一次（创建未安装占位 / 刷新状态，不访问网络），避免进入页面时卡界面
+            _ = ReconcileLocalCatalogInBackgroundAsync();
 
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
         }
@@ -539,6 +539,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             ReloadCategoryGroupsAndSelection();
+            RefreshAppliedColumnGroups();
 
             // 语言切换后按新语言重新加载帮助文档（缓存按语言分键）
             if (IsHelpDocVisible && SelectedPlugin != null)
@@ -647,7 +648,7 @@ namespace GeoChemistryNexus.ViewModels
 
             SidebarSections.Add(BuildSidebarSection(
                 GeoTSidebarSectionKeys.Custom,
-                LanguageService.Instance["geo_section_custom"] ?? "个人温压计模板",
+                LanguageService.Instance["geo_section_custom"] ?? "我的温压计模板",
                 entity => !entity.IsOfficial));
 
             SidebarSections.Add(BuildSidebarSection(
@@ -737,16 +738,25 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 用本地缓存的 GeoT-List 对账数据库（无网络）
         /// </summary>
-        private static void TryReconcileLocalCatalog()
+        private async Task ReconcileLocalCatalogInBackgroundAsync()
         {
             try
             {
-                var index = GeothermometerService.TryLoadLocalPluginIndex();
-                if (index?.Plugins == null || index.Plugins.Count == 0)
-                    return;
+                bool changed = await Task.Run(() =>
+                {
+                    var index = GeothermometerService.TryLoadLocalPluginIndex();
+                    if (index?.Plugins == null || index.Plugins.Count == 0)
+                        return false;
 
-                if (GeothermometerService.SyncOfficialPluginsFromServerList(index))
+                    if (!GeothermometerService.SyncOfficialPluginsFromServerList(index))
+                        return false;
+
                     GeothermometerService.ReloadPlugins();
+                    return true;
+                });
+
+                if (changed)
+                    LoadSidebarSections();
             }
             catch (Exception ex)
             {
@@ -1737,7 +1747,9 @@ namespace GeoChemistryNexus.ViewModels
                     IconColor = summary.IconColor,
                     Headers = summary.Headers != null ? new List<string>(summary.Headers) : new List<string>(),
                     Units = summary.Units != null ? new List<string>(summary.Units) : new List<string>(),
+                    Groups = CloneGroups(summary.Groups),
                     ExampleRow = summary.ExampleRow != null ? new List<string>(summary.ExampleRow) : new List<string>(),
+                    ExtraExampleRows = CloneExampleRows(summary.ExtraExampleRows),
                     FormulaName = summary.FormulaName,
                     InputColumns = summary.InputColumns != null ? new List<string>(summary.InputColumns) : new List<string>(),
                     AdditionalFormulas = summary.AdditionalFormulas != null
@@ -1770,7 +1782,9 @@ namespace GeoChemistryNexus.ViewModels
                 IconColor = plugin.IconColor,
                 Headers = plugin.Headers != null ? new List<string>(plugin.Headers) : new List<string>(),
                 Units = plugin.Units != null ? new List<string>(plugin.Units) : new List<string>(),
+                Groups = CloneGroups(plugin.Groups),
                 ExampleRow = plugin.ExampleRow != null ? new List<string>(plugin.ExampleRow) : new List<string>(),
+                ExtraExampleRows = CloneExampleRows(plugin.ExtraExampleRows),
                 FormulaName = plugin.FormulaName,
                 InputColumns = plugin.InputColumns != null ? new List<string>(plugin.InputColumns) : new List<string>(),
                 AdditionalFormulas = plugin.AdditionalFormulas != null
@@ -1861,7 +1875,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 从包文件导入 GTM（支持 .gtm.zip，以及不在界面展示的裸 .zip，可多选）
         /// </summary>
         [RelayCommand]
-        private void ImportPlugin()
+        private async Task ImportPlugin()
         {
             var openFileDialog = new OpenFileDialog
             {
@@ -1875,20 +1889,58 @@ namespace GeoChemistryNexus.ViewModels
             if (openFileDialog.ShowDialog() != true)
                 return;
 
-            ImportPluginsBatch(openFileDialog.FileNames);
+            await ImportPluginsBatchAsync(openFileDialog.FileNames);
         }
 
         /// <summary>
         /// 从指定 ZIP 路径导入 GTM（支持拖入文件，可多文件）
         /// </summary>
         [RelayCommand]
-        private void ImportPluginFromPath(object? parameter)
+        private async Task ImportPluginFromPath(object? parameter)
         {
             var filePaths = ExtractImportFilePaths(parameter);
             if (filePaths.Count == 0)
                 return;
 
-            ImportPluginsBatch(filePaths);
+            await ImportPluginsBatchAsync(filePaths);
+        }
+
+        /// <summary>
+        /// 导入后跳转：清除筛选、展开“我的”区块与对应类别，并选中导入的温压计（拖入 / 菜单导入 / 文件关联导入一致）。
+        /// </summary>
+        private void ShowImportedPlugin(GeothermometerEntity? imported)
+        {
+            if (imported == null || imported.IsOfficial)
+            {
+                LoadSidebarSections();
+                return;
+            }
+
+            // 导入后需要看到新条目：清掉搜索与标签筛选
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                SearchText = string.Empty;
+                _searchDebounceTimer?.Stop();
+            }
+            ClearTagFilters();
+
+            var state = GeoTSidebarStateHelper.Load();
+            state.ExpandedSection = GeoTSidebarSectionKeys.Custom;
+            state.ExpandedCategoryKeys ??= new List<string>();
+            string categoryKey = GeoTCategoryHelper.NormalizeCategoryKey(imported.Category);
+            string compositeKey = BuildCategoryStateKey(GeoTSidebarSectionKeys.Custom, categoryKey);
+            if (!state.ExpandedCategoryKeys.Contains(compositeKey))
+                state.ExpandedCategoryKeys.Add(compositeKey);
+            GeoTSidebarStateHelper.Save(state);
+
+            LoadSidebarSections();
+
+            var plugin = FindPluginById(imported.PluginId);
+            if (plugin != null)
+            {
+                SelectedPlugin = plugin;
+                OnPropertyChanged(nameof(SelectedPluginDisplayName));
+            }
         }
 
         private static IReadOnlyList<string> ExtractImportFilePaths(object? parameter)
@@ -1902,7 +1954,7 @@ namespace GeoChemistryNexus.ViewModels
             };
         }
 
-        private void ImportPluginsBatch(IEnumerable<string> filePaths)
+        private async Task ImportPluginsBatchAsync(IEnumerable<string> filePaths)
         {
             var existingPaths = filePaths
                 .Where(p => !string.IsNullOrWhiteSpace(p) && File.Exists(p))
@@ -1922,12 +1974,32 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             int successCount = 0;
+            GeothermometerEntity? lastImported = null;
 
             foreach (var filePath in paths)
             {
                 try
                 {
-                    GeothermometerService.ImportFromZip(filePath);
+                    var imported = GeothermometerService.ImportFromZip(filePath, persist: false);
+
+                    // PluginId 相同即视为同一个包：已存在时先提示是否覆盖
+                    var existing = GeothermometerService.FindExistingForImport(imported);
+                    if (existing != null)
+                    {
+                        string message = string.Format(
+                            LanguageService.Instance["epma_package_replace_confirm"],
+                            imported.PluginId,
+                            existing.Name, existing.Version,
+                            imported.Name, imported.Version);
+                        if (!await MessageHelper.ShowAsyncDialog(
+                                message,
+                                LanguageService.Instance["Cancel"],
+                                LanguageService.Instance["epma_package_replace"]))
+                            continue;
+                    }
+
+                    GeothermometerService.PersistImportedEntity(imported);
+                    lastImported = imported;
                     successCount++;
                 }
                 catch (GeothermometerImportException ex)
@@ -1955,7 +2027,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // ImportFromZip 已增量 UpsertLoadedPlugin，只需刷新侧栏
             InvalidateHelpDocCache();
-            LoadSidebarSections();
+            ShowImportedPlugin(lastImported);
 
             if (successCount == 1 && paths.Count == 1)
             {
@@ -2057,13 +2129,17 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 ReoGridTableAppearance.StyleColumnHeaders(reoGridControl);
 
-                // 模板（格式 1.3）为某些列声明了单位时，单位显示在列名下方；没有单位的列只显示列名
-                SetColumnUnits(reoGridControl, CommaSeparatedListHelper.NormalizeUnits(headers, SelectedPlugin.Units));
+                // 模板（格式 1.3）为某些列声明了单位时，单位显示在列名下方；没有单位的列只显示列名。
+                // 模板（格式 1.3）为某些列声明了分组时，分组带显示在列名上方，标题按当前界面语言解析。
+                SetColumnHeaderExtras(reoGridControl, SelectedPlugin);
 
-                // 设置示例数据（第一行即第一条数据）
+                // 应用后输入列留空，示例数据由顶栏“示例”按钮填充（与 CIPW 一致）；
+                // 输出列（示例行里是公式的列）先放好第 1 行的公式，输入为空时结果为空。
+                // 数据从工作表第 1 行开始（表头是原生列头），示例公式因此要改写到所在的行号。
                 for (int i = 0; i < exampleRow.Count && i < headers.Count; i++)
                 {
-                    worksheet[0, i] = exampleRow[i];
+                    if (exampleRow[i]?.TrimStart().StartsWith("=") == true)
+                        worksheet[0, i] = GeoTExampleHelper.ShiftFormulaRow(exampleRow[i], 1);
                 }
 
                 // 设置列宽和温度列格式
@@ -2108,19 +2184,83 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        /// <summary>
+        /// 填充示例数据（顶栏“示例”按钮，与 CIPW 一致）：把当前模板的全部示例写入表格，
+        /// 第 1 条来自 ExampleRow，第 2 条起来自附加示例行；输出列的公式按所在行推算。
+        /// </summary>
+        [RelayCommand]
+        private void FillExample(ReoGridControl? reoGridControl)
+        {
+            var plugin = _appliedPlugin ?? SelectedPlugin;
+            var worksheet = reoGridControl?.CurrentWorksheet;
+            if (plugin == null || worksheet == null || plugin.Headers.Count == 0)
+                return;
+
+            var headers = plugin.Headers;
+            var exampleRow = CommaSeparatedListHelper.AlignToHeaderCount(headers, plugin.ExampleRow);
+            var exampleRows = GeoTExampleHelper.BuildWorksheetRows(headers, exampleRow, plugin.ExtraExampleRows);
+
+            // 示例行数超过当前表格行数时补行
+            if (worksheet.RowCount < exampleRows.Count + 1)
+            {
+                int previousRowCount = worksheet.RowCount;
+                worksheet.RowCount = exampleRows.Count + 1;
+                ReoGridTableAppearance.ApplyBodyRowHeight(worksheet, previousRowCount, worksheet.RowCount - previousRowCount);
+            }
+
+            for (int row = 0; row < exampleRows.Count; row++)
+            {
+                for (int i = 0; i < headers.Count && i < worksheet.ColumnCount; i++)
+                {
+                    string value = exampleRows[row][i];
+                    if (value.Length == 0)
+                        continue;
+
+                    worksheet[row, i] = value;
+                }
+            }
+
+            FitColumnWidths(worksheet, headers);
+            MessageHelper.Info(string.Format(LanguageService.Instance["epma_examples_loaded"], exampleRows.Count));
+        }
+
         /// <summary>表格表头的单位提供者（模板没有任何单位时不会创建，表头保持原样）。</summary>
         private WorksheetColumnUnitProvider? _columnUnitProvider;
 
-        private void SetColumnUnits(ReoGridControl grid, IReadOnlyList<string> units)
+        private void SetColumnHeaderExtras(ReoGridControl grid, Geothermometer plugin)
         {
+            var units = CommaSeparatedListHelper.NormalizeUnits(plugin.Headers, plugin.Units);
+            var groups = GeoTLocalizationHelper.ResolveGroups(plugin.Headers, plugin.Groups, plugin.Languages);
+
             if (_columnUnitProvider == null)
             {
-                if (units.Count == 0) return;
-                _columnUnitProvider = new WorksheetColumnUnitProvider();
+                // 即使模板没有单位和分组也要注册：第 1 列通常是样品列（Sample），其列名需要按界面语言显示翻译，列头 Text 不变。
+                // 没有单位和分组时列头高度与未注册时完全一致。
+                _columnUnitProvider = new WorksheetColumnUnitProvider(localizedLeadingColumns: 1);
                 ReoGridTableAppearance.SetColumnHeaderProvider(grid, _columnUnitProvider);
             }
-            _columnUnitProvider.SetUnits(units);
+            _columnUnitProvider.SetHeaders(units, groups);
         }
+
+        /// <summary>界面语言切换后，已应用模板的分组带按新语言重新解析（单位不随语言变化）。</summary>
+        private void RefreshAppliedColumnGroups()
+        {
+            if (_columnUnitProvider == null || _appliedPlugin == null) return;
+
+            _columnUnitProvider.SetHeaders(
+                CommaSeparatedListHelper.NormalizeUnits(_appliedPlugin.Headers, _appliedPlugin.Units),
+                GeoTLocalizationHelper.ResolveGroups(_appliedPlugin.Headers, _appliedPlugin.Groups, _appliedPlugin.Languages));
+        }
+
+        private static List<Dictionary<string, string>> CloneGroups(IEnumerable<Dictionary<string, string>>? groups)
+            => groups == null
+                ? new List<Dictionary<string, string>>()
+                : groups.Select(group => group != null ? new Dictionary<string, string>(group) : new Dictionary<string, string>()).ToList();
+
+        private static List<List<string>> CloneExampleRows(IEnumerable<List<string>>? rows)
+            => rows == null
+                ? new List<List<string>>()
+                : rows.Select(row => row != null ? new List<string>(row) : new List<string>()).ToList();
 
         /// <summary>按内容与粗体表头自适应列宽。</summary>
         private static void FitColumnWidths(Worksheet worksheet, IReadOnlyList<string> headers)
@@ -2131,6 +2271,10 @@ namespace GeoChemistryNexus.ViewModels
                 var currentWidth = worksheet.GetColumnWidth(i);
                 // 列宽需同时容纳粗体列头文字
                 var headerWidth = ReoGridTableAppearance.GetHeaderColumnWidth(headers[i], 0, ushort.MaxValue);
+                // 第 1 列显示的是翻译后的样品列名，取两者中较宽的，保证任何界面语言下都放得下
+                if (i == 0)
+                    headerWidth = Math.Max(headerWidth, ReoGridTableAppearance.GetHeaderColumnWidth(
+                        BuiltInColumnHeaders.GetDisplayText(headers[i]), 0, ushort.MaxValue));
                 worksheet.SetColumnsWidth(i, 1, Math.Max((ushort)(currentWidth + 10), headerWidth));
             }
         }
@@ -2452,7 +2596,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             separator.IsCollapsed = !separator.IsCollapsed;
-            GeothermometerService.ApplyCalculationStepGroupVisibility(CalculationSteps);
+            CalculationStepHelper.ApplyGroupVisibility(CalculationSteps);
         }
 
         /// <summary>
@@ -2461,31 +2605,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand(CanExecute = nameof(CanExportOrCopyCalculationDetails))]
         private async Task ExportCalculationDetailsAsync()
         {
-            if (CalculationSteps.Count == 0)
-                return;
-
-            string defaultName = string.IsNullOrWhiteSpace(SelectedRowInfo)
-                ? "calculation_details"
-                : SanitizeFileName(SelectedRowInfo);
-
-            string? filePath = await FileHelper.GetSaveFilePath2Async(
-                title: LanguageService.Instance["geo_msg_csv_save_title"],
-                filter: LanguageService.Instance["csv_file_filter"],
-                defaultExt: ".csv",
-                defaultFileName: defaultName);
-            if (string.IsNullOrEmpty(filePath))
-                return;
-
-            try
-            {
-                var csvContent = BuildCalculationDetailsCsv();
-                await Task.Run(() => File.WriteAllText(filePath, csvContent, new UTF8Encoding(true)));
-                MessageHelper.ExportSuccess(LanguageService.Instance["geo_msg_export_success"], filePath);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Error(string.Format(LanguageService.Instance["geo_msg_export_failed"], ex.Message));
-            }
+            await InspectorDetailsExporter.ExportStepsCsvAsync(CalculationSteps, SelectedRowInfo);
         }
 
         /// <summary>
@@ -2494,18 +2614,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand(CanExecute = nameof(CanExportOrCopyCalculationDetails))]
         private void CopyCalculationDetails()
         {
-            if (CalculationSteps.Count == 0)
-                return;
-
-            try
-            {
-                Clipboard.SetText(BuildCalculationDetailsClipboardText());
-                MessageHelper.Success(LanguageService.Instance["geo_msg_calc_details_copied"]);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Error(LanguageService.Instance["copy_failed"] + ex.Message);
-            }
+            InspectorDetailsExporter.CopyStepsToClipboard(CalculationSteps);
         }
 
         private bool CanExportOrCopyCalculationDetails()
@@ -2515,49 +2624,6 @@ namespace GeoChemistryNexus.ViewModels
         {
             ExportCalculationDetailsCommand.NotifyCanExecuteChanged();
             CopyCalculationDetailsCommand.NotifyCanExecuteChanged();
-        }
-
-        private string BuildCalculationDetailsCsv()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("Name,Value,Description");
-            foreach (var step in CalculationSteps)
-            {
-                sb.Append(EscapeCsvField(step.Name)).Append(',')
-                  .Append(EscapeCsvField(step.Value)).Append(',')
-                  .Append(EscapeCsvField(step.Description))
-                  .AppendLine();
-            }
-            return sb.ToString();
-        }
-
-        private string BuildCalculationDetailsClipboardText()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("Name\tValue\tDescription");
-            foreach (var step in CalculationSteps)
-            {
-                sb.Append(step.Name).Append('\t')
-                  .Append(step.Value).Append('\t')
-                  .Append(step.Description)
-                  .AppendLine();
-            }
-            return sb.ToString().TrimEnd('\r', '\n');
-        }
-
-        private static string EscapeCsvField(string? value)
-        {
-            value ??= string.Empty;
-            if (value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r'))
-                return $"\"{value.Replace("\"", "\"\"")}\"";
-            return value;
-        }
-
-        private static string SanitizeFileName(string name)
-        {
-            foreach (char c in Path.GetInvalidFileNameChars())
-                name = name.Replace(c, '_');
-            return string.IsNullOrWhiteSpace(name) ? "calculation_details" : name.Trim();
         }
 
         /// <summary>
@@ -2576,24 +2642,6 @@ namespace GeoChemistryNexus.ViewModels
             CopyCalculationDetailsCommand.NotifyCanExecuteChanged();
         }
 
-        /// <summary>
-        /// 最小化计算详情面板（收起为底部长条）
-        /// </summary>
-        [RelayCommand]
-        private void MinimizeDetailPanel()
-        {
-            IsDetailPanelMinimized = true;
-        }
-
-        /// <summary>
-        /// 从最小化状态还原计算详情面板
-        /// </summary>
-        [RelayCommand]
-        private void RestoreDetailPanel()
-        {
-            IsDetailPanelMinimized = false;
-        }
-
         private void ShowUpdateOverlay(bool indeterminate, string statusText, double progress = 0)
         {
             if (_isAutoChecking && indeterminate)
@@ -2608,9 +2656,19 @@ namespace GeoChemistryNexus.ViewModels
         private void HideUpdateOverlay()
         {
             IsUpdateOverlayVisible = false;
+            IsUpdateCancelable = false;
             IsUpdateProgressIndeterminate = true;
             UpdateProgress = 0;
         }
+
+        /// <summary>批量下载 / 更新进行中，遮罩上显示“取消”按钮。</summary>
+        [ObservableProperty]
+        private bool isUpdateCancelable;
+
+        private CancellationTokenSource? _batchDownloadCts;
+
+        [RelayCommand]
+        private void CancelUpdate() => _batchDownloadCts?.Cancel();
 
         private static string ShowGeothermometerDownloadResult(
             GeothermometerBatchDownloadResult downloadResult,
@@ -2746,13 +2804,14 @@ namespace GeoChemistryNexus.ViewModels
                         "温压计列表更新成功");
                     if (_isAutoChecking)
                     {
-                        // 自动检查更新成功：发轻量 Toast 提示增量统计
+                        // 自动检查更新成功：与图解一致，发轻量 Toast 提示 新增 / 可更新 / 下架 数量
                         MessageHelper.Info(string.Format(
                             LanguageService.GetString(
-                                "geo_msg_list_sync_summary",
-                                "列表已同步。未安装 {0} 个，可更新 {1} 个。"),
-                            checkResult.NotInstalledCount,
-                            checkResult.OutdatedCount));
+                                "template_list_sync_light_tip",
+                                "列表已更新，新增 {0} / 可更新 {1} / 下架 {2}"),
+                            checkResult.AddedCount,
+                            checkResult.OutdatedCount,
+                            checkResult.RemovalCount));
                     }
                     else
                     {
@@ -3024,6 +3083,16 @@ namespace GeoChemistryNexus.ViewModels
             }
             else
             {
+                // 与图解一致：只剩需要升级软件的模板时给出提示
+                int blocked = GeothermometerService.GetRequiresAppUpgradeCount();
+                if (blocked > 0)
+                {
+                    MessageHelper.Warning(string.Format(
+                        LanguageService.GetString(
+                            "update_blocked_need_app_upgrade",
+                            "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"),
+                        blocked));
+                }
                 RefreshPendingInstallMenuVisibility();
             }
         }
@@ -3034,7 +3103,12 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             IsCheckingUpdates = true;
+            _batchDownloadCts?.Dispose();
+            _batchDownloadCts = new CancellationTokenSource();
+            var batchToken = _batchDownloadCts.Token;
+            bool onlyOutdated = GeothermometerService.GetNotInstalledPluginEntries().Count == 0;
             ShowUpdateOverlay(false, LanguageService.Instance["geo_msg_downloading_update"]);
+            IsUpdateCancelable = true;
 
             try
             {
@@ -3048,9 +3122,26 @@ namespace GeoChemistryNexus.ViewModels
                         p.name);
                 });
 
-                var downloadResult = await GeothermometerService.DownloadAndReloadAsync(entries, removals: null, progress);
-                string result = ShowGeothermometerDownloadResult(downloadResult, incompatibleCount: 0);
-                UpdateStatusText = result;
+                var downloadResult = await GeothermometerService.DownloadAndReloadAsync(entries, removals: null, progress, batchToken);
+                if (downloadResult.Cancelled)
+                {
+                    if (downloadResult.SuccessCount > 0)
+                    {
+                        MessageHelper.Success(string.Format(
+                            LanguageService.Instance["batch_download_success_count"],
+                            downloadResult.SuccessCount));
+                    }
+                    MessageHelper.Info(LanguageService.GetString(
+                        onlyOutdated ? "batch_update_cancelled" : "batch_download_cancelled", "已取消"));
+                    UpdateStatusText = string.Empty;
+                }
+                else
+                {
+                    string result = ShowGeothermometerDownloadResult(
+                        downloadResult,
+                        incompatibleCount: GeothermometerService.GetRequiresAppUpgradeCount());
+                    UpdateStatusText = result;
+                }
 
                 if (downloadResult.SuccessCount > 0)
                 {
@@ -3249,17 +3340,15 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 删除温压计（支持官方和自定义）
+        /// 删除“我的”温压计。官方温压计不能直接删除：需先“移除在线温压计模板”变为我的温压计后再删除（与图解、EPMA 一致）。
         /// </summary>
         [RelayCommand]
         private async Task DeleteCustomThermometer(Geothermometer plugin)
         {
             if (plugin == null) return;
-            if (plugin.IsBuiltIn && !IsDeveloperMode) return;
+            if (plugin.IsBuiltIn) return;
 
-            string typeLabel = plugin.IsBuiltIn
-                ? LanguageService.Instance["geo_label_official"]
-                : LanguageService.Instance["geo_label_custom"];
+            string typeLabel = LanguageService.Instance["geo_label_custom"];
             bool confirmed = await MessageHelper.ShowAsyncDialog(
                 string.Format(LanguageService.Instance["geo_dialog_delete_thermometer"], typeLabel, plugin.Name),
                 LanguageService.Instance["Cancel"],
@@ -3300,10 +3389,20 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task ForceUpdatePlugin(Geothermometer plugin)
         {
-            if (plugin == null || !plugin.IsBuiltIn || !IsDeveloperMode)
+            if (plugin == null || !plugin.IsBuiltIn || plugin.IsNotInstalled || !AppCultureRegistry.IsDeveloperModeEnabled())
                 return;
 
             if (IsCheckingUpdates)
+                return;
+
+            // 强制更新会覆盖本地内容，先确认
+            bool forceConfirmed = await MessageHelper.ShowAsyncDialog(
+                LanguageService.GetString(
+                    "geo_msg_confirm_update_overwrite",
+                    "更新将用官方版本覆盖本地内容（含本地修改），是否继续？"),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+            if (!forceConfirmed)
                 return;
 
             IsCheckingUpdates = true;
@@ -3354,9 +3453,25 @@ namespace GeoChemistryNexus.ViewModels
         /// 转换为官方温压计
         /// </summary>
         [RelayCommand]
-        private void ConvertToOfficial(Geothermometer plugin)
+        private async Task ConvertToOfficial(Geothermometer plugin)
         {
-            if (plugin == null) return;
+            if (plugin == null || plugin.IsBuiltIn || !AppCultureRegistry.IsDeveloperModeEnabled()) return;
+
+            string promoteMessage = string.Format(
+                LanguageService.GetString(
+                    "confirm_promote_geothermometer",
+                    "确定将“{0}”升级为在线温压计模板？它将随官方库一起发布。"),
+                plugin.Name);
+
+            // 标识的随机部分不变，只换前缀：本地已有同标识的在线记录时会被替换
+            string officialId = GeothermometerService.GetConvertedPluginId(plugin.Id, true);
+            if (GeothermometerService.ConvertedTargetExists(plugin.Id, true))
+                promoteMessage += "\n" + string.Format(LanguageService.Instance["epma_library_promote_replace"], officialId);
+
+            if (!await MessageHelper.ShowAsyncDialog(
+                    promoteMessage,
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"])) return;
 
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             if (GeothermometerService.ConvertToOfficial(entityId))
@@ -3370,9 +3485,21 @@ namespace GeoChemistryNexus.ViewModels
         /// 降级为自定义温压计
         /// </summary>
         [RelayCommand]
-        private void ConvertToCustom(Geothermometer plugin)
+        private async Task ConvertToCustom(Geothermometer plugin)
         {
-            if (plugin == null) return;
+            if (plugin == null || !plugin.IsBuiltIn || plugin.IsNotInstalled || !AppCultureRegistry.IsDeveloperModeEnabled()) return;
+
+            string demoteMessage = LanguageService.Instance["confirm_demote_geothermometer"];
+
+            // 标识的随机部分不变，只换前缀：本地已有同标识的我的记录时会被替换
+            string customId = GeothermometerService.GetConvertedPluginId(plugin.Id, false);
+            if (GeothermometerService.ConvertedTargetExists(plugin.Id, false))
+                demoteMessage += "\n" + string.Format(LanguageService.Instance["epma_library_demote_replace"], customId);
+
+            if (!await MessageHelper.ShowAsyncDialog(
+                    demoteMessage,
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"])) return;
 
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             if (GeothermometerService.ConvertToCustom(entityId))

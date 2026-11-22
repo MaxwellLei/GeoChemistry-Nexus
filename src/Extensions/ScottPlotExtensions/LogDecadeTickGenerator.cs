@@ -21,6 +21,14 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
         /// </summary>
         public bool ShowRangeEndpoints { get; set; } = false;
 
+        /// <summary>
+        /// 需要强制带标签显示的端点位置（log10 坐标）。
+        /// 为 null 时使用当前轴范围两端（严格对齐场景）；
+        /// 非 null 时仅使用这些位置（自动模式下范围两端含边距，端点应取用户设定的真实边界值）。
+        /// 不在当前轴范围内的位置会被忽略。
+        /// </summary>
+        public double[]? EndpointPositions { get; set; }
+
         public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
 
         public int MaxTickCount { get; set; } = 10000;
@@ -94,7 +102,7 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
             }
 
             if (ShowRangeEndpoints)
-                AddRangeEndpointTicks(ticks, range, edge, size, epsilon);
+                AddRangeEndpointTicks(ticks, range, edge, size, epsilon, EndpointPositions);
 
             Ticks = ticks.OrderBy(t => t.Position).ToArray();
         }
@@ -103,7 +111,7 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
         /// 保证坐标轴两端始终有带标签的刻度；
         /// 若附近已有的标签与端点标签挤在一起，则保留端点、丢弃邻近标签。
         /// </summary>
-        private static void AddRangeEndpointTicks(List<Tick> ticks, CoordinateRange range, Edge edge, PixelLength size, double epsilon)
+        private static void AddRangeEndpointTicks(List<Tick> ticks, CoordinateRange range, Edge edge, PixelLength size, double epsilon, double[]? endpointPositions)
         {
             if (range.Length <= 0 || double.IsNaN(range.Length) || double.IsInfinity(range.Length))
                 return;
@@ -113,9 +121,13 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
             double pxPerLogUnit = size.Length > 0 ? size.Length / range.Length : 0;
             double minGapLog = pxPerLogUnit > 0 ? minLabelGapPx / pxPerLogUnit : 0;
 
-            foreach (double endPos in new[] { range.Min, range.Max })
+            foreach (double endPos in endpointPositions ?? new[] { range.Min, range.Max })
             {
                 if (double.IsNaN(endPos) || double.IsInfinity(endPos))
+                    continue;
+
+                // 端点落在当前轴范围之外则忽略
+                if (endPos < range.Min - epsilon || endPos > range.Max + epsilon)
                     continue;
 
                 // 端点已经是带标签刻度（如恰好落在 10^n 上），无需重复添加

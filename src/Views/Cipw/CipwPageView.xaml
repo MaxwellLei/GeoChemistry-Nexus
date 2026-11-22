@@ -157,7 +157,7 @@
                             Command="{Binding ExportCsvCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="&#xe673;" FontFamily="pack://application:,,,/Data/Icon/#iconfont" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding [cipw_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -207,7 +207,25 @@
                     <!-- 摘要：选中样品 + 硅 / 铝饱和度徽章 -->
                     <Border Grid.Row="0" Padding="14,10" Background="White" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1"
                             Visibility="{Binding HasDiagnosticData, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <StackPanel>
+                        <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- 导出 / 复制计算详情（与温压计检查器一致） -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,-3,0,0">
+                            <Button Style="{StaticResource InspectorActionButtonStyle}" Margin="0,0,2,0"
+                                    Command="{Binding ExportDiagnosticDetailsCommand}"
+                                    ToolTip="{Binding [geo_tooltip_export_calc_details], Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出计算详情为 CSV}">
+                                <TextBlock Text="&#xe673;" FontFamily="{StaticResource InspectorIconFont}" FontSize="13"/>
+                            </Button>
+                            <Button Style="{StaticResource InspectorActionButtonStyle}"
+                                    Command="{Binding CopyDiagnosticDetailsCommand}"
+                                    ToolTip="{Binding [geo_tooltip_copy_calc_details], Source={x:Static lg:LanguageService.Instance}, FallbackValue=复制计算详情到剪贴板}">
+                                <TextBlock Text="&#xe63e;" FontFamily="{StaticResource InspectorIconFont}" FontSize="13"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0">
                             <TextBlock Text="{Binding SelectedRowInfo}" FontSize="13" FontWeight="SemiBold" Foreground="#333" TextTrimming="CharacterEllipsis"/>
                             <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                 <Border CornerRadius="4" Padding="6,2" Margin="0,0,6,0" VerticalAlignment="Center">
@@ -234,6 +252,7 @@
                                 </Border>
                             </StackPanel>
                         </StackPanel>
+                        </Grid>
                     </Border>
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0">

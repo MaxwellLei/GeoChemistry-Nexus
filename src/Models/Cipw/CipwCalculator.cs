@@ -45,12 +45,12 @@ namespace GeoChemistryNexus.Models.Cipw
         public string AluminaState { get; set; } = string.Empty;
 
         /// <summary>
-        /// 质量平衡误差
+        /// 质量平衡误差（wt%）：|100 − (标准矿物质量和 + Py/Fl/Hl 形成时释放的氧)|
         /// </summary>
         public double MassBalanceError { get; set; }
 
         /// <summary>
-        /// 质量总和
+        /// 标准矿物质量百分比总和（不含 Py/Fl/Hl 形成时释放的氧）
         /// </summary>
         public double TotalMassSum { get; set; }
 
@@ -204,13 +204,16 @@ namespace GeoChemistryNexus.Models.Cipw
                 }
 
                 var state = new ChemicalState(moles);
-                double volatileFractionMoles = 0.0;
 
-                // 形成挥发分矿物
-                volatileFractionMoles = FormVolatiles(state);
+                // 形成磷灰石（标准流程中最先分配 CaO）
+                FormApatite(state);
                 state.Clip();
 
-                // 形成副矿物
+                // 形成挥发分矿物
+                FormVolatiles(state);
+                state.Clip();
+
+                // 形成副矿物（锆石、铬铁矿、钛铁矿）
                 FormAccessories(state);
                 state.Clip();
 
@@ -234,6 +237,10 @@ namespace GeoChemistryNexus.Models.Cipw
                 FormFeldsparsAndResidualAlkalis(state);
                 state.Clip();
 
+                // 形成榍石与金红石（榍石仅使用钙长石分配后剩余的 CaO）
+                FormTitaniteAndRutile(state);
+                state.Clip();
+
                 // 形成铁氧化物
                 FormIronOxides(state);
                 state.Clip();
@@ -246,6 +253,11 @@ namespace GeoChemistryNexus.Models.Cipw
                 var (silicaSaturation, residualDeficit) = SilicaDesaturation(state);
                 state.Clip();
                 state.CleanMinerals();
+
+                if (residualDeficit > CipwConstants.EPS)
+                {
+                    ironWarnings.Add(new CipwMessage("cipw_warning_silica_deficit_residual", $"{residualDeficit:F4}"));
+                }
 
                 // 计算质量百分比
                 var wt = new Dictionary<string, double>();
@@ -265,7 +277,16 @@ namespace GeoChemistryNexus.Models.Cipw
                 }
 
                 double actualSum = wtPct.Values.Sum();
-                double massErr = Math.Abs(100.0 - actualSum);
+
+                // Py / Fl / Hl 形成时 S、F、Cl 置换了氧化物中的氧（FeO→FeS2、CaO→CaF2、Na2O→2NaCl），
+                // 被释放的氧不进入任何标准矿物，质量平衡检验时需计入
+                double oxygenReleasedMoles =
+                    state.Minerals.GetValueOrDefault("Fl", 0.0) +
+                    state.Minerals.GetValueOrDefault("Py", 0.0) +
+                    state.Minerals.GetValueOrDefault("Hl", 0.0) / 2.0;
+                double oxygenReleasedPct = 100.0 * oxygenReleasedMoles * CipwConstants.OxygenMolarMass / totalInputMass;
+
+                double massErr = Math.Abs(100.0 - (actualSum + oxygenReleasedPct));
 
                 return new CipwResult
                 {
@@ -460,7 +481,20 @@ namespace GeoChemistryNexus.Models.Cipw
         }
 
         /// <summary>
-        /// 形成副矿物
+        /// 形成磷灰石 (Ap)。1 mol P2O5 结合 10/3 mol CaO（不含 OH/F）。
+        /// </summary>
+        private static void FormApatite(ChemicalState state)
+        {
+            double ap = Math.Min(state.Get("P2O5"), state.Get("CaO") / (10.0 / 3.0));
+            if (ap > 0)
+            {
+                state.Consume(("P2O5", ap), ("CaO", ap * (10.0 / 3.0)));
+                state.Produce("Ap", ap);
+            }
+        }
+
+        /// <summary>
+        /// 形成副矿物（锆石、铬铁矿、钛铁矿）
         /// </summary>
         private static void FormAccessories(ChemicalState state)
         {
@@ -470,14 +504,6 @@ namespace GeoChemistryNexus.Models.Cipw
             {
                 state.Consume(("ZrO2", z), ("SiO2", z));
                 state.Produce("Z", z);
-            }
-
-            // 磷灰石 (Ap)
-            double ap = Math.Min(state.Get("P2O5"), state.Get("CaO") / (10.0 / 3.0));
-            if (ap > 0)
-            {
-                state.Consume(("P2O5", ap), ("CaO", ap * (10.0 / 3.0)));
-                state.Produce("Ap", ap);
             }
 
             // 铬铁矿 (Cm)
@@ -495,9 +521,18 @@ namespace GeoChemistryNexus.Models.Cipw
                 state.Consume(("TiO2", ilm), ("FeO", ilm));
                 state.Produce("Ilm", ilm);
             }
+        }
 
+        /// <summary>
+        /// 形成榍石与金红石。
+        /// 标准 CIPW 流程中，TiO2 先与 FeO 形成钛铁矿；仍有剩余时，榍石 (Tn) 只能使用
+        /// 钙长石分配之后剩余的 CaO，最后仍剩余的 TiO2 记为金红石 (Ru)。
+        /// 此时 SiO2 账户可能为负（硅亏损），由后续去硅校正（Tn→Pf 等）统一处理，故不以 SiO2 余量限制 Tn。
+        /// </summary>
+        private static void FormTitaniteAndRutile(ChemicalState state)
+        {
             // 榍石 (Tn)
-            double tn = Math.Min(Math.Min(state.Get("TiO2"), state.Get("CaO")), state.Get("SiO2"));
+            double tn = Math.Min(state.Get("TiO2"), state.Get("CaO"));
             if (tn > 0)
             {
                 state.Consume(("TiO2", tn), ("CaO", tn), ("SiO2", tn));
@@ -669,6 +704,7 @@ namespace GeoChemistryNexus.Models.Cipw
             double fsAmount = state.Minerals.GetValueOrDefault("Fs", 0.0);
             double hyTotal = enAmount + fsAmount;
 
+            // 紫苏辉石 -> 橄榄石: 2(M)SiO3 -> M2SiO4 + SiO2（每 2 Hy 释放 1 SiO2）
             if (hyTotal > 0)
             {
                 double reducibleHy = Math.Min(hyTotal, 2.0 * deficit);
@@ -686,8 +722,38 @@ namespace GeoChemistryNexus.Models.Cipw
                 deficit -= reducibleHy / 2.0;
             }
 
-            // 正长石 -> 白榴石
-            if (deficit > 0)
+            // 标准去硅顺序（Kelsey 1965; Verma et al. 2003; Phillpots & Ague 2009）：
+            // Hy→Ol → Tn→Pf → Ab→Ne → Or→Lc → Wo→Cs → Di→Cs+Ol → Lc→Kp
+            // 各矿物均以化学式单位计量，每步按反应式释放 SiO2 并扣减硅亏损。
+
+            // 榍石 -> 钙钛矿: CaTiSiO5 -> CaTiO3 + SiO2（每 1 Tn 释放 1 SiO2）
+            if (deficit > CipwConstants.EPS)
+            {
+                double tnAmount = state.Minerals.GetValueOrDefault("Tn", 0.0);
+                double reducibleTn = Math.Min(tnAmount, deficit);
+                if (reducibleTn > 0)
+                {
+                    state.Minerals["Tn"] = Math.Max(0.0, tnAmount - reducibleTn);
+                    state.Produce("Pf", reducibleTn);
+                    deficit -= reducibleTn;
+                }
+            }
+
+            // 钠长石 -> 霞石: NaAlSi3O8 -> NaAlSiO4 + 2SiO2（每 1 Ab 释放 2 SiO2）
+            if (deficit > CipwConstants.EPS)
+            {
+                double abAmount = state.Minerals.GetValueOrDefault("Ab", 0.0);
+                double reducibleAb = Math.Min(abAmount, deficit / 2.0);
+                if (reducibleAb > 0)
+                {
+                    state.Minerals["Ab"] = Math.Max(0.0, abAmount - reducibleAb);
+                    state.Produce("Ne", reducibleAb);
+                    deficit -= 2.0 * reducibleAb;
+                }
+            }
+
+            // 正长石 -> 白榴石: KAlSi3O8 -> KAlSi2O6 + SiO2（每 1 Or 释放 1 SiO2）
+            if (deficit > CipwConstants.EPS)
             {
                 double orAmount = state.Minerals.GetValueOrDefault("Or", 0.0);
                 double reducibleOr = Math.Min(orAmount, deficit);
@@ -699,8 +765,43 @@ namespace GeoChemistryNexus.Models.Cipw
                 }
             }
 
-            // 白榴石 -> 假白榴石
-            if (deficit > 0)
+            // 硅灰石 -> 斜硅钙石: 2CaSiO3 -> Ca2SiO4 + SiO2（每 2 Wo 释放 1 SiO2）
+            if (deficit > CipwConstants.EPS)
+            {
+                double woAmount = state.Minerals.GetValueOrDefault("Wo", 0.0);
+                double reducibleWo = Math.Min(woAmount, 2.0 * deficit);
+                if (reducibleWo > 0)
+                {
+                    state.Minerals["Wo"] = Math.Max(0.0, woAmount - reducibleWo);
+                    state.Produce("Cs", reducibleWo / 2.0);
+                    deficit -= reducibleWo / 2.0;
+                }
+            }
+
+            // 透辉石 -> 斜硅钙石 + 橄榄石: 2CaMSi2O6 -> Ca2SiO4 + M2SiO4 + 2SiO2（每 1 Di 释放 1 SiO2）
+            // Di 与 Hd 按各自比例转化，Mg/Fe 分别进入 Fo/Fa
+            if (deficit > CipwConstants.EPS)
+            {
+                double diAmount = state.Minerals.GetValueOrDefault("Di", 0.0);
+                double hdAmount = state.Minerals.GetValueOrDefault("Hd", 0.0);
+                double cpxTotal = diAmount + hdAmount;
+                if (cpxTotal > 0)
+                {
+                    double reducibleCpx = Math.Min(cpxTotal, deficit);
+                    double diReduced = reducibleCpx * diAmount / cpxTotal;
+                    double hdReduced = reducibleCpx * hdAmount / cpxTotal;
+
+                    state.Minerals["Di"] = Math.Max(0.0, diAmount - diReduced);
+                    state.Minerals["Hd"] = Math.Max(0.0, hdAmount - hdReduced);
+                    state.Produce("Cs", reducibleCpx / 2.0);
+                    state.Produce("Fo", diReduced / 2.0);
+                    state.Produce("Fa", hdReduced / 2.0);
+                    deficit -= reducibleCpx;
+                }
+            }
+
+            // 白榴石 -> 钾霞石: KAlSi2O6 -> KAlSiO4 + SiO2（每 1 Lc 释放 1 SiO2）
+            if (deficit > CipwConstants.EPS)
             {
                 double leAmount = state.Minerals.GetValueOrDefault("Le", 0.0);
                 double reducibleLe = Math.Min(leAmount, deficit);
@@ -709,19 +810,6 @@ namespace GeoChemistryNexus.Models.Cipw
                     state.Minerals["Le"] = Math.Max(0.0, leAmount - reducibleLe);
                     state.Produce("Kp", reducibleLe);
                     deficit -= reducibleLe;
-                }
-            }
-
-            // 钠长石 -> 霞石
-            if (deficit > 0)
-            {
-                double abAmount = state.Minerals.GetValueOrDefault("Ab", 0.0);
-                double reducibleAb = Math.Min(abAmount, deficit / 2.0);
-                if (reducibleAb > 0)
-                {
-                    state.Minerals["Ab"] = Math.Max(0.0, abAmount - reducibleAb);
-                    state.Produce("Ne", reducibleAb);
-                    deficit -= 2.0 * reducibleAb;
                 }
             }
 

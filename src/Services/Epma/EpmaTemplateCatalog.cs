@@ -1,3 +1,4 @@
+﻿using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,6 @@ public sealed class EpmaTemplateCatalog
 {
     public const string GeneralPackageId = "General";
     private readonly EpmaTemplateDatabaseService _database;
-    private readonly EpmaScriptRuntime _runtime = new();
     private readonly SemaphoreSlim _gate = new(1, 1);
     private readonly List<EpmaPackageIssue> _startupIssues = [];
 
@@ -114,9 +114,25 @@ public sealed class EpmaTemplateCatalog
 
     // ---------------------------------------------------------------- personal templates
 
+    /// <summary>转换后的目标 PackageId：随机部分保持不变，只改变前缀（official_ / custom_）。</summary>
+    public static string GetConvertedPackageId(string packageId, bool toOfficial)
+        => ContentPackageIdHelper.WithOrigin(packageId, toOfficial);
+
+    /// <summary>
+    /// 导入个人包：沿用包里标识的随机部分（相同标识视为同一个包，由调用方提示覆盖），
+    /// 只把前缀固定为 custom_，因此不会与在线模板重名。
+    /// </summary>
+    private static EpmaScriptPackage ToPersonalPackage(EpmaScriptPackage package)
+    {
+        string id = package.Manifest.PackageId;
+        if (ContentPackageIdHelper.HasOrigin(id, false)) return package;
+        string personalId = ContentPackageIdHelper.WithOrigin(id, false);
+        return EpmaScriptPackage.Read(EpmaScriptPackage.WithPackageId(package.CopyBytes(), personalId));
+    }
+
     public async Task<EpmaInstalledTemplate> ImportAsync(string path,
         Func<EpmaInstalledTemplate, EpmaScriptPackage, Task<bool>> confirmReplacement, CancellationToken token = default)
-        => await InstallAsync(EpmaScriptPackage.Read(path), confirmReplacement, token);
+        => await InstallAsync(ToPersonalPackage(EpmaScriptPackage.Read(path)), confirmReplacement, token);
 
     public Task<EpmaInstalledTemplate> CreateAsync(EpmaScriptPackage package, CancellationToken token = default)
         => InstallAsync(package, (_, _) => throw new InvalidOperationException(EpmaLocalizer.Format("epma_editor_id_exists")), token, true);
@@ -125,17 +141,16 @@ public sealed class EpmaTemplateCatalog
         Func<EpmaInstalledTemplate, EpmaScriptPackage, Task<bool>> confirmReplacement, CancellationToken token, bool creating = false)
     {
         string id = package.Manifest.PackageId;
-        await Task.Run(() => _runtime.ValidateAsync(package, token), token);
+        await Task.Run(() => EpmaScriptRuntime.ValidateAsync(package, token), token);
         token.ThrowIfCancellationRequested();
         await _gate.WaitAsync(token);
         try
         {
+            // 个人包标识固定带 custom_ 前缀，在线模板带 official_ 前缀，两者不会重名。
             var custom = _database.GetEntity(id, false);
-            var official = _database.GetEntity(id, true);
-            if (creating && (custom is not null || official is not null))
+            if (creating && custom is not null)
                 throw new InvalidOperationException(EpmaLocalizer.Format("epma_editor_id_exists"));
-            // A personal package shadows the official one with the same id; an empty placeholder never conflicts.
-            var existing = custom ?? (official is { HasPackage: true } ? official : null);
+            var existing = custom;
             if (existing is not null)
             {
                 if (string.Equals(existing.FileHash, package.Sha256, StringComparison.OrdinalIgnoreCase))
@@ -157,14 +172,18 @@ public sealed class EpmaTemplateCatalog
         if (!original.IsCustom && !allowOfficial) throw new InvalidOperationException(EpmaLocalizer.Format("epma_editor_readonly_hint"));
         if (!original.Package.Manifest.PackageId.Equals(package.Manifest.PackageId, StringComparison.Ordinal))
             throw new InvalidOperationException(EpmaLocalizer.Format("epma_editor_fixed_id"));
-        await Task.Run(() => _runtime.ValidateAsync(package, token), token);
+        await Task.Run(() => EpmaScriptRuntime.ValidateAsync(package, token), token);
         await _gate.WaitAsync(token);
         try
         {
             var stored = VerifyCurrent(original);
             token.ThrowIfCancellationRequested();
             var updated = CreateEntity(package, !original.IsCustom, stored);
-            if (updated.IsOfficial) updated.Status = OfficialStatus(updated);
+            if (updated.IsOfficial)
+            {
+                updated.Status = OfficialStatus(updated);
+                updated.PendingPublish = true; // 官方模板的本地修改待发布
+            }
             _database.UpsertEntity(updated);
             Current = Load();
             return new(package, original.IsCustom);
@@ -172,13 +191,19 @@ public sealed class EpmaTemplateCatalog
         finally { _gate.Release(); }
     }
 
-    public async Task DeleteAsync(EpmaInstalledTemplate item, CancellationToken token = default)
+    /// <summary>
+    /// 删除个人模板。只依据数据库记录（Id / FileHash）操作，不解析包内容，
+    /// 因此包版本高于本程序、无法解析的模板同样可以删除。
+    /// </summary>
+    public async Task DeleteAsync(EpmaTemplateEntity item, CancellationToken token = default)
     {
         if (!item.IsCustom) throw new InvalidOperationException(EpmaLocalizer.Format("epma_library_official_delete_denied"));
         await _gate.WaitAsync(token);
         try
         {
-            var stored = VerifyCurrent(item);
+            var stored = _database.GetSummary(item.Id);
+            if (stored is not { IsCustom: true } || !string.Equals(stored.FileHash, item.FileHash, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(EpmaLocalizer.Format("epma_library_changed"));
             token.ThrowIfCancellationRequested();
             _database.DeleteEntity(stored.Id);
             Current = Load();
@@ -224,12 +249,17 @@ public sealed class EpmaTemplateCatalog
         {
             var source = _database.GetEntity(custom.Id);
             if (source is not { IsCustom: true, HasPackage: true }) throw new InvalidOperationException(EpmaLocalizer.Format("epma_library_changed"));
-            var previous = _database.GetEntity(source.PackageId, true);
-            var promoted = CreateEntity(EpmaScriptPackage.Read(source.PackageBytes), true, previous);
+            var previous = _database.GetEntity(GetConvertedPackageId(source.PackageId, true), true);
+            // 只迁移记录（并把清单里的 packageId 前缀同步改写），不重新解析包：
+            // 包版本高于本程序时也必须能够移动（解析会触发版本校验并失败）。
+            var sourceId = source.Id;
+            var promoted = Reassign(source, true);
             promoted.IsFavorite = previous?.IsFavorite ?? source.IsFavorite;
+            promoted.ServerHash = previous?.ServerHash ?? string.Empty;
             promoted.Status = OfficialStatus(promoted);
+            promoted.PendingPublish = true;
             _database.UpsertEntity(promoted);
-            _database.DeleteEntity(source.Id);
+            _database.DeleteEntity(sourceId);
             Current = Load();
             return promoted;
         }
@@ -244,11 +274,13 @@ public sealed class EpmaTemplateCatalog
         {
             var source = _database.GetEntity(official.Id);
             if (source is not { IsOfficial: true, HasPackage: true }) throw new InvalidOperationException(EpmaLocalizer.Format("epma_library_changed"));
-            var previous = _database.GetEntity(source.PackageId, false);
-            var demoted = CreateEntity(EpmaScriptPackage.Read(source.PackageBytes), false, previous);
+            var previous = _database.GetEntity(GetConvertedPackageId(source.PackageId, false), false);
+            // 只迁移记录（并把清单里的 packageId 前缀同步改写），不重新解析包（避免版本校验使“移除官方模板”失败）。
+            var sourceId = source.Id;
+            var demoted = Reassign(source, false);
             demoted.IsFavorite = previous?.IsFavorite ?? source.IsFavorite;
             _database.UpsertEntity(demoted);
-            _database.DeleteEntity(source.Id);
+            _database.DeleteEntity(sourceId);
             Current = Load();
             return demoted;
         }
@@ -266,7 +298,7 @@ public sealed class EpmaTemplateCatalog
             var existing = _database.GetEntity(package.Manifest.PackageId, true);
             var entity = CreateEntity(package, true, existing);
             entity.ServerHash = string.IsNullOrEmpty(serverHash) ? package.Sha256 : serverHash;
-            entity.Status = EpmaInstallStatus.UpToDate;
+            entity.Status = ContentInstallStatus.UpToDate;
             _database.UpsertEntity(entity);
             Current = Load();
         }
@@ -282,8 +314,10 @@ public sealed class EpmaTemplateCatalog
             foreach (var (packageId, hash) in published)
             {
                 var entity = _database.GetEntity(packageId, true);
-                if (entity is null || !entity.HasPackage || string.Equals(entity.ServerHash, hash, StringComparison.OrdinalIgnoreCase)) continue;
+                if (entity is null || !entity.HasPackage) continue;
+                if (string.Equals(entity.ServerHash, hash, StringComparison.OrdinalIgnoreCase) && !entity.PendingPublish) continue;
                 entity.ServerHash = hash;
+                entity.PendingPublish = false;
                 entity.Status = OfficialStatus(entity);
                 _database.UpsertEntity(entity);
             }
@@ -293,13 +327,13 @@ public sealed class EpmaTemplateCatalog
     }
 
     internal Task ValidateAsync(EpmaScriptPackage package, CancellationToken token = default)
-        => Task.Run(() => _runtime.ValidateAsync(package, token), token);
+        => Task.Run(() => EpmaScriptRuntime.ValidateAsync(package, token), token);
 
     // ---------------------------------------------------------------- entity helpers
 
     internal static string OfficialStatus(EpmaTemplateEntity entity)
         => string.IsNullOrEmpty(entity.ServerHash) || string.Equals(entity.FileHash, entity.ServerHash, StringComparison.OrdinalIgnoreCase)
-            ? EpmaInstallStatus.UpToDate : EpmaInstallStatus.Outdated;
+            ? ContentInstallStatus.UpToDate : ContentInstallStatus.Outdated;
 
     internal static EpmaTemplateEntity CreateEntity(EpmaScriptPackage package, bool isOfficial, EpmaTemplateEntity? existing = null)
     {
@@ -309,12 +343,11 @@ public sealed class EpmaTemplateCatalog
             Id = EpmaTemplateDatabaseService.GenerateId(m.PackageId, isOfficial),
             PackageId = m.PackageId,
             Version = m.Version,
-            FormatVersion = m.FormatVersion,
             FileHash = package.Sha256,
             LastModified = DateTime.Now,
             IsOfficial = isOfficial,
             IsFavorite = existing?.IsFavorite ?? false,
-            Status = isOfficial ? EpmaInstallStatus.UpToDate : string.Empty,
+            Status = isOfficial ? ContentInstallStatus.UpToDate : string.Empty,
             ServerHash = isOfficial ? existing?.ServerHash ?? string.Empty : string.Empty,
             NameJson = RawJson(m.Name, "null"),
             DescriptionJson = RawJson(m.Description, "null"),
@@ -324,6 +357,29 @@ public sealed class EpmaTemplateCatalog
             Icon = m.Icon,
             PackageBytes = package.CopyBytes(),
         };
+    }
+
+    /// <summary>
+    /// Moves a stored record between the official and personal catalogs without re-reading its package.
+    /// The random part of the package id stays; only the prefix changes, so the manifest's packageId is rewritten
+    /// and the package hash is recomputed.
+    /// </summary>
+    private static EpmaTemplateEntity Reassign(EpmaTemplateEntity source, bool isOfficial)
+    {
+        string packageId = GetConvertedPackageId(source.PackageId, isOfficial);
+        if (!string.Equals(packageId, source.PackageId, StringComparison.Ordinal))
+        {
+            source.PackageBytes = EpmaScriptPackage.WithPackageId(source.PackageBytes, packageId);
+            source.FileHash = EpmaScriptPackage.HashOf(source.PackageBytes);
+            source.PackageId = packageId;
+        }
+        source.Id = EpmaTemplateDatabaseService.GenerateId(source.PackageId, isOfficial);
+        source.IsOfficial = isOfficial;
+        source.LastModified = DateTime.Now;
+        source.Status = isOfficial ? ContentInstallStatus.UpToDate : string.Empty;
+        source.ServerHash = string.Empty;
+        source.PendingPublish = false;
+        return source;
     }
 
     internal static string RawJson(JsonElement element, string fallback)

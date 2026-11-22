@@ -20,24 +20,13 @@ public partial class EpmaEditableFile : ObservableObject
     public bool IsScript => Path.EndsWith(".js", StringComparison.Ordinal);
     public bool IsJson => !IsScript;
     [ObservableProperty] private string _text;
-    [ObservableProperty] private EpmaJsonDocument? _jsonEditor;
     public EpmaEditableFile(string path, string text, string? displayKey = null, int displayIndex = 0)
     {
         Path = path; _text = text;
         _displayKey = displayKey ?? (IsScript ? "epma_editor_file_calculation" : "epma_json_field_resource");
         _displayIndex = displayIndex;
-        if (IsJson) JsonEditor = CreateJsonEditor(text);
     }
-    private EpmaJsonDocument CreateJsonEditor(string text) => new(text, Path switch
-    {
-        "examples.json" => "examples", _ => "resource"
-    });
-    partial void OnTextChanged(string value) { if (IsJson) JsonEditor = CreateJsonEditor(value); }
-    public string CaptureText()
-    {
-        try { return JsonEditor?.ExportText() ?? Text; }
-        catch (InvalidDataException ex) { throw new InvalidDataException(Path + ": " + ex.Message, ex); }
-    }
+    public string CaptureText() => Text;
 }
 
 /// <summary>Preserves the script/example and every untranslated metadata value.</summary>
@@ -71,10 +60,10 @@ public sealed class EpmaPackageEditorDocument
         var paths = _bytes.Keys.Where(path => path != "package.json").ToArray();
         var labels = paths.GroupBy(DisplayKey).SelectMany(group => group.Select((path, index) =>
             (Path: path, Key: group.Key, Index: group.Count() > 1 ? index + 1 : 0))).ToDictionary(label => label.Path);
+        var manifest = JsonNode.Parse(Decode(_bytes["package.json"]))!.AsObject();
         Files = _bytes.Where(p => p.Key != "package.json")
             .OrderBy(p => p.Key.EndsWith(".js", StringComparison.Ordinal) ? 0 : 1).ThenBy(p => p.Key, StringComparer.Ordinal)
             .Select(p => new EpmaEditableFile(p.Key, Decode(p.Value), labels[p.Key].Key, labels[p.Key].Index)).ToArray();
-        var manifest = JsonNode.Parse(Decode(_bytes["package.json"]))!.AsObject();
         var definitions = new JsonObject();
         foreach (string key in new[] { "inputs", "outputs" })
             definitions[key] = manifest[key]?.DeepClone() ?? new JsonArray();
@@ -120,9 +109,9 @@ public sealed class EpmaPackageEditorDocument
         if (fields.Any(p => p.Key is not ("inputs" or "outputs")) || !fields.ContainsKey("inputs") || !fields.ContainsKey("outputs"))
             throw new InvalidDataException("Definitions must contain only inputs and outputs.");
         foreach (string key in new[] { "inputs", "outputs" }) manifest[key] = fields[key]?.DeepClone() ?? new JsonArray();
+        // Packages no longer have settings; an old package opened in the editor drops them when saved.
+        manifest.Remove("settings");
         manifest["updatedAt"] = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-        // A package saved by this editor carries the input unit row, so it is written with the current protocol version.
-        manifest["formatVersion"] = EpmaScriptPackage.CurrentFormatVersion;
         using var memory = new MemoryStream();
         using (var zip = new ZipArchive(memory, ZipArchiveMode.Create, true))
         {

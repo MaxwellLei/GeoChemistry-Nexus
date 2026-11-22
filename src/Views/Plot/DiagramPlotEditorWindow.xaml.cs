@@ -7,8 +7,11 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GeoChemistryNexus.Views
 {
@@ -80,6 +83,55 @@ namespace GeoChemistryNexus.Views
             EditorControl.InitializeForEdit(entity);
         }
 
+        private DispatcherTimer? _viewOnlyTimer;
+
+        /// <summary>
+        /// 只读查看（非开发者查看官方图解）：加载内容，隐藏确认按钮，并持续把编辑控件置为只读，
+        /// 切换分区后才生成的控件也会被覆盖到。
+        /// </summary>
+        public void InitializeForView(GraphMapTemplateEntity entity)
+        {
+            EditorControl.InitializeForEdit(entity);
+            EditorControl.ViewModel.EnterViewOnlyMode();
+            EditorControl.ViewModel.WindowTitle = LanguageService.GetString("view_diagram_template", "View Diagram Template (Read-only)");
+            ConfirmButton.Visibility = Visibility.Collapsed;
+
+            _viewOnlyTimer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(250) };
+            _viewOnlyTimer.Tick += (_, _) => LockEditorControls(EditorControl);
+            _viewOnlyTimer.Start();
+            Loaded += (_, _) => LockEditorControls(EditorControl);
+        }
+
+        private void LockEditorControls(DependencyObject root)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                switch (child)
+                {
+                    case TextBox textBox:
+                        if (!textBox.IsReadOnly) textBox.IsReadOnly = true;
+                        break;
+                    case ComboBox comboBox:
+                        if (comboBox.IsEnabled) comboBox.IsEnabled = false;
+                        break;
+                    case RadioButton radioButton:
+                        // 左侧分区导航保持可用
+                        if (radioButton.IsEnabled && !(radioButton.Name?.StartsWith("Nav", StringComparison.Ordinal) ?? false))
+                            radioButton.IsEnabled = false;
+                        break;
+                    case Button button:
+                        // 测试脚本只读取脚本并输出结果，不修改模板，保留；其余按钮（增删语言/分类、导入翻译等）全部禁用
+                        if (button.IsEnabled && !ReferenceEquals(button.Command, EditorControl.ViewModel.TestScriptCommand))
+                            button.IsEnabled = false;
+                        break;
+                }
+
+                LockEditorControls(child);
+            }
+        }
+
         public void ShowSuccessMessage(string message) => Notifications.Success(message);
 
         public void ShowWarningMessage(string message) => Notifications.Warning(message);
@@ -109,6 +161,7 @@ namespace GeoChemistryNexus.Views
 
         protected override void OnClosed(EventArgs e)
         {
+            _viewOnlyTimer?.Stop();
             Notifications.Dispose();
             EditorControl.ReleaseResources();
             base.OnClosed(e);

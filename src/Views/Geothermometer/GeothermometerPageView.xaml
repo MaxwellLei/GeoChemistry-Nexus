@@ -1,4 +1,4 @@
-﻿<Page x:Class="GeoChemistryNexus.Views.GeothermometerPageView"
+<Page x:Class="GeoChemistryNexus.Views.GeothermometerPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -160,6 +160,7 @@
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
                                     <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
@@ -176,6 +177,7 @@
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
                                     <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
@@ -197,6 +199,7 @@
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
                                     <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
@@ -233,13 +236,6 @@
                             <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Separator.Style>
@@ -259,13 +255,6 @@
                             <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </MenuItem.Style>
@@ -985,8 +974,20 @@
                                     ToolTip="{Binding [geo_tooltip_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助说明}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xe665;" FontFamily="{StaticResource IconFont}" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <TextBlock Text="{Binding [geo_btn_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助说明}" 
+                                    <TextBlock Text="{Binding [epma_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=说明}" 
                                                VerticalAlignment="Center" FontSize="12"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- 填充示例：把模板自带的示例数据写入表格（与 CIPW 一致） -->
+                            <Button Style="{StaticResource GeoTHeaderToolbarButtonStyle}"
+                                    Command="{Binding FillExampleCommand}"
+                                    CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding [epma_example_data],Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例}"
+                                               FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
 
@@ -1003,14 +1004,14 @@
                                 </StackPanel>
                             </Button>
 
-                            <!-- 重置按钮（功能等同于应用） -->
+                            <!-- 清除按钮（功能等同于应用，图标与 CIPW 的清除按钮一致） -->
                             <Button Style="{StaticResource GeoTHeaderToolbarButtonStyle}"
                                     Command="{Binding ApplyPluginCommand}"
                                     CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                               VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <TextBlock Text="{Binding [geo_btn_reset],Source={x:Static lg:LanguageService.Instance}, FallbackValue=重置}" 
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438"
+                                               VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding [epma_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清除}" 
                                                FontSize="12" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
@@ -1563,115 +1564,36 @@
                         </Style>
                     </Grid.Style>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition x:Name="TableRow" Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition x:Name="DetailRow" Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <uc:ReoGridTableHost x:Name="WorksheetTable" Grid.Row="0" Style="{StaticResource ReoGridTableHostStyle}"
+                    <!-- 数据表格：计算详情以右侧检查器（侧边栏）形式展示，与 CIPW 一致 -->
+                    <uc:ReoGridTableHost x:Name="WorksheetTable" Style="{StaticResource ReoGridTableHostStyle}"
                                          UseBuiltInCellEditor="False"
                                          ResetLayoutCommand="{Binding ResetWorksheetLayoutCommand}"
                                          SelectedCellContent="{Binding SelectedCellContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          SelectedCellAddress="{Binding SelectedCellAddress}"
-                                         IsSelectedCellReadOnly="False">
-                        <rg:ReoGridControl x:Name="MyReoGrid" SheetTabVisible="False"/>
-                    </uc:ReoGridTableHost>
+                                         IsSelectedCellReadOnly="False"
+                                         IsInspectorOpen="{Binding IsInspectorOpen, Mode=TwoWay}"
+                                         InspectorWidth="360"
+                                         InspectorTitle="{Binding [geo_section_calc_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}">
+                        <!-- 右侧检查器：当前选中样品的计算详情 -->
+                        <uc:ReoGridTableHost.Inspector>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                    <!-- 表格与计算详情之间的可拖动分隔条 -->
-                    <GridSplitter x:Name="DetailSplitter" Grid.Row="1"
-                                  Height="6"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Center"
-                                  ResizeDirection="Rows"
-                                  ResizeBehavior="PreviousAndNext"
-                                  Background="Transparent"
-                                  ShowsPreview="True"
-                                  Visibility="Collapsed"
-                                  DragCompleted="OnDetailSplitterDragCompleted"
-                                  Cursor="SizeNS">
-                        <GridSplitter.Template>
-                            <ControlTemplate TargetType="GridSplitter">
-                                <Grid Background="Transparent">
-                                    <Border Height="1" VerticalAlignment="Center" Background="#E0E0E0"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </GridSplitter.Template>
-                    </GridSplitter>
-
-                    <!-- ==================== 计算详情面板（始终显示在底部） ==================== -->
-                    <Border x:Name="DetailPanelBorder" Grid.Row="2" BorderBrush="#D4D4D4" BorderThickness="0,1,0,0"
-                            Background="White">
-
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <!-- 面板标题栏 -->
-                            <Border Grid.Row="0" Background="#F8F8FA" Padding="12,8" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1" MinHeight="36">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Grid.Column="0" Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
-                                               FontSize="14" Foreground="{DynamicResource ThemeAccentBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    
-                                    <!-- 有数据时显示：计算详情 - Row X -->
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasCalculationData}" Value="False">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
-                                        <TextBlock Text="{Binding [geo_section_calc_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}" 
-                                                   FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
-                                        <TextBlock Text=" - " FontSize="12" Foreground="#999" Margin="4,0"/>
-                                        <TextBlock Text="{Binding SelectedRowInfo}" FontSize="12" Foreground="#666" 
-                                                   TextTrimming="CharacterEllipsis" MaxWidth="300"/>
-                                    </StackPanel>
-                                    
-                                    <!-- 无数据时显示：请选择数据行 -->
-                                    <TextBlock Grid.Column="1" Text="{Binding [geo_hint_select_data_row],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请选择数据行}" 
-                                               FontSize="13" Foreground="#999" VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasCalculationData}" Value="False">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <!-- 右侧：展开时显示导出/复制，其后为展开/收缩 -->
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,4,0">
-                                            <StackPanel.Style>
-                                                <Style TargetType="StackPanel">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsDetailPanelMinimized}" Value="False"/>
-                                                                <Condition Binding="{Binding HasCalculationData}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </StackPanel.Style>
+                                <!-- 摘要：选中样品 + 导出 / 复制 -->
+                                <Border Grid.Row="0" Padding="14,8" Background="White" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1"
+                                        Visibility="{Binding HasCalculationData, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding SelectedRowInfo}" FontSize="13" FontWeight="SemiBold"
+                                                   Foreground="#333" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding SelectedRowInfo}"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
                                             <Button Style="{StaticResource PanelControlButtonStyle}"
                                                     Command="{Binding ExportCalculationDetailsCommand}"
                                                     ToolTip="{Binding [geo_tooltip_export_calc_details], Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出计算详情为 CSV}"
@@ -1684,179 +1606,56 @@
                                                 <TextBlock Text="&#xe63e;" FontFamily="{StaticResource IconFont}" FontSize="13"/>
                                             </Button>
                                         </StackPanel>
-                                        <Button Style="{StaticResource PanelControlButtonStyle}"
-                                                Click="OnToggleDetailExpandClick"
-                                                ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
-                                            <TextBlock x:Name="DetailExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-
-                            <!-- 计算步骤列表 + 异步加载遮罩 -->
-                            <Grid Grid.Row="1">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsDetailPanelMinimized}" Value="True">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-
-                                <ScrollViewer x:Name="CalculationDetailScrollViewer"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 HorizontalScrollBarVisibility="Auto"
-                                                 Padding="0">
-                                    <ItemsControl ItemsSource="{Binding CalculationSteps}" Margin="8,4,8,8">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Margin="0,1" Padding="10,6" CornerRadius="4"
-                                                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="Transparent"/>
-                                                            <Setter Property="Cursor" Value="Arrow"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsHighlight}" Value="True">
-                                                                    <Setter Property="Background" Value="#FFFDE7"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                    <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                    <Setter Property="Background" Value="#FAFAFA"/>
-                                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding HasCustomBackground}" Value="True">
-                                                                    <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource HexToBrushConverter}}"/>
-                                                                </DataTrigger>
-                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="Background" Value="#F5F5F7"/>
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
-                                                    <Border.InputBindings>
-                                                        <MouseBinding MouseAction="LeftClick"
-                                                                      Command="{Binding DataContext.ToggleCalculationGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                      CommandParameter="{Binding}"/>
-                                                    </Border.InputBindings>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="Auto" MinWidth="160"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <!-- 分组折叠箭头（仅分隔标题） -->
-                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,6,0"
-                                                                   FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource ThemeAccentBrush}">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    <Setter Property="Text" Value="&#xE70D;"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding IsCollapsed}" Value="True">
-                                                                            <Setter Property="Text" Value="&#xE76C;"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
-
-                                                        <!-- 步骤名称 -->
-                                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="FontSize" Value="12"/>
-                                                                    <Setter Property="Foreground" Value="#555"/>
-                                                                    <Setter Property="FontWeight" Value="Normal"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
-                                                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
-                                                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                                                            <Setter Property="FontSize" Value="11"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                            <Run Text="{Binding Name, Mode=OneWay}"/>
-                                                        </TextBlock>
-
-                                                        <!-- 步骤值（分隔行隐藏） -->
-                                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="FontSize" Value="12"/>
-                                                                    <Setter Property="FontFamily" Value="Consolas"/>
-                                                                    <Setter Property="Foreground" Value="#333"/>
-                                                                    <Setter Property="FontWeight" Value="Normal"/>
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                                            <Setter Property="FontSize" Value="13"/>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                            <Run Text="{Binding Value, Mode=OneWay}"/>
-                                                        </TextBlock>
-
-                                                        <!-- 描述（分隔行隐藏） -->
-                                                        <TextBlock Grid.Column="3" Text="{Binding Description}" FontSize="11" 
-                                                                   Foreground="#999" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                                                                   ToolTip="{Binding Description}">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
-
-                                <!-- 计算详情异步加载遮罩（与帮助文档一致） -->
-                                <Border Background="#CCFFFFFF"
-                                        Panel.ZIndex="10"
-                                        Visibility="{Binding IsCalculationDetailsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <ProgressBar Style="{StaticResource FlatProgressBarStyle}"
-                                                     Width="180"
-                                                     IsIndeterminate="True"
-                                                     Margin="0,0,0,12"/>
-                                        <TextBlock Text="{Binding [loading_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue=加载中...}"
-                                                   FontSize="13"
-                                                   Foreground="#666"
-                                                   HorizontalAlignment="Center"/>
-                                    </StackPanel>
+                                    </Grid>
                                 </Border>
+
+                                <!-- 计算步骤列表 + 异步加载遮罩 -->
+                                <Grid Grid.Row="1">
+                                    <ScrollViewer x:Name="CalculationDetailScrollViewer"
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  HorizontalScrollBarVisibility="Disabled"
+                                                  Padding="0">
+                                        <Grid>
+                                            <!-- 未选中已计算的数据行时的提示 -->
+                                            <TextBlock Text="{Binding [geo_hint_select_data_row],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请选择数据行}"
+                                                       FontSize="12" Foreground="#999" Margin="14,12" TextWrapping="Wrap">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasCalculationData}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                            <!-- 分组 + 条目列表：与 EPMA 检查器共用 -->
+                                            <uc:CalculationStepList ItemsSource="{Binding CalculationSteps}" ToggleCommand="{Binding ToggleCalculationGroupCommand}"/>
+                                        </Grid>
+                                    </ScrollViewer>
+
+                                    <!-- 计算详情异步加载遮罩（与帮助文档一致） -->
+                                    <Border Background="#CCFFFFFF"
+                                            Panel.ZIndex="10"
+                                            Visibility="{Binding IsCalculationDetailsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <ProgressBar Style="{StaticResource FlatProgressBarStyle}"
+                                                         Width="180"
+                                                         IsIndeterminate="True"
+                                                         Margin="0,0,0,12"/>
+                                            <TextBlock Text="{Binding [loading_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue=加载中...}"
+                                                       FontSize="13"
+                                                       Foreground="#666"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Border>
+                        </uc:ReoGridTableHost.Inspector>
+                        <rg:ReoGridControl x:Name="MyReoGrid" SheetTabVisible="False"/>
+                    </uc:ReoGridTableHost>
                 </Grid>
 
                 <!-- ==================== 帮助文档区域（IsHelpDocVisible=True 时显示） ==================== -->
@@ -2010,6 +1809,10 @@
                                        Value="{Binding UpdateProgress}"
                                        IsIndeterminate="{Binding IsUpdateProgressIndeterminate}"/>
                     </Grid>
+                    <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Cancel}"
+                            Command="{Binding CancelUpdateCommand}"
+                            HorizontalAlignment="Center" MinWidth="110" Margin="0,18,0,0" Padding="16,6"
+                            Visibility="{Binding IsUpdateCancelable, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
             </Border>
         </Border>

@@ -43,7 +43,7 @@ namespace GeoChemistryNexus.Helpers
         }
 
         /// <summary>
-        /// 调用方自行判断是否需要升级软件（EPMA 以包内整数 formatVersion 判断）。
+        /// 调用方自行判断是否需要升级软件（EPMA 用包版本 x.y 与 requires 判断，见 EpmaScriptPackage.RequiresAppUpgrade）。
         /// </summary>
         public static string Resolve(
             bool isInstalled,

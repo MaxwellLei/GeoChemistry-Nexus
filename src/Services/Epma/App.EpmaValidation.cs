@@ -21,7 +21,7 @@ public partial class App
                 var package = await Task.Run(async () =>
                 {
                     var candidate = EpmaScriptPackage.Read(path);
-                    await new EpmaScriptRuntime().ValidateAsync(candidate);
+                    await EpmaScriptRuntime.ValidateAsync(candidate);
                     return candidate;
                 });
                 Console.WriteLine(JsonSerializer.Serialize(new { packageId = package.Manifest.PackageId,

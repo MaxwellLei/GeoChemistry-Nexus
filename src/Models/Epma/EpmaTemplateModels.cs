@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -5,17 +6,6 @@ using System.Text.Json;
 
 namespace GeoChemistryNexus.Models
 {
-    /// <summary>
-    /// EPMA 计算模板安装状态常量（与图解 / 温压计模板的 Status 取值保持一致）
-    /// </summary>
-    public static class EpmaInstallStatus
-    {
-        public const string NotInstalled = "NOT_INSTALLED";
-        public const string UpToDate = "UP_TO_DATE";
-        public const string Outdated = "OUTDATED";
-        public const string RequiresAppUpgrade = "REQUIRES_APP_UPGRADE";
-    }
-
     /// <summary>
     /// EPMA 计算模板数据库实体。
     /// 存储在 LiteDB 中：列表展示所需的轻量元数据 + 完整的 .epma.zip 字节（PackageBytes）。
@@ -30,11 +20,8 @@ namespace GeoChemistryNexus.Models
         /// <summary>计算包标识（manifest.packageId）</summary>
         public string PackageId { get; set; } = string.Empty;
 
-        /// <summary>计算包版本（manifest.version）</summary>
+        /// <summary>计算包版本（manifest.version，x.y.z：x.y 是 EPMA 模块版本，z 是包的修订号）</summary>
         public string Version { get; set; } = "1.0.0";
-
-        /// <summary>计算包格式版本（manifest.formatVersion）</summary>
-        public int FormatVersion { get; set; }
 
         /// <summary>发布内容哈希：整个 .epma.zip 字节的 SHA-256（小写十六进制）</summary>
         public string FileHash { get; set; } = string.Empty;
@@ -56,6 +43,12 @@ namespace GeoChemistryNexus.Models
         /// 同步时不会因为服务器清单里没有它而被删除。
         /// </summary>
         public string ServerHash { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 开发者本地修改了官方模板、尚未发布（与图解的 PendingPublish 含义一致）。
+        /// 发布成功后清除；目录同步时带有该标记的本地官方项不会被当作“已下架”删除。
+        /// </summary>
+        public bool PendingPublish { get; set; }
 
         /// <summary>manifest.name 的原始 JSON（字符串或语言字典）</summary>
         public string NameJson { get; set; } = "null";
@@ -90,15 +83,15 @@ namespace GeoChemistryNexus.Models
 
         [BsonIgnore]
         public bool IsNotInstalled =>
-            IsOfficial && string.Equals(Status, EpmaInstallStatus.NotInstalled, StringComparison.Ordinal);
+            IsOfficial && string.Equals(Status, ContentInstallStatus.NotInstalled, StringComparison.Ordinal);
 
         [BsonIgnore]
         public bool IsUpdateAvailable =>
-            IsOfficial && string.Equals(Status, EpmaInstallStatus.Outdated, StringComparison.Ordinal);
+            IsOfficial && string.Equals(Status, ContentInstallStatus.Outdated, StringComparison.Ordinal);
 
         [BsonIgnore]
         public bool RequiresAppUpgrade =>
-            IsOfficial && string.Equals(Status, EpmaInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
+            IsOfficial && string.Equals(Status, ContentInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -111,9 +104,11 @@ namespace GeoChemistryNexus.Models
 
         public string Id { get; set; } = string.Empty;
 
-        public int FormatVersion { get; set; }
-
+        /// <summary>包版本 x.y.z；x.y 高于当前程序的 EPMA 模块版本时需要升级软件</summary>
         public string Version { get; set; } = "1.0.0";
+
+        /// <summary>包声明的能力名（manifest.requires）；含当前程序不认识的名称时需要升级软件</summary>
+        public string[] Requires { get; set; } = Array.Empty<string>();
 
         public JsonElement Name { get; set; } = NullElement;
 
@@ -171,6 +166,9 @@ namespace GeoChemistryNexus.Models
 
         public int NotInstalledCount { get; set; }
 
+        /// <summary>本次同步新增的官方模板占位数量（与图解的 AddedCount 一致）</summary>
+        public int AddedCount { get; set; }
+
         public int OutdatedCount { get; set; }
 
         public int RemovalCount { get; set; }
@@ -207,6 +205,9 @@ namespace GeoChemistryNexus.Models
     public class EpmaBatchDownloadResult
     {
         public int SuccessCount { get; init; }
+
+        /// <summary>用户中途取消，后续条目未处理</summary>
+        public bool Cancelled { get; init; }
 
         public IReadOnlyList<EpmaDownloadItemResult> Failures { get; init; } = Array.Empty<EpmaDownloadItemResult>();
     }

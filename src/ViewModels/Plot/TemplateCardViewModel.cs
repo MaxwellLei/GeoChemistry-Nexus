@@ -50,7 +50,13 @@ namespace GeoChemistryNexus.ViewModels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(StateText))]
+        [NotifyPropertyChangedFor(nameof(IsNotDownloaded))]
         private TemplateState _state = TemplateState.NotDownloaded;
+
+        /// <summary>
+        /// 官方模板尚未下载（只有目录占位，没有内容）：右键菜单隐藏编辑、导出、移除官方等需要本地内容的操作。
+        /// </summary>
+        public bool IsNotDownloaded => State is TemplateState.NotDownloaded or TemplateState.RequiresAppUpgrade or TemplateState.Downloading;
 
         [ObservableProperty]
         private double _downloadProgress;
@@ -77,6 +83,8 @@ namespace GeoChemistryNexus.ViewModels
         // --- 委托事件 ---
         // 将具体的"打开"和"下载"逻辑交给 MainViewModel 实现
         public Func<TemplateCardViewModel, Task>? DownloadHandler { get; set; }
+        /// <summary>更新已下载的官方模板前的确认（更新会覆盖本地修改）；返回 false 则取消。</summary>
+        public Func<TemplateCardViewModel, Task<bool>>? ConfirmUpdateHandler { get; set; }
         public Func<TemplateCardViewModel, Task>? OpenHandler { get; set; }
         public Func<TemplateCardViewModel, Task>? CheckUpdateHandler { get; set; }
         public Func<TemplateCardViewModel, Task>? ToggleFavoriteHandler { get; set; }
@@ -121,6 +129,10 @@ namespace GeoChemistryNexus.ViewModels
             _isProcessing = true;
             try
             {
+                if (State == TemplateState.UpdateAvailable && ConfirmUpdateHandler != null
+                    && !await ConfirmUpdateHandler(this))
+                    return;
+
                 if (DownloadHandler != null) await DownloadHandler(this);
             }
             finally

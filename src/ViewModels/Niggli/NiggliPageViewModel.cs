@@ -43,6 +43,8 @@ namespace GeoChemistryNexus.ViewModels
         /// 是否有诊断数据
         /// </summary>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ExportDiagnosticDetailsCommand))]
+        [NotifyCanExecuteChangedFor(nameof(CopyDiagnosticDetailsCommand))]
         private bool _hasDiagnosticData;
 
         /// <summary>
@@ -74,6 +76,19 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         [ObservableProperty]
         private bool _isInspectorOpen = false;
+
+        /// <summary>导出当前检查器显示的计算详情为 CSV。</summary>
+        [RelayCommand(CanExecute = nameof(HasDiagnosticData))]
+        private Task ExportDiagnosticDetailsAsync() =>
+            InspectorDetailsExporter.ExportCsvAsync(GetDiagnosticRows(), SelectedRowInfo);
+
+        /// <summary>复制当前检查器显示的计算详情到剪贴板。</summary>
+        [RelayCommand(CanExecute = nameof(HasDiagnosticData))]
+        private void CopyDiagnosticDetails() =>
+            InspectorDetailsExporter.CopyToClipboard(GetDiagnosticRows());
+
+        private List<(string Name, string Value)> GetDiagnosticRows() =>
+            DiagnosticItems.Select(item => (item.Name, item.Value)).ToList();
 
         public void ClampFe3Fraction()
         {

@@ -4117,8 +4117,8 @@
         <Setter Property="Foreground" Value="{DynamicResource HomeSubBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-        <Setter Property="MaxHeight" Value="66"/>
-        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="MaxHeight" Value="154"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding HasBackgroundImage}" Value="True">
                 <Setter Property="Foreground" Value="#E6FFFFFF"/>
@@ -5238,18 +5238,21 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Grid>
-                        <Border x:Name="Ring" Margin="-3" CornerRadius="9" BorderThickness="3" BorderBrush="{DynamicResource ThemeAccentTintStrongBrush}"
-                                Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="1" CornerRadius="6">
                             <Grid>
-                                <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" Focusable="False"
+                                <!-- 不能再给 PART_ContentHost 加 Margin：TextBox 会把 Padding 自行应用到内容区，再加 Margin 等于内边距算了两次（文字被挤成一小条、光标比占位文字靠后） -->
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
                                               HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                                 <Border x:Name="Hint" Padding="{TemplateBinding Padding}" IsHitTestVisible="False" Visibility="Collapsed">
-                                    <TextBlock Text="{TemplateBinding Tag}" Margin="2,0,0,0" Foreground="#C7C7CC" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{TemplateBinding Tag}" Margin="2,0,0,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                               Foreground="#C7C7CC" TextTrimming="CharacterEllipsis"/>
                                 </Border>
                             </Grid>
                         </Border>
+                        <!-- 聚焦描边：与 ReoGrid 表格选中单元格一致（2px 主题色实线边框 + 淡主题色底），盖在表面之上 -->
+                        <Border x:Name="Ring" BorderThickness="2" CornerRadius="3" BorderBrush="{DynamicResource ThemeAccentBrush}"
+                                Visibility="Collapsed" IsHitTestVisible="False"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Text" Value="">
@@ -5259,14 +5262,60 @@
                             <Setter TargetName="Surface" Property="Background" Value="#F5F6F8"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Surface" Property="Background" Value="White"/>
-                            <Setter TargetName="Surface" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                            <Setter TargetName="Surface" Property="Background" Value="{DynamicResource ThemeAccentTintBrush}"/>
+                            <Setter TargetName="Surface" Property="CornerRadius" Value="3"/>
                             <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- 多语言表格公共样式（EPMA / 地质温压计 / 图解的“多语言”表共用）：单元格容器、输入框、左侧字段项标签 -->
+    <Style x:Key="LocCellBox" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#0D000000"/>
+        <Setter Property="BorderThickness" Value="1,0,0,0"/>
+    </Style>
+
+    <!-- 单行格：自动换行 + 垂直居中（不接受回车）；长文本格（IsMultiline）顶端对齐并接受回车 -->
+    <Style x:Key="LocCellInput" TargetType="TextBox" BasedOn="{StaticResource EpmaLocInputBox}">
+        <Setter Property="Text" Value="{Binding Text,UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="Tag" Value="{Binding Placeholder}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5,0"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMultiline}" Value="True">
+                <Setter Property="AcceptsReturn" Value="True"/>
+                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                <Setter Property="Padding" Value="5,6"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- 左侧字段项名称：名称为深色，标签 / 分组为浅灰，描述（长文本）行顶端对齐 -->
+    <Style x:Key="LocRowLabel" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12.5"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="#515154"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="16,10,8,10"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsTag}" Value="True">
+                <Setter Property="Foreground" Value="#6E6E73"/>
+                <Setter Property="Margin" Value="16,8,8,8"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsGroup}" Value="True">
+                <Setter Property="Foreground" Value="#6E6E73"/>
+                <Setter Property="Margin" Value="16,8,8,8"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsDescription}" Value="True">
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Margin" Value="16,14,8,14"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <!-- 次级按钮（导入 / 导出 / 取消） -->
@@ -5559,12 +5608,14 @@
         <Setter Property="Foreground" Value="{DynamicResource HomeInkBrush}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+        <!-- 最小宽度包含左右各 12 的阴影边距（可见面板最小宽 168），个别菜单可在实例上覆盖 -->
+        <Setter Property="MinWidth" Value="192"/>
         <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
                     <!-- Margin 为阴影预留空间（Popup 已开启透明） -->
-                    <Border Margin="12,10,12,14" MinWidth="168" Style="{StaticResource AppMenuPanelStyle}">
+                    <Border Margin="12,10,12,14" Style="{StaticResource AppMenuPanelStyle}">
                         <Border.RenderTransform>
                             <TranslateTransform/>
                         </Border.RenderTransform>
@@ -5907,6 +5958,36 @@
         </Setter>
     </Style>
 
+    <!-- ==================== 数据表行头状态点图例（颜色与 ReoGridTableAppearance.RowHeaderBody 保持一致） ==================== -->
+    <Style x:Key="DataRowStatusLegendDotStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Fill" Value="Transparent"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+    </Style>
+    <Style x:Key="DataRowStatusOkDotStyle" TargetType="Ellipse" BasedOn="{StaticResource DataRowStatusLegendDotStyle}">
+        <Setter Property="Fill" Value="#2EA043"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+    </Style>
+    <Style x:Key="DataRowStatusErrorDotStyle" TargetType="Ellipse" BasedOn="{StaticResource DataRowStatusLegendDotStyle}">
+        <Setter Property="Fill" Value="#C2364B"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+    </Style>
+    <Style x:Key="DataRowStatusStaleDotStyle" TargetType="Ellipse" BasedOn="{StaticResource DataRowStatusLegendDotStyle}">
+        <Setter Property="Stroke" Value="#E08A00"/>
+    </Style>
+    <Style x:Key="DataRowStatusIdleDotStyle" TargetType="Ellipse" BasedOn="{StaticResource DataRowStatusLegendDotStyle}">
+        <Setter Property="Stroke" Value="#C3C8DC"/>
+    </Style>
+    <Style x:Key="DataRowStatusLegendTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="#6B7392"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,14,0"/>
+    </Style>
+
     <!-- ==================== ReoGrid 表格统一外观（EPMA 计算表格样式） ==================== -->
     <!-- 细滚动条：EPMA 工作台与所有 ReoGridTableHost 共用 -->
     <Style x:Key="GridThinScrollThumbStyle" TargetType="Thumb">
@@ -6057,6 +6138,38 @@
         </Setter>
     </Style>
 
+    <!-- 右侧检查器摘要行里的导出 / 复制小按钮（与温压计检查器一致）；图标字体为 iconfont。 -->
+    <FontFamily x:Key="InspectorIconFont">pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont</FontFamily>
+    <Style x:Key="InspectorActionButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="26"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="#888"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                            <Setter Property="Foreground" Value="#333"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#D4D4D4"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- 完整的数据工作表：顶栏 + 原生列头 + 数据区 + 细滚动条 + 右侧检查器（可选）+ 底部状态栏。 -->
     <Style x:Key="ReoGridTableHostStyle" TargetType="{x:Type ctrl:ReoGridTableHost}">
         <Setter Property="Background" Value="White"/>
@@ -6153,7 +6266,8 @@
                                  外框宽度由代码做展开 / 收起动画（0 ⇄ InspectorWidth），内部内容保持固定宽度，动画过程中不会跟着重排。 -->
                             <Border x:Name="PART_Inspector" Grid.Column="1" Width="0" Visibility="Collapsed" ClipToBounds="True"
                                     Background="{DynamicResource ThemeSheetRowHeaderBrush}" BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="1,0,0,0">
-                                <DockPanel Width="{TemplateBinding InspectorWidth}" HorizontalAlignment="Left">
+                                <Grid Width="{TemplateBinding InspectorWidth}" HorizontalAlignment="Left">
+                                <DockPanel>
                                     <Border DockPanel.Dock="Top" Height="40" Padding="14,0,8,0" Background="White" BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="0,0,0,1">
                                         <DockPanel>
                                             <Button x:Name="PART_InspectorClose" DockPanel.Dock="Right" Style="{StaticResource WorksheetBarButtonStyle}" Padding="6,4" VerticalAlignment="Center"
@@ -6166,6 +6280,23 @@
                                     </Border>
                                     <ContentPresenter Content="{TemplateBinding Inspector}"/>
                                 </DockPanel>
+                                <!-- 左边缘拖动条：手动调整检查器宽度（上限为软件窗口宽度的 2/3，由代码限制）。 -->
+                                <Thumb x:Name="PART_InspectorResizer" HorizontalAlignment="Left" Width="6" Cursor="SizeWE" Focusable="False">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border x:Name="Bar" Background="Transparent" BorderThickness="2,0,0,0" BorderBrush="Transparent"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Bar" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsDragging" Value="True">
+                                                    <Setter TargetName="Bar" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                                </Grid>
                             </Border>
                         </Grid>
                     </Grid>
@@ -6780,6 +6911,14 @@
         <Setter Property="Foreground" Value="{DynamicResource ThemeAccentDeepBrush}"/>
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- ===== 内容包标识（PackageId）弱化文字：浅灰、小字号，不抢标题视觉 ===== -->
+    <Style x:Key="ContentPackageIdTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#A0A6B0"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>
 
     <!-- ===== EPMA 官方模板服务器状态胶囊（未下载 / 可更新 / 需升级软件） ===== -->

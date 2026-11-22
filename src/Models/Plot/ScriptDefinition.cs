@@ -29,6 +29,14 @@ namespace GeoChemistryNexus.Models
         private string _dataSeriesUnits = "";
 
         /// <summary>
+        /// 数据列分组（图解脚本格式 1.3 新增，可选）：每个分组是一个多语言标题加上它覆盖的数据列名。
+        /// 没有分组时保持为 null，不写入模板内容，旧模板的内容与哈希不变。
+        /// </summary>
+        [ObservableProperty]
+        [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        private List<DataSeriesGroup>? _dataSeriesGroups;
+
+        /// <summary>
         /// 要执行的脚本内容
         /// </summary>
         [ObservableProperty]

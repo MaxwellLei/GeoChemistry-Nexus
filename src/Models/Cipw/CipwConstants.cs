@@ -43,52 +43,62 @@ namespace GeoChemistryNexus.Models.Cipw
         };
 
         /// <summary>
-        /// 标准矿物摩尔质量 (g/mol)
+        /// 氧原子摩尔质量 (g/mol)，与 <see cref="MolarMass"/> 中 FeO、MgO 等氧化物所用原子量一致
+        /// </summary>
+        public const double OxygenMolarMass = 15.999;
+
+        /// <summary>
+        /// 标准矿物摩尔质量 (g/mol)。
+        /// 全部由 <see cref="MolarMass"/> 中的氧化物摩尔质量按化学式推导，
+        /// 以保证标准矿物质量与输入氧化物质量严格守恒（避免手工取整造成的质量平衡偏差）。
+        /// 其中 Py / Fl / Hl 含非氧阴离子，需扣除被置换出的氧。
         /// </summary>
         public static readonly Dictionary<string, double> MineralMolarMass = new()
         {
             // 硅铝矿物
-            ["Q"] = 60.083,
-            ["Cor"] = 101.961,
-            ["Or"] = 278.33,
-            ["Ab"] = 262.22,
-            ["An"] = 278.21,
+            ["Q"] = MolarMass["SiO2"],
+            ["Cor"] = MolarMass["Al2O3"],
+            ["Or"] = (MolarMass["K2O"] + MolarMass["Al2O3"] + 6.0 * MolarMass["SiO2"]) / 2.0,
+            ["Ab"] = (MolarMass["Na2O"] + MolarMass["Al2O3"] + 6.0 * MolarMass["SiO2"]) / 2.0,
+            ["An"] = MolarMass["CaO"] + MolarMass["Al2O3"] + 2.0 * MolarMass["SiO2"],
 
             // 似长石
-            ["Le"] = 218.25,
-            ["Ne"] = 142.05,
-            ["Kp"] = 158.16,
+            ["Le"] = (MolarMass["K2O"] + MolarMass["Al2O3"] + 4.0 * MolarMass["SiO2"]) / 2.0,
+            ["Ne"] = (MolarMass["Na2O"] + MolarMass["Al2O3"] + 2.0 * MolarMass["SiO2"]) / 2.0,
+            ["Kp"] = (MolarMass["K2O"] + MolarMass["Al2O3"] + 2.0 * MolarMass["SiO2"]) / 2.0,
 
             // 铁镁硅酸盐
-            ["Ac"] = 231.00,
-            ["Di"] = 216.55,
-            ["Hd"] = 248.09,
-            ["Wo"] = 116.16,
-            ["En"] = 100.39,
-            ["Fs"] = 131.93,
-            ["Fo"] = 140.69,
-            ["Fa"] = 203.77,
+            ["Ac"] = (MolarMass["Na2O"] + MolarMass["Fe2O3"] + 4.0 * MolarMass["SiO2"]) / 2.0,
+            ["Di"] = MolarMass["CaO"] + MolarMass["MgO"] + 2.0 * MolarMass["SiO2"],
+            ["Hd"] = MolarMass["CaO"] + MolarMass["FeO"] + 2.0 * MolarMass["SiO2"],
+            ["Wo"] = MolarMass["CaO"] + MolarMass["SiO2"],
+            ["En"] = MolarMass["MgO"] + MolarMass["SiO2"],
+            ["Fs"] = MolarMass["FeO"] + MolarMass["SiO2"],
+            ["Fo"] = 2.0 * MolarMass["MgO"] + MolarMass["SiO2"],
+            ["Fa"] = 2.0 * MolarMass["FeO"] + MolarMass["SiO2"],
+            ["Cs"] = 2.0 * MolarMass["CaO"] + MolarMass["SiO2"],
 
             // 氧化物及副矿物
-            ["Mt"] = 231.54,
-            ["Hm"] = 159.69,
-            ["Ilm"] = 151.71,
-            ["Cm"] = 223.84,
-            ["Ru"] = 79.87,
-            ["Tn"] = 196.06,
-            ["Z"] = 183.31,
-            ["Ap"] = 328.86,
+            ["Mt"] = MolarMass["FeO"] + MolarMass["Fe2O3"],
+            ["Hm"] = MolarMass["Fe2O3"],
+            ["Ilm"] = MolarMass["FeO"] + MolarMass["TiO2"],
+            ["Cm"] = MolarMass["FeO"] + MolarMass["Cr2O3"],
+            ["Ru"] = MolarMass["TiO2"],
+            ["Tn"] = MolarMass["CaO"] + MolarMass["TiO2"] + MolarMass["SiO2"],
+            ["Pf"] = MolarMass["CaO"] + MolarMass["TiO2"],
+            ["Z"] = MolarMass["ZrO2"] + MolarMass["SiO2"],
+            ["Ap"] = (10.0 * MolarMass["CaO"] + 3.0 * MolarMass["P2O5"]) / 3.0,
 
             // 挥发分、碳酸盐、盐类
-            ["Cc"] = 100.09,
-            ["Py"] = 119.98,
-            ["Fl"] = 78.07,
-            ["Hl"] = 58.44,
-            ["Th"] = 142.04,
+            ["Cc"] = MolarMass["CaO"] + MolarMass["CO2"],
+            ["Py"] = MolarMass["FeO"] + 2.0 * MolarMass["S"] - OxygenMolarMass,
+            ["Fl"] = MolarMass["CaO"] + 2.0 * MolarMass["F"] - OxygenMolarMass,
+            ["Hl"] = (MolarMass["Na2O"] + 2.0 * MolarMass["Cl"] - OxygenMolarMass) / 2.0,
+            ["Th"] = MolarMass["Na2O"] + MolarMass["SO3"],
 
             // 准硅酸盐
-            ["ns"] = 122.06,
-            ["ks"] = 154.28,
+            ["ns"] = MolarMass["Na2O"] + MolarMass["SiO2"],
+            ["ks"] = MolarMass["K2O"] + MolarMass["SiO2"],
         };
 
         /// <summary>
@@ -117,6 +127,8 @@ namespace GeoChemistryNexus.Models.Cipw
             ["Ilm"] = "钛铁矿",
             ["Cm"] = "铬铁矿",
             ["Ru"] = "金红石",
+            ["Cs"] = "斜硅钙石",
+            ["Pf"] = "钙钛矿",
             ["Tn"] = "榍石",
             ["Z"] = "锆石",
             ["Ap"] = "磷灰石",

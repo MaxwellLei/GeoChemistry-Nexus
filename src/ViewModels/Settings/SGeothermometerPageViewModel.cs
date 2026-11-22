@@ -84,8 +84,12 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                GeothermometerDatabaseService.Instance.ClearDatabase();
-                GeothermometerService.ReloadPlugins();
+                await Task.Run(() =>
+                {
+                    GeothermometerDatabaseService.Instance.ClearDatabase();
+                    GeothermometerService.DeleteLocalListCache();
+                    GeothermometerService.ReloadPlugins();
+                });
                 WeakReferenceMessenger.Default.Send(new GeoTMineralCategoryUpdatedMessage("Reset"));
                 MessageHelper.Success(LanguageService.Instance["geothermometer_database_cleared"] ?? "Local geothermometer template database cleared successfully.");
             }

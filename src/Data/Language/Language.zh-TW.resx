@@ -174,20 +174,8 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>三元相圖之和必須為 1.</value>
   </data>
-  <data name="geo_btn_reset" xml:space="preserve">
-    <value>重設</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>是否可見</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>套用</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>描邊顏色</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>描邊寬度</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>自動檢查更新</value>
@@ -217,7 +205,7 @@
     <value>新增圖表</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>已轉換為官方溫壓計</value>
+    <value>已升級為線上溫壓計模板</value>
   </data>
   <data name="orientation" xml:space="preserve">
     <value>排列方式</value>
@@ -242,9 +230,6 @@
   </data>
   <data name="batch_downloading" xml:space="preserve">
     <value>批次下載中</value>
-  </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>副標題粗體</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>圖解嚮導</value>
@@ -273,11 +258,8 @@
   <data name="add_link" xml:space="preserve">
     <value>新增連結</value>
   </data>
-  <data name="pattern" xml:space="preserve">
-    <value>線型</value>
-  </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>轉換為官方</value>
+    <value>升級為線上溫壓計模板</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>驗證失敗:</value>
@@ -348,9 +330,6 @@
   <data name="syntax_validation_passed" xml:space="preserve">
     <value>語法驗證通過</value>
   </data>
-  <data name="cipw_tooltip_expand" xml:space="preserve">
-    <value>展開 / 收合</value>
-  </data>
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>匯出計算結果到 CSV 檔案</value>
   </data>
@@ -417,7 +396,7 @@
 • Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
-    <value>降級為自訂</value>
+    <value>移除線上溫壓計模板</value>
   </data>
   <data name="geo_ctx_delete" xml:space="preserve">
     <value>刪除</value>
@@ -428,8 +407,7 @@
 • 磷灰石（Ap）：P₂O₅ + CaO
 • 鉻鐵礦（Cm）：Cr₂O₃ + FeO
 • 鈦鐵礦（Ilm）：TiO₂ + FeO
-• 榍石（Tn）：TiO₂ + CaO + SiO₂
-• 金紅石（Ru）：殘餘 TiO₂</value>
+（榍石與金紅石在鈣長石分配之後形成，見「形成長石和鹼金屬矽酸鹽」步驟）</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>圖解範本來源檔案不存在</value>
@@ -442,9 +420,6 @@
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>編輯溫壓計</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>起始座標</value>
   </data>
   <data name="official_templates" xml:space="preserve">
     <value>線上圖解範本</value>
@@ -467,11 +442,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>可在指令碼中使用 trace(...) 函式記錄計算過程。</value>
   </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>自訂應用</value>
-  </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>個人圖解範本</value>
+    <value>我的圖解範本</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>圖解範本載入失敗</value>
@@ -490,9 +462,6 @@
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>公式不合法</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>副標題顏色</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>礦物總量</value>
@@ -543,7 +512,7 @@
     <value>全部範本</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>個人圖解範本</value>
+    <value>我的圖解範本</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>基本資訊</value>
@@ -587,17 +556,8 @@
   <data name="logarithmic" xml:space="preserve">
     <value>對數</value>
   </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>箭頭寬度</value>
-  </data>
-  <data name="geo_btn_help" xml:space="preserve">
-    <value>說明</value>
-  </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>腳本變數名格式錯誤:</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>第三方軟體開啟</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>返回</value>
@@ -610,9 +570,6 @@
   </data>
   <data name="preparing_interface_content_status" xml:space="preserve">
     <value>已切換頁面，正在準備介面內容...</value>
-  </data>
-  <data name="fill_color" xml:space="preserve">
-    <value>填充顏色</value>
   </data>
   <data name="cipw_iron_inconsistent" xml:space="preserve">
     <value>輸入不一致</value>
@@ -638,9 +595,6 @@
   <data name="geo_validate_formula_name_invalid" xml:space="preserve">
     <value>公式名稱只能包含字母、數字和底線。</value>
   </data>
-  <data name="border_width" xml:space="preserve">
-    <value>邊框寬度</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>複製內容</value>
   </data>
@@ -652,9 +606,6 @@
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
     <value>計算完成：{0}/{1} 個樣品成功.</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>邊框顏色</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
     <value>語言切換成功</value>
@@ -706,9 +657,6 @@
   <data name="content" xml:space="preserve">
     <value>內容</value>
   </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>完整度檢查</value>
-  </data>
   <data name="line_width" xml:space="preserve">
     <value>線條寬度</value>
   </data>
@@ -748,9 +696,6 @@
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>公式名稱不能為空。</value>
   </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>副標題斜體</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>目前範本列表已是最新版本。</value>
   </data>
@@ -788,9 +733,12 @@
 ▶ 飽和（SiO₂ 恰好用完）：無石英、無似長石
 ▶ 不飽和（SiO₂ 不足）：按優先順序反向調整礦物——
     • 紫蘇輝石（En+Fs） → 橄欖石（Fo+Fa）
+    • 榍石（Tn） → 鈣鈦礦（Pf）
+    • 鈉長石（Ab） → 霞石（Ne）
     • 正長石（Or） → 白榴石（Le）
-    • 白榴石（Le） → 假白榴石（Kp）
-    • 鈉長石（Ab） → 霞石（Ne）</value>
+    • 矽灰石（Wo） → 斜矽鈣石（Cs）
+    • 透輝石/鈣鐵輝石（Di+Hd） → 斜矽鈣石（Cs）+ 橄欖石（Fo+Fa）
+    • 白榴石（Le） → 假白榴石（Kp）</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>未定義資料欄</value>
@@ -822,9 +770,6 @@
   <data name="cipw_step5_title" xml:space="preserve">
     <value>形成長石和鹼金屬矽酸鹽</value>
   </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>無法開啟檔案：</value>
-  </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>質量平衡誤差(%)</value>
   </data>
@@ -855,14 +800,8 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>未設定自訂程式路徑，請在設定中配置。</value>
   </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>顯示主刻度</value>
-  </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>準鋁質</value>
-  </data>
-  <data name="geo_field_required_hint" xml:space="preserve">
-    <value>必填欄位標有 *。格式基線 x.y 跟隨軟體溫壓計版本，修訂號 z 為範本內容版本。Grid 公式在「資料與腳本」步驟中設定。</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>資料參數格式不正確</value>
@@ -951,9 +890,6 @@
   <data name="geo_script_run_test" xml:space="preserve">
     <value>執行測試</value>
   </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>腳本設定</value>
-  </data>
   <data name="to" xml:space="preserve">
     <value>到</value>
   </data>
@@ -988,7 +924,7 @@
     <value>新增層級後將在此顯示分類結構預覽。</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>個人溫壓計範本</value>
+    <value>我的溫壓計範本</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y軸</value>
@@ -1016,9 +952,6 @@
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 座標</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>終止座標</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>腳本內容為空</value>
@@ -1071,9 +1004,6 @@
   <data name="range" xml:space="preserve">
     <value>範圍</value>
   </data>
-  <data name="style" xml:space="preserve">
-    <value>樣式</value>
-  </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>參考文獻</value>
   </data>
@@ -1123,7 +1053,7 @@
     <value>過飽和</value>
   </data>
   <data name="geo_label_custom_chip" xml:space="preserve">
-    <value>自訂</value>
+    <value>我的</value>
   </data>
   <data name="copy_failed" xml:space="preserve">
     <value>複製失敗:</value>
@@ -1152,23 +1082,8 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>資料已清除.</value>
   </data>
-  <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 秒</value>
-  </data>
-  <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 秒</value>
-  </data>
-  <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 秒</value>
-  </data>
-  <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 秒</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>物件已成功刪除.</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>顯示刻度標籤</value>
   </data>
   <data name="cipw_tooltip_help" xml:space="preserve">
     <value>檢視 CIPW 標準礦物計算的演算法流程說明</value>
@@ -1199,9 +1114,6 @@
   <data name="geo_step_script" xml:space="preserve">
     <value>資料與指令碼</value>
   </data>
-  <data name="geo_loc_row_reference" xml:space="preserve">
-    <value>參考文獻</value>
-  </data>
   <data name="geo_validate_inputs_required" xml:space="preserve">
     <value>請至少新增一個輸入欄。</value>
   </data>
@@ -1212,7 +1124,7 @@
     <value>啟動自訂程式失敗：</value>
   </data>
   <data name="geo_label_custom" xml:space="preserve">
-    <value>自訂</value>
+    <value>我的</value>
   </data>
   <data name="minor_grid_Line" xml:space="preserve">
     <value>次網格線</value>
@@ -1243,9 +1155,6 @@
   <data name="interval" xml:space="preserve">
     <value>刻度間隔</value>
   </data>
-  <data name="font_family" xml:space="preserve">
-    <value>字型</value>
-  </data>
   <data name="vertices" xml:space="preserve">
     <value>頂點</value>
   </data>
@@ -1254,9 +1163,6 @@
   </data>
   <data name="point_count" xml:space="preserve">
     <value>取樣點</value>
-  </data>
-  <data name="geo_label_official" xml:space="preserve">
-    <value>官方</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>最近使用</value>
@@ -1311,15 +1217,14 @@
 • 正長石（Or）：K₂O + Al₂O₃ + 6SiO₂
 • 鈉長石（Ab）：Na₂O + Al₂O₃ + 6SiO₂
 • 鈣長石（An）：CaO + Al₂O₃ + 2SiO₂
+• 榍石（Tn）：TiO₂ + CaO + SiO₂（僅使用鈣長石分配後剩餘的 CaO）
+• 金紅石（Ru）：殘餘 TiO₂
 • 剛玉（Cor）：殘餘 Al₂O₃（過鋁質時出現）
 • 霓石（Ac）：Na₂O + Fe₂O₃ + 4SiO₂（過鹼性時出現）
 • 殘餘鹼金屬矽酸鹽（ns、ks）</value>
   </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>斜體 (Ctrl+I)</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>無法找到幫助說明檔案。</value>
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>說明</value>
@@ -1353,9 +1258,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>右上角</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>批次下載未安裝的新範本</value>
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>收藏</value>
@@ -1396,9 +1298,6 @@
   <data name="retry_action" xml:space="preserve">
     <value>重試</value>
   </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>箭頭長度</value>
-  </data>
   <data name="remove_point" xml:space="preserve">
     <value>刪除此頂點</value>
   </data>
@@ -1410,9 +1309,6 @@
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>是否退出目前計算介面？</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>內容與位置</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>新增箭頭 (Ctrl+4)</value>
@@ -1432,9 +1328,6 @@
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>預設 0.15</value>
   </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>副標題字號</value>
-  </data>
   <data name="delete_object" xml:space="preserve">
     <value>刪除物件 (Delete)</value>
   </data>
@@ -1446,9 +1339,6 @@
   </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>過鋁質</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>起始座標</value>
   </data>
   <data name="cipw_error" xml:space="preserve">
     <value>錯誤</value>
@@ -1482,9 +1372,6 @@
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>無資料，請新增資料</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>批次下載</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>新增範本時發生錯誤：</value>
@@ -1534,7 +1421,7 @@
     <value>語言與外觀</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>已降級為自訂溫壓計</value>
+    <value>已移除線上溫壓計模板，已變為我的溫壓計</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>圖解類型</value>
@@ -1647,9 +1534,6 @@
   <data name="formula" xml:space="preserve">
     <value>公式</value>
   </data>
-  <data name="script_language" xml:space="preserve">
-    <value>腳本語言:</value>
-  </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>沒有可儲存的範本或未指定儲存路徑。請使用另存新檔儲存.</value>
   </data>
@@ -1685,12 +1569,6 @@
   </data>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>批次下載已取消</value>
-  </data>
-  <data name="batch_update_outdated_templates" xml:space="preserve">
-    <value>批次更新</value>
-  </data>
-  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
-    <value>批次更新有新版本的官方範本</value>
   </data>
   <data name="batch_update_title" xml:space="preserve">
     <value>批次更新</value>
@@ -1782,9 +1660,6 @@
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>不支援的檔案格式</value>
   </data>
-  <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>溫壓計包，可一次放入多個檔案。</value>
-  </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
     <value>圖解</value>
   </data>
@@ -1814,9 +1689,6 @@
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>形成副礦物</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>多個資料系列請用逗號分隔，例如：SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>新增多邊形 (Ctrl+3)</value>
@@ -1918,7 +1790,7 @@
     <value>退出程式</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_檔案(F)</value>
+    <value>檔案(_F)</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>資料</value>
@@ -1940,12 +1812,6 @@
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>目前軟體溫壓計版本</value>
-  </data>
-  <data name="geo_current_template_version" xml:space="preserve">
-    <value>目前溫壓計範本版本</value>
-  </data>
-  <data name="geo_editor_set_version" xml:space="preserve">
-    <value>設定溫壓計版本</value>
   </data>
   <data name="geo_tooltip_version_patch" xml:space="preserve">
     <value>修訂號 z；格式基線 x.y 跟隨程式版本</value>
@@ -2089,12 +1955,6 @@
   </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>快捷鍵</value>
-  </data>
-  <data name="shortcuts_intro" xml:space="preserve">
-    <value>這裡展示目前版本已支援的快捷鍵，僅供查看，不能在此頁面修改。</value>
-  </data>
-  <data name="shortcuts_hint" xml:space="preserve">
-    <value>提示：部分快捷鍵僅在對應頁面處於啟用狀態或取得焦點時生效。</value>
   </data>
   <data name="shortcut_group_plot_title" xml:space="preserve">
     <value>主繪圖頁</value>
@@ -2339,9 +2199,6 @@
   <data name="filter_geothermometer_package" xml:space="preserve">
     <value>溫壓計範本套件</value>
   </data>
-  <data name="filter_geothermometer_import" xml:space="preserve">
-    <value>溫壓計範本套件</value>
-  </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>CSV 檔案</value>
   </data>
@@ -2384,17 +2241,11 @@
   <data name="cos_credentials_required" xml:space="preserve">
     <value>請先設定並儲存 COS 憑證。</value>
   </data>
-  <data name="cos_save_settings" xml:space="preserve">
-    <value>儲存設定</value>
-  </data>
   <data name="cos_secret_id_required" xml:space="preserve">
     <value>SecretId 不能為空。</value>
   </data>
   <data name="cos_settings_saved" xml:space="preserve">
     <value>COS 設定已儲存。</value>
-  </data>
-  <data name="cos_test_connection" xml:space="preserve">
-    <value>測試連線</value>
   </data>
   <data name="cos_test_failed" xml:space="preserve">
     <value>COS 連線測試失敗。</value>
@@ -2419,9 +2270,6 @@
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>多語言</value>
-  </data>
-  <data name="diagram_editor_new_version" xml:space="preserve">
-    <value>新版本</value>
   </data>
   <data name="diagram_editor_saved_version" xml:space="preserve">
     <value>儲存後版本：</value>
@@ -2452,9 +2300,6 @@
   </data>
   <data name="favorites_empty_hint" xml:space="preserve">
     <value>還沒有收藏的範本。在範本上按右鍵即可收藏。</value>
-  </data>
-  <data name="diagram_hint_no_favorites" xml:space="preserve">
-    <value>暫無收藏的圖解範本。</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
     <value>暫無線上圖解範本。</value>
@@ -2508,7 +2353,19 @@
     <value>強制更新</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>轉換為內建範本</value>
+    <value>升級為線上圖解模板</value>
+  </data>
+  <data name="demote_to_custom_template" xml:space="preserve">
+    <value>移除線上圖解模板</value>
+  </data>
+  <data name="confirm_demote_diagram_template" xml:space="preserve">
+    <value>確定移除此線上圖解模板？它將變為我的圖解，且不會出現在下次發佈中；已存在的同路徑個人圖解將被取代。</value>
+  </data>
+  <data name="confirm_demote_geothermometer" xml:space="preserve">
+    <value>確定移除此線上溫壓計模板？它將變為我的溫壓計，且不會出現在下次發佈中。</value>
+  </data>
+  <data name="template_demote_success" xml:space="preserve">
+    <value>已移除線上圖解模板，已變為我的圖解</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>強制更新</value>
@@ -2597,9 +2454,6 @@
   <data name="ui_scale_mode_hint" xml:space="preserve">
     <value>調整介面整體縮放比例（預設 100%）</value>
   </data>
-  <data name="ui_scale_auto" xml:space="preserve">
-    <value>自動</value>
-  </data>
   <data name="main_sidebar_collapse_style" xml:space="preserve">
     <value>主側邊欄收起樣式</value>
   </data>
@@ -2639,9 +2493,6 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>（空）</value>
   </data>
-  <data name="official_publisher_announcement_load" xml:space="preserve">
-    <value>從伺服器載入</value>
-  </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>已從伺服器載入公告。</value>
   </data>
@@ -2657,29 +2508,11 @@
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>發布官方範本需要開啟開發者模式。</value>
   </data>
-  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
-    <value>圖解：新增 {0}，更新 {1}，下架 {2}，未變更 {3}。</value>
-  </data>
-  <data name="official_publisher_diagram_section" xml:space="preserve">
-    <value>圖解</value>
-  </data>
   <data name="official_publisher_export_done" xml:space="preserve">
     <value>匯出完成。</value>
   </data>
-  <data name="official_publisher_export_local" xml:space="preserve">
-    <value>僅匯出至本地</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>正在匯出至 {0}...</value>
-  </data>
-  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>溫壓計：新增 {0}，更新 {1}，下架 {2}，未變更 {3}。</value>
-  </data>
-  <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>溫壓計</value>
-  </data>
-  <data name="official_publisher_home_add_group" xml:space="preserve">
-    <value>新增分組</value>
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>編輯分組</value>
@@ -2687,26 +2520,11 @@
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>首頁連結草稿已儲存至本地。</value>
   </data>
-  <data name="official_publisher_home_links_pending" xml:space="preserve">
-    <value>待發布</value>
-  </data>
-  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
-    <value>分組：{0}，連結：{1}，本地 hash：{2}，遠端 hash：{3}。</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>首頁連結編輯器已重新載入。</value>
   </data>
-  <data name="official_publisher_home_links_section" xml:space="preserve">
-    <value>首頁連結</value>
-  </data>
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>首頁連結：{0} 個分組，{1} 個連結，hash={2}。</value>
-  </data>
-  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
-    <value>伺服器已是最新。</value>
-  </data>
-  <data name="official_publisher_home_save_draft" xml:space="preserve">
-    <value>儲存草稿</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>請先選擇一個分組。</value>
@@ -2729,29 +2547,14 @@
   <data name="official_publisher_ready" xml:space="preserve">
     <value>官方發布器已就緒。</value>
   </data>
-  <data name="official_publisher_refresh" xml:space="preserve">
-    <value>重新整理預覽</value>
-  </data>
-  <data name="official_publisher_refreshing" xml:space="preserve">
-    <value>正在重新整理發布預覽...</value>
-  </data>
   <data name="official_publisher_removed" xml:space="preserve">
     <value>下架</value>
-  </data>
-  <data name="official_publisher_staging_dir" xml:space="preserve">
-    <value>本地 staging 目錄</value>
   </data>
   <data name="official_publisher_staging_required" xml:space="preserve">
     <value>請選擇 staging 目錄。</value>
   </data>
   <data name="official_publisher_start" xml:space="preserve">
     <value>開始發布...</value>
-  </data>
-  <data name="official_publisher_target_required" xml:space="preserve">
-    <value>請至少選擇一項發布內容。</value>
-  </data>
-  <data name="official_publisher_unchanged" xml:space="preserve">
-    <value>未變更</value>
   </data>
   <data name="official_publisher_updated" xml:space="preserve">
     <value>更新</value>
@@ -2831,23 +2634,8 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>文字</value>
   </data>
-  <data name="official_publisher_plot_categories_section" xml:space="preserve">
-    <value>圖解分類</value>
-  </data>
-  <data name="official_publisher_plot_categories_level" xml:space="preserve">
-    <value>層級</value>
-  </data>
-  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
-    <value>圖解分類草稿已儲存到本機。</value>
-  </data>
   <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
     <value>圖解分類編輯器已重新載入。</value>
-  </data>
-  <data name="official_publisher_geot_categories_section" xml:space="preserve">
-    <value>溫壓計礦物標籤</value>
-  </data>
-  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
-    <value>溫壓計礦物分類草稿已儲存到本機。</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>溫壓計礦物分類編輯器已重新載入。</value>
@@ -2924,9 +2712,6 @@
   <data name="geo_editor_readonly_hint" xml:space="preserve">
     <value>官方溫壓計的基本資訊、資料與腳本和說明文件僅可檢視與複製，不可修改。</value>
   </data>
-  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
-    <value>資料已修改，請重新整理圖解。</value>
-  </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>第 {0} 列：{1}</value>
   </data>
@@ -2994,7 +2779,7 @@
     <value>霞石</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>鉀霞石</value>
+    <value>假白榴石</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>霓石</value>
@@ -3080,6 +2865,15 @@
   <data name="cipw_warning_mno_to_feo" xml:space="preserve">
     <value>MnO 已按摩爾比轉換為 FeO 當量。</value>
   </data>
+  <data name="cipw_mineral_Pf" xml:space="preserve">
+    <value>鈣鈦礦</value>
+  </data>
+  <data name="cipw_mineral_Cs" xml:space="preserve">
+    <value>斜矽鈣石</value>
+  </data>
+  <data name="cipw_warning_silica_deficit_residual" xml:space="preserve">
+    <value>標準去矽反應序列無法完全消除矽虧損（殘餘虧損：{0} mol/100 g），該標準礦物結果不可靠。</value>
+  </data>
   <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
     <value>負值氧化物 {0}：{1}</value>
   </data>
@@ -3145,9 +2939,6 @@
   </data>
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
     <value>設定 Adobe Illustrator 可執行檔路徑，用於開啟向量圖</value>
-  </data>
-  <data name="custom_app_hint" xml:space="preserve">
-    <value>設定自訂第三方繪圖軟體的可執行檔路徑</value>
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
     <value>圖解分類樹預設展開到的層級深度</value>
@@ -3450,19 +3241,9 @@
     <value>（空）</value>
 
   </data>
-  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
-
-    <value>格式：1.2.3。留空表示不啟用最低版本門檻。</value>
-
-  </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>最低支援版本必須是有效版本號，例如 1.2.3。</value>
-
-  </data>
-  <data name="official_publisher_minimum_version_label" xml:space="preserve">
-
-    <value>最低支援版本</value>
 
   </data>
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
@@ -3644,9 +3425,6 @@
   <data name="black_body_radiation_calculator_desc" xml:space="preserve">
     <value>計算斯特藩–玻爾茲曼總輻射功率、維恩峰值波長與黑體光譜</value>
   </data>
-  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
-    <value>輸入溫度（K），計算總輻射功率、峰值波長及歸一化光譜曲線。</value>
-  </data>
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>溫度</value>
   </data>
@@ -3740,9 +3518,6 @@
   <data name="periodic_table_field_abundance" xml:space="preserve">
     <value>地殼豐度</value>
   </data>
-  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
-    <value>Goldschmidt 分類</value>
-  </data>
   <data name="periodic_table_field_geochem_class" xml:space="preserve">
     <value>地球化學類別</value>
   </data>
@@ -3815,39 +3590,6 @@
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>親氣</value>
   </data>
-  <data name="official_publisher_section_targets" xml:space="preserve">
-    <value>發布目標</value>
-  </data>
-  <data name="official_publisher_section_announcement" xml:space="preserve">
-    <value>公告與版本</value>
-  </data>
-  <data name="official_publisher_include_this" xml:space="preserve">
-    <value>本次發布包含此項</value>
-  </data>
-  <data name="official_publisher_targets_hint" xml:space="preserve">
-    <value>同一份內容會按清單順序依次上傳到已啟用的伺服器。國內使用者要直接連上新位址，還需要把該公共根位址寫進客戶端內建清單並發版；只寫在這裡的新位址，要等使用者連上任意一台已有伺服器後才能被發現。</value>
-  </data>
-  <data name="official_publisher_add_target" xml:space="preserve">
-    <value>新增伺服器</value>
-  </data>
-  <data name="official_publisher_move_up" xml:space="preserve">
-    <value>上移</value>
-  </data>
-  <data name="official_publisher_move_down" xml:space="preserve">
-    <value>下移</value>
-  </data>
-  <data name="official_publisher_target_name" xml:space="preserve">
-    <value>名稱</value>
-  </data>
-  <data name="official_publisher_public_base_url" xml:space="preserve">
-    <value>公共根位址</value>
-  </data>
-  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
-    <value>例如 https://bucket.cos.region.myqcloud.com，不要以斜線結尾</value>
-  </data>
-  <data name="official_publisher_enabled" xml:space="preserve">
-    <value>啟用</value>
-  </data>
   <data name="official_publisher_no_target" xml:space="preserve">
     <value>請先新增一台伺服器。</value>
   </data>
@@ -3859,9 +3601,6 @@
   </data>
   <data name="official_publisher_no_enabled_target" xml:space="preserve">
     <value>沒有已啟用且設定完整的伺服器。</value>
-  </data>
-  <data name="official_publisher_confirm_targets" xml:space="preserve">
-    <value>將本次內容發布到 {0} 台已啟用的伺服器？</value>
   </data>
   <data name="official_publisher_progress_server" xml:space="preserve">
     <value>正在上傳到 {0}（{1}/{2}）</value>
@@ -3878,23 +3617,11 @@
   <data name="official_publisher_upload_all_ok" xml:space="preserve">
     <value>已上傳到全部已啟用的伺服器。</value>
   </data>
-  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
-    <value>已啟用伺服器</value>
-  </data>
   <data name="official_publisher_default_target_name" xml:space="preserve">
     <value>香港</value>
   </data>
   <data name="official_publisher_new_target_name" xml:space="preserve">
     <value>新伺服器</value>
-  </data>
-  <data name="official_publisher_publish_targets" xml:space="preserve">
-    <value>發布到已啟用的伺服器</value>
-  </data>
-  <data name="official_publisher_latest_version_label" xml:space="preserve">
-    <value>最新版本號</value>
-  </data>
-  <data name="official_publisher_latest_version_hint" xml:space="preserve">
-    <value>寫入 server_info.json 的 latest_app_version</value>
   </data>
   <data name="official_publisher_latest_version_pending" xml:space="preserve">
     <value>最新版本號待發布</value>
@@ -3908,27 +3635,6 @@
   <data name="official_publisher_latest_version_preview" xml:space="preserve">
     <value>最新版本號：{0}</value>
   </data>
-  <data name="official_publisher_legacy_announcement" xml:space="preserve">
-    <value>舊版純文字公告</value>
-  </data>
-  <data name="official_publisher_legacy_announcement_hint" xml:space="preserve">
-    <value>僅供舊版本軟體讀取（server_info.json 的 announcement 欄位）。新版首頁只在公告目錄為空時，才將其作為備援顯示。</value>
-  </data>
-  <data name="official_publisher_version_info" xml:space="preserve">
-    <value>版本資訊</value>
-  </data>
-  <data name="official_publisher_announcements_catalog" xml:space="preserve">
-    <value>公告目錄（多語言）</value>
-  </data>
-  <data name="official_publisher_announcement_add" xml:space="preserve">
-    <value>新增公告</value>
-  </data>
-  <data name="official_publisher_announcement_import" xml:space="preserve">
-    <value>匯入</value>
-  </data>
-  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
-    <value>從 JSON 檔案匯入公告目錄，並替換目前編輯內容。</value>
-  </data>
   <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
     <value>檔案不是有效的公告目錄，需要 JSON 物件且包含 announcements 陣列。</value>
   </data>
@@ -3938,77 +3644,8 @@
   <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
     <value>已從檔案匯入多語言公告目錄：{0} 條。</value>
   </data>
-  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
-    <value>勾選「本次發布包含此項」後，Announcements.json 與 server_info.json 會一併上傳。</value>
-  </data>
-  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>從伺服器重新載入線上公告目錄（會捨棄未發布的修改）。</value>
-  </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
     <value>多語言公告目錄：{0} 條。遠端 hash：{1}。</value>
-  </data>
-  <data name="official_publisher_plot_categories_note" xml:space="preserve">
-    <value>分類會隨圖解索引一起發布。分類有改動時，即使未勾選圖解範本，也會帶上圖解索引檔案。</value>
-  </data>
-  <data name="official_publisher_geot_categories_note" xml:space="preserve">
-    <value>礦物分類會隨溫壓計索引一起發布。分類有改動時，即使未勾選溫壓計，也會帶上溫壓計索引檔案。</value>
-  </data>
-  <data name="official_publisher_ann_id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="official_publisher_ann_theme" xml:space="preserve">
-    <value>主題色</value>
-  </data>
-  <data name="official_publisher_ann_date" xml:space="preserve">
-    <value>展示日期</value>
-  </data>
-  <data name="official_publisher_ann_priority" xml:space="preserve">
-    <value>優先級</value>
-  </data>
-  <data name="official_publisher_ann_start" xml:space="preserve">
-    <value>上架日期</value>
-  </data>
-  <data name="official_publisher_ann_end" xml:space="preserve">
-    <value>下架日期</value>
-  </data>
-  <data name="official_publisher_ann_tag" xml:space="preserve">
-    <value>眉題標籤</value>
-  </data>
-  <data name="official_publisher_ann_title" xml:space="preserve">
-    <value>標題 *</value>
-  </data>
-  <data name="official_publisher_ann_body" xml:space="preserve">
-    <value>內文</value>
-  </data>
-  <data name="official_publisher_ann_action" xml:space="preserve">
-    <value>按鈕文字</value>
-  </data>
-  <data name="official_publisher_ann_action_url" xml:space="preserve">
-    <value>按鈕連結</value>
-  </data>
-  <data name="official_publisher_ann_background" xml:space="preserve">
-    <value>背景</value>
-  </data>
-  <data name="official_publisher_ann_background_hint" xml:space="preserve">
-    <value>預設：淺色漸層背景，顏色留空時跟隨軟體主題色，右側顯示品牌圖形。自訂：鋪滿一張網路圖片，文字為白色。</value>
-  </data>
-  <data name="official_publisher_ann_color" xml:space="preserve">
-    <value>顏色</value>
-  </data>
-  <data name="official_publisher_ann_polygon" xml:space="preserve">
-    <value>圖形樣式</value>
-  </data>
-  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
-    <value>顯示裝飾多邊形</value>
-  </data>
-  <data name="official_publisher_ann_image_url" xml:space="preserve">
-    <value>圖片位址</value>
-  </data>
-  <data name="official_publisher_background_default" xml:space="preserve">
-    <value>預設顏色</value>
-  </data>
-  <data name="official_publisher_background_image" xml:space="preserve">
-    <value>自訂圖片</value>
   </data>
   <data name="developer_settings" xml:space="preserve">
     <value>開發者選項</value>
@@ -4503,9 +4140,6 @@
   <data name="niggli_tooltip_example" xml:space="preserve">
     <value>填入範例資料（花崗岩、玄武岩、響岩）</value>
   </data>
-  <data name="niggli_tooltip_expand" xml:space="preserve">
-    <value>展開/摺疊計算詳情面板</value>
-  </data>
   <data name="niggli_tooltip_export" xml:space="preserve">
     <value>匯出計算結果至 CSV 檔案</value>
   </data>
@@ -4580,9 +4214,6 @@
   </data>
   <data name="geoscience_unit_converter_desc" xml:space="preserve">
     <value>品位濃度、地應力、微區尺度、地溫與同位素年代極速換算看板</value>
-  </data>
-  <data name="geoscience_unit_conv_hint" xml:space="preserve">
-    <value>選擇分類、輸入數值與基準單位，所有目標單位即時同步換算。點擊任意行可一鍵複製或設為輸入基準。</value>
   </data>
   <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
     <value>品位 / 濃度</value>
@@ -4899,17 +4530,11 @@
   <data name="epma_cancelled" xml:space="preserve">
     <value>計算已取消。</value>
   </data>
-  <data name="epma_choose" xml:space="preserve">
-    <value>請選擇…</value>
-  </data>
   <data name="epma_clear" xml:space="preserve">
     <value>清除</value>
   </data>
   <data name="epma_csv_formula_warning" xml:space="preserve">
     <value>{0} 個文字儲存格以試算表公式前綴開頭，建議匯出 XLSX；原始文字保持不變。</value>
-  </data>
-  <data name="epma_decimals" xml:space="preserve">
-    <value>顯示小數位</value>
   </data>
   <data name="epma_details" xml:space="preserve">
     <value>診斷詳情</value>
@@ -4917,23 +4542,8 @@
   <data name="epma_export" xml:space="preserve">
     <value>匯出</value>
   </data>
-  <data name="epma_fields" xml:space="preserve">
-    <value>字段說明</value>
-  </data>
   <data name="epma_file_unsupported" xml:space="preserve">
     <value>請使用 CSV 或 XLSX。</value>
-  </data>
-  <data name="epma_numeric_DecimalComma" xml:space="preserve">
-    <value>小數逗號</value>
-  </data>
-  <data name="epma_numeric_DecimalPoint" xml:space="preserve">
-    <value>小數點</value>
-  </data>
-  <data name="epma_numeric_format" xml:space="preserve">
-    <value>輸入數字格式</value>
-  </data>
-  <data name="epma_provenance" xml:space="preserve">
-    <value>計算溯源</value>
   </data>
   <data name="epma_stale" xml:space="preserve">
     <value>已過期，請重新計算</value>
@@ -4944,20 +4554,8 @@
   <data name="epma_column_Actual" xml:space="preserve">
     <value>實際值</value>
   </data>
-  <data name="epma_column_Code" xml:space="preserve">
-    <value>代碼</value>
-  </data>
   <data name="epma_column_Expectation" xml:space="preserve">
     <value>期望值</value>
-  </data>
-  <data name="epma_column_Level" xml:space="preserve">
-    <value>級別</value>
-  </data>
-  <data name="epma_column_Message" xml:space="preserve">
-    <value>提示</value>
-  </data>
-  <data name="epma_column_Source" xml:space="preserve">
-    <value>來源</value>
   </data>
   <data name="epma_column_Target" xml:space="preserve">
     <value>對象</value>
@@ -4968,14 +4566,23 @@
 
   <data name="epma_library_description" xml:space="preserve"><value>選擇通用計算或礦物計算範本，確認後進入參數設定與計算介面。</value></data>
   <data name="epma_library_import" xml:space="preserve"><value>匯入 EPMA 礦物計算</value></data>
-  <data name="epma_library_refresh" xml:space="preserve"><value>重新整理計算庫</value></data>
   <data name="epma_library_not_downloaded" xml:space="preserve"><value>此範本尚未下載，請先從伺服器下載。</value></data>
-  <data name="epma_library_promote_confirm" xml:space="preserve"><value>確定將「{0}」升級為官方計算範本？它將隨官方庫一起發佈。</value></data>
+  <data name="epma_library_promote_confirm" xml:space="preserve">
+    <value>確定將「{0}」升級為線上計算模板？它將隨官方庫一起發佈。</value>
+  </data>
   <data name="epma_library_promote_replace" xml:space="preserve"><value>本機已存在 ID 為「{0}」的官方範本，將被取代。</value></data>
-  <data name="epma_library_promoted" xml:space="preserve"><value>「{0}」已成為官方計算範本。</value></data>
-  <data name="epma_library_demote_confirm" xml:space="preserve"><value>確定將「{0}」從官方庫移除？它將變為個人範本，且不會出現在下次發佈中。</value></data>
-  <data name="epma_library_demote_replace" xml:space="preserve"><value>已存在 ID 為「{0}」的個人範本，將被取代。</value></data>
-  <data name="epma_library_demoted" xml:space="preserve"><value>「{0}」已變為個人計算範本。</value></data>
+  <data name="epma_library_promoted" xml:space="preserve">
+    <value>「{0}」已升級為線上計算模板。</value>
+  </data>
+  <data name="epma_library_demote_confirm" xml:space="preserve">
+    <value>確定移除線上計算模板「{0}」？它將變為我的模板，且不會出現在下次發佈中。</value>
+  </data>
+  <data name="epma_library_demote_replace" xml:space="preserve">
+    <value>已存在 ID 為「{0}」的我的模板，將被取代。</value>
+  </data>
+  <data name="epma_library_demoted" xml:space="preserve">
+    <value>「{0}」已變為我的計算模板。</value>
+  </data>
   <data name="epma_update_check_menu" xml:space="preserve"><value>檢查更新</value></data>
   <data name="epma_update_checking" xml:space="preserve"><value>正在檢查 EPMA 計算範本更新...</value></data>
   <data name="epma_update_check_failed" xml:space="preserve"><value>檢查更新失敗</value></data>
@@ -4994,7 +4601,6 @@
   <data name="epma_update_overwrite_all_confirm" xml:space="preserve"><value>確定下載或更新 {0} 個範本？既有範本會被官方版本覆蓋（含本機修改）。</value></data>
   <data name="epma_status_not_downloaded" xml:space="preserve"><value>未下載</value></data>
   <data name="epma_status_update_available" xml:space="preserve"><value>可更新</value></data>
-  <data name="epma_status_requires_upgrade" xml:space="preserve"><value>需升級軟體</value></data>
   <data name="status_requires_app_upgrade" xml:space="preserve"><value>需升級軟體</value></data>
   <data name="status_update_requires_app_upgrade" xml:space="preserve"><value>有新版本，需升級軟體</value></data>
   <data name="status_requires_app_upgrade_hint" xml:space="preserve"><value>此範本需要升級軟體後才能下載和使用。</value></data>
@@ -5009,9 +4615,6 @@
   <data name="epma_reset_database_hint" xml:space="preserve"><value>清空本機 EPMA 計算範本資料庫並還原內建官方範本</value></data>
   <data name="epma_confirm_reset_database" xml:space="preserve"><value>確定清空本機 EPMA 計算範本資料庫？個人範本與已下載的官方範本都將被移除，此操作無法復原。</value></data>
   <data name="epma_database_cleared" xml:space="preserve"><value>本機 EPMA 計算範本資料庫已重設。</value></data>
-  <data name="official_publisher_epma_section" xml:space="preserve"><value>EPMA 計算範本</value></data>
-  <data name="official_publisher_epma_hint" xml:space="preserve"><value>發佈已安裝的官方 EPMA 計算範本（.epma.zip）。在 EPMA 計算庫中把個人範本「升級為官方計算範本」後即可在此發佈。</value></data>
-  <data name="official_publisher_epma_preview_summary" xml:space="preserve"><value>EPMA 計算範本：新增 {0}，更新 {1}，移除 {2}，未變化 {3}。</value></data>
   <data name="official_publisher_progress_exporting_epma" xml:space="preserve"><value>正在匯出 EPMA 計算範本...</value></data>
   <data name="epma_library_enter" xml:space="preserve"><value>進入計算</value></data>
   <data name="epma_library_failed" xml:space="preserve"><value>計算包載入失敗：</value></data>
@@ -5019,8 +4622,7 @@
   <data name="epma_example_data" xml:space="preserve"><value>示例</value></data>
   <data name="epma_examples_loaded" xml:space="preserve"><value>已載入全部 {0} 行示例資料。</value></data>
   <data name="epma_qc_not_calculated" xml:space="preserve"><value>尚未計算，請填寫資料後點擊計算。</value></data>
-  <data name="epma_qc_skipped_row" xml:space="preserve"><value>目前這一行計算失敗或已略過，請查看下面的診斷。</value></data>
-  <data name="epma_process_record" xml:space="preserve"><value>計算過程記錄</value></data>
+  <data name="epma_qc_skipped_row" xml:space="preserve"><value>目前這一行計算失敗或已略過。</value></data>
   <data name="epma_library_search" xml:space="preserve"><value>搜尋範本名稱、礦物、關鍵詞…</value></data>
 <data name="epma_library_no_matches" xml:space="preserve"><value>找不到相符的範本。</value></data>
   <data name="epma_library_tags" xml:space="preserve"><value>標籤</value></data>
@@ -5029,7 +4631,6 @@
   <data name="epma_library_current_version" xml:space="preserve"><value>目前版本</value></data>
   <data name="epma_library_update_date" xml:space="preserve"><value>更新日期</value></data>
   <data name="epma_library_author" xml:space="preserve"><value>作者</value></data>
-  <data name="epma_fixed_package_columns" xml:space="preserve"><value>輸入欄由計算包規定；有資料的填寫，沒有資料的留空。空白、零與低於偵測限分別記錄。</value></data>
 
   <data name="epma_package_replace_confirm" xml:space="preserve"><value>已存在套件 ID {0}。
 現有：{1}（v{2}）
@@ -5037,15 +4638,6 @@
 是否取代現有套件？不同計算方法必須使用不同 ID。</value></data>
   <data name="epma_package_replace" xml:space="preserve"><value>取代計算包</value></data>
   <data name="epma_column_InputRow" xml:space="preserve"><value>輸入行號</value></data>
-  <data name="epma_column_Sample" xml:space="preserve"><value>樣品名</value></data>
-  <data name="epma_column_Stale" xml:space="preserve"><value>舊結果</value></data>
-  <data name="epma_result_unavailable" xml:space="preserve"><value>無法計算 {0}：{1}</value></data>
-  <data name="epma_qc_dataset_summary" xml:space="preserve"><value>共 {0} 行；{1} 條診斷，涉及 {2} 行。錯誤 {3} 條，警告 {4} 條，資訊 {5} 條；{6} 行結果已失效。</value></data>
-  <data name="epma_group_iron" xml:space="preserve"><value>鐵處理</value></data>
-  <data name="epma_group_normalization" xml:space="preserve"><value>歸一化</value></data>
-  <data name="epma_group_input_display" xml:space="preserve"><value>輸入與顯示</value></data>
-  <data name="epma_group_other" xml:space="preserve"><value>其他計算參數</value></data>
-  <data name="epma_template_rules_hint" xml:space="preserve"><value>計算規則由目前範本定義。</value></data>
   <data name="epma_worksheet" xml:space="preserve"><value>資料工作表</value></data>
   <data name="epma_input_editable" xml:space="preserve"><value>輸入資料（可編輯）</value></data>
   <data name="epma_output_readonly" xml:space="preserve"><value>計算結果（唯讀）</value></data>
@@ -5055,8 +4647,6 @@
   <data name="epma_errors" xml:space="preserve"><value>錯誤</value></data>
   <data name="epma_warnings" xml:space="preserve"><value>警告</value></data>
   <data name="epma_information" xml:space="preserve"><value>資訊</value></data>
-  <data name="epma_collapse_settings" xml:space="preserve"><value>收合設定</value></data>
-  <data name="epma_expand_settings" xml:space="preserve"><value>展開設定</value></data>
   <data name="epma_cell_content" xml:space="preserve"><value>選取儲存格內容</value></data>
   <data name="epma_reset_worksheet_layout" xml:space="preserve"><value>還原預設列高與欄寬</value></data>
   <data name="epma_editor_workflow" xml:space="preserve"><value>設定工作流程</value></data>
@@ -5082,11 +4672,6 @@
   <data name="epma_editor_strike" xml:space="preserve"><value>刪除線</value></data>
   <data name="epma_editor_bullets" xml:space="preserve"><value>項目符號</value></data>
   <data name="epma_editor_numbering" xml:space="preserve"><value>編號清單</value></data>
-  <data name="epma_editor_link" xml:space="preserve"><value>連結</value></data>
-  <data name="epma_editor_clear_format" xml:space="preserve"><value>清除格式</value></data>
-  <data name="epma_editor_insert_link" xml:space="preserve"><value>插入連結</value></data>
-  <data name="epma_editor_link_invalid" xml:space="preserve"><value>請輸入有效的 HTTP、HTTPS 或電子郵件位址。</value></data>
-  <data name="epma_editor_link_selection" xml:space="preserve"><value>請在同一段落內選取連結文字。</value></data>
   <data name="epma_editor_save_action" xml:space="preserve"><value>儲存</value></data>
   <data name="epma_editor_edit_localization" xml:space="preserve"><value>編輯多語言</value></data>
   <data name="epma_editor_search_tags" xml:space="preserve"><value>標籤</value></data>
@@ -5325,64 +4910,34 @@
   <data name="epma_help_no_doc" xml:space="preserve"><value>此計算範本暫無說明文件。</value></data>
   <data name="epma_editor_localization_title" xml:space="preserve"><value>範本多語言</value></data>
   <data name="epma_loc_row_name" xml:space="preserve"><value>名稱</value></data>
-  <data name="epma_loc_row_description" xml:space="preserve"><value>說明</value></data>
   <data name="epma_loc_row_tag" xml:space="preserve"><value>標籤 {0}</value></data>
+  <data name="epma_loc_row_group" xml:space="preserve"><value>分組 {0}</value></data>
   <data name="epma_library_edit" xml:space="preserve"><value>編輯</value></data>
   <data name="epma_library_delete" xml:space="preserve"><value>刪除</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>匯出</value></data>
-  <data name="epma_library_promote" xml:space="preserve"><value>升級為官方計算範本</value></data>
-  <data name="epma_library_remove_official" xml:space="preserve"><value>移除官方計算範本</value></data>
-  <data name="epma_library_not_implemented" xml:space="preserve"><value>此功能尚未實作。</value></data>
+  <data name="epma_library_promote" xml:space="preserve">
+    <value>升級為線上計算模板</value>
+  </data>
+  <data name="epma_library_remove_official" xml:space="preserve">
+    <value>移除線上計算模板</value>
+  </data>
   <data name="epma_library_delete_confirm" xml:space="preserve"><value>確定刪除「{0}」？此操作將從本機計算庫中刪除該個人計算範本。</value></data>
   <data name="epma_library_official_delete_denied" xml:space="preserve"><value>此操作只允許刪除個人計算範本。</value></data>
   <data name="epma_library_changed" xml:space="preserve"><value>範本已被修改或移除，請重新整理計算庫後再打開。</value></data>
-  <data name="epma_library_export_outside" xml:space="preserve"><value>請選擇計算庫安裝目錄以外的位置匯出，避免覆蓋既有範本。</value></data>
   <data name="epma_library_updated" xml:space="preserve"><value>已儲存「{0}」。重新進入計算後使用更新的範本。</value></data>
   <data name="epma_library_deleted" xml:space="preserve"><value>已刪除「{0}」。</value></data>
   <data name="epma_library_exported" xml:space="preserve"><value>已匯出「{0}」。</value></data>
-  <data name="epma_json_select_group" xml:space="preserve"><value>請先選擇要新增項目的分組。</value></data>
-  <data name="epma_json_duplicate" xml:space="preserve"><value>欄位重複：{0}</value></data>
-  <data name="epma_json_unknown_field" xml:space="preserve"><value>不支援的欄位：{0}</value></data>
-  <data name="epma_json_item" xml:space="preserve"><value>第 {0} 項</value></data>
-  <data name="epma_json_count" xml:space="preserve"><value>{0} 項</value></data>
-  <data name="epma_json_invalid_boolean" xml:space="preserve"><value>請選擇是或否。</value></data>
-  <data name="epma_json_invalid_number" xml:space="preserve"><value>請輸入有限數值，小數使用英文句點。</value></data>
-  <data name="epma_json_kind_string" xml:space="preserve"><value>文字</value></data>
-  <data name="epma_json_kind_number" xml:space="preserve"><value>數值</value></data>
-  <data name="epma_json_kind_boolean" xml:space="preserve"><value>是 / 否</value></data>
-  <data name="epma_json_kind_object" xml:space="preserve"><value>分組</value></data>
-  <data name="epma_json_kind_array" xml:space="preserve"><value>清單</value></data>
-  <data name="epma_json_kind_null" xml:space="preserve"><value>未設定</value></data>
-  <data name="epma_json_value_number" xml:space="preserve"><value>數值</value></data>
-  <data name="epma_json_value_text" xml:space="preserve"><value>文字</value></data>
-  <data name="epma_json_value_true" xml:space="preserve"><value>是</value></data>
-  <data name="epma_json_value_false" xml:space="preserve"><value>否</value></data>
   <data name="epma_json_field_inputs" xml:space="preserve"><value>輸入欄</value></data>
   <data name="epma_json_field_outputs" xml:space="preserve"><value>輸出欄</value></data>
-  <data name="epma_json_field_parameters" xml:space="preserve"><value>計算參數</value></data>
-  <data name="epma_json_field_id" xml:space="preserve"><value>識別</value></data>
-  <data name="epma_json_field_type" xml:space="preserve"><value>欄位類型</value></data>
   <data name="epma_json_field_unit" xml:space="preserve"><value>單位</value></data>
-  <data name="epma_json_field_when" xml:space="preserve"><value>顯示條件</value></data>
-  <data name="epma_json_field_label" xml:space="preserve"><value>顯示名稱</value></data>
-  <data name="epma_json_field_description" xml:space="preserve"><value>說明</value></data>
+  <data name="epma_json_field_group" xml:space="preserve"><value>分組</value></data>
   <data name="epma_json_field_examples" xml:space="preserve"><value>示例資料</value></data>
   <data name="epma_json_field_resource" xml:space="preserve"><value>資源資料</value></data>
-  <data name="epma_json_field_rows" xml:space="preserve"><value>資料列</value></data>
-  <data name="epma_json_field_definitions" xml:space="preserve"><value>輸入與輸出</value></data>
-  <data name="epma_json_field_settings" xml:space="preserve"><value>參數覆蓋</value></data>
-  <data name="epma_json_add_item" xml:space="preserve"><value>新增項目</value></data>
-  <data name="epma_json_add_field" xml:space="preserve"><value>新增欄位</value></data>
   <data name="epma_editor_file_calculation" xml:space="preserve"><value>計算腳本</value></data>
   <data name="epma_editor_file_common" xml:space="preserve"><value>共用腳本</value></data>
   <data name="epma_editor_file_chemistry_script" xml:space="preserve"><value>化學輔助腳本</value></data>
   <data name="epma_editor_file_helper" xml:space="preserve"><value>輔助腳本</value></data>
   <data name="epma_form_example" xml:space="preserve"><value>示例值</value></data>
-  <data name="epma_iron_invalid" xml:space="preserve"><value>鐵設定無效：請選擇有效且不重複的報告形式，Fe³⁺/ΣFe 須在 0–1 之間。</value></data>
-  <data name="epma_iron_default_required" xml:space="preserve"><value>請至少選擇一種報告形式；使用全鐵報告時，還需選擇已啟用的預設處理方法。</value></data>
-  <data name="epma_iron_literal_required" xml:space="preserve"><value>視覺化編輯要求 getIronOptions() 直接傳回普通 JSON 物件。</value></data>
-  <data name="epma_iron_settings_array_required" xml:space="preserve"><value>新增鐵設定要求 getSettings() 直接傳回陣列；原腳本未被修改。</value></data>
-  <data name="epma_iron_required" xml:space="preserve"><value>此演算法依賴鐵設定，需先修改計算腳本才能停用。</value></data>
   <data name="epma_editor_add_column" xml:space="preserve"><value>新增欄</value></data>
   <data name="epma_editor_remove_column" xml:space="preserve"><value>刪除欄</value></data>
   <data name="epma_editor_column_placeholder" xml:space="preserve"><value>請輸入欄名稱</value></data>
@@ -5440,7 +4995,6 @@
   <data name="axis_tab_ticks" xml:space="preserve"><value>刻度</value></data>
   <data name="tick_alignment" xml:space="preserve"><value>刻度對齊</value></data>
   <data name="tick_align_strict" xml:space="preserve"><value>嚴格</value></data>
-  <data name="axis_tab_labels" xml:space="preserve"><value>標籤</value></data>
   <data name="insp_more_colors" xml:space="preserve"><value>更多顏色</value></data>
   <data name="insp_eyedropper" xml:space="preserve"><value>從螢幕取色</value></data>
   <data name="insp_endpoints" xml:space="preserve"><value>端點</value></data>
@@ -5489,16 +5043,11 @@
   <data name="add_mode_polygon_ready" xml:space="preserve"><value>新增多邊形 · 左鍵繼續加點，右鍵完成並繼續</value></data>
   <data name="add_mode_text" xml:space="preserve"><value>新增文字 · 按一下圖上放置，可連續新增 · 右鍵結束</value></data>
   <data name="axis_line" xml:space="preserve"><value>軸線</value></data>
-  <data name="axis_line_hint" xml:space="preserve"><value>目前這一條邊的邊框線。底軸是橫線，左軸、右軸和頂軸是豎線。</value></data>
-  <data name="ternary_axis_line_hint" xml:space="preserve"><value>三角形目前這一條邊。</value></data>
   <data name="tick_step" xml:space="preserve"><value>步長</value></data>
   <data name="tick_value" xml:space="preserve"><value>數值</value></data>
   <data name="tick_fraction" xml:space="preserve"><value>比例 0–1</value></data>
   <data name="tick_percent" xml:space="preserve"><value>百分數 0–100</value></data>
-  <data name="tick_step_hint" xml:space="preserve"><value>步長是沿這條邊的間隔。比例下 0.1 畫出 0、0.1、0.2…1，百分數下 10 畫出 0、10、20…100。</value></data>
   <data name="label_spacing" xml:space="preserve"><value>標籤間距</value></data>
-  <data name="label_spacing_hint" xml:space="preserve"><value>刻度數字離開這條邊的距離。</value></data>
-  <data name="ternary_subtitle_hint" xml:space="preserve"><value>字型沿用主標題。三元標題按這條邊擺，所以副標題有自己的偏移。</value></data>
   <data name="open_file_location" xml:space="preserve"><value>開啟檔案位置</value></data>
   <data name="open_file_location_failed" xml:space="preserve"><value>無法開啟檔案位置。</value></data>
   <data name="grid_direction" xml:space="preserve">
@@ -5544,4 +5093,27 @@
   <data name="harker_missing_x_column" xml:space="preserve"><value>資料表缺少 X 變數列：{0}</value></data>
   <data name="harker_export_format" xml:space="preserve"><value>Harker 多聯圖暫不支援此匯出格式（目前支援 png/jpg/bmp/webp）。</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker：WpfPlot1.Plot 與第 1 個面板不是同一個物件，匯出或滑鼠行為可能不一致。</value></data>
+  <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
+    <value>有 {0} 個線上圖解模板尚未下載，無法發佈：{1}。請先下載這些模板。</value>
+  </data>
+  <data name="diagram_update_overwrite_confirm" xml:space="preserve">
+    <value>更新將以官方版本覆蓋「{0}」（含本機修改），是否繼續？</value>
+  </data>
+  <data name="confirm_promote_diagram_template" xml:space="preserve">
+    <value>確定將此圖解升級為線上圖解模板？它將隨官方庫一起發佈。</value>
+  </data>
+  <data name="confirm_promote_geothermometer" xml:space="preserve">
+    <value>確定將「{0}」升級為線上溫壓計模板？它將隨官方庫一起發佈。</value>
+  </data>
+  <data name="view_diagram_template" xml:space="preserve">
+    <value>檢視圖解模板（唯讀）</value>
+  </data>
+  <data name="data_row_status_ok" xml:space="preserve"><value>已投圖</value></data>
+  <data name="data_row_status_error" xml:space="preserve"><value>無法投圖</value></data>
+  <data name="data_row_status_stale" xml:space="preserve"><value>投圖後已修改</value></data>
+  <data name="data_row_status_pending" xml:space="preserve"><value>未投圖</value></data>
+  <data name="plot_row_missing_category" xml:space="preserve"><value>該列 Category 為空，未投圖。</value></data>
+  <data name="table_col_sample" xml:space="preserve"><value>樣品</value></data>
+  <data name="table_col_category" xml:space="preserve"><value>分組</value></data>
+  <data name="template_list_sync_light_tip" xml:space="preserve"><value>清單已更新，新增 {0} / 可更新 {1} / 下架 {2}</value></data>
 </root>

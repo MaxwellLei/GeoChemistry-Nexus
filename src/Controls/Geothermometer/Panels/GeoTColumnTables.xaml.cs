@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Windows.Threading;
 namespace GeoChemistryNexus.Controls.GeothermometerEditorPanels
 {
     /// <summary>
-    /// 输入列 / 输出列表格。这里只处理纯界面行为（Tab 切换单元格、粘贴去换行、
+    /// 输入列 / 输出列表格。这里只处理纯界面行为（Tab 切换单元格、粘贴多行多列内容、
     /// 滚轮转发、新增列后聚焦），数据与命令全部在 GeothermometerEditorViewModel 中。
     /// </summary>
     public partial class GeoTColumnTables : UserControl
@@ -29,11 +30,55 @@ namespace GeoChemistryNexus.Controls.GeothermometerEditorPanels
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_viewModel != null)
+            {
                 _viewModel.ColumnAdded -= OnColumnAdded;
+                _viewModel.ExampleAdded -= OnExampleAdded;
+            }
 
             _viewModel = e.NewValue as GeothermometerEditorViewModel;
             if (_viewModel != null)
+            {
                 _viewModel.ColumnAdded += OnColumnAdded;
+                _viewModel.ExampleAdded += OnExampleAdded;
+            }
+        }
+
+        // ==================== 新增示例后聚焦 ====================
+
+        /// <summary>新增一条示例后，滚动到最左并聚焦第一个输入列的新示例单元格。</summary>
+        private void OnExampleAdded(int row)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (_viewModel == null || row < 0 || row >= _viewModel.ExampleRows.Count || _viewModel.InputColumns.Count == 0)
+                    return;
+
+                var examples = _viewModel.InputColumns[0].Examples;
+                if (row >= examples.Count) return;
+
+                InputsEditor.UpdateLayout();
+                InputColumnsScroll.ScrollToLeftEnd();
+                if (FindExampleCell(InputsEditor, examples[row]) is { } cell)
+                {
+                    cell.Focus();
+                    cell.SelectAll();
+                    cell.BringIntoView();
+                }
+            }));
+        }
+
+        private static TextBox? FindExampleCell(DependencyObject root, EpmaEditorExampleCell example)
+        {
+            if (root is TextBox textBox && ReferenceEquals(textBox.DataContext, example))
+                return textBox;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++)
+            {
+                if (FindExampleCell(VisualTreeHelper.GetChild(root, i), example) is { } found)
+                    return found;
+            }
+
+            return null;
         }
 
         /// <summary>表格内滚轮优先滚动外层页面；按住 Shift 时交给表格做横向滚动。</summary>
@@ -165,18 +210,15 @@ namespace GeoChemistryNexus.Controls.GeothermometerEditorPanels
             }
         }
 
-        // ==================== 粘贴时去掉换行 ====================
+        // ==================== 粘贴：多行多列内容按行列铺开 ====================
 
         private void OnCellPasting(object sender, DataObjectPastingEventArgs e)
         {
-            if (!e.DataObject.GetDataPresent(DataFormats.UnicodeText)
-                || e.DataObject.GetData(DataFormats.UnicodeText) is not string text
-                || (text.IndexOf('\r') < 0 && text.IndexOf('\n') < 0))
-                return;
+            if (_viewModel == null) return;
 
-            e.DataObject = new DataObject(
-                DataFormats.UnicodeText,
-                text.Replace("\r\n", " ").Replace('\r', ' ').Replace('\n', ' '));
+            // 从 Excel 等复制的多行多列内容按行列铺开到表格，而不是塞进同一个单元格
+            EditorColumnGridPasteHelper.HandlePasting(
+                e.OriginalSource as TextBox, InputsEditor, OutputsEditor, e, _viewModel.PasteGrid);
         }
     }
 }

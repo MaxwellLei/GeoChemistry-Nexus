@@ -58,6 +58,12 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public string ServerHash { get; set; } = string.Empty;
 
+        /// <summary>
+        /// 开发者本地修改了官方温压计、尚未发布（与图解的 PendingPublish 含义一致）。
+        /// 发布成功后清除；目录同步时带有该标记的本地官方项不会被当作“已下架”删除。
+        /// </summary>
+        public bool PendingPublish { get; set; }
+
         // --- 轻量元数据区 (用于列表展示) ---
 
         /// <summary>
@@ -139,9 +145,22 @@ namespace GeoChemistryNexus.Models
         public List<string> Units { get; set; } = new();
 
         /// <summary>
+        /// 各列的分组标题（格式 1.3 新增，可选）：按位置与 <see cref="Headers"/> 一一对应，
+        /// 每项是“语言代码 → 标题”（语言取自 <see cref="Languages"/>，第一项为默认语言），没有分组的列为空字典；
+        /// 相邻且标题相同的列在表头上合并成一条分组带。旧模板或完全没有分组时为空列表。
+        /// </summary>
+        public List<Dictionary<string, string>> Groups { get; set; } = new();
+
+        /// <summary>
         /// 示例数据行
         /// </summary>
         public List<string> ExampleRow { get; set; } = new();
+
+        /// <summary>
+        /// 附加示例行（第 2 条示例起，格式 1.3 新增，可选）：每行与 <see cref="Headers"/> 等长，只填输入列的值，
+        /// 输出列由 <see cref="ExampleRow"/> 中的公式按行推算；没有更多示例时为空列表。
+        /// </summary>
+        public List<List<string>> ExtraExampleRows { get; set; } = new();
 
         /// <summary>
         /// 已注册的公式函数名称

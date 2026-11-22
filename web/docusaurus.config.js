@@ -96,7 +96,11 @@ const config = {
           lastVersion: 'current',
           versions: {
             current: {
+              label: 'v0.9.0',
+            },
+            '0.7.1': {
               label: 'v0.7.1',
+              path: '0.7.1',
             },
             '0.6.1': {
               label: 'v0.6.1',
@@ -130,6 +134,9 @@ const config = {
         },
         theme: {
           customCss: './src/css/custom.css',
+        },
+        googleTagManager: {
+          containerId: 'GTM-WTTNHNP3',
         },
       }),
     ],
@@ -223,15 +230,6 @@ const config = {
         maxHeadingLevel: 4,
       },
     }),
-  plugins: [
-    [
-      '@docusaurus/plugin-google-gtag',
-      {
-        trackingID: 'G-JKS3Q36GRE',
-        anonymizeIP: true,
-      },
-    ],
-  ],
 };
 
 

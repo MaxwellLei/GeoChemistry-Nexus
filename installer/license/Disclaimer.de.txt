@@ -1,0 +1,42 @@
+﻿Haftungsausschluss
+
+Vielen Dank, dass Sie GeoChemistry Nexus verwenden. Bitte lesen Sie den folgenden Haftungsausschluss sorgfältig, bevor Sie diese Software verwenden. Durch das Herunterladen, Installieren oder Verwenden dieser Software bestätigen Sie, dass Sie die nachstehenden Bedingungen verstanden und akzeptiert haben.
+
+1. Zweck der Software
+
+GeoChemistry Nexus ist ein Hilfswerkzeug für die Forschung in den Bereichen Geochemie, Petrologie, Mineralogie und Lagerstättenkunde. Es soll die Verarbeitung geologischer Daten, die rechnerische Analyse und die Visualisierung erleichtern.
+
+Die Berechnungsergebnisse, Diagramme und zugehörigen Analyseinformationen dieser Software dienen ausschließlich der Forschung, der Lehre und der technischen Orientierung. Sie können das eigenständige Urteil von Fachpersonen, die experimentelle Überprüfung oder eine förmliche fachliche Bewertung nicht unmittelbar ersetzen.
+
+2. Berechnungsergebnisse und Genauigkeit
+
+Diese Software setzt ihre Berechnungsfunktionen, soweit möglich, auf Grundlage veröffentlichter wissenschaftlicher Literatur, akademischer Methoden und einschlägiger Standards um. Da verschiedene Berechnungsmethoden jedoch unterschiedliche theoretische Annahmen, Anwendungsbedingungen, Parametereinstellungen und Regeln der Datenverarbeitung verwenden können, können die Berechnungsergebnisse voneinander abweichen.
+
+Nutzer sollten:
+
+- die Richtigkeit und Vollständigkeit der Eingabedaten sicherstellen;
+- Berechnungsmethoden und Parameter wählen, die für den jeweiligen Untersuchungsgegenstand geeignet sind;
+- wichtige Berechnungsergebnisse unabhängig überprüfen und anhand der einschlägigen Literatur beurteilen;
+- in wissenschaftlichen Arbeiten, Forschungsberichten oder anderen förmlichen Ergebnissen die verwendeten Methoden, Parameter und Berechnungsergebnisse überprüfen.
+
+GeoChemistry Nexus garantiert nicht, dass alle Berechnungsergebnisse unter sämtlichen Datenbedingungen und Anwendungsszenarien vollständig genau oder anwendbar sind.
+
+3. Nutzungsrisiken und Verantwortung
+
+Nutzer haben selbst zu beurteilen, ob die Berechnungsergebnisse der Software für den konkreten Forschungszweck geeignet sind, und tragen die entsprechende Verantwortung für die von dieser Software ausgegebenen Daten, Diagramme und Analyseergebnisse sowie für deren weitere Verwendung.
+
+Für Abweichungen wissenschaftlicher Schlussfolgerungen, fehlerhafte Datennutzung, Analysefehler oder sonstige damit zusammenhängende Schäden, die aus der Nutzung dieser Software oder dem Vertrauen auf ihre Berechnungsergebnisse entstehen, übernimmt der Entwickler die entsprechende Verantwortung im nach geltendem Recht zulässigen Umfang.
+
+4. Softwareaktualisierungen und Ressourcen Dritter
+
+Diese Software kann Algorithmen, Daten, Diagrammvorlagen, Open-Source-Komponenten und sonstige zugehörige Ressourcen Dritter enthalten oder verwenden. Die Rechte des geistigen Eigentums und die Nutzungsrechte an diesen Inhalten liegen bei den jeweiligen Rechteinhabern.
+
+Cloud-Vorlagen, Berechnungsalgorithmen und Softwarefunktionen können sich mit Versionsaktualisierungen ändern. Der Entwickler behält sich das Recht vor, Funktionen, Berechnungsmethoden, die Benutzeroberfläche und zugehörige Ressourcen der Software zu ändern, zu aktualisieren oder deren Bereitstellung einzustellen.
+
+5. Aktualisierung dieses Haftungsausschlusses
+
+Dieser Haftungsausschluss kann aufgrund von Änderungen der Softwarefunktionen, der angebotenen Leistungen sowie der einschlägigen Gesetze und Vorschriften überarbeitet werden. Aktualisierte Fassungen werden auf der offiziellen Website oder auf den zugehörigen Seiten veröffentlicht.
+
+Wenn Sie Fragen zu diesem Haftungsausschluss oder zur Nutzung der Software haben, können Sie über das GitHub-Repository des Projekts Rückmeldung geben.
+
+Abschließender Hinweis: GeoChemistry Nexus ist ein Hilfswerkzeug für die Forschung und nicht die endgültige Grundlage für wissenschaftliche Schlussfolgerungen. Bitte prüfen und interpretieren Sie Berechnungsergebnisse stets unter Einbeziehung des geologischen Zusammenhangs, experimenteller Daten, der wissenschaftlichen Literatur und Ihres Fachwissens.

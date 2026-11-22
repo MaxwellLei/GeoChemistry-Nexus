@@ -5,7 +5,7 @@
     <TargetFramework>net10.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
+    <ApplicationIcon>Data\Icon\GeoChemistryNexus_Icon.ico</ApplicationIcon>
 	<!--软件版本号-->
     <AssemblyVersion>0.9.0</AssemblyVersion>
     <!--程序文件版本号：与软件版本保持一致（不再承载图解格式版本） -->
@@ -48,7 +48,7 @@
   <ItemGroup>
     <None Remove="Data\Documents\template.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
-    <None Remove="Data\Icon\logo.png" />
+    <None Remove="Data\Icon\GeoChemistryNexus_Icon.ico" />
     <None Remove="Data\PlotData\PlotTemplateCategories.json" />
     <None Remove="Data\Plugins\GeoTMineralCategories.json" />
     <None Remove="Data\Config\App.config" />
@@ -59,8 +59,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Data\Icon\iconfont.ttf" />
-    <Content Include="Data\Icon\logo.ico" />
-    <Resource Include="Data\Icon\logo.png" />
+    <Resource Include="Data\Icon\GeoChemistryNexus_Icon.ico" />
     <Resource Include="Data\Image\Startup\rock-thin-section.png" />
     <Content Include="Data\PlotData\PlotTemplateCategories.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

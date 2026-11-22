@@ -174,20 +174,8 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>三元相図の合計は 1 でなければなりません。</value>
   </data>
-  <data name="geo_btn_reset" xml:space="preserve">
-    <value>リセット</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>表示するか</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>適用</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>ストローク色</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>ストローク幅</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>更新を自動的に確認</value>
@@ -237,9 +225,6 @@
   <data name="batch_downloading" xml:space="preserve">
     <value>一括ダウンロード中</value>
   </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>サブタイトル太字</value>
-  </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>図解ガイド</value>
   </data>
@@ -267,11 +252,8 @@
   <data name="add_link" xml:space="preserve">
     <value>リンクを追加</value>
   </data>
-  <data name="pattern" xml:space="preserve">
-    <value>パターン</value>
-  </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>公式に昇格</value>
+    <value>オンライン温度圧力計テンプレートにアップグレード</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>検証に失敗しました:</value>
@@ -342,9 +324,6 @@
   <data name="syntax_validation_passed" xml:space="preserve">
     <value>構文検証に合格しました</value>
   </data>
-  <data name="cipw_tooltip_expand" xml:space="preserve">
-    <value>展開 / 折りたたみ</value>
-  </data>
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>計算結果を CSV ファイルにエクスポート</value>
   </data>
@@ -411,7 +390,7 @@
 • Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
-    <value>カスタムに降格</value>
+    <value>オンライン温度圧力計テンプレートを解除</value>
   </data>
   <data name="geo_ctx_delete" xml:space="preserve">
     <value>削除</value>
@@ -422,8 +401,7 @@
 • 燐灰石（Ap）: P₂O₅ + CaO
 • クロム鉄鉱（Cm）: Cr₂O₃ + FeO
 • チタン鉄鉱（Ilm）: TiO₂ + FeO
-• チタン石（Tn）: TiO₂ + CaO + SiO₂
-• ルチル（Ru）: 残余 TiO₂</value>
+（チタン石とルチルは灰長石の割り当て後に生成されます。長石の手順を参照）</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>図解テンプレートのソースファイルが存在しません</value>
@@ -436,9 +414,6 @@
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>温圧計を編集</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>開始座標</value>
   </data>
   <data name="official_templates" xml:space="preserve">
     <value>オンライン図解テンプレート</value>
@@ -461,11 +436,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>スクリプト内で trace(...) 関数を使用して計算過程を記録できます。</value>
   </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>カスタムアプリ</value>
-  </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>個人図解テンプレート</value>
+    <value>マイ図解テンプレート</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>図解テンプレートの読み込みに失敗しました</value>
@@ -484,9 +456,6 @@
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>数式が無効です</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>サブタイトルの色</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>鉱物総量</value>
@@ -537,7 +506,7 @@
     <value>全てのテンプレート</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>個人用図解テンプレート</value>
+    <value>マイ図解テンプレート</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>基本情報</value>
@@ -581,17 +550,8 @@
   <data name="logarithmic" xml:space="preserve">
     <value>対数</value>
   </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>矢印の幅</value>
-  </data>
-  <data name="geo_btn_help" xml:space="preserve">
-    <value>ヘルプ</value>
-  </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>スクリプト変数名の形式エラー:</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>サードパーティソフトウェアで開く</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>戻る</value>
@@ -604,9 +564,6 @@
   </data>
   <data name="preparing_interface_content_status" xml:space="preserve">
     <value>ページを切り替えました。画面の内容を準備しています...</value>
-  </data>
-  <data name="fill_color" xml:space="preserve">
-    <value>塗りつぶし色</value>
   </data>
   <data name="cipw_iron_inconsistent" xml:space="preserve">
     <value>入力不一致</value>
@@ -632,9 +589,6 @@
   <data name="geo_validate_formula_name_invalid" xml:space="preserve">
     <value>数式名は英字・数字・アンダースコアのみ使用できます。</value>
   </data>
-  <data name="border_width" xml:space="preserve">
-    <value>枠線の幅</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>コンテンツをコピー</value>
   </data>
@@ -646,9 +600,6 @@
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
     <value>計算完了: {0}/{1} サンプル成功.</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>枠線の色</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
     <value>言語の切り替えに成功しました</value>
@@ -700,9 +651,6 @@
   <data name="content" xml:space="preserve">
     <value>内容</value>
   </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>完全性チェック</value>
-  </data>
   <data name="line_width" xml:space="preserve">
     <value>線の幅</value>
   </data>
@@ -742,9 +690,6 @@
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>数式名を空にできません。</value>
   </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>サブタイトル斜体</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>現在のテンプレートリストは最新です。</value>
   </data>
@@ -782,9 +727,12 @@
 ▶ 飽和（SiO₂ が丁度使い切る）: 石英なし、準長石なし
 ▶ 不飽和（SiO₂ 不足）: 優先順位に従って鉱物を逆方向調整 ——
     • 紫蘇輝石（En+Fs） → かんらん石（Fo+Fa）
+    • チタン石（Tn） → ペロブスカイト（Pf）
+    • 曹長石（Ab） → 霞石（Ne）
     • 正長石（Or） → 白榴石（Le）
-    • 白榴石（Le） → 仮白榴石（Kp）
-    • 曹長石（Ab） → 霞石（Ne）</value>
+    • 珪灰石（Wo） → ラルナイト（Cs）
+    • 透輝石/ヘデン輝石（Di+Hd） → ラルナイト（Cs）+ かんらん石（Fo+Fa）
+    • 白榴石（Le） → 仮白榴石（Kp）</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>データ列が定義されていません</value>
@@ -816,9 +764,6 @@
   <data name="cipw_step5_title" xml:space="preserve">
     <value>長石とアルカリ珪酸塩の生成</value>
   </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>ファイルを開けませんでした：</value>
-  </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>質量バランス誤差(%)</value>
   </data>
@@ -849,14 +794,8 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>カスタムプログラムのパスが設定されていません。設定で構成してください。</value>
   </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>主目盛を表示</value>
-  </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>メタアルミナス</value>
-  </data>
-  <data name="geo_field_required_hint" xml:space="preserve">
-    <value>必須項目には * が付きます。形式の基準 x.y はソフトの温圧計バージョンに従い、改訂番号 z はテンプレート内容のバージョンです。Grid 式は「データとスクリプト」で設定します。</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>データパラメータの形式が正しくありません</value>
@@ -945,9 +884,6 @@
   <data name="geo_script_run_test" xml:space="preserve">
     <value>テスト実行</value>
   </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>スクリプト設定</value>
-  </data>
   <data name="to" xml:space="preserve">
     <value>終了</value>
   </data>
@@ -982,7 +918,7 @@
     <value>レベルを追加すると、ここに分類構造のプレビューが表示されます。</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>個人用温圧計テンプレート</value>
+    <value>マイ温圧計テンプレート</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y軸</value>
@@ -1010,9 +946,6 @@
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 座標</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>終了座標</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>スクリプトの内容が空です</value>
@@ -1064,9 +997,6 @@
   </data>
   <data name="range" xml:space="preserve">
     <value>範囲</value>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>スタイル</value>
   </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>参考文献</value>
@@ -1146,23 +1076,8 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>データをクリアしました.</value>
   </data>
-  <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 秒</value>
-  </data>
-  <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 秒</value>
-  </data>
-  <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 秒</value>
-  </data>
-  <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 秒</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>オブジェクトが正常に削除されました。</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>目盛ラベルを表示</value>
   </data>
   <data name="cipw_tooltip_help" xml:space="preserve">
     <value>CIPW ノルム計算のアルゴリズム説明を表示</value>
@@ -1231,9 +1146,6 @@
   <data name="interval" xml:space="preserve">
     <value>目盛の間隔</value>
   </data>
-  <data name="font_family" xml:space="preserve">
-    <value>フォントファミリ</value>
-  </data>
   <data name="vertices" xml:space="preserve">
     <value>頂点</value>
   </data>
@@ -1242,9 +1154,6 @@
   </data>
   <data name="point_count" xml:space="preserve">
     <value>サンプリング点</value>
-  </data>
-  <data name="geo_label_official" xml:space="preserve">
-    <value>公式</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>最近使用した項目</value>
@@ -1299,15 +1208,14 @@
 • 正長石（Or）: K₂O + Al₂O₃ + 6SiO₂
 • 曹長石（Ab）: Na₂O + Al₂O₃ + 6SiO₂
 • 灰長石（An）: CaO + Al₂O₃ + 2SiO₂
+• チタン石（Tn）: TiO₂ + CaO + SiO₂（灰長石の割り当て後に残った CaO のみ使用）
+• ルチル（Ru）: 残余 TiO₂
 • 鋼玉（Cor）: 残余 Al₂O₃（ペラルミナスの場合）
 • エジリン（Ac）: Na₂O + Fe₂O₃ + 4SiO₂（ペルアルカリの場合）
 • 残余アルカリ珪酸塩（ns、ks）</value>
   </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>斜体 (Ctrl+I)</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>ヘルプファイルが見つかりません。</value>
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>ヘルプ</value>
@@ -1341,9 +1249,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>右上</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>未インストールの新テンプレートを一括ダウンロード</value>
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>お気に入り</value>
@@ -1384,9 +1289,6 @@
   <data name="retry_action" xml:space="preserve">
     <value>再試行</value>
   </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>矢印の長さ</value>
-  </data>
   <data name="remove_point" xml:space="preserve">
     <value>この頂点を削除</value>
   </data>
@@ -1398,9 +1300,6 @@
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>現在の計算画面を終了しますか？</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>内容と位置</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>矢印を追加 (Ctrl+4)</value>
@@ -1420,9 +1319,6 @@
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>既定値 0.15</value>
   </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>サブタイトルのフォントサイズ</value>
-  </data>
   <data name="delete_object" xml:space="preserve">
     <value>オブジェクトを削除 (Delete)</value>
   </data>
@@ -1434,9 +1330,6 @@
   </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>ペラルミナス</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>開始座標</value>
   </data>
   <data name="cipw_error" xml:space="preserve">
     <value>エラー</value>
@@ -1470,9 +1363,6 @@
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>データがありません。データを追加してください</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>一括ダウンロード</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>新規テンプレート作成中にエラーが発生しました：</value>
@@ -1635,9 +1525,6 @@
   <data name="formula" xml:space="preserve">
     <value>数式</value>
   </data>
-  <data name="script_language" xml:space="preserve">
-    <value>スクリプト言語:</value>
-  </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>保存するテンプレートがないか、保存パスが指定されていません。「名前を付けて保存」を使用してください。</value>
   </data>
@@ -1673,12 +1560,6 @@
   </data>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>一括ダウンロードはキャンセルされました</value>
-  </data>
-  <data name="batch_update_outdated_templates" xml:space="preserve">
-    <value>一括更新</value>
-  </data>
-  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
-    <value>新しいバージョンがある公式テンプレートを一括更新</value>
   </data>
   <data name="batch_update_title" xml:space="preserve">
     <value>一括更新</value>
@@ -1770,9 +1651,6 @@
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>サポートされていないファイル形式</value>
   </data>
-  <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>地質温圧計パッケージ。複数のファイルを一度にドロップできます。</value>
-  </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
     <value>図解</value>
   </data>
@@ -1802,9 +1680,6 @@
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>副鉱物の生成</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>複数のデータ系列はカンマで区切ってください（例：SiO2,TiO2）</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>ポリゴンを追加 (Ctrl+3)</value>
@@ -1906,7 +1781,7 @@
     <value>終了</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_ファイル(F)</value>
+    <value>ファイル(_F)</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>データ</value>
@@ -1928,12 +1803,6 @@
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>現在のソフトウェア温圧計バージョン</value>
-  </data>
-  <data name="geo_current_template_version" xml:space="preserve">
-    <value>現在の温圧計テンプレートバージョン</value>
-  </data>
-  <data name="geo_editor_set_version" xml:space="preserve">
-    <value>温圧計バージョンを設定</value>
   </data>
   <data name="geo_tooltip_version_patch" xml:space="preserve">
     <value>改訂番号 z；フォーマット基線 x.y はプログラムバージョンに従います</value>
@@ -2126,9 +1995,6 @@
   <data name="filter_geothermometer_package" xml:space="preserve">
     <value>地質温圧計パッケージ</value>
   </data>
-  <data name="filter_geothermometer_import" xml:space="preserve">
-    <value>地質温圧計パッケージ</value>
-  </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>CSV ファイル</value>
   </data>
@@ -2171,17 +2037,11 @@
   <data name="cos_credentials_required" xml:space="preserve">
     <value>先に COS 認証情報を設定して保存してください。</value>
   </data>
-  <data name="cos_save_settings" xml:space="preserve">
-    <value>設定を保存</value>
-  </data>
   <data name="cos_secret_id_required" xml:space="preserve">
     <value>SecretId は必須です。</value>
   </data>
   <data name="cos_settings_saved" xml:space="preserve">
     <value>COS 設定を保存しました。</value>
-  </data>
-  <data name="cos_test_connection" xml:space="preserve">
-    <value>接続テスト</value>
   </data>
   <data name="cos_test_failed" xml:space="preserve">
     <value>COS 接続テストに失敗しました。</value>
@@ -2206,9 +2066,6 @@
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>多言語</value>
-  </data>
-  <data name="diagram_editor_new_version" xml:space="preserve">
-    <value>新バージョン</value>
   </data>
   <data name="diagram_editor_saved_version" xml:space="preserve">
     <value>保存後のバージョン：</value>
@@ -2239,9 +2096,6 @@
   </data>
   <data name="favorites_empty_hint" xml:space="preserve">
     <value>お気に入りのテンプレートはまだありません。テンプレートを右クリックして追加できます。</value>
-  </data>
-  <data name="diagram_hint_no_favorites" xml:space="preserve">
-    <value>お気に入りの図解テンプレートはまだありません。</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
     <value>このカテゴリにオンライン図解テンプレートはありません。</value>
@@ -2280,7 +2134,19 @@
     <value>強制更新</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>組み込みテンプレートに変換</value>
+    <value>オンライン図解テンプレートにアップグレード</value>
+  </data>
+  <data name="demote_to_custom_template" xml:space="preserve">
+    <value>オンライン図解テンプレートを解除</value>
+  </data>
+  <data name="confirm_demote_diagram_template" xml:space="preserve">
+    <value>この図解を公式ライブラリから削除しますか？個人の図解になり、次回のリリースには含まれません。同じパスの個人の図解は置き換えられます。</value>
+  </data>
+  <data name="confirm_demote_geothermometer" xml:space="preserve">
+    <value>この温圧計を公式ライブラリから削除しますか？カスタム温圧計になり、次回のリリースには含まれません。</value>
+  </data>
+  <data name="template_demote_success" xml:space="preserve">
+    <value>個人の図解に降格しました</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>強制更新</value>
@@ -2366,9 +2232,6 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>（空）</value>
   </data>
-  <data name="official_publisher_announcement_load" xml:space="preserve">
-    <value>サーバーから読み込み</value>
-  </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>サーバーからお知らせを読み込みました。</value>
   </data>
@@ -2384,29 +2247,11 @@
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>公開には開発者モードが必要です。</value>
   </data>
-  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
-    <value>図解：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value>
-  </data>
-  <data name="official_publisher_diagram_section" xml:space="preserve">
-    <value>図解</value>
-  </data>
   <data name="official_publisher_export_done" xml:space="preserve">
     <value>エクスポートが完了しました。</value>
   </data>
-  <data name="official_publisher_export_local" xml:space="preserve">
-    <value>ローカルにエクスポート</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>{0} にエクスポート中...</value>
-  </data>
-  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>地質温圧計：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value>
-  </data>
-  <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>地質温圧計</value>
-  </data>
-  <data name="official_publisher_home_add_group" xml:space="preserve">
-    <value>グループを追加</value>
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>グループを編集</value>
@@ -2414,26 +2259,11 @@
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>ホームリンク下書きをローカルに保存しました。</value>
   </data>
-  <data name="official_publisher_home_links_pending" xml:space="preserve">
-    <value>公開待ち</value>
-  </data>
-  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
-    <value>グループ：{0}、リンク：{1}、ローカル hash：{2}、リモート hash：{3}。</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>ホームリンクエディタを再読み込みしました。</value>
   </data>
-  <data name="official_publisher_home_links_section" xml:space="preserve">
-    <value>ホームリンク</value>
-  </data>
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>ホームリンク：{0} グループ、{1} リンク、hash={2}。</value>
-  </data>
-  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
-    <value>サーバーは最新です。</value>
-  </data>
-  <data name="official_publisher_home_save_draft" xml:space="preserve">
-    <value>下書きを保存</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>先にグループを選択してください。</value>
@@ -2456,29 +2286,14 @@
   <data name="official_publisher_ready" xml:space="preserve">
     <value>公式パブリッシャーの準備ができました。</value>
   </data>
-  <data name="official_publisher_refresh" xml:space="preserve">
-    <value>プレビューを更新</value>
-  </data>
-  <data name="official_publisher_refreshing" xml:space="preserve">
-    <value>公開プレビューを更新中...</value>
-  </data>
   <data name="official_publisher_removed" xml:space="preserve">
     <value>削除</value>
-  </data>
-  <data name="official_publisher_staging_dir" xml:space="preserve">
-    <value>staging ディレクトリ</value>
   </data>
   <data name="official_publisher_staging_required" xml:space="preserve">
     <value>staging ディレクトリを選択してください。</value>
   </data>
   <data name="official_publisher_start" xml:space="preserve">
     <value>公開を開始しています...</value>
-  </data>
-  <data name="official_publisher_target_required" xml:space="preserve">
-    <value>公開対象を少なくとも1つ選択してください。</value>
-  </data>
-  <data name="official_publisher_unchanged" xml:space="preserve">
-    <value>変更なし</value>
   </data>
   <data name="official_publisher_updated" xml:space="preserve">
     <value>更新</value>
@@ -2684,12 +2499,6 @@
   <data name="shortcut_group_template_title" xml:space="preserve">
     <value>テンプレートカード操作</value>
   </data>
-  <data name="shortcuts_hint" xml:space="preserve">
-    <value>ヒント：一部のショートカットは、関連ページがアクティブまたはキーボードフォーカスがある場合のみ機能します。</value>
-  </data>
-  <data name="shortcuts_intro" xml:space="preserve">
-    <value>このページは現在のバージョンでサポートされているショートカットを一覧表示します。読み取り専用で、ここでは編集できません。</value>
-  </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>ショートカット</value>
   </data>
@@ -2759,23 +2568,8 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>テキスト</value>
   </data>
-  <data name="official_publisher_plot_categories_section" xml:space="preserve">
-    <value>図解カテゴリ</value>
-  </data>
-  <data name="official_publisher_plot_categories_level" xml:space="preserve">
-    <value>レベル</value>
-  </data>
-  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
-    <value>図解カテゴリの下書きをローカルに保存しました。</value>
-  </data>
   <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
     <value>図解カテゴリエディターを再読み込みしました。</value>
-  </data>
-  <data name="official_publisher_geot_categories_section" xml:space="preserve">
-    <value>GeoT 鉱物タグ</value>
-  </data>
-  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
-    <value>GeoT 鉱物カテゴリの下書きをローカルに保存しました。</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>GeoT 鉱物カテゴリエディターを再読み込みしました。</value>
@@ -2852,9 +2646,6 @@
   <data name="geo_editor_readonly_hint" xml:space="preserve">
     <value>公式地質温圧計の基本情報、データとスクリプト、およびヘルプ文書は閲覧とコピーのみ可能で、変更できません。</value>
   </data>
-  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
-    <value>データが変更されました。図解を再読み込みしてください。</value>
-  </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>行 {0}: {1}</value>
   </data>
@@ -2922,7 +2713,7 @@
     <value>霞石</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>カリシライト</value>
+    <value>仮白榴石</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>アクマイト</value>
@@ -2985,7 +2776,7 @@
     <value>岩塩</value>
   </data>
   <data name="cipw_mineral_Th" xml:space="preserve">
-    <value>テナルダイト</value>
+    <value>芒硝</value>
   </data>
   <data name="cipw_mineral_ns" xml:space="preserve">
     <value>メタケイ酸ナトリウム</value>
@@ -3007,6 +2798,15 @@
   </data>
   <data name="cipw_warning_mno_to_feo" xml:space="preserve">
     <value>MnO はモル比に基づいて FeO 当量に換算されました。</value>
+  </data>
+  <data name="cipw_mineral_Pf" xml:space="preserve">
+    <value>ペロブスカイト</value>
+  </data>
+  <data name="cipw_mineral_Cs" xml:space="preserve">
+    <value>ラルナイト</value>
+  </data>
+  <data name="cipw_warning_silica_deficit_residual" xml:space="preserve">
+    <value>標準的な脱ケイ酸反応の順序でもシリカ不足を完全には解消できませんでした（残余不足：{0} mol/100 g）。ノルムの結果は信頼できません。</value>
   </data>
   <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
     <value>負の酸化物 {0}: {1}</value>
@@ -3100,11 +2900,6 @@
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>このアプリケーションがサポートする図解テンプレート形式バージョン（読み取り専用）</value>
-
-  </data>
-  <data name="custom_app_hint" xml:space="preserve">
-
-    <value>カスタムサードパーティ描画ソフトの実行ファイルパス</value>
 
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
@@ -3314,7 +3109,7 @@
   </data>
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
-    <value>正常にインポートしました：{0}</value>
+    <value>温圧計テンプレートを {0} 件インポートしました</value>
 
   </data>
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
@@ -3415,19 +3210,9 @@
     <value>（空）</value>
 
   </data>
-  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
-
-    <value>形式：1.2.3。空欄の場合、最低バージョン制限は無効になります。</value>
-
-  </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>サポート最低バージョンは有効なバージョン番号（例：1.2.3）である必要があります。</value>
-
-  </data>
-  <data name="official_publisher_minimum_version_label" xml:space="preserve">
-
-    <value>サポート最低バージョン</value>
 
   </data>
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
@@ -3448,11 +3233,6 @@
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>ライブラリ内の図解テンプレートカードの表示サイズ</value>
-
-  </data>
-  <data name="ui_scale_auto" xml:space="preserve">
-
-    <value>自動</value>
 
   </data>
   <data name="ui_scale_mode" xml:space="preserve">
@@ -3644,9 +3424,6 @@
   <data name="black_body_radiation_calculator_desc" xml:space="preserve">
     <value>シュテファン–ボルツマン放射強度、ウィーンピーク波長、黒体スペクトルを計算</value>
   </data>
-  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
-    <value>温度（K）を入力して、総放射強度、ピーク波長、正規化スペクトル曲線を計算します。</value>
-  </data>
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>温度</value>
   </data>
@@ -3740,9 +3517,6 @@
   <data name="periodic_table_field_abundance" xml:space="preserve">
     <value>地殻存在度</value>
   </data>
-  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
-    <value>Goldschmidt 分類</value>
-  </data>
   <data name="periodic_table_field_geochem_class" xml:space="preserve">
     <value>地球化学的分類</value>
   </data>
@@ -3815,39 +3589,6 @@
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>親気</value>
   </data>
-  <data name="official_publisher_section_targets" xml:space="preserve">
-    <value>公開先サーバー</value>
-  </data>
-  <data name="official_publisher_section_announcement" xml:space="preserve">
-    <value>お知らせとバージョン</value>
-  </data>
-  <data name="official_publisher_include_this" xml:space="preserve">
-    <value>今回の公開に含める</value>
-  </data>
-  <data name="official_publisher_targets_hint" xml:space="preserve">
-    <value>同じファイルがリスト順に各有効サーバーにアップロードされます。中国国内のユーザーが新しいURLに直接接続するには、クライアントの内蔵リストに追加してリリースする必要があります。ここにのみ保存されたURLは、既存のサーバーに接続した後に検出されます。</value>
-  </data>
-  <data name="official_publisher_add_target" xml:space="preserve">
-    <value>サーバーを追加</value>
-  </data>
-  <data name="official_publisher_move_up" xml:space="preserve">
-    <value>上へ移動</value>
-  </data>
-  <data name="official_publisher_move_down" xml:space="preserve">
-    <value>下へ移動</value>
-  </data>
-  <data name="official_publisher_target_name" xml:space="preserve">
-    <value>名前</value>
-  </data>
-  <data name="official_publisher_public_base_url" xml:space="preserve">
-    <value>公開ベースURL</value>
-  </data>
-  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
-    <value>例：https://bucket.cos.region.myqcloud.com（末尾のスラッシュなし）</value>
-  </data>
-  <data name="official_publisher_enabled" xml:space="preserve">
-    <value>有効</value>
-  </data>
   <data name="official_publisher_no_target" xml:space="preserve">
     <value>まずサーバーを追加してください。</value>
   </data>
@@ -3859,9 +3600,6 @@
   </data>
   <data name="official_publisher_no_enabled_target" xml:space="preserve">
     <value>認証情報が揃った有効なサーバーがありません。</value>
-  </data>
-  <data name="official_publisher_confirm_targets" xml:space="preserve">
-    <value>{0} 台の有効なサーバーにこの内容を公開しますか？</value>
   </data>
   <data name="official_publisher_progress_server" xml:space="preserve">
     <value>{0} にアップロード中（{1}/{2}）</value>
@@ -3878,23 +3616,11 @@
   <data name="official_publisher_upload_all_ok" xml:space="preserve">
     <value>すべての有効なサーバーに公開しました。</value>
   </data>
-  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
-    <value>有効なサーバー</value>
-  </data>
   <data name="official_publisher_default_target_name" xml:space="preserve">
     <value>香港</value>
   </data>
   <data name="official_publisher_new_target_name" xml:space="preserve">
     <value>新規サーバー</value>
-  </data>
-  <data name="official_publisher_publish_targets" xml:space="preserve">
-    <value>有効なサーバーに公開</value>
-  </data>
-  <data name="official_publisher_latest_version_label" xml:space="preserve">
-    <value>最新バージョン</value>
-  </data>
-  <data name="official_publisher_latest_version_hint" xml:space="preserve">
-    <value>server_info.json の latest_app_version に書き込まれます</value>
   </data>
   <data name="official_publisher_latest_version_pending" xml:space="preserve">
     <value>最新バージョンは公開待ち</value>
@@ -3908,27 +3634,6 @@
   <data name="official_publisher_latest_version_preview" xml:space="preserve">
     <value>最新バージョン：{0}</value>
   </data>
-  <data name="official_publisher_legacy_announcement" xml:space="preserve">
-    <value>旧形式のテキストお知らせ</value>
-  </data>
-  <data name="official_publisher_legacy_announcement_hint" xml:space="preserve">
-    <value>旧バージョンのアプリのみが読み取ります（server_info.json の announcement フィールド）。現在のホームでは、お知らせカタログが空の場合の代替としてのみ表示されます。</value>
-  </data>
-  <data name="official_publisher_version_info" xml:space="preserve">
-    <value>バージョン情報</value>
-  </data>
-  <data name="official_publisher_announcements_catalog" xml:space="preserve">
-    <value>お知らせカタログ（多言語）</value>
-  </data>
-  <data name="official_publisher_announcement_add" xml:space="preserve">
-    <value>お知らせを追加</value>
-  </data>
-  <data name="official_publisher_announcement_import" xml:space="preserve">
-    <value>インポート</value>
-  </data>
-  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
-    <value>お知らせカタログ JSON ファイルをインポートし、エディターの内容を置き換えます。</value>
-  </data>
   <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
     <value>有効なお知らせカタログファイルではありません。announcements 配列を含む JSON オブジェクトである必要があります。</value>
   </data>
@@ -3938,77 +3643,8 @@
   <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
     <value>多言語お知らせカタログをインポートしました：{0} 件。</value>
   </data>
-  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
-    <value>「今回の公開に含める」を有効にすると、Announcements.json と server_info.json が一緒にアップロードされます。</value>
-  </data>
-  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>オンラインのお知らせカタログをサーバーから再読み込みします（未公開の変更は破棄されます）。</value>
-  </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
     <value>多言語お知らせカタログ：{0} 件。リモートハッシュ：{1}。</value>
-  </data>
-  <data name="official_publisher_plot_categories_note" xml:space="preserve">
-    <value>カテゴリは図解インデックスと一緒に公開されます。カテゴリが変更された場合、図解テンプレートが選択されていなくても図解インデックスが含まれます。</value>
-  </data>
-  <data name="official_publisher_geot_categories_note" xml:space="preserve">
-    <value>鉱物カテゴリは地質温圧計インデックスと一緒に公開されます。変更された場合、温圧計が選択されていなくても温圧計インデックスが含まれます。</value>
-  </data>
-  <data name="official_publisher_ann_id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="official_publisher_ann_theme" xml:space="preserve">
-    <value>テーマカラー</value>
-  </data>
-  <data name="official_publisher_ann_date" xml:space="preserve">
-    <value>表示日付</value>
-  </data>
-  <data name="official_publisher_ann_priority" xml:space="preserve">
-    <value>優先度</value>
-  </data>
-  <data name="official_publisher_ann_start" xml:space="preserve">
-    <value>開始日</value>
-  </data>
-  <data name="official_publisher_ann_end" xml:space="preserve">
-    <value>終了日</value>
-  </data>
-  <data name="official_publisher_ann_tag" xml:space="preserve">
-    <value>アイブロウタグ</value>
-  </data>
-  <data name="official_publisher_ann_title" xml:space="preserve">
-    <value>タイトル *</value>
-  </data>
-  <data name="official_publisher_ann_body" xml:space="preserve">
-    <value>本文</value>
-  </data>
-  <data name="official_publisher_ann_action" xml:space="preserve">
-    <value>ボタンのテキスト</value>
-  </data>
-  <data name="official_publisher_ann_action_url" xml:space="preserve">
-    <value>ボタンのリンク</value>
-  </data>
-  <data name="official_publisher_ann_background" xml:space="preserve">
-    <value>背景</value>
-  </data>
-  <data name="official_publisher_ann_background_hint" xml:space="preserve">
-    <value>デフォルト：明るいグラデーション背景。色が空の場合はアプリのテーマ色に従い、ブランド図形を表示。カスタム：Web画像をカード全体に配置し、文字は白。</value>
-  </data>
-  <data name="official_publisher_ann_color" xml:space="preserve">
-    <value>カラー</value>
-  </data>
-  <data name="official_publisher_ann_polygon" xml:space="preserve">
-    <value>図形スタイル</value>
-  </data>
-  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
-    <value>装飾ポリゴンを表示</value>
-  </data>
-  <data name="official_publisher_ann_image_url" xml:space="preserve">
-    <value>画像URL</value>
-  </data>
-  <data name="official_publisher_background_default" xml:space="preserve">
-    <value>デフォルトカラー</value>
-  </data>
-  <data name="official_publisher_background_image" xml:space="preserve">
-    <value>カスタム画像</value>
   </data>
   <data name="developer_settings" xml:space="preserve">
     <value>開発者向けオプション</value>
@@ -4272,7 +3908,7 @@
     <value>赤鉄鉱</value>
   </data>
   <data name="niggli_mineral_Hy" xml:space="preserve">
-    <value>紫蘇輝石</value>
+    <value>斜方輝石</value>
   </data>
   <data name="niggli_mineral_Il" xml:space="preserve">
     <value>チタン鉄鉱</value>
@@ -4401,10 +4037,10 @@
     <value>全岩の各酸化物の重量％を分子量で割り、化学式中の陽イオン数を掛けて陽イオンモル比（ミリカチオン）を求めます。全陽イオン量を合計して 100% に規格化し、以降の計算の基準とします。FeO/Fe2O3 が未測定のときは、調整可能な Fe³⁺/Fe 比（既定 0.15）で FeOT を分割できます。</value>
   </data>
   <data name="niggli_step1_hy_ol_done" xml:space="preserve">
-    <value>脱珪反応 Step 1: 紫蘇輝石 -&gt; カンラン石 (Hy → Ol)、Hy {0}% を消費、ケイ酸欠乏を完全に解消</value>
+    <value>脱珪反応 Step 1: 斜方輝石 -&gt; カンラン石 (Hy → Ol)、Hy {0}% を消費、ケイ酸欠乏を完全に解消</value>
   </data>
   <data name="niggli_step1_hy_ol_part" xml:space="preserve">
-    <value>脱珪反応 Step 1: 紫蘇輝石 -&gt; カンラン石 (Hy → Ol)、すべての Hy ({0}%) が Ol に転換、残余欠乏 D = {1}%</value>
+    <value>脱珪反応 Step 1: 斜方輝石 -&gt; カンラン石 (Hy → Ol)、すべての Hy ({0}%) が Ol に転換、残余欠乏 D = {1}%</value>
   </data>
   <data name="niggli_step1_title" xml:space="preserve">
     <value>陽イオンミリカチオンと 100% 規格化</value>
@@ -4446,7 +4082,7 @@
     <value>アルカリ長石・灰長石・過アルカリ鉱物</value>
   </data>
   <data name="niggli_step5_detail" xml:space="preserve">
-    <value>Fe³⁺ は Fe²⁺ と結合して磁鉄鉱 (Mt) を作り、余った Fe³⁺ は赤鉄鉱 (Hm) になります。Ca、Mg、Fe²⁺ はそれぞれ珪灰石 (Wo)、頑火輝石 (En)、鉄輝石 (Fs) を形成し、En と Fs は紫蘇輝石 (Hy) を構成します。Wo と Hy が等モルで結合して透輝石 (Di) になります。</value>
+    <value>Fe³⁺ は Fe²⁺ と結合して磁鉄鉱 (Mt) を作り、余った Fe³⁺ は赤鉄鉱 (Hm) になります。Ca、Mg、Fe²⁺ はそれぞれ珪灰石 (Wo)、頑火輝石 (En)、鉄輝石 (Fs) を形成し、En と Fs は斜方輝石 (Hy) を構成します。Wo と Hy が等モルで結合して透輝石 (Di) になります。</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
     <value>脱珪反応 Step 5: 白榴石 -&gt; カルシライト (Lc → Kp)、Lc {0}% を消費、ケイ酸欠乏を完全に解消</value>
@@ -4455,7 +4091,7 @@
     <value>脱珪反応 Step 5: 白榴石 -&gt; カルシライト (Lc → Kp)、すべての Lc が転換、残余欠乏 D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
-    <value>鉄酸化物と輝石類</value>
+    <value>鉄酸化物と輝石類鉱物の分配</value>
   </data>
   <data name="niggli_step6_detail" xml:space="preserve">
     <value>残りの Si が 0 以上なら石英 (Q) を形成します。Si &lt; 0 のときはシリカ不足 D = -Si とし、熱力学的安定順に脱珪します。
@@ -4502,9 +4138,6 @@
   </data>
   <data name="niggli_tooltip_example" xml:space="preserve">
     <value>サンプルデータを入力（花崗岩、玄武岩、響岩）</value>
-  </data>
-  <data name="niggli_tooltip_expand" xml:space="preserve">
-    <value>計算詳細パネルを展開/折りたたみ</value>
   </data>
   <data name="niggli_tooltip_export" xml:space="preserve">
     <value>計算結果を CSV ファイルに出力</value>
@@ -4580,9 +4213,6 @@
   </data>
   <data name="geoscience_unit_converter_desc" xml:space="preserve">
     <value>品位/濃度、地圧、微小スケール、温度、同位体年代のリアルタイム換算ダッシュボード</value>
-  </data>
-  <data name="geoscience_unit_conv_hint" xml:space="preserve">
-    <value>カテゴリを選択し、値と基準単位を入力すると、すべての単位がリアルタイムに換算されます。行をクリックしてコピーまたは基準単位に設定できます。</value>
   </data>
   <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
     <value>品位 / 濃度</value>
@@ -4732,7 +4362,7 @@
     <value>摂氏 (℃)</value>
   </data>
   <data name="geo_u_celsius_desc" xml:space="preserve">
-    <value>地球科学の日常温度および地温勾配</value>
+    <value>地球科学で常用する温度と地温勾配の主な単位</value>
   </data>
   <data name="geo_u_kelvin_name" xml:space="preserve">
     <value>ケルビン (K)</value>
@@ -4899,17 +4529,11 @@
   <data name="epma_cancelled" xml:space="preserve">
     <value>計算をキャンセルしました。</value>
   </data>
-  <data name="epma_choose" xml:space="preserve">
-    <value>選択…</value>
-  </data>
   <data name="epma_clear" xml:space="preserve">
     <value>クリア</value>
   </data>
   <data name="epma_csv_formula_warning" xml:space="preserve">
     <value>{0} 個のテキストセルが表計算の数式接頭辞で始まっています。XLSX での書き出しを推奨します。元のテキストは変更されません。</value>
-  </data>
-  <data name="epma_decimals" xml:space="preserve">
-    <value>表示する小数桁</value>
   </data>
   <data name="epma_details" xml:space="preserve">
     <value>診断の詳細</value>
@@ -4917,23 +4541,8 @@
   <data name="epma_export" xml:space="preserve">
     <value>結果をエクスポート</value>
   </data>
-  <data name="epma_fields" xml:space="preserve">
-    <value>フィールドの説明</value>
-  </data>
   <data name="epma_file_unsupported" xml:space="preserve">
     <value>CSV または XLSX を使用してください。</value>
-  </data>
-  <data name="epma_numeric_DecimalComma" xml:space="preserve">
-    <value>小数点にコンマ</value>
-  </data>
-  <data name="epma_numeric_DecimalPoint" xml:space="preserve">
-    <value>小数点にピリオド</value>
-  </data>
-  <data name="epma_numeric_format" xml:space="preserve">
-    <value>入力する数値形式</value>
-  </data>
-  <data name="epma_provenance" xml:space="preserve">
-    <value>計算の来歴</value>
   </data>
   <data name="epma_stale" xml:space="preserve">
     <value>期限切れです。再計算してください</value>
@@ -4944,20 +4553,8 @@
   <data name="epma_column_Actual" xml:space="preserve">
     <value>実際値</value>
   </data>
-  <data name="epma_column_Code" xml:space="preserve">
-    <value>コード</value>
-  </data>
   <data name="epma_column_Expectation" xml:space="preserve">
     <value>期待値</value>
-  </data>
-  <data name="epma_column_Level" xml:space="preserve">
-    <value>レベル</value>
-  </data>
-  <data name="epma_column_Message" xml:space="preserve">
-    <value>メッセージ</value>
-  </data>
-  <data name="epma_column_Source" xml:space="preserve">
-    <value>出典</value>
   </data>
   <data name="epma_column_Target" xml:space="preserve">
     <value>対象</value>
@@ -4968,15 +4565,13 @@
 
   <data name="epma_library_description" xml:space="preserve"><value>テンプレートを選択して開き、パラメーターを設定して計算します。</value></data>
   <data name="epma_library_import" xml:space="preserve"><value>EPMA 鉱物計算をインポート</value></data>
-  <data name="epma_library_refresh" xml:space="preserve"><value>ライブラリを更新</value></data>
   <data name="epma_library_enter" xml:space="preserve"><value>計算画面を開く</value></data>
   <data name="epma_library_failed" xml:space="preserve"><value>パッケージを読み込めませんでした：</value></data>
   <data name="epma_library_imported" xml:space="preserve"><value>インポート済み：{0}</value></data>
   <data name="epma_example_data" xml:space="preserve"><value>サンプル</value></data>
   <data name="epma_examples_loaded" xml:space="preserve"><value>サンプルデータ {0} 行をすべて読み込みました。</value></data>
   <data name="epma_qc_not_calculated" xml:space="preserve"><value>まだ計算していません。データを入力してから計算を実行してください。</value></data>
-  <data name="epma_qc_skipped_row" xml:space="preserve"><value>この行は計算に失敗したか、スキップされました。下の診断を確認してください。</value></data>
-  <data name="epma_process_record" xml:space="preserve"><value>計算過程の記録</value></data>
+  <data name="epma_qc_skipped_row" xml:space="preserve"><value>この行は計算に失敗したか、スキップされました。</value></data>
   <data name="epma_library_search" xml:space="preserve"><value>テンプレート名、鉱物、キーワードを検索…</value></data>
 <data name="epma_library_no_matches" xml:space="preserve"><value>一致するテンプレートが見つかりません。</value></data>
   <data name="epma_library_tags" xml:space="preserve"><value>タグ</value></data>
@@ -4985,7 +4580,6 @@
   <data name="epma_library_current_version" xml:space="preserve"><value>現在のバージョン</value></data>
   <data name="epma_library_update_date" xml:space="preserve"><value>更新日</value></data>
   <data name="epma_library_author" xml:space="preserve"><value>作成者</value></data>
-  <data name="epma_fixed_package_columns" xml:space="preserve"><value>入力列は計算パッケージで決まります。データがある項目は入力し、ない項目は空欄のままにしてください。空白、ゼロ、検出限界未満は区別して記録されます。</value></data>
 
   <data name="epma_package_replace_confirm" xml:space="preserve"><value>パッケージ ID {0} は既に存在します。
 既存：{1}（v{2}）
@@ -4993,15 +4587,6 @@
 既存のパッケージを置換しますか？異なる計算方法には異なる ID を使用してください。</value></data>
   <data name="epma_package_replace" xml:space="preserve"><value>パッケージを置換</value></data>
   <data name="epma_column_InputRow" xml:space="preserve"><value>入力行</value></data>
-  <data name="epma_column_Sample" xml:space="preserve"><value>試料名</value></data>
-  <data name="epma_column_Stale" xml:space="preserve"><value>古い結果</value></data>
-  <data name="epma_result_unavailable" xml:space="preserve"><value>{0} を計算できません：{1}</value></data>
-  <data name="epma_qc_dataset_summary" xml:space="preserve"><value>全 {0} 行。診断 {1} 件（{2} 行）。エラー {3} 件、警告 {4} 件、情報 {5} 件。{6} 行の結果は無効です。</value></data>
-  <data name="epma_group_iron" xml:space="preserve"><value>鉄の処理</value></data>
-  <data name="epma_group_normalization" xml:space="preserve"><value>規格化</value></data>
-  <data name="epma_group_input_display" xml:space="preserve"><value>入力と表示</value></data>
-  <data name="epma_group_other" xml:space="preserve"><value>その他の計算パラメーター</value></data>
-  <data name="epma_template_rules_hint" xml:space="preserve"><value>計算規則は現在のテンプレートで定義されています。</value></data>
   <data name="epma_worksheet" xml:space="preserve"><value>データシート</value></data>
   <data name="epma_input_editable" xml:space="preserve"><value>入力データ（編集可）</value></data>
   <data name="epma_output_readonly" xml:space="preserve"><value>計算結果（読み取り専用）</value></data>
@@ -5011,8 +4596,6 @@
   <data name="epma_errors" xml:space="preserve"><value>エラー</value></data>
   <data name="epma_warnings" xml:space="preserve"><value>警告</value></data>
   <data name="epma_information" xml:space="preserve"><value>情報</value></data>
-  <data name="epma_collapse_settings" xml:space="preserve"><value>設定を折りたたむ</value></data>
-  <data name="epma_expand_settings" xml:space="preserve"><value>設定を展開</value></data>
   <data name="epma_cell_content" xml:space="preserve"><value>選択したセルの内容</value></data>
   <data name="epma_reset_worksheet_layout" xml:space="preserve"><value>行の高さと列の幅を初期値に戻す</value></data>
   <data name="epma_editor_workflow" xml:space="preserve"><value>作成手順</value></data>
@@ -5038,11 +4621,6 @@
   <data name="epma_editor_strike" xml:space="preserve"><value>取り消し線</value></data>
   <data name="epma_editor_bullets" xml:space="preserve"><value>箇条書き</value></data>
   <data name="epma_editor_numbering" xml:space="preserve"><value>番号付きリスト</value></data>
-  <data name="epma_editor_link" xml:space="preserve"><value>リンク</value></data>
-  <data name="epma_editor_clear_format" xml:space="preserve"><value>書式をクリア</value></data>
-  <data name="epma_editor_insert_link" xml:space="preserve"><value>リンクを挿入</value></data>
-  <data name="epma_editor_link_invalid" xml:space="preserve"><value>有効な HTTP、HTTPS または mailto アドレスを入力してください。</value></data>
-  <data name="epma_editor_link_selection" xml:space="preserve"><value>同じ段落内のテキストを選択してください。</value></data>
   <data name="epma_editor_save_action" xml:space="preserve"><value>保存</value></data>
   <data name="epma_editor_edit_localization" xml:space="preserve"><value>翻訳を編集</value></data>
   <data name="epma_editor_search_tags" xml:space="preserve"><value>タグ</value></data>
@@ -5240,7 +4818,6 @@
   <data name="home_search_placeholder" xml:space="preserve"><value>サイトを検索。例：GEOROC、鉱物...</value></data>
   <data name="home_search_no_results" xml:space="preserve"><value>一致するリンクがありません。</value></data>
   <data name="home_links_all_groups_hint" xml:space="preserve"><value>すべてのグループを検索しています</value></data>
-  <data name="geo_loc_row_reference" xml:space="preserve"><value>参考文献</value></data>
   <data name="geo_validate_inputs_required" xml:space="preserve"><value>入力列を少なくとも 1 つ追加してください。</value></data>
   <data name="epma_setting" xml:space="preserve"><value>EPMA 設定</value></data>
   <data name="epma_current_app_format_version" xml:space="preserve"><value>このソフトウェアの EPMA 計算パッケージのバージョン</value></data>
@@ -5290,64 +4867,34 @@
   <data name="epma_help_no_doc" xml:space="preserve"><value>この計算テンプレートには説明文書がまだありません。</value></data>
   <data name="epma_editor_localization_title" xml:space="preserve"><value>テンプレートの多言語</value></data>
   <data name="epma_loc_row_name" xml:space="preserve"><value>名前</value></data>
-  <data name="epma_loc_row_description" xml:space="preserve"><value>説明</value></data>
   <data name="epma_loc_row_tag" xml:space="preserve"><value>タグ {0}</value></data>
+  <data name="epma_loc_row_group" xml:space="preserve"><value>グループ {0}</value></data>
   <data name="epma_library_edit" xml:space="preserve"><value>編集</value></data>
   <data name="epma_library_delete" xml:space="preserve"><value>削除</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>エクスポート</value></data>
-  <data name="epma_library_promote" xml:space="preserve"><value>公式計算テンプレートに昇格</value></data>
-  <data name="epma_library_remove_official" xml:space="preserve"><value>公式計算テンプレートから外す</value></data>
-  <data name="epma_library_not_implemented" xml:space="preserve"><value>この機能はまだ実装されていません。</value></data>
+  <data name="epma_library_promote" xml:space="preserve">
+    <value>オンライン計算テンプレートにアップグレード</value>
+  </data>
+  <data name="epma_library_remove_official" xml:space="preserve">
+    <value>オンライン計算テンプレートを解除</value>
+  </data>
   <data name="epma_library_delete_confirm" xml:space="preserve"><value>「{0}」を削除しますか？この操作は、その個人計算テンプレートをローカルの計算ライブラリから削除します。</value></data>
   <data name="epma_library_official_delete_denied" xml:space="preserve"><value>この操作で削除できるのは個人の計算テンプレートだけです。</value></data>
   <data name="epma_library_changed" xml:space="preserve"><value>テンプレートは変更または削除されました。計算ライブラリを更新してから開き直してください。</value></data>
-  <data name="epma_library_export_outside" xml:space="preserve"><value>既存テンプレートを上書きしないよう、計算ライブラリのインストール先以外へエクスポートしてください。</value></data>
   <data name="epma_library_updated" xml:space="preserve"><value>「{0}」を保存しました。計算に入り直すと更新されたテンプレートが使われます。</value></data>
   <data name="epma_library_deleted" xml:space="preserve"><value>「{0}」を削除しました。</value></data>
   <data name="epma_library_exported" xml:space="preserve"><value>「{0}」をエクスポートしました。</value></data>
-  <data name="epma_json_select_group" xml:space="preserve"><value>項目を追加するグループを先に選択してください。</value></data>
-  <data name="epma_json_duplicate" xml:space="preserve"><value>フィールドが重複しています：{0}</value></data>
-  <data name="epma_json_unknown_field" xml:space="preserve"><value>未対応のフィールドです：{0}</value></data>
-  <data name="epma_json_item" xml:space="preserve"><value>項目 {0}</value></data>
-  <data name="epma_json_count" xml:space="preserve"><value>{0} 件</value></data>
-  <data name="epma_json_invalid_boolean" xml:space="preserve"><value>はい または いいえ を選択してください。</value></data>
-  <data name="epma_json_invalid_number" xml:space="preserve"><value>有限の数値を入力してください。小数点はピリオドを使います。</value></data>
-  <data name="epma_json_kind_string" xml:space="preserve"><value>テキスト</value></data>
-  <data name="epma_json_kind_number" xml:space="preserve"><value>数値</value></data>
-  <data name="epma_json_kind_boolean" xml:space="preserve"><value>はい / いいえ</value></data>
-  <data name="epma_json_kind_object" xml:space="preserve"><value>グループ</value></data>
-  <data name="epma_json_kind_array" xml:space="preserve"><value>リスト</value></data>
-  <data name="epma_json_kind_null" xml:space="preserve"><value>未設定</value></data>
-  <data name="epma_json_value_number" xml:space="preserve"><value>数値</value></data>
-  <data name="epma_json_value_text" xml:space="preserve"><value>テキスト</value></data>
-  <data name="epma_json_value_true" xml:space="preserve"><value>はい</value></data>
-  <data name="epma_json_value_false" xml:space="preserve"><value>いいえ</value></data>
   <data name="epma_json_field_inputs" xml:space="preserve"><value>入力列</value></data>
   <data name="epma_json_field_outputs" xml:space="preserve"><value>出力列</value></data>
-  <data name="epma_json_field_parameters" xml:space="preserve"><value>計算パラメータ</value></data>
-  <data name="epma_json_field_id" xml:space="preserve"><value>識別子</value></data>
-  <data name="epma_json_field_type" xml:space="preserve"><value>フィールドの種類</value></data>
   <data name="epma_json_field_unit" xml:space="preserve"><value>単位</value></data>
-  <data name="epma_json_field_when" xml:space="preserve"><value>表示条件</value></data>
-  <data name="epma_json_field_label" xml:space="preserve"><value>表示名</value></data>
-  <data name="epma_json_field_description" xml:space="preserve"><value>説明</value></data>
+  <data name="epma_json_field_group" xml:space="preserve"><value>グループ</value></data>
   <data name="epma_json_field_examples" xml:space="preserve"><value>例データ</value></data>
   <data name="epma_json_field_resource" xml:space="preserve"><value>リソースデータ</value></data>
-  <data name="epma_json_field_rows" xml:space="preserve"><value>データ行</value></data>
-  <data name="epma_json_field_definitions" xml:space="preserve"><value>入力と出力</value></data>
-  <data name="epma_json_field_settings" xml:space="preserve"><value>パラメータの上書き</value></data>
-  <data name="epma_json_add_item" xml:space="preserve"><value>項目を追加</value></data>
-  <data name="epma_json_add_field" xml:space="preserve"><value>フィールドを追加</value></data>
   <data name="epma_editor_file_calculation" xml:space="preserve"><value>計算スクリプト</value></data>
   <data name="epma_editor_file_common" xml:space="preserve"><value>共通スクリプト</value></data>
   <data name="epma_editor_file_chemistry_script" xml:space="preserve"><value>化学補助スクリプト</value></data>
   <data name="epma_editor_file_helper" xml:space="preserve"><value>補助スクリプト</value></data>
   <data name="epma_form_example" xml:space="preserve"><value>例の値</value></data>
-  <data name="epma_iron_invalid" xml:space="preserve"><value>鉄の設定が無効です。有効で重複しない報告形式を選び、Fe³⁺/ΣFe は 0–1 の範囲にしてください。</value></data>
-  <data name="epma_iron_default_required" xml:space="preserve"><value>報告形式を少なくとも 1 つ選んでください。全鉄で報告する場合は、有効な既定の処理方法も選んでください。</value></data>
-  <data name="epma_iron_literal_required" xml:space="preserve"><value>ビジュアル編集では getIronOptions() が普通の JSON オブジェクトを直接返す必要があります。</value></data>
-  <data name="epma_iron_settings_array_required" xml:space="preserve"><value>鉄の設定を追加するには getSettings() が配列を直接返す必要があります。元のスクリプトは変更されていません。</value></data>
-  <data name="epma_iron_required" xml:space="preserve"><value>このアルゴリズムは鉄の設定に依存します。無効にするには先に計算スクリプトを変更してください。</value></data>
   <data name="epma_editor_add_column" xml:space="preserve"><value>列を追加</value></data>
   <data name="epma_editor_remove_column" xml:space="preserve"><value>列を削除</value></data>
   <data name="epma_editor_column_placeholder" xml:space="preserve"><value>列名を入力してください</value></data>
@@ -5384,7 +4931,6 @@
   <data name="epma_update_overwrite_all_confirm" xml:space="preserve"><value>{0} 件のテンプレートをダウンロードまたは更新しますか？既存のテンプレートは公式版で上書きされます（ローカルの変更を含む）。</value></data>
   <data name="epma_status_not_downloaded" xml:space="preserve"><value>未ダウンロード</value></data>
   <data name="epma_status_update_available" xml:space="preserve"><value>更新可能</value></data>
-  <data name="epma_status_requires_upgrade" xml:space="preserve"><value>ソフトウェアの更新が必要</value></data>
   <data name="status_requires_app_upgrade" xml:space="preserve"><value>ソフトウェアの更新が必要</value></data>
   <data name="status_update_requires_app_upgrade" xml:space="preserve"><value>新しいバージョンあり、ソフトウェアの更新が必要</value></data>
   <data name="status_requires_app_upgrade_hint" xml:space="preserve"><value>このテンプレートをダウンロードして使用するには、ソフトウェアのアップグレードが必要です。</value></data>
@@ -5399,9 +4945,6 @@
   <data name="epma_reset_database_hint" xml:space="preserve"><value>ローカルの EPMA 計算テンプレートデータベースを空にし、内蔵の公式テンプレートを復元します</value></data>
   <data name="epma_confirm_reset_database" xml:space="preserve"><value>ローカルの EPMA 計算テンプレートデータベースを空にしますか？個人テンプレートとダウンロード済みの公式テンプレートはすべて削除され、元に戻せません。</value></data>
   <data name="epma_database_cleared" xml:space="preserve"><value>ローカルの EPMA 計算テンプレートデータベースをリセットしました。</value></data>
-  <data name="official_publisher_epma_section" xml:space="preserve"><value>EPMA 計算テンプレート</value></data>
-  <data name="official_publisher_epma_hint" xml:space="preserve"><value>インストール済みの公式 EPMA 計算テンプレート（.epma.zip）を公開します。EPMA 計算ライブラリで個人テンプレートを「公式計算テンプレートに昇格」すると、ここで公開できます。</value></data>
-  <data name="official_publisher_epma_preview_summary" xml:space="preserve"><value>EPMA 計算テンプレート：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value></data>
   <data name="official_publisher_progress_exporting_epma" xml:space="preserve"><value>EPMA 計算テンプレートをエクスポートしています...</value></data>
   <data name="shortcuts_subtitle" xml:space="preserve">
     <value>このバージョンで利用できるショートカットです。一部は該当ページがアクティブまたはフォーカス中のときのみ有効です。</value>
@@ -5456,7 +4999,6 @@
   <data name="axis_tab_ticks" xml:space="preserve"><value>目盛</value></data>
   <data name="tick_alignment" xml:space="preserve"><value>目盛の整列</value></data>
   <data name="tick_align_strict" xml:space="preserve"><value>厳密</value></data>
-  <data name="axis_tab_labels" xml:space="preserve"><value>ラベル</value></data>
   <data name="insp_more_colors" xml:space="preserve"><value>その他の色</value></data>
   <data name="insp_eyedropper" xml:space="preserve"><value>画面から色を取得</value></data>
   <data name="insp_endpoints" xml:space="preserve"><value>端点</value></data>
@@ -5505,16 +5047,11 @@
   <data name="add_mode_polygon_ready" xml:space="preserve"><value>ポリゴンを追加 · 左クリックで頂点を追加、右クリックで完成して続行</value></data>
   <data name="add_mode_text" xml:space="preserve"><value>テキストを追加 · 図上をクリックして配置。続けて追加できます · 右クリックで終了</value></data>
   <data name="axis_line" xml:space="preserve"><value>軸線</value></data>
-  <data name="axis_line_hint" xml:space="preserve"><value>この軸の枠線です。下は横線、左・右・上は縦線です。</value></data>
-  <data name="ternary_axis_line_hint" xml:space="preserve"><value>三角形の選択中の辺です。</value></data>
   <data name="tick_step" xml:space="preserve"><value>間隔</value></data>
   <data name="tick_value" xml:space="preserve"><value>数値</value></data>
   <data name="tick_fraction" xml:space="preserve"><value>比率 0–1</value></data>
   <data name="tick_percent" xml:space="preserve"><value>百分率 0–100</value></data>
-  <data name="tick_step_hint" xml:space="preserve"><value>辺に沿った間隔です。0.1 なら 0、0.1、0.2…1、百分率の 10 なら 0、10、20…100 を描きます。</value></data>
   <data name="label_spacing" xml:space="preserve"><value>ラベル間隔</value></data>
-  <data name="label_spacing_hint" xml:space="preserve"><value>目盛り数値をこの辺から離す距離です。</value></data>
-  <data name="ternary_subtitle_hint" xml:space="preserve"><value>フォントは主タイトルに従います。三角図のタイトルは辺ごとに配置されるため、副題には独自のオフセットがあります。</value></data>
   <data name="open_file_location" xml:space="preserve"><value>ファイルの場所を開く</value></data>
   <data name="open_file_location_failed" xml:space="preserve"><value>ファイルの場所を開けませんでした。</value></data>
   <data name="grid_direction" xml:space="preserve">
@@ -5560,4 +5097,27 @@
   <data name="harker_missing_x_column" xml:space="preserve"><value>データ表に X 変数の列がありません：{0}</value></data>
   <data name="harker_export_format" xml:space="preserve"><value>ハーカー図ではこの書き出し形式に対応していません（png / jpg / bmp / webp）。</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker：WpfPlot1.Plot が先頭パネルと一致しません。書き出しやマウス操作がずれることがあります。</value></data>
+  <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
+    <value>{0} 件のオンライン図解テンプレートが未ダウンロードのため、公開できません：{1}。先にダウンロードしてください。</value>
+  </data>
+  <data name="diagram_update_overwrite_confirm" xml:space="preserve">
+    <value>更新すると「{0}」が公式バージョンで上書きされます（ローカルの変更を含む）。続行しますか？</value>
+  </data>
+  <data name="confirm_promote_diagram_template" xml:space="preserve">
+    <value>この図解をオンライン図解テンプレートにアップグレードしますか？公式ライブラリと一緒に公開されます。</value>
+  </data>
+  <data name="confirm_promote_geothermometer" xml:space="preserve">
+    <value>「{0}」をオンライン温度圧力計テンプレートにアップグレードしますか？公式ライブラリと一緒に公開されます。</value>
+  </data>
+  <data name="view_diagram_template" xml:space="preserve">
+    <value>図解テンプレートを表示（読み取り専用）</value>
+  </data>
+  <data name="data_row_status_ok" xml:space="preserve"><value>プロット済み</value></data>
+  <data name="data_row_status_error" xml:space="preserve"><value>プロット不可</value></data>
+  <data name="data_row_status_stale" xml:space="preserve"><value>プロット後に編集</value></data>
+  <data name="data_row_status_pending" xml:space="preserve"><value>未プロット</value></data>
+  <data name="plot_row_missing_category" xml:space="preserve"><value>この行は Category が空のため、プロットされていません。</value></data>
+  <data name="table_col_sample" xml:space="preserve"><value>試料</value></data>
+  <data name="table_col_category" xml:space="preserve"><value>グループ</value></data>
+  <data name="template_list_sync_light_tip" xml:space="preserve"><value>リストを更新しました。新規 {0} / 更新可能 {1} / 取り下げ {2}</value></data>
 </root>

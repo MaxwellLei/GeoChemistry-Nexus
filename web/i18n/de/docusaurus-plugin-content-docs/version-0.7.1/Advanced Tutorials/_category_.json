@@ -1,0 +1,14 @@
+{
+  "position": 3,
+  "label": "🌟 Fortgeschrittene Anleitungen",
+  "collapsible": false,
+  "collapsed": false,
+  "className": "green",
+  "link": {
+    "type": "generated-index",
+    "title": "Anleitungsübersicht"
+  },
+  "customProps": {
+    "description": "This description can be used in the swizzled DocCard"
+  }
+}

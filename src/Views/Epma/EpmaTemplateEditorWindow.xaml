@@ -193,9 +193,9 @@
                     </StackPanel>
                 </Border>
                 <ListBox x:Name="EditorNavigation" SelectedIndex="{Binding Step}" ItemContainerStyle="{StaticResource NavigationItem}" Background="Transparent" BorderThickness="0" IsEnabled="{Binding CanNavigate}" VerticalAlignment="Top">
-                    <ListBoxItem><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="BasicNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 1,3 H 4 M 7,3 H 15 M 4,3 A 1.5,1.5 0 1 0 7,3 A 1.5,1.5 0 1 0 4,3 M 1,8 H 9 M 12,8 H 15 M 9,8 A 1.5,1.5 0 1 0 12,8 A 1.5,1.5 0 1 0 9,8 M 1,13 H 3 M 6,13 H 15 M 3,13 A 1.5,1.5 0 1 0 6,13 A 1.5,1.5 0 1 0 3,13"/><TextBlock x:Name="BasicNavigationLabel" Text="{Binding [epma_editor_nav_basic],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
-                    <ListBoxItem><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="ScriptNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 5,3 L 1,8 L 5,13 M 11,3 L 15,8 L 11,13 M 9.5,1.5 L 6.5,14.5"/><TextBlock x:Name="ScriptNavigationLabel" Text="{Binding [epma_editor_nav_script],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
-                    <ListBoxItem><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="HelpNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 3,2 A 1,1 0 0 1 4,1 H 9 L 13,5 V 14 A 1,1 0 0 1 12,15 H 4 A 1,1 0 0 1 3,14 Z M 9,1 V 5 H 13 M 6,8 H 10 M 6,11 H 9"/><TextBlock x:Name="HelpNavigationLabel" Text="{Binding [epma_editor_documents],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
+                    <ListBoxItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="BasicNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 1,3 H 4 M 7,3 H 15 M 4,3 A 1.5,1.5 0 1 0 7,3 A 1.5,1.5 0 1 0 4,3 M 1,8 H 9 M 12,8 H 15 M 9,8 A 1.5,1.5 0 1 0 12,8 A 1.5,1.5 0 1 0 9,8 M 1,13 H 3 M 6,13 H 15 M 3,13 A 1.5,1.5 0 1 0 6,13 A 1.5,1.5 0 1 0 3,13"/><TextBlock x:Name="BasicNavigationLabel" Text="{Binding [epma_editor_nav_basic],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
+                    <ListBoxItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="ScriptNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 5,3 L 1,8 L 5,13 M 11,3 L 15,8 L 11,13 M 9.5,1.5 L 6.5,14.5"/><TextBlock x:Name="ScriptNavigationLabel" Text="{Binding [epma_editor_nav_script],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
+                    <ListBoxItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path x:Name="HelpNavigationIcon" Style="{StaticResource NavigationIcon}" Data="M 3,2 A 1,1 0 0 1 4,1 H 9 L 13,5 V 14 A 1,1 0 0 1 12,15 H 4 A 1,1 0 0 1 3,14 Z M 9,1 V 5 H 13 M 6,8 H 10 M 6,11 H 9"/><TextBlock x:Name="HelpNavigationLabel" Text="{Binding [epma_editor_documents],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/></StackPanel></ListBoxItem>
                 </ListBox>
             </DockPanel>
         </Border>
@@ -267,7 +267,6 @@
                             <Border Style="{StaticResource BasicSectionCard}"><StackPanel>
                                 <Border Style="{StaticResource EditorFormRow}"><DockPanel><TextBlock DockPanel.Dock="Left" Text="{Binding [epma_editor_icon],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource EditorFormLabel}"/><TextBox x:Name="TemplateIconEditor" Style="{StaticResource EditorIconValue}" Text="{Binding TemplateIcon,UpdateSourceTrigger=LostFocus}" Tag="{Binding [epma_editor_icon_hint],Source={x:Static lg:LanguageService.Instance}}" TextChanged="IconTextChanged"/></DockPanel></Border>
                                 <Border Style="{StaticResource EditorFormRow}"><DockPanel><TextBlock DockPanel.Dock="Left" Text="{Binding [epma_editor_name],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource EditorFormLabel}"/><TextBox x:Name="TemplateNameEditor" Style="{StaticResource EditorFormValue}" Text="{Binding TemplateName,UpdateSourceTrigger=PropertyChanged}"/></DockPanel></Border>
-                                <Border Style="{StaticResource EditorFormRow}"><DockPanel><TextBlock DockPanel.Dock="Left" Text="{Binding [epma_editor_id],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource EditorFormLabel}"/><TextBox x:Name="TemplateIdEditor" Style="{StaticResource EditorFormValue}" Text="{Binding TemplateId,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsEditing}" FontFamily="Consolas"/></DockPanel></Border>
                                 <Border Style="{StaticResource EditorFormRow}" BorderThickness="0"><DockPanel><TextBlock DockPanel.Dock="Left" Text="{Binding [epma_library_author],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource EditorFormLabel}"/><TextBox x:Name="AuthorEditor" Style="{StaticResource EditorFormValue}" Text="{Binding Author,UpdateSourceTrigger=PropertyChanged}"/></DockPanel></Border>
                             </StackPanel></Border>
                             <TextBlock Text="{Binding [epma_editor_classification],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource EditorSectionTitle}" FontSize="12" Foreground="#66768B" Margin="4,16,0,10"/>
@@ -319,6 +318,8 @@
                                         <Border Height="32" Background="#EDF4FC" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1"><TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding [epma_editor_row_header],Source={x:Static lg:LanguageService.Instance}}" Foreground="#475569"/></Border>
                                         <!-- 第 2 行：单位（可选）；之后才是示例值 -->
                                         <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1"><TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Text="{Binding [epma_json_field_unit],Source={x:Static lg:LanguageService.Instance}}" Foreground="#64748B"/></Border>
+                                        <!-- 第 3 行：分组（可选），相邻且同名的输入列在输入表头上合并成一个分组条 -->
+                                        <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1"><TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Text="{Binding [epma_json_field_group],Source={x:Static lg:LanguageService.Instance}}" Foreground="#64748B"/></Border>
                                         <ItemsControl x:Name="ExampleRowHeaders" ItemsSource="{Binding ExampleRows}"><ItemsControl.ItemTemplate><DataTemplate>
                                             <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
                                                 <DockPanel Margin="0,0,6,0">
@@ -341,12 +342,15 @@
                                                 <StackPanel>
                                                     <Border Background="#EDF4FC" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
                                                         <DockPanel>
-                                                            <Button DockPanel.Dock="Right" Style="{StaticResource RemoveColumn}" Command="{Binding DataContext.RemoveInputCommand,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
-                                                            <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Text="{Binding Id,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_column_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_editor_row_header],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                            <Button DockPanel.Dock="Right" Style="{StaticResource RemoveColumn}" Command="{Binding DataContext.RemoveInputCommand,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Visibility="{Binding IsFixed,Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                                            <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" IsReadOnly="{Binding IsFixed}" Text="{Binding Id,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_column_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_editor_row_header],Source={x:Static lg:LanguageService.Instance}}"/>
                                                         </DockPanel>
                                                     </Border>
                                                     <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
                                                         <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Height="31" Text="{Binding Unit,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_unit_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_json_field_unit],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                    </Border>
+                                                    <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
+                                                        <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Height="31" Text="{Binding Group,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_unit_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_json_field_group],Source={x:Static lg:LanguageService.Instance}}"/>
                                                     </Border>
                                                     <ItemsControl ItemsSource="{Binding Examples}"><ItemsControl.ItemTemplate><DataTemplate>
                                                         <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
@@ -369,7 +373,13 @@
                         <Border x:Name="OutputColumnsTable" BorderBrush="#D6E1EE" BorderThickness="1" CornerRadius="8" Background="#F7F9FC" ClipToBounds="True" HorizontalAlignment="Stretch">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="96"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border Height="32" BorderBrush="#D6E1EE" BorderThickness="0,0,1,0"><TextBlock Margin="8,0,0,0" Text="{Binding [epma_json_field_outputs],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Foreground="#475569"/></Border>
+                                <Border BorderBrush="#D6E1EE" BorderThickness="0,0,1,0" VerticalAlignment="Top">
+                                    <StackPanel>
+                                        <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1"><TextBlock Margin="8,0,0,0" Text="{Binding [epma_json_field_outputs],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Foreground="#475569"/></Border>
+                                        <!-- 第 2 行：分组（可选），相邻且同名的结果列在结果表头上合并成一个分组条 -->
+                                        <Border Height="32"><TextBlock Margin="8,0,8,0" Text="{Binding [epma_json_field_group],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Foreground="#64748B"/></Border>
+                                    </StackPanel>
+                                </Border>
                                 <ScrollViewer x:Name="OutputColumnsScroll" Grid.Column="1" Style="{StaticResource EditorTableScroll}">
                                     <ItemsControl x:Name="OutputsEditor" AlternationCount="2147483647" ItemsSource="{Binding OutputColumns}" HorizontalAlignment="Stretch">
                                         <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
@@ -379,10 +389,17 @@
                                                 <Border.Width><MultiBinding Converter="{StaticResource ColumnWidth}">
                                                     <Binding Path="Id"/><Binding Path="ExampleValue"/><Binding RelativeSource="{RelativeSource Self}"/><Binding Path="ViewportWidth" RelativeSource="{RelativeSource AncestorType=ScrollViewer}"/><Binding Path="DataContext.OutputColumns.Count" RelativeSource="{RelativeSource AncestorType=Window}"/><Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
                                                 </MultiBinding></Border.Width>
-                                                <DockPanel>
-                                                    <Button DockPanel.Dock="Right" Style="{StaticResource RemoveColumn}" Command="{Binding DataContext.RemoveOutputCommand,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
-                                                    <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Text="{Binding Id,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_column_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_json_field_outputs],Source={x:Static lg:LanguageService.Instance}}"/>
-                                                </DockPanel>
+                                                <StackPanel>
+                                                    <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
+                                                        <DockPanel>
+                                                            <Button DockPanel.Dock="Right" Style="{StaticResource RemoveColumn}" Command="{Binding DataContext.RemoveOutputCommand,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                                                            <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Text="{Binding Id,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_column_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_json_field_outputs],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <Border Height="32">
+                                                        <TextBox DataObject.Pasting="ColumnCellPasting" Style="{StaticResource ColumnCell}" Height="31" Text="{Binding Group,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding [epma_editor_unit_placeholder],Source={x:Static lg:LanguageService.Instance}}" AutomationProperties.Name="{Binding [epma_json_field_group],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                    </Border>
+                                                </StackPanel>
                                             </Border>
                                         </DataTemplate></ItemsControl.ItemTemplate>
                                     </ItemsControl>

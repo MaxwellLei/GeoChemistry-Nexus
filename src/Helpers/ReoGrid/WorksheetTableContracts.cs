@@ -53,4 +53,18 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>分组名或单位发生变化（例如切换语言）后触发，控件会重新计算列头布局。</summary>
         event EventHandler? ColumnHeaderInfoChanged;
     }
+
+    /// <summary>
+    /// 【可选】列头显示文字：列头的 <c>Text</c> 是程序内部使用的列标识（脚本取数、导入导出、按列名查找都依赖它），
+    /// 不能随语言变化；实现此接口的 <see cref="IWorksheetColumnHeaderProvider"/> 可以只改变列头“显示出来的文字”，
+    /// 列头 <c>Text</c> 本身保持不变。
+    /// </summary>
+    public interface IWorksheetColumnHeaderLabelProvider
+    {
+        /// <summary>
+        /// 返回该列列头要显示的文字；返回 null/空串表示直接显示列头 <c>Text</c>。
+        /// 绘制时会频繁调用，实现必须足够快。
+        /// </summary>
+        string? GetLabel(int column, string? headerText);
+    }
 }

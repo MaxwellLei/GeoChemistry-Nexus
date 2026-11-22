@@ -206,6 +206,8 @@ namespace GeoChemistryNexus.Controls
             int width = Math.Max(16, GetSystemMetrics(SmCxSmIcon));
             int height = Math.Max(16, GetSystemMetrics(SmCySmIcon));
 
+            source = SelectBestFrame(source, width, height);
+
             BitmapSource scaled = source;
             if (source.PixelWidth != width || source.PixelHeight != height)
             {
@@ -245,6 +247,38 @@ namespace GeoChemistryNexus.Controls
                 DeleteObject(colorBitmap);
                 DeleteObject(maskBitmap);
             }
+        }
+
+        /// <summary>
+        /// 多尺寸 .ico 会解码出多个帧：优先选不小于目标尺寸的最小一帧（缩小比放大清晰），
+        /// 没有足够大的帧时退而选最大的一帧。单帧图片原样返回。
+        /// </summary>
+        private static BitmapSource SelectBestFrame(BitmapSource source, int width, int height)
+        {
+            var frames = (source as BitmapFrame)?.Decoder?.Frames;
+            if (frames == null || frames.Count <= 1)
+                return source;
+
+            BitmapFrame? best = null;
+            foreach (var frame in frames)
+            {
+                bool frameFits = frame.PixelWidth >= width && frame.PixelHeight >= height;
+                if (best == null)
+                {
+                    best = frame;
+                    continue;
+                }
+
+                bool bestFits = best.PixelWidth >= width && best.PixelHeight >= height;
+                if (frameFits && !bestFits)
+                    best = frame;
+                else if (frameFits && bestFits && frame.PixelWidth < best.PixelWidth)
+                    best = frame;
+                else if (!frameFits && !bestFits && frame.PixelWidth > best.PixelWidth)
+                    best = frame;
+            }
+
+            return best ?? source;
         }
 
         private void ReleaseIconHandle()

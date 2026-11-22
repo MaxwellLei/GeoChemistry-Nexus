@@ -44,6 +44,8 @@ namespace GeoChemistryNexus.ViewModels
         /// 是否有诊断数据
         /// </summary>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ExportDiagnosticDetailsCommand))]
+        [NotifyCanExecuteChangedFor(nameof(CopyDiagnosticDetailsCommand))]
         private bool _hasDiagnosticData;
 
         /// <summary>
@@ -75,6 +77,19 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         [ObservableProperty]
         private bool _isInspectorOpen = false;
+
+        /// <summary>导出当前检查器显示的计算详情为 CSV。</summary>
+        [RelayCommand(CanExecute = nameof(HasDiagnosticData))]
+        private Task ExportDiagnosticDetailsAsync() =>
+            InspectorDetailsExporter.ExportCsvAsync(GetDiagnosticRows(), SelectedRowInfo);
+
+        /// <summary>复制当前检查器显示的计算详情到剪贴板。</summary>
+        [RelayCommand(CanExecute = nameof(HasDiagnosticData))]
+        private void CopyDiagnosticDetails() =>
+            InspectorDetailsExporter.CopyToClipboard(GetDiagnosticRows());
+
+        private List<(string Name, string Value)> GetDiagnosticRows() =>
+            DiagnosticItems.Select(item => (item.Name, item.Value)).ToList();
 
         /// <summary>
         /// 校验并限制 Fe3+/Fe 比值在 [0, 1] 范围内
@@ -111,9 +126,9 @@ namespace GeoChemistryNexus.ViewModels
         private static readonly string[] ResultMineralOrder =
         {
             "Q", "Or", "Ab", "An", "Le", "Ne", "Kp",
-            "Cor", "Ac", "Di", "Hd", "Wo", "En", "Fs",
+            "Cor", "Ac", "Di", "Hd", "Wo", "Cs", "En", "Fs",
             "Fo", "Fa", "Mt", "Hm", "Ilm", "Cm", "Ru",
-            "Tn", "Z", "Ap", "Cc", "Py", "Fl", "Hl", "Th", "ns", "ks"
+            "Tn", "Pf", "Z", "Ap", "Cc", "Py", "Fl", "Hl", "Th", "ns", "ks"
         };
 
         /// <summary>

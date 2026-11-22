@@ -67,6 +67,26 @@ namespace GeoChemistryNexus.Helpers
             return result;
         }
 
+        /// <summary>
+        /// 解析各数据列的分组标题（格式 1.3），结果与 <see cref="ParseScriptDataColumns"/> 返回的列一一对应；
+        /// 没有分组的列为 null，标题按 <paramref name="language"/> 解析（缺失时回退到模板默认语言）。完全没有分组时返回 null。
+        /// </summary>
+        public static List<string?>? ParseScriptDataGroups(GeoChemistryNexus.Models.ScriptDefinition? script, string? language)
+        {
+            var groups = script?.DataSeriesGroups;
+            if (groups == null || groups.Count == 0) return null;
+
+            var columns = ParseScriptDataColumns(script!.RequiredDataSeries);
+            var result = new List<string?>(columns.Count);
+            foreach (string column in columns)
+            {
+                var group = groups.FirstOrDefault(item => item != null && item.Contains(column));
+                string title = group?.ResolveTitle(language) ?? string.Empty;
+                result.Add(title.Length == 0 ? null : title);
+            }
+            return result.Any(title => title != null) ? result : null;
+        }
+
         public static string GetRowColumnText(DataRow row, string columnName)
         {
             if (!row.Table.Columns.Contains(columnName))

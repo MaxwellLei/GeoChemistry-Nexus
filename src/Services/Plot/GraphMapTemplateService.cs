@@ -533,5 +533,53 @@ namespace GeoChemistryNexus.Services
             byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(json));
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
         }
+
+        /// <summary>
+        /// 开发者操作：将已下载的官方图解降级为个人图解（保留内容与缩略图，替换同路径的个人图解）。
+        /// 与 EPMA 的 DemoteToCustomAsync、温压计的 ConvertToCustom 对应；不会重新校验内容版本。
+        /// </summary>
+        /// <returns>降级后的个人图解 Id；记录不存在、已是个人图解或尚未下载内容时返回 null。</returns>
+        public static Guid? DemoteToCustom(Guid officialId)
+        {
+            var db = GraphMapDatabaseService.Instance;
+            var entity = db.GetTemplate(officialId);
+            if (entity == null || entity.IsCustom || entity.Content == null) return null;
+
+            Guid customId = GraphMapDatabaseService.GenerateId(entity.GraphMapPath, true);
+
+            byte[]? thumbnailBytes = null;
+            using (var stream = db.GetThumbnail(officialId))
+            {
+                if (stream != null)
+                {
+                    using var ms = new System.IO.MemoryStream();
+                    stream.CopyTo(ms);
+                    thumbnailBytes = ms.ToArray();
+                }
+            }
+
+            // 同路径的个人图解会被替换（含其缩略图）；收藏状态沿用被替换者（与 EPMA 一致）
+            bool isFavorite = db.GetTemplate(customId)?.IsFavorite ?? entity.IsFavorite;
+            db.DeleteTemplate(customId);
+            db.DeleteTemplate(officialId);
+
+            entity.Id = customId;
+            entity.IsCustom = true;
+            entity.IsFavorite = isFavorite;
+            entity.IsNewTemplate = false;
+            entity.PendingPublish = false;
+            entity.Status = string.Empty;
+            entity.LastModified = DateTime.Now;
+            entity.FileHash = ComputeTemplateContentHash(entity.Content);
+            db.UpsertTemplate(entity);
+
+            if (thumbnailBytes != null)
+            {
+                using var ms = new System.IO.MemoryStream(thumbnailBytes);
+                db.UploadThumbnail(customId, ms);
+            }
+
+            return customId;
+        }
     }
 }

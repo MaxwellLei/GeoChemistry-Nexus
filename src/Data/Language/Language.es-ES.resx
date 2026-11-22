@@ -174,20 +174,8 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>La suma del diagrama de fase ternario debe ser 1.</value>
   </data>
-  <data name="geo_btn_reset" xml:space="preserve">
-    <value>Restablecer</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>Es visible</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Aplicar</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>Color de trazo</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>Ancho de trazo</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>Comprobar actualizaciones automáticamente</value>
@@ -237,9 +225,6 @@
   <data name="batch_downloading" xml:space="preserve">
     <value>Descargando por lotes</value>
   </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>Subtítulo en negrita</value>
-  </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>Guía de diagrama</value>
   </data>
@@ -267,11 +252,8 @@
   <data name="add_link" xml:space="preserve">
     <value>Agregar enlace</value>
   </data>
-  <data name="pattern" xml:space="preserve">
-    <value>Patrón</value>
-  </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Promover a oficial</value>
+    <value>Actualizar a plantilla de geotermobarómetro en línea</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Validación fallida:</value>
@@ -342,9 +324,6 @@
   <data name="syntax_validation_passed" xml:space="preserve">
     <value>Validación de sintaxis aprobada</value>
   </data>
-  <data name="cipw_tooltip_expand" xml:space="preserve">
-    <value>Expandir / Contraer</value>
-  </data>
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>Exportar los resultados a un archivo CSV</value>
   </data>
@@ -411,7 +390,7 @@
 • Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
-    <value>Degradar a personalizado</value>
+    <value>Quitar plantilla de geotermobarómetro en línea</value>
   </data>
   <data name="geo_ctx_delete" xml:space="preserve">
     <value>Eliminar</value>
@@ -422,8 +401,7 @@
 • Apatito (Ap): P₂O₅ + CaO
 • Cromita (Cm): Cr₂O₃ + FeO
 • Ilmenita (Ilm): TiO₂ + FeO
-• Titanita (Tn): TiO₂ + CaO + SiO₂
-• Rutilo (Ru): TiO₂ residual</value>
+(La titanita y el rutilo se forman después de la anortita; véase el paso de feldespatos.)</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>El archivo fuente de la plantilla no existe</value>
@@ -436,9 +414,6 @@
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>Editar geotermobarómetro</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Coordenadas de inicio</value>
   </data>
   <data name="official_templates" xml:space="preserve">
     <value>Plantillas de diagramas en línea</value>
@@ -461,11 +436,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>Puede usar la función trace(...) en el script para registrar el proceso de cálculo.</value>
   </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>Aplicación personalizada</value>
-  </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>Plantillas personales de diagramas</value>
+    <value>Mis plantillas de diagramas</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>Error al cargar plantilla</value>
@@ -484,9 +456,6 @@
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>Fórmula inválida</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>Color de subtítulo</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>Total de minerales</value>
@@ -537,7 +506,7 @@
     <value>Todas las plantillas</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>Plantillas de diagramas personales</value>
+    <value>Mis plantillas de diagramas</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>Información básica</value>
@@ -581,17 +550,8 @@
   <data name="logarithmic" xml:space="preserve">
     <value>Logarítmico</value>
   </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>Ancho de punta de flecha</value>
-  </data>
-  <data name="geo_btn_help" xml:space="preserve">
-    <value>Ayuda</value>
-  </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>Error de formato de nombre de variable de script:</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Abrir con software de terceros</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Volver</value>
@@ -604,9 +564,6 @@
   </data>
   <data name="preparing_interface_content_status" xml:space="preserve">
     <value>Página cambiada. Preparando el contenido de la interfaz...</value>
-  </data>
-  <data name="fill_color" xml:space="preserve">
-    <value>Color de relleno</value>
   </data>
   <data name="cipw_iron_inconsistent" xml:space="preserve">
     <value>Entrada inconsistente</value>
@@ -632,9 +589,6 @@
   <data name="geo_validate_formula_name_invalid" xml:space="preserve">
     <value>El nombre de la fórmula sólo puede contener letras, dígitos y guiones bajos.</value>
   </data>
-  <data name="border_width" xml:space="preserve">
-    <value>Ancho del borde</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>Copiar contenido</value>
   </data>
@@ -646,9 +600,6 @@
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
     <value>Cálculo completado: {0}/{1} muestras correctas.</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>Color del borde</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
     <value>Cambio de idioma exitoso</value>
@@ -695,13 +646,10 @@
     <value>Error: {0}</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Comprobar actualizaciones de plantilla automáticamente</value>
+    <value>Comprobar automáticamente las actualizaciones de plantillas de diagramas</value>
   </data>
   <data name="content" xml:space="preserve">
     <value>Contenido</value>
-  </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>Comprobación de integridad</value>
   </data>
   <data name="line_width" xml:space="preserve">
     <value>Ancho de línea</value>
@@ -742,9 +690,6 @@
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>El nombre de la fórmula no puede estar vacío.</value>
   </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>Subtítulo en cursiva</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>La lista de plantillas actual ya es la última versión.</value>
   </data>
@@ -782,9 +727,12 @@
 ▶ Saturado (SiO₂ consumido exactamente): sin cuarzo, sin feldespatoides
 ▶ Subsaturado (falta SiO₂): convertir minerales por orden de prioridad ——
     • Hipersteno (En+Fs) → Olivino (Fo+Fa)
+    • Titanita (Tn) → Perovskita (Pf)
+    • Albita (Ab) → Nefelina (Ne)
     • Ortoclasa (Or) → Leucita (Le)
-    • Leucita (Le) → Kalsilita (Kp)
-    • Albita (Ab) → Nefelina (Ne)</value>
+    • Wollastonita (Wo) → Larnita (Cs)
+    • Diópsido/Hedenbergita (Di+Hd) → Larnita (Cs) + Olivino (Fo+Fa)
+    • Leucita (Le) → Pseudoleucita (Kp)</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>Columnas de datos no definidas</value>
@@ -816,9 +764,6 @@
   <data name="cipw_step5_title" xml:space="preserve">
     <value>Formación de feldespatos y silicatos alcalinos</value>
   </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>No se pudo abrir el archivo:</value>
-  </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>Error de balance de masa (%)</value>
   </data>
@@ -849,14 +794,8 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>Ruta de programa personalizada no establecida, configure en ajustes.</value>
   </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>Mostrar marcas principales</value>
-  </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>Metaluminoso</value>
-  </data>
-  <data name="geo_field_required_hint" xml:space="preserve">
-    <value>Los campos obligatorios están marcados con *. La base de formato x.y sigue la versión del geotermobarómetro del programa; la revisión z es la versión del contenido de la plantilla. Las fórmulas de cuadrícula se configuran en el paso «Datos y script».</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>Formato de parámetro de datos incorrecto</value>
@@ -945,9 +884,6 @@
   <data name="geo_script_run_test" xml:space="preserve">
     <value>Ejecutar prueba</value>
   </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>Configuración de script</value>
-  </data>
   <data name="to" xml:space="preserve">
     <value>Hasta</value>
   </data>
@@ -982,7 +918,7 @@
     <value>Agregue niveles para previsualizar la jerarquía de categorías.</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>Plantillas personales de geotermobarómetros</value>
+    <value>Mis plantillas de geotermobarómetros</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Eje Y</value>
@@ -1010,9 +946,6 @@
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Coordenada Y</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>Coordenadas finales</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>El contenido del script está vacío</value>
@@ -1064,9 +997,6 @@
   </data>
   <data name="range" xml:space="preserve">
     <value>Rango</value>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>Estilo</value>
   </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>Referencias</value>
@@ -1146,23 +1076,8 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>Datos borrados.</value>
   </data>
-  <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 segundos</value>
-  </data>
-  <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 segundos</value>
-  </data>
-  <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 segundos</value>
-  </data>
-  <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 segundos</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Objeto eliminado con éxito.</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>Mostrar etiquetas de marca</value>
   </data>
   <data name="cipw_tooltip_help" xml:space="preserve">
     <value>Ver la descripción del algoritmo del cálculo de norma CIPW</value>
@@ -1231,9 +1146,6 @@
   <data name="interval" xml:space="preserve">
     <value>Intervalo de marcas</value>
   </data>
-  <data name="font_family" xml:space="preserve">
-    <value>Familia de fuentes</value>
-  </data>
   <data name="vertices" xml:space="preserve">
     <value>Vértices</value>
   </data>
@@ -1242,9 +1154,6 @@
   </data>
   <data name="point_count" xml:space="preserve">
     <value>Puntos de muestreo</value>
-  </data>
-  <data name="geo_label_official" xml:space="preserve">
-    <value>Oficial</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>Usados recientemente</value>
@@ -1299,15 +1208,14 @@
 • Ortoclasa (Or): K₂O + Al₂O₃ + 6SiO₂
 • Albita (Ab): Na₂O + Al₂O₃ + 6SiO₂
 • Anortita (An): CaO + Al₂O₃ + 2SiO₂
+• Titanita (Tn): TiO₂ + CaO + SiO₂ (solo con el CaO que queda tras la anortita)
+• Rutilo (Ru): TiO₂ residual
 • Corindón (Cor): Al₂O₃ residual (caso peraluminoso)
 • Acmita (Ac): Na₂O + Fe₂O₃ + 4SiO₂ (caso peralcalino)
 • Silicatos alcalinos residuales (ns, ks)</value>
   </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>Cursiva (Ctrl+I)</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>Archivo de ayuda no encontrado.</value>
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>Ayuda</value>
@@ -1341,9 +1249,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>Superior derecha</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>Descargar por lotes las nuevas plantillas no instaladas</value>
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>Favoritos</value>
@@ -1384,9 +1289,6 @@
   <data name="retry_action" xml:space="preserve">
     <value>Reintentar</value>
   </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>Longitud de punta de flecha</value>
-  </data>
   <data name="remove_point" xml:space="preserve">
     <value>Eliminar este vértice</value>
   </data>
@@ -1398,9 +1300,6 @@
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>¿Salir de la vista de cálculo actual?</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>Contenido y posición</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Agregar flecha (Ctrl+4)</value>
@@ -1420,9 +1319,6 @@
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>Predeterminado 0,15</value>
   </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>Tamaño de fuente de subtítulo</value>
-  </data>
   <data name="delete_object" xml:space="preserve">
     <value>Eliminar objeto (Supr)</value>
   </data>
@@ -1434,9 +1330,6 @@
   </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>Peraluminoso</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>Coordenadas de inicio</value>
   </data>
   <data name="cipw_error" xml:space="preserve">
     <value>Error</value>
@@ -1470,9 +1363,6 @@
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>Sin datos, por favor agregue datos</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>Descarga por lotes</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>Error al crear nueva plantilla:</value>
@@ -1635,9 +1525,6 @@
   <data name="formula" xml:space="preserve">
     <value>Fórmula</value>
   </data>
-  <data name="script_language" xml:space="preserve">
-    <value>Lenguaje de script:</value>
-  </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>No hay plantilla para guardar o ruta no especificada. Use 'Guardar como'.</value>
   </data>
@@ -1673,12 +1560,6 @@
   </data>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>Descarga por lotes cancelada</value>
-  </data>
-  <data name="batch_update_outdated_templates" xml:space="preserve">
-    <value>Actualización por lotes</value>
-  </data>
-  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
-    <value>Actualizar por lotes las plantillas oficiales con nuevas versiones disponibles</value>
   </data>
   <data name="batch_update_title" xml:space="preserve">
     <value>Actualización por lotes</value>
@@ -1770,9 +1651,6 @@
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>Formato de archivo no compatible</value>
   </data>
-  <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>Paquetes de geotermobarómetro. Se pueden soltar varios archivos a la vez.</value>
-  </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
     <value>Diagrama</value>
   </data>
@@ -1802,9 +1680,6 @@
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>Formación de minerales accesorios</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Separe múltiples series de datos con comas, por ejemplo: SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>Agregar polígono (Ctrl+3)</value>
@@ -1906,7 +1781,7 @@
     <value>Salir</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_Archivo(F)</value>
+    <value>Archivo(_F)</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>Datos</value>
@@ -1928,12 +1803,6 @@
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>Versión actual del geotermobarómetro de la aplicación</value>
-  </data>
-  <data name="geo_current_template_version" xml:space="preserve">
-    <value>Versión actual de la plantilla del geotermobarómetro</value>
-  </data>
-  <data name="geo_editor_set_version" xml:space="preserve">
-    <value>Establecer versión del geotermobarómetro</value>
   </data>
   <data name="geo_tooltip_version_patch" xml:space="preserve">
     <value>Número de revisión (z); la línea base de formato (x.y) sigue la versión de la aplicación</value>
@@ -1983,7 +1852,7 @@
 • Fluorita (Fl): F + CaO
 • Pirita (Py): S + FeO
 • Halita (Hl): Cl + Na₂O
-• Tenardita (Th): SO₃ + Na₂O</value>
+• Mirabilita (Th): SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
     <value>Configuración de trazado</value>
@@ -2126,9 +1995,6 @@
   <data name="filter_geothermometer_package" xml:space="preserve">
     <value>Paquete de geotermobarómetro</value>
   </data>
-  <data name="filter_geothermometer_import" xml:space="preserve">
-    <value>Paquetes de geotermobarómetro</value>
-  </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>Archivos CSV</value>
   </data>
@@ -2171,17 +2037,11 @@
   <data name="cos_credentials_required" xml:space="preserve">
     <value>Configure y guarde primero las credenciales de COS.</value>
   </data>
-  <data name="cos_save_settings" xml:space="preserve">
-    <value>Guardar configuración</value>
-  </data>
   <data name="cos_secret_id_required" xml:space="preserve">
     <value>SecretId es obligatorio.</value>
   </data>
   <data name="cos_settings_saved" xml:space="preserve">
     <value>Configuración de COS guardada.</value>
-  </data>
-  <data name="cos_test_connection" xml:space="preserve">
-    <value>Probar conexión</value>
   </data>
   <data name="cos_test_failed" xml:space="preserve">
     <value>La prueba de conexión a COS ha fallado.</value>
@@ -2206,9 +2066,6 @@
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>Multilingüe</value>
-  </data>
-  <data name="diagram_editor_new_version" xml:space="preserve">
-    <value>Nueva versión</value>
   </data>
   <data name="diagram_editor_saved_version" xml:space="preserve">
     <value>Versión tras guardar:</value>
@@ -2239,9 +2096,6 @@
   </data>
   <data name="favorites_empty_hint" xml:space="preserve">
     <value>Aún no hay plantillas favoritas. Haga clic derecho en una plantilla para añadirla.</value>
-  </data>
-  <data name="diagram_hint_no_favorites" xml:space="preserve">
-    <value>Aún no hay plantillas de diagrama favoritas.</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
     <value>No hay plantillas de diagramas en línea en esta categoría.</value>
@@ -2280,7 +2134,19 @@
     <value>Forzar actualización</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Convertir a plantilla integrada</value>
+    <value>Actualizar a plantilla de diagrama en línea</value>
+  </data>
+  <data name="demote_to_custom_template" xml:space="preserve">
+    <value>Quitar plantilla de diagrama en línea</value>
+  </data>
+  <data name="confirm_demote_diagram_template" xml:space="preserve">
+    <value>¿Quitar este diagrama de la biblioteca oficial? Pasará a ser un diagrama personal y no aparecerá en la próxima publicación; se reemplazará el diagrama personal con la misma ruta.</value>
+  </data>
+  <data name="confirm_demote_geothermometer" xml:space="preserve">
+    <value>¿Quitar este geotermobarómetro de la biblioteca oficial? Pasará a ser personalizado y no aparecerá en la próxima publicación.</value>
+  </data>
+  <data name="template_demote_success" xml:space="preserve">
+    <value>Degradado a diagrama personal</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>Forzar actualización</value>
@@ -2366,9 +2232,6 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(vacío)</value>
   </data>
-  <data name="official_publisher_announcement_load" xml:space="preserve">
-    <value>Cargar del servidor</value>
-  </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>Anuncio cargado del servidor.</value>
   </data>
@@ -2384,29 +2247,11 @@
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>Se requiere el modo desarrollador para publicar.</value>
   </data>
-  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
-    <value>Diagramas: nuevos {0}, actualizados {1}, eliminados {2}, sin cambios {3}.</value>
-  </data>
-  <data name="official_publisher_diagram_section" xml:space="preserve">
-    <value>Diagramas</value>
-  </data>
   <data name="official_publisher_export_done" xml:space="preserve">
     <value>Exportación completada.</value>
   </data>
-  <data name="official_publisher_export_local" xml:space="preserve">
-    <value>Exportar localmente</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>Exportando a {0}...</value>
-  </data>
-  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>Geotermobarómetros: nuevos {0}, actualizados {1}, eliminados {2}, sin cambios {3}.</value>
-  </data>
-  <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>Geotermobarómetros</value>
-  </data>
-  <data name="official_publisher_home_add_group" xml:space="preserve">
-    <value>Añadir grupo</value>
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Editar grupo</value>
@@ -2414,26 +2259,11 @@
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Borrador de enlaces de inicio guardado localmente.</value>
   </data>
-  <data name="official_publisher_home_links_pending" xml:space="preserve">
-    <value>Publicación pendiente</value>
-  </data>
-  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
-    <value>Grupos: {0}, enlaces: {1}, hash local: {2}, hash remoto: {3}.</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>Editor de enlaces de inicio recargado.</value>
   </data>
-  <data name="official_publisher_home_links_section" xml:space="preserve">
-    <value>Enlaces de inicio</value>
-  </data>
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>Enlaces de inicio: {0} grupos, {1} enlaces, hash={2}.</value>
-  </data>
-  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
-    <value>Ya actualizado en el servidor.</value>
-  </data>
-  <data name="official_publisher_home_save_draft" xml:space="preserve">
-    <value>Guardar borrador</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Seleccione primero un grupo.</value>
@@ -2456,29 +2286,14 @@
   <data name="official_publisher_ready" xml:space="preserve">
     <value>Publicador oficial listo.</value>
   </data>
-  <data name="official_publisher_refresh" xml:space="preserve">
-    <value>Actualizar vista previa</value>
-  </data>
-  <data name="official_publisher_refreshing" xml:space="preserve">
-    <value>Actualizando vista previa de publicación...</value>
-  </data>
   <data name="official_publisher_removed" xml:space="preserve">
     <value>Eliminado</value>
-  </data>
-  <data name="official_publisher_staging_dir" xml:space="preserve">
-    <value>Directorio staging</value>
   </data>
   <data name="official_publisher_staging_required" xml:space="preserve">
     <value>Seleccione un directorio staging.</value>
   </data>
   <data name="official_publisher_start" xml:space="preserve">
     <value>Iniciando publicación...</value>
-  </data>
-  <data name="official_publisher_target_required" xml:space="preserve">
-    <value>Seleccione al menos un destino de publicación.</value>
-  </data>
-  <data name="official_publisher_unchanged" xml:space="preserve">
-    <value>Sin cambios</value>
   </data>
   <data name="official_publisher_updated" xml:space="preserve">
     <value>Actualizado</value>
@@ -2684,12 +2499,6 @@
   <data name="shortcut_group_template_title" xml:space="preserve">
     <value>Acciones de tarjeta de plantilla</value>
   </data>
-  <data name="shortcuts_hint" xml:space="preserve">
-    <value>Consejo: Algunos atajos solo funcionan cuando la página relacionada está activa o tiene el foco del teclado.</value>
-  </data>
-  <data name="shortcuts_intro" xml:space="preserve">
-    <value>Esta página enumera los atajos admitidos en la versión actual. Es de solo lectura y no se puede editar aquí.</value>
-  </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>Atajos</value>
   </data>
@@ -2759,23 +2568,8 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>Texto</value>
   </data>
-  <data name="official_publisher_plot_categories_section" xml:space="preserve">
-    <value>Categorías de diagramas</value>
-  </data>
-  <data name="official_publisher_plot_categories_level" xml:space="preserve">
-    <value>Nivel</value>
-  </data>
-  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
-    <value>El borrador de categorías de diagramas se guardó localmente.</value>
-  </data>
   <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
     <value>El editor de categorías de diagramas se recargó.</value>
-  </data>
-  <data name="official_publisher_geot_categories_section" xml:space="preserve">
-    <value>Etiquetas minerales de GeoT</value>
-  </data>
-  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
-    <value>El borrador de categorías minerales de GeoT se guardó localmente.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>El editor de categorías minerales de GeoT se recargó.</value>
@@ -2852,9 +2646,6 @@
   <data name="geo_editor_readonly_hint" xml:space="preserve">
     <value>La información básica, los datos y scripts, y los documentos de ayuda de los geotermobarómetros oficiales solo se pueden ver y copiar, no modificar.</value>
   </data>
-  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
-    <value>Los datos se han modificado. Actualice el diagrama.</value>
-  </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>Fila {0}: {1}</value>
   </data>
@@ -2922,7 +2713,7 @@
     <value>Nefelina</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>Kalsilita</value>
+    <value>Pseudoleucita</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>Acmita</value>
@@ -2985,7 +2776,7 @@
     <value>Halita</value>
   </data>
   <data name="cipw_mineral_Th" xml:space="preserve">
-    <value>Thenardita</value>
+    <value>Mirabilita</value>
   </data>
   <data name="cipw_mineral_ns" xml:space="preserve">
     <value>Metasilicato de sodio</value>
@@ -3007,6 +2798,15 @@
   </data>
   <data name="cipw_warning_mno_to_feo" xml:space="preserve">
     <value>MnO se convirtió a equivalente FeO por relación molar.</value>
+  </data>
+  <data name="cipw_mineral_Pf" xml:space="preserve">
+    <value>Perovskita</value>
+  </data>
+  <data name="cipw_mineral_Cs" xml:space="preserve">
+    <value>Larnita</value>
+  </data>
+  <data name="cipw_warning_silica_deficit_residual" xml:space="preserve">
+    <value>El déficit de sílice no pudo eliminarse por completo con la secuencia estándar de desilicificación (déficit residual: {0} mol por 100 g). La norma no es fiable.</value>
   </data>
   <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
     <value>Óxido negativo {0}: {1}</value>
@@ -3100,11 +2900,6 @@
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>Versión de formato de plantilla de diagrama admitida por esta aplicación (solo lectura)</value>
-
-  </data>
-  <data name="custom_app_hint" xml:space="preserve">
-
-    <value>Ruta del ejecutable de un editor gráfico de terceros personalizado</value>
 
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
@@ -3314,7 +3109,7 @@
   </data>
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
-    <value>Importado correctamente: {0}</value>
+    <value>Se importaron correctamente {0} plantillas de geotermobarómetro</value>
 
   </data>
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
@@ -3415,19 +3210,9 @@
     <value>(vacío)</value>
 
   </data>
-  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
-
-    <value>Formato: 1.2.3. Dejar vacío para desactivar el umbral de versión mínima.</value>
-
-  </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>La versión mínima admitida debe ser una versión válida, por ejemplo 1.2.3.</value>
-
-  </data>
-  <data name="official_publisher_minimum_version_label" xml:space="preserve">
-
-    <value>Versión mínima admitida</value>
 
   </data>
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
@@ -3448,11 +3233,6 @@
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>Tamaño de visualización de las tarjetas de plantilla de diagrama en la biblioteca</value>
-
-  </data>
-  <data name="ui_scale_auto" xml:space="preserve">
-
-    <value>Automático</value>
 
   </data>
   <data name="ui_scale_mode" xml:space="preserve">
@@ -3644,9 +3424,6 @@
   <data name="black_body_radiation_calculator_desc" xml:space="preserve">
     <value>Calcular potencia de Stefan–Boltzmann, longitud de onda de Wien y espectro de cuerpo negro</value>
   </data>
-  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
-    <value>Introduzca la temperatura (K) para calcular la potencia radiante total, la longitud de onda pico y la curva espectral normalizada.</value>
-  </data>
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>Temperatura</value>
   </data>
@@ -3740,9 +3517,6 @@
   <data name="periodic_table_field_abundance" xml:space="preserve">
     <value>Abundancia cortical</value>
   </data>
-  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
-    <value>Clase de Goldschmidt</value>
-  </data>
   <data name="periodic_table_field_geochem_class" xml:space="preserve">
     <value>Clase geoquímica</value>
   </data>
@@ -3815,39 +3589,6 @@
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>Atmófilo</value>
   </data>
-  <data name="official_publisher_section_targets" xml:space="preserve">
-    <value>Destinos de publicación</value>
-  </data>
-  <data name="official_publisher_section_announcement" xml:space="preserve">
-    <value>Anuncios y versiones</value>
-  </data>
-  <data name="official_publisher_include_this" xml:space="preserve">
-    <value>Incluir en esta publicación</value>
-  </data>
-  <data name="official_publisher_targets_hint" xml:space="preserve">
-    <value>Los mismos archivos se cargan en cada servidor habilitado, en el orden de la lista. Una nueva URL pública ayuda a los usuarios inmediatamente solo después de agregarse a la lista integrada del cliente y publicarse. Las URL guardadas solo aquí se descubren después de que un usuario alcance cualquier servidor existente.</value>
-  </data>
-  <data name="official_publisher_add_target" xml:space="preserve">
-    <value>Agregar servidor</value>
-  </data>
-  <data name="official_publisher_move_up" xml:space="preserve">
-    <value>Mover arriba</value>
-  </data>
-  <data name="official_publisher_move_down" xml:space="preserve">
-    <value>Mover abajo</value>
-  </data>
-  <data name="official_publisher_target_name" xml:space="preserve">
-    <value>Nombre</value>
-  </data>
-  <data name="official_publisher_public_base_url" xml:space="preserve">
-    <value>URL base pública</value>
-  </data>
-  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
-    <value>Ejemplo: https://bucket.cos.region.myqcloud.com sin barra diagonal final</value>
-  </data>
-  <data name="official_publisher_enabled" xml:space="preserve">
-    <value>Habilitado</value>
-  </data>
   <data name="official_publisher_no_target" xml:space="preserve">
     <value>Agregue un servidor primero.</value>
   </data>
@@ -3859,9 +3600,6 @@
   </data>
   <data name="official_publisher_no_enabled_target" xml:space="preserve">
     <value>No hay ningún servidor habilitado con credenciales completas.</value>
-  </data>
-  <data name="official_publisher_confirm_targets" xml:space="preserve">
-    <value>¿Publicar este contenido en {0} servidor(es) habilitado(s)?</value>
   </data>
   <data name="official_publisher_progress_server" xml:space="preserve">
     <value>Cargando en {0} ({1}/{2})</value>
@@ -3878,23 +3616,11 @@
   <data name="official_publisher_upload_all_ok" xml:space="preserve">
     <value>Publicado en todos los servidores habilitados.</value>
   </data>
-  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
-    <value>Servidores habilitados</value>
-  </data>
   <data name="official_publisher_default_target_name" xml:space="preserve">
     <value>Hong Kong</value>
   </data>
   <data name="official_publisher_new_target_name" xml:space="preserve">
     <value>Nuevo servidor</value>
-  </data>
-  <data name="official_publisher_publish_targets" xml:space="preserve">
-    <value>Publicar en servidores habilitados</value>
-  </data>
-  <data name="official_publisher_latest_version_label" xml:space="preserve">
-    <value>Última versión</value>
-  </data>
-  <data name="official_publisher_latest_version_hint" xml:space="preserve">
-    <value>Se escribe en latest_app_version en server_info.json</value>
   </data>
   <data name="official_publisher_latest_version_pending" xml:space="preserve">
     <value>La última versión está pendiente de publicación</value>
@@ -3908,27 +3634,6 @@
   <data name="official_publisher_latest_version_preview" xml:space="preserve">
     <value>Última versión: {0}</value>
   </data>
-  <data name="official_publisher_legacy_announcement" xml:space="preserve">
-    <value>Anuncio de texto sin formato heredado</value>
-  </data>
-  <data name="official_publisher_legacy_announcement_hint" xml:space="preserve">
-    <value>Solo lo leen las versiones antiguas de la aplicación (campo announcement de server_info.json). La página de inicio actual solo lo muestra como alternativa cuando el catálogo de anuncios está vacío.</value>
-  </data>
-  <data name="official_publisher_version_info" xml:space="preserve">
-    <value>Información de versión</value>
-  </data>
-  <data name="official_publisher_announcements_catalog" xml:space="preserve">
-    <value>Catálogo de anuncios (multilingüe)</value>
-  </data>
-  <data name="official_publisher_announcement_add" xml:space="preserve">
-    <value>Agregar anuncio</value>
-  </data>
-  <data name="official_publisher_announcement_import" xml:space="preserve">
-    <value>Importar</value>
-  </data>
-  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
-    <value>Importar un archivo JSON de catálogo de anuncios y reemplazar el contenido actual del editor.</value>
-  </data>
   <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
     <value>Este archivo no es un catálogo de anuncios válido. Debe ser un objeto JSON con una matriz announcements.</value>
   </data>
@@ -3938,77 +3643,8 @@
   <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
     <value>Catálogo de anuncios importado: {0} entradas.</value>
   </data>
-  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
-    <value>Cuando se incluye esta sección, Announcements.json y server_info.json se cargan juntos.</value>
-  </data>
-  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>Recargar el catálogo de anuncios activo (se descartarán las ediciones no publicadas).</value>
-  </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
     <value>Catálogo de anuncios: {0} entradas. Hash remoto: {1}.</value>
-  </data>
-  <data name="official_publisher_plot_categories_note" xml:space="preserve">
-    <value>Las categorías se publican con el índice de diagramas. Si las categorías cambiaron, el índice de diagramas se incluye aunque los diagramas no estén marcados.</value>
-  </data>
-  <data name="official_publisher_geot_categories_note" xml:space="preserve">
-    <value>Las categorías de minerales se publican con el índice de geotermobarómetros. Si cambiaron, ese índice se incluye aunque los geotermobarómetros no estén marcados.</value>
-  </data>
-  <data name="official_publisher_ann_id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="official_publisher_ann_theme" xml:space="preserve">
-    <value>Color temático</value>
-  </data>
-  <data name="official_publisher_ann_date" xml:space="preserve">
-    <value>Fecha de visualización</value>
-  </data>
-  <data name="official_publisher_ann_priority" xml:space="preserve">
-    <value>Prioridad</value>
-  </data>
-  <data name="official_publisher_ann_start" xml:space="preserve">
-    <value>Fecha de inicio</value>
-  </data>
-  <data name="official_publisher_ann_end" xml:space="preserve">
-    <value>Fecha de finalización</value>
-  </data>
-  <data name="official_publisher_ann_tag" xml:space="preserve">
-    <value>Etiqueta superior</value>
-  </data>
-  <data name="official_publisher_ann_title" xml:space="preserve">
-    <value>Título *</value>
-  </data>
-  <data name="official_publisher_ann_body" xml:space="preserve">
-    <value>Contenido</value>
-  </data>
-  <data name="official_publisher_ann_action" xml:space="preserve">
-    <value>Texto del botón</value>
-  </data>
-  <data name="official_publisher_ann_action_url" xml:space="preserve">
-    <value>Enlace del botón</value>
-  </data>
-  <data name="official_publisher_ann_background" xml:space="preserve">
-    <value>Fondo</value>
-  </data>
-  <data name="official_publisher_ann_background_hint" xml:space="preserve">
-    <value>Predeterminado: degradado claro que sigue el color del tema de la aplicación si el color está vacío, con el gráfico de la marca. Personalizado: llena la tarjeta con una URL de imagen y texto blanco.</value>
-  </data>
-  <data name="official_publisher_ann_color" xml:space="preserve">
-    <value>Color</value>
-  </data>
-  <data name="official_publisher_ann_polygon" xml:space="preserve">
-    <value>Estilo de figura</value>
-  </data>
-  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
-    <value>Mostrar polígonos decorativos</value>
-  </data>
-  <data name="official_publisher_ann_image_url" xml:space="preserve">
-    <value>URL de la imagen</value>
-  </data>
-  <data name="official_publisher_background_default" xml:space="preserve">
-    <value>Color sólido</value>
-  </data>
-  <data name="official_publisher_background_image" xml:space="preserve">
-    <value>Imagen personalizada</value>
   </data>
   <data name="developer_settings" xml:space="preserve">
     <value>Opciones de desarrollador</value>
@@ -4273,7 +3909,7 @@
     <value>Hematita</value>
   </data>
   <data name="niggli_mineral_Hy" xml:space="preserve">
-    <value>Hiperstena</value>
+    <value>Ortopiroxeno</value>
   </data>
   <data name="niggli_mineral_Il" xml:space="preserve">
     <value>Ilmenita</value>
@@ -4402,10 +4038,10 @@
     <value>El porcentaje en peso de cada óxido de roca total se divide por su masa molar y se multiplica por el número de cationes de la fórmula para obtener milicationes. La suma de todos los cationes se normaliza al 100 % como base del cálculo siguiente. Si no se midieron FeO y Fe2O3, el FeOT puede repartirse con una relación Fe³⁺/Fe ajustable (predeterminada 0.15).</value>
   </data>
   <data name="niggli_step1_hy_ol_done" xml:space="preserve">
-    <value>Desilicificación Paso 1: Hiperstena -&gt; Olivino (Hy → Ol), consumido {0}% Hy, déficit de sílice eliminado por completo</value>
+    <value>Desilicificación Paso 1: Ortopiroxeno -&gt; Olivino (Hy → Ol), consumido {0}% Hy, déficit de sílice eliminado por completo</value>
   </data>
   <data name="niggli_step1_hy_ol_part" xml:space="preserve">
-    <value>Desilicificación Paso 1: Hiperstena -&gt; Olivino (Hy → Ol), todo Hy ({0}%) convertido en Ol, déficit restante D = {1}%</value>
+    <value>Desilicificación Paso 1: Ortopiroxeno -&gt; Olivino (Hy → Ol), todo Hy ({0}%) convertido en Ol, déficit restante D = {1}%</value>
   </data>
   <data name="niggli_step1_title" xml:space="preserve">
     <value>Milicationes y 100% de normalización</value>
@@ -4447,7 +4083,7 @@
     <value>Feldespatos alcalinos, anortita y minerales peralcalinos</value>
   </data>
   <data name="niggli_step5_detail" xml:space="preserve">
-    <value>Fe³⁺ y Fe²⁺ forman magnetita (Mt); el Fe³⁺ sobrante forma hematita (Hm). Ca, Mg y Fe²⁺ forman wollastonita (Wo), enstatita (En) y ferrosilita (Fs). En y Fs constituyen hiperstena (Hy). Wo y Hy se combinan en proporción equimolar para formar diópsido (Di).</value>
+    <value>Fe³⁺ y Fe²⁺ forman magnetita (Mt); el Fe³⁺ sobrante forma hematita (Hm). Ca, Mg y Fe²⁺ forman wollastonita (Wo), enstatita (En) y ferrosilita (Fs). En y Fs constituyen ortopiroxeno (Hy). Wo y Hy se combinan en proporción equimolar para formar diópsido (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
     <value>Desilicificación Paso 5: Leucita -&gt; Kalsilita (Lc → Kp), consumido {0}% Lc, déficit de sílice eliminado por completo</value>
@@ -4456,7 +4092,7 @@
     <value>Desilicificación Paso 5: Leucita -&gt; Kalsilita (Lc → Kp), todo Lc convertido, déficit restante D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
-    <value>Óxidos de hierro y piroxenos</value>
+    <value>Asignación de óxidos de hierro y piroxenos</value>
   </data>
   <data name="niggli_step6_detail" xml:space="preserve">
     <value>Si el Si residual es &gt;= 0, se forma cuarzo (Q). Si Si &lt; 0, el déficit de sílice es D = -Si y la desilicación sigue el orden de estabilidad termodinámica:
@@ -4503,9 +4139,6 @@
   </data>
   <data name="niggli_tooltip_example" xml:space="preserve">
     <value>Rellenar datos de ejemplo (Granito, Basalto, Fonolita)</value>
-  </data>
-  <data name="niggli_tooltip_expand" xml:space="preserve">
-    <value>Expandir/Colapsar panel de detalles</value>
   </data>
   <data name="niggli_tooltip_export" xml:space="preserve">
     <value>Exportar resultados del cálculo a un archivo CSV</value>
@@ -4581,9 +4214,6 @@
   </data>
   <data name="geoscience_unit_converter_desc" xml:space="preserve">
     <value>Panel en tiempo real para ley/concentración, presión, microescala, temperatura y edad geológica</value>
-  </data>
-  <data name="geoscience_unit_conv_hint" xml:space="preserve">
-    <value>Seleccione una categoría, ingrese un valor y la unidad base para ver conversiones en vivo en todas las unidades. Haga clic en una fila para copiar o fijar como base.</value>
   </data>
   <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
     <value>Ley / Concentración</value>
@@ -4733,7 +4363,7 @@
     <value>Grados Celsius (℃)</value>
   </data>
   <data name="geo_u_celsius_desc" xml:space="preserve">
-    <value>Gradiente geotérmico y temperatura habitual</value>
+    <value>Unidad habitual de la temperatura en geociencias y del gradiente geotérmico</value>
   </data>
   <data name="geo_u_kelvin_name" xml:space="preserve">
     <value>Kelvin (K)</value>
@@ -4900,17 +4530,11 @@
   <data name="epma_cancelled" xml:space="preserve">
     <value>Cálculo cancelado.</value>
   </data>
-  <data name="epma_choose" xml:space="preserve">
-    <value>Seleccionar…</value>
-  </data>
   <data name="epma_clear" xml:space="preserve">
     <value>Borrar</value>
   </data>
   <data name="epma_csv_formula_warning" xml:space="preserve">
     <value>{0} celdas de texto empiezan por un prefijo de fórmula de hoja de cálculo. Se recomienda XLSX. El texto original no cambia.</value>
-  </data>
-  <data name="epma_decimals" xml:space="preserve">
-    <value>Decimales mostrados</value>
   </data>
   <data name="epma_details" xml:space="preserve">
     <value>Detalles del diagnóstico</value>
@@ -4918,23 +4542,8 @@
   <data name="epma_export" xml:space="preserve">
     <value>Exportar resultados</value>
   </data>
-  <data name="epma_fields" xml:space="preserve">
-    <value>Descripción de campos</value>
-  </data>
   <data name="epma_file_unsupported" xml:space="preserve">
     <value>Use CSV o XLSX.</value>
-  </data>
-  <data name="epma_numeric_DecimalComma" xml:space="preserve">
-    <value>Coma decimal</value>
-  </data>
-  <data name="epma_numeric_DecimalPoint" xml:space="preserve">
-    <value>Punto decimal</value>
-  </data>
-  <data name="epma_numeric_format" xml:space="preserve">
-    <value>Formato numérico de entrada</value>
-  </data>
-  <data name="epma_provenance" xml:space="preserve">
-    <value>Procedencia del cálculo</value>
   </data>
   <data name="epma_stale" xml:space="preserve">
     <value>Caducado, vuelva a calcular</value>
@@ -4945,20 +4554,8 @@
   <data name="epma_column_Actual" xml:space="preserve">
     <value>Valor real</value>
   </data>
-  <data name="epma_column_Code" xml:space="preserve">
-    <value>Código</value>
-  </data>
   <data name="epma_column_Expectation" xml:space="preserve">
     <value>Valor esperado</value>
-  </data>
-  <data name="epma_column_Level" xml:space="preserve">
-    <value>Nivel</value>
-  </data>
-  <data name="epma_column_Message" xml:space="preserve">
-    <value>Mensaje</value>
-  </data>
-  <data name="epma_column_Source" xml:space="preserve">
-    <value>Origen</value>
   </data>
   <data name="epma_column_Target" xml:space="preserve">
     <value>Objeto</value>
@@ -4969,15 +4566,13 @@
 
   <data name="epma_library_description" xml:space="preserve"><value>Seleccione una plantilla y ábrala para configurar los parámetros y calcular.</value></data>
   <data name="epma_library_import" xml:space="preserve"><value>Importar cálculo mineral EPMA</value></data>
-  <data name="epma_library_refresh" xml:space="preserve"><value>Actualizar biblioteca</value></data>
   <data name="epma_library_enter" xml:space="preserve"><value>Abrir cálculo</value></data>
   <data name="epma_library_failed" xml:space="preserve"><value>No se pudo cargar el paquete:</value></data>
   <data name="epma_library_imported" xml:space="preserve"><value>Importado: {0}</value></data>
   <data name="epma_example_data" xml:space="preserve"><value>Ejemplo</value></data>
   <data name="epma_examples_loaded" xml:space="preserve"><value>Se cargaron las {0} filas de ejemplo.</value></data>
   <data name="epma_qc_not_calculated" xml:space="preserve"><value>Aún no se ha calculado. Introduzca los datos y pulse Calcular.</value></data>
-  <data name="epma_qc_skipped_row" xml:space="preserve"><value>El cálculo de esta fila falló o se omitió. Consulte el diagnóstico de abajo.</value></data>
-  <data name="epma_process_record" xml:space="preserve"><value>Registro del cálculo</value></data>
+  <data name="epma_qc_skipped_row" xml:space="preserve"><value>El cálculo de esta fila falló o se omitió.</value></data>
   <data name="epma_library_search" xml:space="preserve"><value>Buscar nombre de plantilla, mineral, palabra clave…</value></data>
 <data name="epma_library_no_matches" xml:space="preserve"><value>No se encontraron plantillas coincidentes.</value></data>
   <data name="epma_library_tags" xml:space="preserve"><value>Etiquetas</value></data>
@@ -4986,7 +4581,6 @@
   <data name="epma_library_current_version" xml:space="preserve"><value>Versión actual</value></data>
   <data name="epma_library_update_date" xml:space="preserve"><value>Fecha de actualización</value></data>
   <data name="epma_library_author" xml:space="preserve"><value>Autor</value></data>
-  <data name="epma_fixed_package_columns" xml:space="preserve"><value>Las columnas de entrada las define el paquete de cálculo. Rellene los datos disponibles y deje en blanco los que no haya. El blanco, el cero y el valor por debajo del límite de detección se registran por separado.</value></data>
 
   <data name="epma_package_replace_confirm" xml:space="preserve"><value>El ID de paquete {0} ya existe.
 Instalado: {1} (v{2})
@@ -4994,15 +4588,6 @@ Importado: {3} (v{4})
 ¿Sustituir el paquete instalado? Los métodos distintos deben usar IDs distintos.</value></data>
   <data name="epma_package_replace" xml:space="preserve"><value>Sustituir paquete</value></data>
   <data name="epma_column_InputRow" xml:space="preserve"><value>N.º de fila</value></data>
-  <data name="epma_column_Sample" xml:space="preserve"><value>Nombre de muestra</value></data>
-  <data name="epma_column_Stale" xml:space="preserve"><value>Resultado anterior</value></data>
-  <data name="epma_result_unavailable" xml:space="preserve"><value>No se puede calcular {0}: {1}</value></data>
-  <data name="epma_qc_dataset_summary" xml:space="preserve"><value>{0} filas; {1} diagnósticos, en {2} filas. Errores: {3}; advertencias: {4}; información: {5}. Resultados no válidos: {6} filas.</value></data>
-  <data name="epma_group_iron" xml:space="preserve"><value>Tratamiento del hierro</value></data>
-  <data name="epma_group_normalization" xml:space="preserve"><value>Normalización</value></data>
-  <data name="epma_group_input_display" xml:space="preserve"><value>Entrada y visualización</value></data>
-  <data name="epma_group_other" xml:space="preserve"><value>Otros parámetros de cálculo</value></data>
-  <data name="epma_template_rules_hint" xml:space="preserve"><value>La plantilla actual define las reglas de cálculo.</value></data>
   <data name="epma_worksheet" xml:space="preserve"><value>Hoja de datos</value></data>
   <data name="epma_input_editable" xml:space="preserve"><value>Datos de entrada (editables)</value></data>
   <data name="epma_output_readonly" xml:space="preserve"><value>Resultados (solo lectura)</value></data>
@@ -5012,8 +4597,6 @@ Importado: {3} (v{4})
   <data name="epma_errors" xml:space="preserve"><value>Errores</value></data>
   <data name="epma_warnings" xml:space="preserve"><value>Advertencias</value></data>
   <data name="epma_information" xml:space="preserve"><value>Información</value></data>
-  <data name="epma_collapse_settings" xml:space="preserve"><value>Contraer ajustes</value></data>
-  <data name="epma_expand_settings" xml:space="preserve"><value>Expandir ajustes</value></data>
   <data name="epma_cell_content" xml:space="preserve"><value>Contenido de la celda seleccionada</value></data>
   <data name="epma_reset_worksheet_layout" xml:space="preserve"><value>Restaurar alturas de filas y anchos de columnas predeterminados</value></data>
   <data name="epma_editor_workflow" xml:space="preserve"><value>Flujo de trabajo</value></data>
@@ -5039,11 +4622,6 @@ Importado: {3} (v{4})
   <data name="epma_editor_strike" xml:space="preserve"><value>Tachado</value></data>
   <data name="epma_editor_bullets" xml:space="preserve"><value>Lista con viñetas</value></data>
   <data name="epma_editor_numbering" xml:space="preserve"><value>Lista numerada</value></data>
-  <data name="epma_editor_link" xml:space="preserve"><value>Enlace</value></data>
-  <data name="epma_editor_clear_format" xml:space="preserve"><value>Borrar formato</value></data>
-  <data name="epma_editor_insert_link" xml:space="preserve"><value>Insertar enlace</value></data>
-  <data name="epma_editor_link_invalid" xml:space="preserve"><value>Introduzca una dirección HTTP, HTTPS o mailto válida.</value></data>
-  <data name="epma_editor_link_selection" xml:space="preserve"><value>Seleccione texto dentro de un solo párrafo.</value></data>
   <data name="epma_editor_save_action" xml:space="preserve"><value>Guardar</value></data>
   <data name="epma_editor_edit_localization" xml:space="preserve"><value>Editar traducciones</value></data>
   <data name="epma_editor_search_tags" xml:space="preserve"><value>Etiquetas</value></data>
@@ -5241,7 +4819,6 @@ Importado: {3} (v{4})
   <data name="home_search_placeholder" xml:space="preserve"><value>Buscar sitios, p. ej. GEOROC, mineral...</value></data>
   <data name="home_search_no_results" xml:space="preserve"><value>No hay enlaces coincidentes.</value></data>
   <data name="home_links_all_groups_hint" xml:space="preserve"><value>Buscando en todos los grupos</value></data>
-  <data name="geo_loc_row_reference" xml:space="preserve"><value>Referencias</value></data>
   <data name="geo_validate_inputs_required" xml:space="preserve"><value>Añada al menos una columna de entrada.</value></data>
   <data name="epma_setting" xml:space="preserve"><value>Ajustes de EPMA</value></data>
   <data name="epma_current_app_format_version" xml:space="preserve"><value>Versión del paquete de cálculo EPMA de este programa</value></data>
@@ -5291,64 +4868,34 @@ Importado: {3} (v{4})
   <data name="epma_help_no_doc" xml:space="preserve"><value>Esta plantilla de cálculo aún no tiene documento de ayuda.</value></data>
   <data name="epma_editor_localization_title" xml:space="preserve"><value>Idiomas de la plantilla</value></data>
   <data name="epma_loc_row_name" xml:space="preserve"><value>Nombre</value></data>
-  <data name="epma_loc_row_description" xml:space="preserve"><value>Descripción</value></data>
   <data name="epma_loc_row_tag" xml:space="preserve"><value>Etiqueta {0}</value></data>
+  <data name="epma_loc_row_group" xml:space="preserve"><value>Grupo {0}</value></data>
   <data name="epma_library_edit" xml:space="preserve"><value>Editar</value></data>
   <data name="epma_library_delete" xml:space="preserve"><value>Eliminar</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Exportar</value></data>
-  <data name="epma_library_promote" xml:space="preserve"><value>Promover a plantilla de cálculo oficial</value></data>
-  <data name="epma_library_remove_official" xml:space="preserve"><value>Quitar la plantilla de cálculo oficial</value></data>
-  <data name="epma_library_not_implemented" xml:space="preserve"><value>Esta función aún no está implementada.</value></data>
+  <data name="epma_library_promote" xml:space="preserve">
+    <value>Actualizar a plantilla de cálculo en línea</value>
+  </data>
+  <data name="epma_library_remove_official" xml:space="preserve">
+    <value>Quitar plantilla de cálculo en línea</value>
+  </data>
   <data name="epma_library_delete_confirm" xml:space="preserve"><value>¿Eliminar «{0}»? Esta acción quita esa plantilla de cálculo personal de la biblioteca local.</value></data>
   <data name="epma_library_official_delete_denied" xml:space="preserve"><value>Esta acción solo permite eliminar plantillas de cálculo personales.</value></data>
   <data name="epma_library_changed" xml:space="preserve"><value>La plantilla se modificó o se eliminó. Actualice la biblioteca y ábrala de nuevo.</value></data>
-  <data name="epma_library_export_outside" xml:space="preserve"><value>Exporte fuera de la carpeta de instalación de la biblioteca de cálculo para no sobrescribir plantillas existentes.</value></data>
   <data name="epma_library_updated" xml:space="preserve"><value>Se guardó «{0}». Vuelva a entrar al cálculo para usar la plantilla actualizada.</value></data>
   <data name="epma_library_deleted" xml:space="preserve"><value>Se eliminó «{0}».</value></data>
   <data name="epma_library_exported" xml:space="preserve"><value>Se exportó «{0}».</value></data>
-  <data name="epma_json_select_group" xml:space="preserve"><value>Seleccione primero el grupo al que desea añadir un elemento.</value></data>
-  <data name="epma_json_duplicate" xml:space="preserve"><value>Campo duplicado: {0}</value></data>
-  <data name="epma_json_unknown_field" xml:space="preserve"><value>Campo no admitido: {0}</value></data>
-  <data name="epma_json_item" xml:space="preserve"><value>Elemento {0}</value></data>
-  <data name="epma_json_count" xml:space="preserve"><value>{0} elementos</value></data>
-  <data name="epma_json_invalid_boolean" xml:space="preserve"><value>Elija sí o no.</value></data>
-  <data name="epma_json_invalid_number" xml:space="preserve"><value>Escriba un número finito. Use el punto como separador decimal.</value></data>
-  <data name="epma_json_kind_string" xml:space="preserve"><value>Texto</value></data>
-  <data name="epma_json_kind_number" xml:space="preserve"><value>Número</value></data>
-  <data name="epma_json_kind_boolean" xml:space="preserve"><value>Sí / No</value></data>
-  <data name="epma_json_kind_object" xml:space="preserve"><value>Grupo</value></data>
-  <data name="epma_json_kind_array" xml:space="preserve"><value>Lista</value></data>
-  <data name="epma_json_kind_null" xml:space="preserve"><value>Sin definir</value></data>
-  <data name="epma_json_value_number" xml:space="preserve"><value>Número</value></data>
-  <data name="epma_json_value_text" xml:space="preserve"><value>Texto</value></data>
-  <data name="epma_json_value_true" xml:space="preserve"><value>Sí</value></data>
-  <data name="epma_json_value_false" xml:space="preserve"><value>No</value></data>
   <data name="epma_json_field_inputs" xml:space="preserve"><value>Columnas de entrada</value></data>
   <data name="epma_json_field_outputs" xml:space="preserve"><value>Columnas de salida</value></data>
-  <data name="epma_json_field_parameters" xml:space="preserve"><value>Parámetros de cálculo</value></data>
-  <data name="epma_json_field_id" xml:space="preserve"><value>Identificador</value></data>
-  <data name="epma_json_field_type" xml:space="preserve"><value>Tipo de campo</value></data>
   <data name="epma_json_field_unit" xml:space="preserve"><value>Unidad</value></data>
-  <data name="epma_json_field_when" xml:space="preserve"><value>Condición de visualización</value></data>
-  <data name="epma_json_field_label" xml:space="preserve"><value>Nombre mostrado</value></data>
-  <data name="epma_json_field_description" xml:space="preserve"><value>Descripción</value></data>
+  <data name="epma_json_field_group" xml:space="preserve"><value>Grupo</value></data>
   <data name="epma_json_field_examples" xml:space="preserve"><value>Datos de ejemplo</value></data>
   <data name="epma_json_field_resource" xml:space="preserve"><value>Datos de recurso</value></data>
-  <data name="epma_json_field_rows" xml:space="preserve"><value>Filas de datos</value></data>
-  <data name="epma_json_field_definitions" xml:space="preserve"><value>Entradas y salidas</value></data>
-  <data name="epma_json_field_settings" xml:space="preserve"><value>Sustitución de parámetros</value></data>
-  <data name="epma_json_add_item" xml:space="preserve"><value>Añadir elemento</value></data>
-  <data name="epma_json_add_field" xml:space="preserve"><value>Añadir campo</value></data>
   <data name="epma_editor_file_calculation" xml:space="preserve"><value>Script de cálculo</value></data>
   <data name="epma_editor_file_common" xml:space="preserve"><value>Script común</value></data>
   <data name="epma_editor_file_chemistry_script" xml:space="preserve"><value>Script auxiliar de química</value></data>
   <data name="epma_editor_file_helper" xml:space="preserve"><value>Script auxiliar</value></data>
   <data name="epma_form_example" xml:space="preserve"><value>Valor de ejemplo</value></data>
-  <data name="epma_iron_invalid" xml:space="preserve"><value>Ajuste de hierro no válido: elija formas de informe válidas y no repetidas. Fe³⁺/ΣFe debe estar entre 0 y 1.</value></data>
-  <data name="epma_iron_default_required" xml:space="preserve"><value>Elija al menos una forma de informe. Si usa hierro total, elija también un tratamiento predeterminado ya habilitado.</value></data>
-  <data name="epma_iron_literal_required" xml:space="preserve"><value>La edición visual exige que getIronOptions() devuelva directamente un objeto JSON simple.</value></data>
-  <data name="epma_iron_settings_array_required" xml:space="preserve"><value>Para añadir los ajustes de hierro, getSettings() debe devolver directamente un array. El script original no se modificó.</value></data>
-  <data name="epma_iron_required" xml:space="preserve"><value>Este algoritmo depende de los ajustes de hierro. Modifique antes el script de cálculo para desactivarlos.</value></data>
   <data name="epma_editor_add_column" xml:space="preserve"><value>Añadir columna</value></data>
   <data name="epma_editor_remove_column" xml:space="preserve"><value>Eliminar columna</value></data>
   <data name="epma_editor_column_placeholder" xml:space="preserve"><value>Escriba el nombre de la columna</value></data>
@@ -5385,7 +4932,6 @@ Importado: {3} (v{4})
   <data name="epma_update_overwrite_all_confirm" xml:space="preserve"><value>¿Descargar o actualizar {0} plantillas? Las existentes se sustituyen por la versión oficial, incluidos los cambios locales.</value></data>
   <data name="epma_status_not_downloaded" xml:space="preserve"><value>No descargada</value></data>
   <data name="epma_status_update_available" xml:space="preserve"><value>Actualización disponible</value></data>
-  <data name="epma_status_requires_upgrade" xml:space="preserve"><value>Requiere actualizar el programa</value></data>
   <data name="status_requires_app_upgrade" xml:space="preserve"><value>Requiere actualizar el programa</value></data>
   <data name="status_update_requires_app_upgrade" xml:space="preserve"><value>Actualización disponible, requiere actualizar el programa</value></data>
   <data name="status_requires_app_upgrade_hint" xml:space="preserve"><value>Esta plantilla requiere una versión más reciente del programa para poder descargarse o usarse.</value></data>
@@ -5400,9 +4946,6 @@ Importado: {3} (v{4})
   <data name="epma_reset_database_hint" xml:space="preserve"><value>Vaciar la base local de plantillas de cálculo EPMA y restaurar las plantillas oficiales incluidas</value></data>
   <data name="epma_confirm_reset_database" xml:space="preserve"><value>¿Vaciar la base local de plantillas de cálculo EPMA? Se eliminarán las plantillas personales y las oficiales descargadas. Esta acción no se puede deshacer.</value></data>
   <data name="epma_database_cleared" xml:space="preserve"><value>La base local de plantillas de cálculo EPMA se ha restablecido.</value></data>
-  <data name="official_publisher_epma_section" xml:space="preserve"><value>Plantillas de cálculo EPMA</value></data>
-  <data name="official_publisher_epma_hint" xml:space="preserve"><value>Publica las plantillas oficiales de cálculo EPMA instaladas (.epma.zip). Promueva una plantilla personal a plantilla de cálculo oficial en la biblioteca EPMA para publicarla aquí.</value></data>
-  <data name="official_publisher_epma_preview_summary" xml:space="preserve"><value>Plantillas de cálculo EPMA: nuevas {0}, actualizadas {1}, eliminadas {2}, sin cambios {3}.</value></data>
   <data name="official_publisher_progress_exporting_epma" xml:space="preserve"><value>Exportando plantillas de cálculo EPMA...</value></data>
   <data name="shortcuts_subtitle" xml:space="preserve">
     <value>Atajos compatibles con esta versión. Algunos solo funcionan cuando la página correspondiente está activa o tiene el foco.</value>
@@ -5457,7 +5000,6 @@ Importado: {3} (v{4})
   <data name="axis_tab_ticks" xml:space="preserve"><value>Marcas</value></data>
   <data name="tick_alignment" xml:space="preserve"><value>Alineación de marcas</value></data>
   <data name="tick_align_strict" xml:space="preserve"><value>Estricto</value></data>
-  <data name="axis_tab_labels" xml:space="preserve"><value>Etiquetas</value></data>
   <data name="insp_more_colors" xml:space="preserve"><value>Más colores</value></data>
   <data name="insp_eyedropper" xml:space="preserve"><value>Tomar color de la pantalla</value></data>
   <data name="insp_endpoints" xml:space="preserve"><value>Extremos</value></data>
@@ -5506,16 +5048,11 @@ Importado: {3} (v{4})
   <data name="add_mode_polygon_ready" xml:space="preserve"><value>Agregar polígono · Clic izquierdo para agregar puntos, clic derecho para terminar y seguir</value></data>
   <data name="add_mode_text" xml:space="preserve"><value>Agregar texto · Clic en el gráfico para colocar. Puede seguir agregando · Clic derecho para salir</value></data>
   <data name="axis_line" xml:space="preserve"><value>Línea de eje</value></data>
-  <data name="axis_line_hint" xml:space="preserve"><value>El borde de este eje. Abajo es horizontal; izquierda, derecha y arriba son verticales.</value></data>
-  <data name="ternary_axis_line_hint" xml:space="preserve"><value>El lado seleccionado del triángulo.</value></data>
   <data name="tick_step" xml:space="preserve"><value>Paso</value></data>
   <data name="tick_value" xml:space="preserve"><value>Valores</value></data>
   <data name="tick_fraction" xml:space="preserve"><value>Fracción 0–1</value></data>
   <data name="tick_percent" xml:space="preserve"><value>Porcentaje 0–100</value></data>
-  <data name="tick_step_hint" xml:space="preserve"><value>El paso es el intervalo a lo largo de este lado. 0,1 dibuja 0, 0,1, 0,2…1; 10 en porcentaje dibuja 0, 10, 20…100.</value></data>
   <data name="label_spacing" xml:space="preserve"><value>Separación de etiquetas</value></data>
-  <data name="label_spacing_hint" xml:space="preserve"><value>Distancia de los números de marca respecto a este lado.</value></data>
-  <data name="ternary_subtitle_hint" xml:space="preserve"><value>La fuente sigue al título. Los títulos ternarios se colocan por lado, así que el subtítulo tiene su propio desplazamiento.</value></data>
   <data name="open_file_location" xml:space="preserve"><value>Abrir ubicación del archivo</value></data>
   <data name="open_file_location_failed" xml:space="preserve"><value>No se pudo abrir la ubicación del archivo.</value></data>
   <data name="grid_direction" xml:space="preserve">
@@ -5561,4 +5098,27 @@ Importado: {3} (v{4})
   <data name="harker_missing_x_column" xml:space="preserve"><value>Falta la columna de la variable X en la tabla: {0}</value></data>
   <data name="harker_export_format" xml:space="preserve"><value>Este formato de exportación no está disponible para los diagramas de Harker. Use png, jpg, bmp o webp.</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker: WpfPlot1.Plot no es el primer panel. La exportación y el ratón pueden comportarse de forma distinta.</value></data>
+  <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
+    <value>Hay {0} plantilla(s) de diagrama en línea sin descargar, por lo que la publicación está bloqueada: {1}. Descárguelas primero.</value>
+  </data>
+  <data name="diagram_update_overwrite_confirm" xml:space="preserve">
+    <value>La actualización sobrescribirá «{0}» con la versión oficial (incluidos los cambios locales). ¿Continuar?</value>
+  </data>
+  <data name="confirm_promote_diagram_template" xml:space="preserve">
+    <value>¿Actualizar este diagrama a plantilla de diagrama en línea? Se publicará junto con la biblioteca oficial.</value>
+  </data>
+  <data name="confirm_promote_geothermometer" xml:space="preserve">
+    <value>¿Actualizar «{0}» a plantilla de geotermobarómetro en línea? Se publicará junto con la biblioteca oficial.</value>
+  </data>
+  <data name="view_diagram_template" xml:space="preserve">
+    <value>Ver plantilla de diagrama (solo lectura)</value>
+  </data>
+  <data name="data_row_status_ok" xml:space="preserve"><value>Graficada</value></data>
+  <data name="data_row_status_error" xml:space="preserve"><value>No se puede graficar</value></data>
+  <data name="data_row_status_stale" xml:space="preserve"><value>Editada tras graficar</value></data>
+  <data name="data_row_status_pending" xml:space="preserve"><value>Sin graficar</value></data>
+  <data name="plot_row_missing_category" xml:space="preserve"><value>Esta fila no tiene Category, por lo que no se graficó.</value></data>
+  <data name="table_col_sample" xml:space="preserve"><value>Muestra</value></data>
+  <data name="table_col_category" xml:space="preserve"><value>Grupo</value></data>
+  <data name="template_list_sync_light_tip" xml:space="preserve"><value>Lista actualizada: {0} nuevas / {1} actualizables / {2} retiradas</value></data>
 </root>

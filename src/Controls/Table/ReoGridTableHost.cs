@@ -122,6 +122,12 @@ namespace GeoChemistryNexus.Controls
         private bool _updatingEditor;
         private Button? _resetButton, _inspectorCloseButton, _undoButton, _redoButton;
         private System.Windows.Controls.Border? _inspectorPanel;
+        private Thumb? _inspectorResizer;
+
+        /// <summary>检查器可拖到的最小宽度。</summary>
+        private const double MinInspectorWidth = 240;
+        /// <summary>检查器最大宽度占软件窗口宽度的比例。</summary>
+        private const double MaxInspectorWidthRatio = 2d / 3d;
         private int _inspectorAnimationVersion;
         private FrameworkElement? _legend;
         private bool _statusRefreshPending;
@@ -144,7 +150,10 @@ namespace GeoChemistryNexus.Controls
             if (_inspectorCloseButton != null) _inspectorCloseButton.Click -= CloseInspector;
             if (_undoButton != null) _undoButton.Click -= UndoClick;
             if (_redoButton != null) _redoButton.Click -= RedoClick;
+            if (_inspectorResizer != null) _inspectorResizer.DragDelta -= InspectorResizerDragDelta;
             base.OnApplyTemplate();
+            _inspectorResizer = GetTemplateChild("PART_InspectorResizer") as Thumb;
+            if (_inspectorResizer != null) _inspectorResizer.DragDelta += InspectorResizerDragDelta;
             _root = GetTemplateChild(RootPart) as Grid;
             _horizontalScroll = GetTemplateChild(HorizontalScrollPart) as ScrollBar;
             _verticalScroll = GetTemplateChild(VerticalScrollPart) as ScrollBar;
@@ -205,6 +214,30 @@ namespace GeoChemistryNexus.Controls
 
         private void CloseInspector(object sender, RoutedEventArgs e) => IsInspectorOpen = false;
 
+        /// <summary>检查器允许的最大宽度：软件窗口宽度的 2/3（取不到窗口时退回本控件宽度）。</summary>
+        private double GetMaxInspectorWidth()
+        {
+            double reference = Window.GetWindow(this)?.ActualWidth ?? 0;
+            if (reference <= 0) reference = ActualWidth;
+            return reference > 0 ? Math.Max(MinInspectorWidth, reference * MaxInspectorWidthRatio) : double.PositiveInfinity;
+        }
+
+        private void InspectorResizerDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            // 拖动条位于检查器左边缘：向左拖（HorizontalChange 为负）变宽。
+            double width = InspectorWidth - e.HorizontalChange;
+            InspectorWidth = Math.Clamp(width, MinInspectorWidth, GetMaxInspectorWidth());
+            e.Handled = true;
+        }
+
+        /// <summary>窗口缩小后，已经超过 2/3 的检查器自动收回到上限以内。</summary>
+        private void ClampInspectorWidth()
+        {
+            if (!HasInspector) return;
+            double max = GetMaxInspectorWidth();
+            if (InspectorWidth > max) InspectorWidth = max;
+        }
+
         private void UndoClick(object sender, RoutedEventArgs e)
         {
             if (_grid is { } grid && grid.CanUndo()) grid.Undo();
@@ -230,6 +263,7 @@ namespace GeoChemistryNexus.Controls
         {
             base.OnRenderSizeChanged(sizeInfo);
             UpdateLegend();
+            ClampInspectorWidth();
         }
 
         private void UpdateLegend()

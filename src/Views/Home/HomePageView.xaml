@@ -244,11 +244,11 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.25*"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="34,30,16,30" VerticalAlignment="Top">
+                    <StackPanel Grid.Column="0" Margin="34,20,12,14" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal">
                             <Border Style="{StaticResource HomeSlideTagBorderStyle}"
                                     Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -264,7 +264,7 @@
                         <TextBlock Text="{Binding Body}" Style="{StaticResource HomeSlideBodyStyle}"
                                    Visibility="{Binding HasBody, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                        <Button Margin="0,14,0,0"
+                        <Button Margin="0,10,0,0"
                                 Style="{StaticResource HomeSlideActionButtonStyle}"
                                 Content="{Binding ActionLabel}"
                                 Command="{Binding Data.OpenAnnouncementActionCommand, Source={StaticResource VmProxy}}"

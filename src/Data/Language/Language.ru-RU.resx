@@ -174,20 +174,8 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>Сумма тройной диаграммы должна быть равна 1.</value>
   </data>
-  <data name="geo_btn_reset" xml:space="preserve">
-    <value>Сброс</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>Видимость</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Применить</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>Цвет обводки</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>Ширина обводки</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>Автопроверка обновлений</value>
@@ -237,9 +225,6 @@
   <data name="batch_downloading" xml:space="preserve">
     <value>Пакетная загрузка</value>
   </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>Жирный подзаголовок</value>
-  </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>Мастер диаграмм</value>
   </data>
@@ -267,11 +252,8 @@
   <data name="add_link" xml:space="preserve">
     <value>Добавить ссылку</value>
   </data>
-  <data name="pattern" xml:space="preserve">
-    <value>Шаблон</value>
-  </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Повысить до официального</value>
+    <value>Повысить до онлайн-шаблона термобарометра</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Проверка не удалась:</value>
@@ -342,9 +324,6 @@
   <data name="syntax_validation_passed" xml:space="preserve">
     <value>Синтаксис корректен</value>
   </data>
-  <data name="cipw_tooltip_expand" xml:space="preserve">
-    <value>Развернуть / Свернуть</value>
-  </data>
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>Экспортировать результаты расчёта в файл CSV</value>
   </data>
@@ -411,7 +390,7 @@
 • Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
-    <value>Понизить до пользовательского</value>
+    <value>Удалить онлайн-шаблон термобарометра</value>
   </data>
   <data name="geo_ctx_delete" xml:space="preserve">
     <value>Удалить</value>
@@ -422,8 +401,7 @@
 • Апатит (Ap): P₂O₅ + CaO
 • Хромит (Cm): Cr₂O₃ + FeO
 • Ильменит (Ilm): TiO₂ + FeO
-• Титанит (Tn): TiO₂ + CaO + SiO₂
-• Рутил (Ru): остаточный TiO₂</value>
+(Титанит и рутил образуются после анортита; см. шаг для полевых шпатов.)</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>Исходный файл шаблона отсутствует</value>
@@ -436,9 +414,6 @@
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>Изменить геотермобарометр</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Начальные координаты</value>
   </data>
   <data name="official_templates" xml:space="preserve">
     <value>Онлайн-шаблоны диаграмм</value>
@@ -461,11 +436,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>Используйте функцию trace(...) для записи процесса вычислений в сценарии.</value>
   </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>Пользовательское приложение</value>
-  </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>Личные шаблоны диаграмм</value>
+    <value>Мои шаблоны диаграмм</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>Ошибка загрузки шаблона</value>
@@ -484,9 +456,6 @@
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>Неверная формула</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>Цвет подзаголовка</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>Всего минералов</value>
@@ -537,7 +506,7 @@
     <value>Все шаблоны</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>Личные шаблоны диаграмм</value>
+    <value>Мои шаблоны диаграмм</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>Основная информация</value>
@@ -581,17 +550,8 @@
   <data name="logarithmic" xml:space="preserve">
     <value>Логарифмический</value>
   </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>Ширина стрелки</value>
-  </data>
-  <data name="geo_btn_help" xml:space="preserve">
-    <value>Справка</value>
-  </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>Неверный формат имени переменной скрипта:</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Открыть в стороннем ПО</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Вернуться</value>
@@ -604,9 +564,6 @@
   </data>
   <data name="preparing_interface_content_status" xml:space="preserve">
     <value>Страница переключена. Подготавливается содержимое интерфейса...</value>
-  </data>
-  <data name="fill_color" xml:space="preserve">
-    <value>Цвет заливки</value>
   </data>
   <data name="cipw_iron_inconsistent" xml:space="preserve">
     <value>Несогласованный ввод</value>
@@ -632,9 +589,6 @@
   <data name="geo_validate_formula_name_invalid" xml:space="preserve">
     <value>Имя формулы может содержать только буквы, цифры и подчёркивания.</value>
   </data>
-  <data name="border_width" xml:space="preserve">
-    <value>Ширина границы</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>Копировать содержимое</value>
   </data>
@@ -646,9 +600,6 @@
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
     <value>Расчёт завершён: {0}/{1} образцов успешно.</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>Цвет границы</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
     <value>Язык успешно переключен</value>
@@ -695,13 +646,10 @@
     <value>Ошибка: {0}</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Автопроверка обновлений шаблонов</value>
+    <value>Автопроверка обновлений шаблонов диаграмм</value>
   </data>
   <data name="content" xml:space="preserve">
     <value>Содержание</value>
-  </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>Проверка полноты</value>
   </data>
   <data name="line_width" xml:space="preserve">
     <value>Ширина линии</value>
@@ -742,9 +690,6 @@
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>Имя формулы не может быть пустым.</value>
   </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>Курсив подзаголовка</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>Текущий список шаблонов актуален.</value>
   </data>
@@ -782,9 +727,12 @@
 ▶ Насыщенное (SiO₂ израсходован полностью): кварц и фоиды отсутствуют
 ▶ Ненасыщенное (SiO₂ недостаточно): минералы преобразуются в порядке приоритета —
     • Гиперстен (En+Fs) → Оливин (Fo+Fa)
+    • Титанит (Tn) → Перовскит (Pf)
+    • Альбит (Ab) → Нефелин (Ne)
     • Ортоклаз (Or) → Лейцит (Le)
-    • Лейцит (Le) → Кальсилит (Kp)
-    • Альбит (Ab) → Нефелин (Ne)</value>
+    • Волластонит (Wo) → Ларнит (Cs)
+    • Диопсид/геденбергит (Di+Hd) → Ларнит (Cs) + Оливин (Fo+Fa)
+    • Лейцит (Le) → Псевдолейцит (Kp)</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>Столбцы данных не определены</value>
@@ -816,9 +764,6 @@
   <data name="cipw_step5_title" xml:space="preserve">
     <value>Образование полевых шпатов и щелочных силикатов</value>
   </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>Не удалось открыть файл:</value>
-  </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>Ошибка баланса масс (%)</value>
   </data>
@@ -849,14 +794,8 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>Путь к пользовательской программе не задан, настройте в параметрах.</value>
   </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>Показать основные деления</value>
-  </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>Метаалюминиевое</value>
-  </data>
-  <data name="geo_field_required_hint" xml:space="preserve">
-    <value>Обязательные поля отмечены *. База формата x.y следует версии геотермобарометра программы, номер редакции z — версия содержимого шаблона. Формулы сетки задаются на шаге «Данные и скрипт».</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>Неверный формат параметров данных</value>
@@ -945,9 +884,6 @@
   <data name="geo_script_run_test" xml:space="preserve">
     <value>Запустить тест</value>
   </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>Настройки скрипта</value>
-  </data>
   <data name="to" xml:space="preserve">
     <value>До</value>
   </data>
@@ -982,7 +918,7 @@
     <value>Добавьте уровни, чтобы увидеть предпросмотр иерархии категорий.</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>Личные шаблоны геотермобарометров</value>
+    <value>Мои шаблоны геотермобарометров</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Ось Y</value>
@@ -1010,9 +946,6 @@
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Координата Y</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>Конечные координаты</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>Скрипт пуст</value>
@@ -1064,9 +997,6 @@
   </data>
   <data name="range" xml:space="preserve">
     <value>Диапазон</value>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>Стиль</value>
   </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>Литература</value>
@@ -1146,23 +1076,8 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>Данные очищены.</value>
   </data>
-  <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 сек</value>
-  </data>
-  <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 сек</value>
-  </data>
-  <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 сек</value>
-  </data>
-  <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 сек</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Объект успешно удален.</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>Показать метки делений</value>
   </data>
   <data name="cipw_tooltip_help" xml:space="preserve">
     <value>Просмотреть описание алгоритма расчёта нормы CIPW</value>
@@ -1231,9 +1146,6 @@
   <data name="interval" xml:space="preserve">
     <value>Шаг деления</value>
   </data>
-  <data name="font_family" xml:space="preserve">
-    <value>Шрифт</value>
-  </data>
   <data name="vertices" xml:space="preserve">
     <value>Вершины</value>
   </data>
@@ -1242,9 +1154,6 @@
   </data>
   <data name="point_count" xml:space="preserve">
     <value>Количество точек</value>
-  </data>
-  <data name="geo_label_official" xml:space="preserve">
-    <value>Официальный</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>Недавние</value>
@@ -1299,15 +1208,14 @@
 • Ортоклаз (Or): K₂O + Al₂O₃ + 6SiO₂
 • Альбит (Ab): Na₂O + Al₂O₃ + 6SiO₂
 • Анортит (An): CaO + Al₂O₃ + 2SiO₂
+• Титанит (Tn): TiO₂ + CaO + SiO₂ (используется только CaO, оставшийся после анортита)
+• Рутил (Ru): остаточный TiO₂
 • Корунд (Cor): остаточный Al₂O₃ (пералюминиевый случай)
 • Эгирин (Ac): Na₂O + Fe₂O₃ + 4SiO₂ (пералкалический случай)
 • Остаточные щелочные силикаты (ns, ks)</value>
   </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>Курсив (Ctrl+I)</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>Файл справки не найден.</value>
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>Справка</value>
@@ -1341,9 +1249,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>Справа сверху</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>Пакетная загрузка новых неустановленных шаблонов</value>
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>В избранное</value>
@@ -1384,9 +1289,6 @@
   <data name="retry_action" xml:space="preserve">
     <value>Повторить</value>
   </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>Длина стрелки</value>
-  </data>
   <data name="remove_point" xml:space="preserve">
     <value>Удалить вершину</value>
   </data>
@@ -1398,9 +1300,6 @@
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>Выйти из текущего экрана расчёта?</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>Содержание и позиция</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Добавить стрелку (Ctrl+4)</value>
@@ -1420,9 +1319,6 @@
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>По умолчанию 0,15</value>
   </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>Размер шрифта подзаголовка</value>
-  </data>
   <data name="delete_object" xml:space="preserve">
     <value>Удалить объект (Delete)</value>
   </data>
@@ -1434,9 +1330,6 @@
   </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>Пералюминиевое</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>Начальные координаты</value>
   </data>
   <data name="cipw_error" xml:space="preserve">
     <value>Ошибка</value>
@@ -1470,9 +1363,6 @@
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>Нет данных, пожалуйста, добавьте данные</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>Пакетная загрузка</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>Ошибка создания шаблона:</value>
@@ -1635,9 +1525,6 @@
   <data name="formula" xml:space="preserve">
     <value>Формула</value>
   </data>
-  <data name="script_language" xml:space="preserve">
-    <value>Язык скрипта:</value>
-  </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>Нет шаблона или не указан путь. Используйте "Сохранить как".</value>
   </data>
@@ -1673,12 +1560,6 @@
   </data>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>Пакетная загрузка отменена</value>
-  </data>
-  <data name="batch_update_outdated_templates" xml:space="preserve">
-    <value>Пакетное обновление</value>
-  </data>
-  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
-    <value>Пакетное обновление официальных шаблонов с доступными новыми версиями</value>
   </data>
   <data name="batch_update_title" xml:space="preserve">
     <value>Пакетное обновление</value>
@@ -1770,9 +1651,6 @@
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>Неподдерживаемый формат файла</value>
   </data>
-  <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>Пакеты геотермобарометра. Можно перетащить сразу несколько файлов.</value>
-  </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
     <value>Диаграмма</value>
   </data>
@@ -1802,9 +1680,6 @@
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>Образование акцессорных минералов</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>Добавить полигон (Ctrl+3)</value>
@@ -1906,7 +1781,7 @@
     <value>Выход</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_Файл(F)</value>
+    <value>Файл(_F)</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>Данные</value>
@@ -1928,12 +1803,6 @@
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>Текущая версия геотермобарометра приложения</value>
-  </data>
-  <data name="geo_current_template_version" xml:space="preserve">
-    <value>Текущая версия шаблона геотермобарометра</value>
-  </data>
-  <data name="geo_editor_set_version" xml:space="preserve">
-    <value>Задать версию геотермобарометра</value>
   </data>
   <data name="geo_tooltip_version_patch" xml:space="preserve">
     <value>Номер ревизии (z); базовая линия формата (x.y) следует версии приложения</value>
@@ -1983,7 +1852,7 @@
 • Флюорит (Fl): F + CaO
 • Пирит (Py): S + FeO
 • Галит (Hl): Cl + Na₂O
-• Тенардит (Th): SO₃ + Na₂O</value>
+• Мирабилит (Th): SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
     <value>Настройки графика</value>
@@ -2126,9 +1995,6 @@
   <data name="filter_geothermometer_package" xml:space="preserve">
     <value>Пакет геотермобарометра</value>
   </data>
-  <data name="filter_geothermometer_import" xml:space="preserve">
-    <value>Пакеты геотермобарометра</value>
-  </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>Файлы CSV</value>
   </data>
@@ -2171,17 +2037,11 @@
   <data name="cos_credentials_required" xml:space="preserve">
     <value>Сначала настройте и сохраните учётные данные COS.</value>
   </data>
-  <data name="cos_save_settings" xml:space="preserve">
-    <value>Сохранить настройки</value>
-  </data>
   <data name="cos_secret_id_required" xml:space="preserve">
     <value>SecretId обязателен.</value>
   </data>
   <data name="cos_settings_saved" xml:space="preserve">
     <value>Настройки COS сохранены.</value>
-  </data>
-  <data name="cos_test_connection" xml:space="preserve">
-    <value>Проверить подключение</value>
   </data>
   <data name="cos_test_failed" xml:space="preserve">
     <value>Проверка подключения к COS не удалась.</value>
@@ -2206,9 +2066,6 @@
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>Многоязычность</value>
-  </data>
-  <data name="diagram_editor_new_version" xml:space="preserve">
-    <value>Новая версия</value>
   </data>
   <data name="diagram_editor_saved_version" xml:space="preserve">
     <value>Версия после сохранения:</value>
@@ -2239,9 +2096,6 @@
   </data>
   <data name="favorites_empty_hint" xml:space="preserve">
     <value>Избранных шаблонов пока нет. Щёлкните шаблон правой кнопкой мыши, чтобы добавить его.</value>
-  </data>
-  <data name="diagram_hint_no_favorites" xml:space="preserve">
-    <value>Избранных шаблонов диаграмм пока нет.</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
     <value>В этой категории нет онлайн-шаблонов диаграмм.</value>
@@ -2280,7 +2134,19 @@
     <value>Принудительное обновление</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Преобразовать во встроенный шаблон</value>
+    <value>Повысить до онлайн-шаблона диаграммы</value>
+  </data>
+  <data name="demote_to_custom_template" xml:space="preserve">
+    <value>Удалить онлайн-шаблон диаграммы</value>
+  </data>
+  <data name="confirm_demote_diagram_template" xml:space="preserve">
+    <value>Удалить эту диаграмму из официальной библиотеки? Она станет личной и не попадёт в следующий выпуск; личная диаграмма с тем же путём будет заменена.</value>
+  </data>
+  <data name="confirm_demote_geothermometer" xml:space="preserve">
+    <value>Удалить этот геотермобарометр из официальной библиотеки? Он станет пользовательским и не попадёт в следующий выпуск.</value>
+  </data>
+  <data name="template_demote_success" xml:space="preserve">
+    <value>Понижено до личной диаграммы</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>Принудительное обновление</value>
@@ -2366,9 +2232,6 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(пусто)</value>
   </data>
-  <data name="official_publisher_announcement_load" xml:space="preserve">
-    <value>Загрузить с сервера</value>
-  </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>Объявление загружено с сервера.</value>
   </data>
@@ -2384,29 +2247,11 @@
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>Для публикации требуется режим разработчика.</value>
   </data>
-  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
-    <value>Диаграммы: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
-  </data>
-  <data name="official_publisher_diagram_section" xml:space="preserve">
-    <value>Диаграммы</value>
-  </data>
   <data name="official_publisher_export_done" xml:space="preserve">
     <value>Экспорт завершён.</value>
   </data>
-  <data name="official_publisher_export_local" xml:space="preserve">
-    <value>Экспорт локально</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>Экспорт в {0}...</value>
-  </data>
-  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>Геотермобарометры: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
-  </data>
-  <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>Геотермобарометры</value>
-  </data>
-  <data name="official_publisher_home_add_group" xml:space="preserve">
-    <value>Добавить группу</value>
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Редактировать группу</value>
@@ -2414,26 +2259,11 @@
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Черновик ссылок главной страницы сохранён локально.</value>
   </data>
-  <data name="official_publisher_home_links_pending" xml:space="preserve">
-    <value>Ожидает публикации</value>
-  </data>
-  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
-    <value>Группы: {0}, ссылки: {1}, локальный hash: {2}, удалённый hash: {3}.</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>Редактор ссылок главной страницы перезагружен.</value>
   </data>
-  <data name="official_publisher_home_links_section" xml:space="preserve">
-    <value>Ссылки главной страницы</value>
-  </data>
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>Ссылки главной страницы: {0} групп, {1} ссылок, hash={2}.</value>
-  </data>
-  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
-    <value>На сервере уже актуально.</value>
-  </data>
-  <data name="official_publisher_home_save_draft" xml:space="preserve">
-    <value>Сохранить черновик</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Сначала выберите группу.</value>
@@ -2456,29 +2286,14 @@
   <data name="official_publisher_ready" xml:space="preserve">
     <value>Официальный издатель готов.</value>
   </data>
-  <data name="official_publisher_refresh" xml:space="preserve">
-    <value>Обновить предпросмотр</value>
-  </data>
-  <data name="official_publisher_refreshing" xml:space="preserve">
-    <value>Обновление предпросмотра публикации...</value>
-  </data>
   <data name="official_publisher_removed" xml:space="preserve">
     <value>Удалено</value>
-  </data>
-  <data name="official_publisher_staging_dir" xml:space="preserve">
-    <value>Каталог staging</value>
   </data>
   <data name="official_publisher_staging_required" xml:space="preserve">
     <value>Выберите каталог staging.</value>
   </data>
   <data name="official_publisher_start" xml:space="preserve">
     <value>Запуск публикации...</value>
-  </data>
-  <data name="official_publisher_target_required" xml:space="preserve">
-    <value>Выберите хотя бы одну цель публикации.</value>
-  </data>
-  <data name="official_publisher_unchanged" xml:space="preserve">
-    <value>Без изменений</value>
   </data>
   <data name="official_publisher_updated" xml:space="preserve">
     <value>Обновлено</value>
@@ -2684,12 +2499,6 @@
   <data name="shortcut_group_template_title" xml:space="preserve">
     <value>Действия с карточками шаблонов</value>
   </data>
-  <data name="shortcuts_hint" xml:space="preserve">
-    <value>Подсказка: некоторые сочетания работают только когда связанная страница активна или имеет фокус клавиатуры.</value>
-  </data>
-  <data name="shortcuts_intro" xml:space="preserve">
-    <value>На этой странице перечислены сочетания клавиш, поддерживаемые в текущей версии. Только для чтения, редактирование здесь недоступно.</value>
-  </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>Сочетания клавиш</value>
   </data>
@@ -2759,23 +2568,8 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>Текст</value>
   </data>
-  <data name="official_publisher_plot_categories_section" xml:space="preserve">
-    <value>Категории диаграмм</value>
-  </data>
-  <data name="official_publisher_plot_categories_level" xml:space="preserve">
-    <value>Уровень</value>
-  </data>
-  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
-    <value>Черновик категорий диаграмм сохранен локально.</value>
-  </data>
   <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
     <value>Редактор категорий диаграмм перезагружен.</value>
-  </data>
-  <data name="official_publisher_geot_categories_section" xml:space="preserve">
-    <value>Минеральные теги GeoT</value>
-  </data>
-  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
-    <value>Черновик минеральных категорий GeoT сохранен локально.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>Редактор минеральных категорий GeoT перезагружен.</value>
@@ -2852,9 +2646,6 @@
   <data name="geo_editor_readonly_hint" xml:space="preserve">
     <value>Основную информацию, данные и скрипты, а также справочные документы официальных геотермобарометров можно только просматривать и копировать, но не изменять.</value>
   </data>
-  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
-    <value>Данные были изменены. Пожалуйста, обновите диаграмму.</value>
-  </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>Строка {0}: {1}</value>
   </data>
@@ -2922,7 +2713,7 @@
     <value>Нефелин</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>Кальсилит</value>
+    <value>Псевдолейцит</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>Акмит</value>
@@ -2985,7 +2776,7 @@
     <value>Галит</value>
   </data>
   <data name="cipw_mineral_Th" xml:space="preserve">
-    <value>Тенардит</value>
+    <value>Мирабилит</value>
   </data>
   <data name="cipw_mineral_ns" xml:space="preserve">
     <value>Метасиликат натрия</value>
@@ -3007,6 +2798,15 @@
   </data>
   <data name="cipw_warning_mno_to_feo" xml:space="preserve">
     <value>MnO пересчитан в эквивалент FeO по молярному соотношению.</value>
+  </data>
+  <data name="cipw_mineral_Pf" xml:space="preserve">
+    <value>Перовскит</value>
+  </data>
+  <data name="cipw_mineral_Cs" xml:space="preserve">
+    <value>Ларнит</value>
+  </data>
+  <data name="cipw_warning_silica_deficit_residual" xml:space="preserve">
+    <value>Дефицит кремнезёма не удалось полностью устранить стандартной последовательностью десиликации (остаточный дефицит: {0} моль на 100 г). Норма ненадёжна.</value>
   </data>
   <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
     <value>Отрицательное значение оксида {0}: {1}</value>
@@ -3100,11 +2900,6 @@
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>Версия формата шаблона диаграмм, поддерживаемая этим приложением (только чтение)</value>
-
-  </data>
-  <data name="custom_app_hint" xml:space="preserve">
-
-    <value>Путь к исполняемому файлу пользовательского стороннего графического редактора</value>
 
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
@@ -3314,7 +3109,7 @@
   </data>
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
-    <value>Успешно импортировано: {0}</value>
+    <value>Успешно импортировано шаблонов геотермобарометра: {0}</value>
 
   </data>
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
@@ -3415,19 +3210,9 @@
     <value>(пусто)</value>
 
   </data>
-  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
-
-    <value>Формат: 1.2.3. Оставьте пустым, чтобы отключить порог минимальной версии.</value>
-
-  </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>Минимально поддерживаемая версия должна быть допустимой, например 1.2.3.</value>
-
-  </data>
-  <data name="official_publisher_minimum_version_label" xml:space="preserve">
-
-    <value>Минимально поддерживаемая версия</value>
 
   </data>
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
@@ -3448,11 +3233,6 @@
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>Размер отображения карточек шаблонов диаграмм в библиотеке</value>
-
-  </data>
-  <data name="ui_scale_auto" xml:space="preserve">
-
-    <value>Авто</value>
 
   </data>
   <data name="ui_scale_mode" xml:space="preserve">
@@ -3644,9 +3424,6 @@
   <data name="black_body_radiation_calculator_desc" xml:space="preserve">
     <value>Расчёт мощности Стефана–Больцмана, пиковой длины волны Вина и спектра чёрного тела</value>
   </data>
-  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
-    <value>Введите температуру (K), чтобы рассчитать полную мощность излучения, пиковую длину волны и нормализованную спектральную кривую.</value>
-  </data>
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>Температура</value>
   </data>
@@ -3740,9 +3517,6 @@
   <data name="periodic_table_field_abundance" xml:space="preserve">
     <value>Распространённость в коре</value>
   </data>
-  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
-    <value>Класс Гольдшмидта</value>
-  </data>
   <data name="periodic_table_field_geochem_class" xml:space="preserve">
     <value>Геохимический класс</value>
   </data>
@@ -3815,39 +3589,6 @@
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>Атмофильные</value>
   </data>
-  <data name="official_publisher_section_targets" xml:space="preserve">
-    <value>Цели публикации</value>
-  </data>
-  <data name="official_publisher_section_announcement" xml:space="preserve">
-    <value>Объявления и версии</value>
-  </data>
-  <data name="official_publisher_include_this" xml:space="preserve">
-    <value>Включить в текущую публикацию</value>
-  </data>
-  <data name="official_publisher_targets_hint" xml:space="preserve">
-    <value>Одни и те же файлы загружаются на каждый включенный сервер по порядку в списке. Новый публичный URL станет доступен пользователям напрямую только после добавления во встроенный список клиента и выпуска обновления. URL, сохраненные только здесь, обнаруживаются после обращения к любому существующему серверу.</value>
-  </data>
-  <data name="official_publisher_add_target" xml:space="preserve">
-    <value>Добавить сервер</value>
-  </data>
-  <data name="official_publisher_move_up" xml:space="preserve">
-    <value>Вверх</value>
-  </data>
-  <data name="official_publisher_move_down" xml:space="preserve">
-    <value>Вниз</value>
-  </data>
-  <data name="official_publisher_target_name" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="official_publisher_public_base_url" xml:space="preserve">
-    <value>Публичный базовый URL</value>
-  </data>
-  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
-    <value>Пример: https://bucket.cos.region.myqcloud.com без косой черты на конце</value>
-  </data>
-  <data name="official_publisher_enabled" xml:space="preserve">
-    <value>Включено</value>
-  </data>
   <data name="official_publisher_no_target" xml:space="preserve">
     <value>Сначала добавьте сервер.</value>
   </data>
@@ -3859,9 +3600,6 @@
   </data>
   <data name="official_publisher_no_enabled_target" xml:space="preserve">
     <value>Нет включенных серверов с полными учетными данными.</value>
-  </data>
-  <data name="official_publisher_confirm_targets" xml:space="preserve">
-    <value>Опубликовать это содержимое на {0} включенных серверах?</value>
   </data>
   <data name="official_publisher_progress_server" xml:space="preserve">
     <value>Загрузка на {0} ({1}/{2})</value>
@@ -3878,23 +3616,11 @@
   <data name="official_publisher_upload_all_ok" xml:space="preserve">
     <value>Опубликовано на всех включенных серверах.</value>
   </data>
-  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
-    <value>Включенные серверы</value>
-  </data>
   <data name="official_publisher_default_target_name" xml:space="preserve">
     <value>Гонконг</value>
   </data>
   <data name="official_publisher_new_target_name" xml:space="preserve">
     <value>Новый сервер</value>
-  </data>
-  <data name="official_publisher_publish_targets" xml:space="preserve">
-    <value>Опубликовать на включенных серверах</value>
-  </data>
-  <data name="official_publisher_latest_version_label" xml:space="preserve">
-    <value>Последняя версия</value>
-  </data>
-  <data name="official_publisher_latest_version_hint" xml:space="preserve">
-    <value>Записывается в latest_app_version файла server_info.json</value>
   </data>
   <data name="official_publisher_latest_version_pending" xml:space="preserve">
     <value>Последняя версия ожидает публикации</value>
@@ -3908,27 +3634,6 @@
   <data name="official_publisher_latest_version_preview" xml:space="preserve">
     <value>Последняя версия: {0}</value>
   </data>
-  <data name="official_publisher_legacy_announcement" xml:space="preserve">
-    <value>Устаревшее текстовое объявление</value>
-  </data>
-  <data name="official_publisher_legacy_announcement_hint" xml:space="preserve">
-    <value>Читается только старыми версиями приложения (поле announcement в server_info.json). Текущая главная страница показывает его лишь как запасной вариант, когда каталог объявлений пуст.</value>
-  </data>
-  <data name="official_publisher_version_info" xml:space="preserve">
-    <value>Информация о версии</value>
-  </data>
-  <data name="official_publisher_announcements_catalog" xml:space="preserve">
-    <value>Каталог объявлений (многоязычный)</value>
-  </data>
-  <data name="official_publisher_announcement_add" xml:space="preserve">
-    <value>Добавить объявление</value>
-  </data>
-  <data name="official_publisher_announcement_import" xml:space="preserve">
-    <value>Импорт</value>
-  </data>
-  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
-    <value>Импортировать JSON-файл каталога объявлений и заменить текущее содержимое редактора.</value>
-  </data>
   <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
     <value>Этот файл не является корректным каталогом объявлений. Он должен быть объектом JSON с массивом announcements.</value>
   </data>
@@ -3938,77 +3643,8 @@
   <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
     <value>Импортирован каталог объявлений: {0} записей.</value>
   </data>
-  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
-    <value>Если этот раздел включен, Announcements.json и server_info.json загружаются вместе.</value>
-  </data>
-  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>Перезагрузить каталог объявлений с сервера (неопубликованные правки будут сброшены).</value>
-  </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
     <value>Каталог объявлений: {0} записей. Удаленный хэш: {1}.</value>
-  </data>
-  <data name="official_publisher_plot_categories_note" xml:space="preserve">
-    <value>Категории публикуются вместе с индексом диаграмм. При изменении категорий индекс диаграмм включается, даже если диаграммы не выбраны.</value>
-  </data>
-  <data name="official_publisher_geot_categories_note" xml:space="preserve">
-    <value>Минеральные категории публикуются вместе с индексом геотермобарометров. При изменении этот индекс включается, даже если геотермобарометры не выбраны.</value>
-  </data>
-  <data name="official_publisher_ann_id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="official_publisher_ann_theme" xml:space="preserve">
-    <value>Тема</value>
-  </data>
-  <data name="official_publisher_ann_date" xml:space="preserve">
-    <value>Дата отображения</value>
-  </data>
-  <data name="official_publisher_ann_priority" xml:space="preserve">
-    <value>Приоритет</value>
-  </data>
-  <data name="official_publisher_ann_start" xml:space="preserve">
-    <value>Дата начала</value>
-  </data>
-  <data name="official_publisher_ann_end" xml:space="preserve">
-    <value>Дата окончания</value>
-  </data>
-  <data name="official_publisher_ann_tag" xml:space="preserve">
-    <value>Верхняя метка</value>
-  </data>
-  <data name="official_publisher_ann_title" xml:space="preserve">
-    <value>Заголовок *</value>
-  </data>
-  <data name="official_publisher_ann_body" xml:space="preserve">
-    <value>Текст</value>
-  </data>
-  <data name="official_publisher_ann_action" xml:space="preserve">
-    <value>Текст кнопки</value>
-  </data>
-  <data name="official_publisher_ann_action_url" xml:space="preserve">
-    <value>Ссылка кнопки</value>
-  </data>
-  <data name="official_publisher_ann_background" xml:space="preserve">
-    <value>Фон</value>
-  </data>
-  <data name="official_publisher_ann_background_hint" xml:space="preserve">
-    <value>По умолчанию — светлый градиент, при пустом цвете следующий цвету темы приложения, с фирменной графикой. Пользовательский заполняет карточку изображением по URL, текст белый.</value>
-  </data>
-  <data name="official_publisher_ann_color" xml:space="preserve">
-    <value>Цвет</value>
-  </data>
-  <data name="official_publisher_ann_polygon" xml:space="preserve">
-    <value>Форма фигуры</value>
-  </data>
-  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
-    <value>Показывать декоративные многоугольники</value>
-  </data>
-  <data name="official_publisher_ann_image_url" xml:space="preserve">
-    <value>URL изображения</value>
-  </data>
-  <data name="official_publisher_background_default" xml:space="preserve">
-    <value>Сплошной цвет</value>
-  </data>
-  <data name="official_publisher_background_image" xml:space="preserve">
-    <value>Пользовательское изображение</value>
   </data>
   <data name="developer_settings" xml:space="preserve">
     <value>Параметры разработчика</value>
@@ -4272,7 +3908,7 @@
     <value>Гематит</value>
   </data>
   <data name="niggli_mineral_Hy" xml:space="preserve">
-    <value>Гиперстен</value>
+    <value>Ортопироксен</value>
   </data>
   <data name="niggli_mineral_Il" xml:space="preserve">
     <value>Ильменит</value>
@@ -4401,10 +4037,10 @@
     <value>Весовой процент каждого оксида валовой породы делят на молекулярную массу и умножают на число катионов в формуле, получая милликатионы. Сумму всех катионов нормируют к 100 % как основу дальнейших расчётов. Если FeO и Fe2O3 не измерены, FeOT можно разделить по настраиваемому отношению Fe³⁺/Fe (по умолчанию 0.15).</value>
   </data>
   <data name="niggli_step1_hy_ol_done" xml:space="preserve">
-    <value>Десилификация Шаг 1: Гиперстен -&gt; Оливин (Hy → Ol), израсходовано {0}% Hy, дефицит кремния полностью устранен</value>
+    <value>Десилификация Шаг 1: Ортопироксен -&gt; Оливин (Hy → Ol), израсходовано {0}% Hy, дефицит кремния полностью устранен</value>
   </data>
   <data name="niggli_step1_hy_ol_part" xml:space="preserve">
-    <value>Десилификация Шаг 1: Гиперстен -&gt; Оливин (Hy → Ol), весь Hy ({0}%) превращен в Ol, остаточный дефицит D = {1}%</value>
+    <value>Десилификация Шаг 1: Ортопироксен -&gt; Оливин (Hy → Ol), весь Hy ({0}%) превращен в Ol, остаточный дефицит D = {1}%</value>
   </data>
   <data name="niggli_step1_title" xml:space="preserve">
     <value>Милликатионы и 100% нормализация</value>
@@ -4446,7 +4082,7 @@
     <value>Щелочные полевые шпаты, анортит и перещёлочные минералы</value>
   </data>
   <data name="niggli_step5_detail" xml:space="preserve">
-    <value>Fe³⁺ с Fe²⁺ образует магнетит (Mt), избыток Fe³⁺ — гематит (Hm). Ca, Mg и Fe²⁺ образуют волластонит (Wo), энстатит (En) и ферросилит (Fs). En и Fs составляют гиперстен (Hy). Wo и Hy в эквимолярном отношении образуют диопсид (Di).</value>
+    <value>Fe³⁺ с Fe²⁺ образует магнетит (Mt), избыток Fe³⁺ — гематит (Hm). Ca, Mg и Fe²⁺ образуют волластонит (Wo), энстатит (En) и ферросилит (Fs). En и Fs составляют ортопироксен (Hy). Wo и Hy в эквимолярном отношении образуют диопсид (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
     <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), израсходовано {0}% Lc, дефицит кремния полностью устранен</value>
@@ -4455,7 +4091,7 @@
     <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), весь Lc превращен, остаточный дефицит D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
-    <value>Оксиды железа и пироксены</value>
+    <value>Распределение оксидов железа и пироксенов</value>
   </data>
   <data name="niggli_step6_detail" xml:space="preserve">
     <value>Если остаток Si &gt;= 0, образуется кварц (Q). Если Si &lt; 0, дефицит кремнезёма D = -Si и десиликация идёт в порядке термодинамической устойчивости:
@@ -4502,9 +4138,6 @@
   </data>
   <data name="niggli_tooltip_example" xml:space="preserve">
     <value>Заполнить примерные данные (гранит, базальт, фонолит)</value>
-  </data>
-  <data name="niggli_tooltip_expand" xml:space="preserve">
-    <value>Развернуть/свернуть панель деталей расчёта</value>
   </data>
   <data name="niggli_tooltip_export" xml:space="preserve">
     <value>Экспортировать результаты расчёта в CSV</value>
@@ -4580,9 +4213,6 @@
   </data>
   <data name="geoscience_unit_converter_desc" xml:space="preserve">
     <value>Интерактивная панель пересчета содержаний, давления, микрошкалы, температуры и возраста</value>
-  </data>
-  <data name="geoscience_unit_conv_hint" xml:space="preserve">
-    <value>Выберите категорию, введите значение и исходную единицу — все величины пересчитываются синхронно. Нажмите на строку для копирования или смены базы.</value>
   </data>
   <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
     <value>Содержание / Концентрация</value>
@@ -4732,7 +4362,7 @@
     <value>Градус Цельсия (℃)</value>
   </data>
   <data name="geo_u_celsius_desc" xml:space="preserve">
-    <value>Геотермический градиент и общепринятая температура</value>
+    <value>Основная единица температуры и геотермического градиента в науках о Земле</value>
   </data>
   <data name="geo_u_kelvin_name" xml:space="preserve">
     <value>Кельвин (K)</value>
@@ -4899,17 +4529,11 @@
   <data name="epma_cancelled" xml:space="preserve">
     <value>Расчёт отменён.</value>
   </data>
-  <data name="epma_choose" xml:space="preserve">
-    <value>Выбрать…</value>
-  </data>
   <data name="epma_clear" xml:space="preserve">
     <value>Очистить</value>
   </data>
   <data name="epma_csv_formula_warning" xml:space="preserve">
     <value>Текстовых ячеек с префиксом формулы таблицы: {0}. Рекомендуется экспорт в XLSX. Исходный текст не изменяется.</value>
-  </data>
-  <data name="epma_decimals" xml:space="preserve">
-    <value>Отображаемые знаки после запятой</value>
   </data>
   <data name="epma_details" xml:space="preserve">
     <value>Подробности диагностики</value>
@@ -4917,23 +4541,8 @@
   <data name="epma_export" xml:space="preserve">
     <value>Экспорт результатов</value>
   </data>
-  <data name="epma_fields" xml:space="preserve">
-    <value>Описание полей</value>
-  </data>
   <data name="epma_file_unsupported" xml:space="preserve">
     <value>Используйте CSV или XLSX.</value>
-  </data>
-  <data name="epma_numeric_DecimalComma" xml:space="preserve">
-    <value>Десятичная запятая</value>
-  </data>
-  <data name="epma_numeric_DecimalPoint" xml:space="preserve">
-    <value>Десятичная точка</value>
-  </data>
-  <data name="epma_numeric_format" xml:space="preserve">
-    <value>Формат вводимых чисел</value>
-  </data>
-  <data name="epma_provenance" xml:space="preserve">
-    <value>Происхождение расчёта</value>
   </data>
   <data name="epma_stale" xml:space="preserve">
     <value>Срок истёк, выполните расчёт снова</value>
@@ -4944,20 +4553,8 @@
   <data name="epma_column_Actual" xml:space="preserve">
     <value>Фактическое значение</value>
   </data>
-  <data name="epma_column_Code" xml:space="preserve">
-    <value>Код</value>
-  </data>
   <data name="epma_column_Expectation" xml:space="preserve">
     <value>Ожидаемое значение</value>
-  </data>
-  <data name="epma_column_Level" xml:space="preserve">
-    <value>Уровень</value>
-  </data>
-  <data name="epma_column_Message" xml:space="preserve">
-    <value>Сообщение</value>
-  </data>
-  <data name="epma_column_Source" xml:space="preserve">
-    <value>Источник</value>
   </data>
   <data name="epma_column_Target" xml:space="preserve">
     <value>Объект</value>
@@ -4968,15 +4565,13 @@
 
   <data name="epma_library_description" xml:space="preserve"><value>Выберите шаблон и откройте его для настройки параметров и расчёта.</value></data>
   <data name="epma_library_import" xml:space="preserve"><value>Импорт минерального расчёта EPMA</value></data>
-  <data name="epma_library_refresh" xml:space="preserve"><value>Обновить библиотеку</value></data>
   <data name="epma_library_enter" xml:space="preserve"><value>Открыть расчёт</value></data>
   <data name="epma_library_failed" xml:space="preserve"><value>Не удалось загрузить пакет:</value></data>
   <data name="epma_library_imported" xml:space="preserve"><value>Импортировано: {0}</value></data>
   <data name="epma_example_data" xml:space="preserve"><value>Пример</value></data>
   <data name="epma_examples_loaded" xml:space="preserve"><value>Загружены все строки примера: {0}.</value></data>
   <data name="epma_qc_not_calculated" xml:space="preserve"><value>Расчёт ещё не выполнен. Заполните данные и нажмите «Рассчитать».</value></data>
-  <data name="epma_qc_skipped_row" xml:space="preserve"><value>Расчёт этой строки не выполнен или строка пропущена. Смотрите диагностику ниже.</value></data>
-  <data name="epma_process_record" xml:space="preserve"><value>Запись хода расчёта</value></data>
+  <data name="epma_qc_skipped_row" xml:space="preserve"><value>Расчёт этой строки не выполнен или строка пропущена.</value></data>
   <data name="epma_library_search" xml:space="preserve"><value>Поиск по названию шаблона, минералу, ключевому слову…</value></data>
 <data name="epma_library_no_matches" xml:space="preserve"><value>Подходящие шаблоны не найдены.</value></data>
   <data name="epma_library_tags" xml:space="preserve"><value>Метки</value></data>
@@ -4985,7 +4580,6 @@
   <data name="epma_library_current_version" xml:space="preserve"><value>Текущая версия</value></data>
   <data name="epma_library_update_date" xml:space="preserve"><value>Дата обновления</value></data>
   <data name="epma_library_author" xml:space="preserve"><value>Автор</value></data>
-  <data name="epma_fixed_package_columns" xml:space="preserve"><value>Столбцы ввода заданы пакетом расчёта. Заполните имеющиеся данные, отсутствующие оставьте пустыми. Пустое значение, ноль и значение ниже предела обнаружения записываются отдельно.</value></data>
 
   <data name="epma_package_replace_confirm" xml:space="preserve"><value>Пакет с ID {0} уже существует.
 Установлен: {1} (v{2})
@@ -4993,15 +4587,6 @@
 Заменить установленный пакет? Разные методы должны иметь разные ID.</value></data>
   <data name="epma_package_replace" xml:space="preserve"><value>Заменить пакет</value></data>
   <data name="epma_column_InputRow" xml:space="preserve"><value>Строка ввода</value></data>
-  <data name="epma_column_Sample" xml:space="preserve"><value>Имя образца</value></data>
-  <data name="epma_column_Stale" xml:space="preserve"><value>Старый результат</value></data>
-  <data name="epma_result_unavailable" xml:space="preserve"><value>Невозможно рассчитать {0}: {1}</value></data>
-  <data name="epma_qc_dataset_summary" xml:space="preserve"><value>Всего строк: {0}. Диагностик: {1}, затронуто строк: {2}. Ошибок: {3}, предупреждений: {4}, сообщений: {5}. Недействительные результаты: {6} строк.</value></data>
-  <data name="epma_group_iron" xml:space="preserve"><value>Обработка железа</value></data>
-  <data name="epma_group_normalization" xml:space="preserve"><value>Нормализация</value></data>
-  <data name="epma_group_input_display" xml:space="preserve"><value>Ввод и отображение</value></data>
-  <data name="epma_group_other" xml:space="preserve"><value>Другие параметры расчёта</value></data>
-  <data name="epma_template_rules_hint" xml:space="preserve"><value>Правила расчёта определяются текущим шаблоном.</value></data>
   <data name="epma_worksheet" xml:space="preserve"><value>Таблица данных</value></data>
   <data name="epma_input_editable" xml:space="preserve"><value>Входные данные (редактируемые)</value></data>
   <data name="epma_output_readonly" xml:space="preserve"><value>Результаты (только чтение)</value></data>
@@ -5011,8 +4596,6 @@
   <data name="epma_errors" xml:space="preserve"><value>Ошибки</value></data>
   <data name="epma_warnings" xml:space="preserve"><value>Предупреждения</value></data>
   <data name="epma_information" xml:space="preserve"><value>Информация</value></data>
-  <data name="epma_collapse_settings" xml:space="preserve"><value>Свернуть настройки</value></data>
-  <data name="epma_expand_settings" xml:space="preserve"><value>Развернуть настройки</value></data>
   <data name="epma_cell_content" xml:space="preserve"><value>Содержимое выбранной ячейки</value></data>
   <data name="epma_reset_worksheet_layout" xml:space="preserve"><value>Восстановить стандартную высоту строк и ширину столбцов</value></data>
   <data name="epma_editor_workflow" xml:space="preserve"><value>Этапы работы</value></data>
@@ -5038,11 +4621,6 @@
   <data name="epma_editor_strike" xml:space="preserve"><value>Зачёркнутый</value></data>
   <data name="epma_editor_bullets" xml:space="preserve"><value>Маркированный список</value></data>
   <data name="epma_editor_numbering" xml:space="preserve"><value>Нумерованный список</value></data>
-  <data name="epma_editor_link" xml:space="preserve"><value>Ссылка</value></data>
-  <data name="epma_editor_clear_format" xml:space="preserve"><value>Очистить форматирование</value></data>
-  <data name="epma_editor_insert_link" xml:space="preserve"><value>Вставить ссылку</value></data>
-  <data name="epma_editor_link_invalid" xml:space="preserve"><value>Введите допустимый адрес HTTP, HTTPS или mailto.</value></data>
-  <data name="epma_editor_link_selection" xml:space="preserve"><value>Выберите текст внутри одного абзаца.</value></data>
   <data name="epma_editor_save_action" xml:space="preserve"><value>Сохранить</value></data>
   <data name="epma_editor_edit_localization" xml:space="preserve"><value>Редактировать переводы</value></data>
   <data name="epma_editor_search_tags" xml:space="preserve"><value>Теги</value></data>
@@ -5240,7 +4818,6 @@
   <data name="home_search_placeholder" xml:space="preserve"><value>Поиск сайтов, например GEOROC, минерал...</value></data>
   <data name="home_search_no_results" xml:space="preserve"><value>Нет подходящих ссылок.</value></data>
   <data name="home_links_all_groups_hint" xml:space="preserve"><value>Идёт поиск по всем группам</value></data>
-  <data name="geo_loc_row_reference" xml:space="preserve"><value>Литература</value></data>
   <data name="geo_validate_inputs_required" xml:space="preserve"><value>Добавьте хотя бы один входной столбец.</value></data>
   <data name="epma_setting" xml:space="preserve"><value>Настройки EPMA</value></data>
   <data name="epma_current_app_format_version" xml:space="preserve"><value>Версия расчётного пакета EPMA этой программы</value></data>
@@ -5290,64 +4867,34 @@
   <data name="epma_help_no_doc" xml:space="preserve"><value>У этого расчётного шаблона пока нет пояснения.</value></data>
   <data name="epma_editor_localization_title" xml:space="preserve"><value>Языки шаблона</value></data>
   <data name="epma_loc_row_name" xml:space="preserve"><value>Название</value></data>
-  <data name="epma_loc_row_description" xml:space="preserve"><value>Описание</value></data>
   <data name="epma_loc_row_tag" xml:space="preserve"><value>Метка {0}</value></data>
+  <data name="epma_loc_row_group" xml:space="preserve"><value>Группа {0}</value></data>
   <data name="epma_library_edit" xml:space="preserve"><value>Править</value></data>
   <data name="epma_library_delete" xml:space="preserve"><value>Удалить</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Экспорт</value></data>
-  <data name="epma_library_promote" xml:space="preserve"><value>Сделать официальным расчётным шаблоном</value></data>
-  <data name="epma_library_remove_official" xml:space="preserve"><value>Убрать официальный расчётный шаблон</value></data>
-  <data name="epma_library_not_implemented" xml:space="preserve"><value>Эта функция ещё не реализована.</value></data>
+  <data name="epma_library_promote" xml:space="preserve">
+    <value>Повысить до онлайн-шаблона расчёта</value>
+  </data>
+  <data name="epma_library_remove_official" xml:space="preserve">
+    <value>Удалить онлайн-шаблон расчёта</value>
+  </data>
   <data name="epma_library_delete_confirm" xml:space="preserve"><value>Удалить «{0}»? Этот личный расчётный шаблон будет удалён из локальной библиотеки.</value></data>
   <data name="epma_library_official_delete_denied" xml:space="preserve"><value>Так можно удалять только личные расчётные шаблоны.</value></data>
   <data name="epma_library_changed" xml:space="preserve"><value>Шаблон изменён или удалён. Обновите библиотеку и откройте его снова.</value></data>
-  <data name="epma_library_export_outside" xml:space="preserve"><value>Экспортируйте за пределы папки установки библиотеки расчётов, чтобы не перезаписать существующий шаблон.</value></data>
   <data name="epma_library_updated" xml:space="preserve"><value>Сохранено «{0}». Снова войдите в расчёт, чтобы использовать обновлённый шаблон.</value></data>
   <data name="epma_library_deleted" xml:space="preserve"><value>Удалено «{0}».</value></data>
   <data name="epma_library_exported" xml:space="preserve"><value>Экспортировано «{0}».</value></data>
-  <data name="epma_json_select_group" xml:space="preserve"><value>Сначала выберите группу, в которую нужно добавить запись.</value></data>
-  <data name="epma_json_duplicate" xml:space="preserve"><value>Повторяющееся поле: {0}</value></data>
-  <data name="epma_json_unknown_field" xml:space="preserve"><value>Неподдерживаемое поле: {0}</value></data>
-  <data name="epma_json_item" xml:space="preserve"><value>Элемент {0}</value></data>
-  <data name="epma_json_count" xml:space="preserve"><value>{0} шт</value></data>
-  <data name="epma_json_invalid_boolean" xml:space="preserve"><value>Выберите да или нет.</value></data>
-  <data name="epma_json_invalid_number" xml:space="preserve"><value>Введите конечное число. Десятичный разделитель — точка.</value></data>
-  <data name="epma_json_kind_string" xml:space="preserve"><value>Текст</value></data>
-  <data name="epma_json_kind_number" xml:space="preserve"><value>Число</value></data>
-  <data name="epma_json_kind_boolean" xml:space="preserve"><value>Да / Нет</value></data>
-  <data name="epma_json_kind_object" xml:space="preserve"><value>Группа</value></data>
-  <data name="epma_json_kind_array" xml:space="preserve"><value>Список</value></data>
-  <data name="epma_json_kind_null" xml:space="preserve"><value>Не задано</value></data>
-  <data name="epma_json_value_number" xml:space="preserve"><value>Число</value></data>
-  <data name="epma_json_value_text" xml:space="preserve"><value>Текст</value></data>
-  <data name="epma_json_value_true" xml:space="preserve"><value>Да</value></data>
-  <data name="epma_json_value_false" xml:space="preserve"><value>Нет</value></data>
   <data name="epma_json_field_inputs" xml:space="preserve"><value>Входные столбцы</value></data>
   <data name="epma_json_field_outputs" xml:space="preserve"><value>Выходные столбцы</value></data>
-  <data name="epma_json_field_parameters" xml:space="preserve"><value>Параметры расчёта</value></data>
-  <data name="epma_json_field_id" xml:space="preserve"><value>Идентификатор</value></data>
-  <data name="epma_json_field_type" xml:space="preserve"><value>Тип поля</value></data>
   <data name="epma_json_field_unit" xml:space="preserve"><value>Единица</value></data>
-  <data name="epma_json_field_when" xml:space="preserve"><value>Условие показа</value></data>
-  <data name="epma_json_field_label" xml:space="preserve"><value>Отображаемое имя</value></data>
-  <data name="epma_json_field_description" xml:space="preserve"><value>Описание</value></data>
+  <data name="epma_json_field_group" xml:space="preserve"><value>Группа</value></data>
   <data name="epma_json_field_examples" xml:space="preserve"><value>Примерные данные</value></data>
   <data name="epma_json_field_resource" xml:space="preserve"><value>Данные ресурса</value></data>
-  <data name="epma_json_field_rows" xml:space="preserve"><value>Строки данных</value></data>
-  <data name="epma_json_field_definitions" xml:space="preserve"><value>Вход и выход</value></data>
-  <data name="epma_json_field_settings" xml:space="preserve"><value>Переопределение параметров</value></data>
-  <data name="epma_json_add_item" xml:space="preserve"><value>Добавить запись</value></data>
-  <data name="epma_json_add_field" xml:space="preserve"><value>Добавить поле</value></data>
   <data name="epma_editor_file_calculation" xml:space="preserve"><value>Скрипт расчёта</value></data>
   <data name="epma_editor_file_common" xml:space="preserve"><value>Общий скрипт</value></data>
   <data name="epma_editor_file_chemistry_script" xml:space="preserve"><value>Вспомогательный химический скрипт</value></data>
   <data name="epma_editor_file_helper" xml:space="preserve"><value>Вспомогательный скрипт</value></data>
   <data name="epma_form_example" xml:space="preserve"><value>Примерное значение</value></data>
-  <data name="epma_iron_invalid" xml:space="preserve"><value>Неверные настройки железа: выберите допустимые неповторяющиеся формы отчёта. Fe³⁺/ΣFe должно быть от 0 до 1.</value></data>
-  <data name="epma_iron_default_required" xml:space="preserve"><value>Выберите хотя бы одну форму отчёта. Для валового железа также выберите уже включённый способ обработки по умолчанию.</value></data>
-  <data name="epma_iron_literal_required" xml:space="preserve"><value>Для визуального редактирования getIronOptions() должен напрямую вернуть обычный объект JSON.</value></data>
-  <data name="epma_iron_settings_array_required" xml:space="preserve"><value>Чтобы добавить настройки железа, getSettings() должен напрямую вернуть массив. Исходный скрипт не изменялся.</value></data>
-  <data name="epma_iron_required" xml:space="preserve"><value>Этот алгоритм зависит от настроек железа. Сначала измените скрипт расчёта, чтобы их отключить.</value></data>
   <data name="epma_editor_add_column" xml:space="preserve"><value>Добавить столбец</value></data>
   <data name="epma_editor_remove_column" xml:space="preserve"><value>Удалить столбец</value></data>
   <data name="epma_editor_column_placeholder" xml:space="preserve"><value>Введите имя столбца</value></data>
@@ -5384,7 +4931,6 @@
   <data name="epma_update_overwrite_all_confirm" xml:space="preserve"><value>Загрузить или обновить шаблонов: {0}? Существующие будут заменены официальной версией, включая локальные правки.</value></data>
   <data name="epma_status_not_downloaded" xml:space="preserve"><value>Не загружен</value></data>
   <data name="epma_status_update_available" xml:space="preserve"><value>Есть обновление</value></data>
-  <data name="epma_status_requires_upgrade" xml:space="preserve"><value>Нужно обновить программу</value></data>
   <data name="status_requires_app_upgrade" xml:space="preserve"><value>Нужно обновить программу</value></data>
   <data name="status_update_requires_app_upgrade" xml:space="preserve"><value>Есть обновление, нужно обновить программу</value></data>
   <data name="status_requires_app_upgrade_hint" xml:space="preserve"><value>Для загрузки и использования этого шаблона нужна более новая версия программы.</value></data>
@@ -5399,9 +4945,6 @@
   <data name="epma_reset_database_hint" xml:space="preserve"><value>Очистить локальную базу расчётных шаблонов EPMA и восстановить встроенные официальные шаблоны</value></data>
   <data name="epma_confirm_reset_database" xml:space="preserve"><value>Очистить локальную базу расчётных шаблонов EPMA? Личные и загруженные официальные шаблоны будут удалены. Это нельзя отменить.</value></data>
   <data name="epma_database_cleared" xml:space="preserve"><value>Локальная база расчётных шаблонов EPMA сброшена.</value></data>
-  <data name="official_publisher_epma_section" xml:space="preserve"><value>Расчётные шаблоны EPMA</value></data>
-  <data name="official_publisher_epma_hint" xml:space="preserve"><value>Публикует установленные официальные расчётные шаблоны EPMA (.epma.zip). Сделайте личный шаблон официальным в библиотеке EPMA, чтобы опубликовать его здесь.</value></data>
-  <data name="official_publisher_epma_preview_summary" xml:space="preserve"><value>Расчётные шаблоны EPMA: новых {0}, обновлённых {1}, удалённых {2}, без изменений {3}.</value></data>
   <data name="official_publisher_progress_exporting_epma" xml:space="preserve"><value>Экспорт расчётных шаблонов EPMA...</value></data>
   <data name="shortcuts_subtitle" xml:space="preserve">
     <value>Сочетания клавиш, поддерживаемые в этой версии. Некоторые работают только когда связанная страница активна или имеет фокус.</value>
@@ -5456,7 +4999,6 @@
   <data name="axis_tab_ticks" xml:space="preserve"><value>Деления</value></data>
   <data name="tick_alignment" xml:space="preserve"><value>Выравнивание делений</value></data>
   <data name="tick_align_strict" xml:space="preserve"><value>Строго</value></data>
-  <data name="axis_tab_labels" xml:space="preserve"><value>Подписи</value></data>
   <data name="insp_more_colors" xml:space="preserve"><value>Другие цвета</value></data>
   <data name="insp_eyedropper" xml:space="preserve"><value>Взять цвет с экрана</value></data>
   <data name="insp_endpoints" xml:space="preserve"><value>Концы</value></data>
@@ -5505,16 +5047,11 @@
   <data name="add_mode_polygon_ready" xml:space="preserve"><value>Добавить полигон · Левый щелчок добавляет точки, правый завершает и продолжает</value></data>
   <data name="add_mode_text" xml:space="preserve"><value>Добавить текст · Щёлкните на рисунке, чтобы разместить. Можно добавлять дальше · Правый щелчок — выход</value></data>
   <data name="axis_line" xml:space="preserve"><value>Линия оси</value></data>
-  <data name="axis_line_hint" xml:space="preserve"><value>Рамка этой оси. Низ — горизонталь; левая, правая и верхняя — вертикали.</value></data>
-  <data name="ternary_axis_line_hint" xml:space="preserve"><value>Выбранная сторона треугольника.</value></data>
   <data name="tick_step" xml:space="preserve"><value>Шаг</value></data>
   <data name="tick_value" xml:space="preserve"><value>Значения</value></data>
   <data name="tick_fraction" xml:space="preserve"><value>Доля 0–1</value></data>
   <data name="tick_percent" xml:space="preserve"><value>Проценты 0–100</value></data>
-  <data name="tick_step_hint" xml:space="preserve"><value>Шаг — интервал вдоль этой стороны. 0,1 даёт 0, 0,1, 0,2…1; 10 в процентах даёт 0, 10, 20…100.</value></data>
   <data name="label_spacing" xml:space="preserve"><value>Отступ подписи</value></data>
-  <data name="label_spacing_hint" xml:space="preserve"><value>Насколько числа делений отстоят от этой стороны.</value></data>
-  <data name="ternary_subtitle_hint" xml:space="preserve"><value>Шрифт берётся у заголовка. Подписи треугольника стоят у каждой стороны, поэтому у подзаголовка свой сдвиг.</value></data>
   <data name="open_file_location" xml:space="preserve"><value>Открыть расположение файла</value></data>
   <data name="open_file_location_failed" xml:space="preserve"><value>Не удалось открыть расположение файла.</value></data>
   <data name="grid_direction" xml:space="preserve">
@@ -5560,4 +5097,27 @@
   <data name="harker_missing_x_column" xml:space="preserve"><value>В таблице нет столбца переменной X: {0}</value></data>
   <data name="harker_export_format" xml:space="preserve"><value>Этот формат экспорта не поддерживается для диаграмм Харкера. Используйте png, jpg, bmp или webp.</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker: WpfPlot1.Plot не совпадает с первой панелью. Экспорт и мышь могут работать иначе.</value></data>
+  <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
+    <value>Не загружено онлайн-шаблонов диаграмм: {0}, поэтому публикация заблокирована: {1}. Сначала загрузите их.</value>
+  </data>
+  <data name="diagram_update_overwrite_confirm" xml:space="preserve">
+    <value>Обновление перезапишет «{0}» официальной версией (включая локальные изменения). Продолжить?</value>
+  </data>
+  <data name="confirm_promote_diagram_template" xml:space="preserve">
+    <value>Повысить эту диаграмму до онлайн-шаблона диаграммы? Она будет опубликована вместе с официальной библиотекой.</value>
+  </data>
+  <data name="confirm_promote_geothermometer" xml:space="preserve">
+    <value>Повысить «{0}» до онлайн-шаблона термобарометра? Он будет опубликован вместе с официальной библиотекой.</value>
+  </data>
+  <data name="view_diagram_template" xml:space="preserve">
+    <value>Просмотр шаблона диаграммы (только чтение)</value>
+  </data>
+  <data name="data_row_status_ok" xml:space="preserve"><value>Построена</value></data>
+  <data name="data_row_status_error" xml:space="preserve"><value>Невозможно построить</value></data>
+  <data name="data_row_status_stale" xml:space="preserve"><value>Изменена после построения</value></data>
+  <data name="data_row_status_pending" xml:space="preserve"><value>Не построена</value></data>
+  <data name="plot_row_missing_category" xml:space="preserve"><value>В этой строке не указана Category, поэтому она не была построена.</value></data>
+  <data name="table_col_sample" xml:space="preserve"><value>Образец</value></data>
+  <data name="table_col_category" xml:space="preserve"><value>Группа</value></data>
+  <data name="template_list_sync_light_tip" xml:space="preserve"><value>Список обновлен: новых {0} / можно обновить {1} / снято {2}</value></data>
 </root>

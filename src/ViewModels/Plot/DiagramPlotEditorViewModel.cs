@@ -497,11 +497,26 @@ namespace GeoChemistryNexus.ViewModels
         // ---- IHelpDocEditorHost：与 EPMA 共用的帮助文档富文本编辑器 ----
 
         public bool CanShowSave => true;
-        public bool CanEdit => true;
-        public bool IsReadOnly => false;
+        private bool _isViewOnly;
 
-        /// <summary>供 EditorStyles 中 GeoTColumnCell / GeoTRemoveColumn 绑定（图解编辑器始终可编辑）。</summary>
-        public bool IsContentReadOnly => false;
+        /// <summary>只读查看模式（非开发者查看官方图解）：内容不可修改，也不能提交。</summary>
+        public bool IsViewOnly => _isViewOnly;
+
+        public bool CanEdit => !_isViewOnly;
+        public bool IsReadOnly => _isViewOnly;
+
+        /// <summary>供 EditorStyles 中 GeoTColumnCell / GeoTRemoveColumn 绑定（查看模式下为只读）。</summary>
+        public bool IsContentReadOnly => _isViewOnly;
+
+        /// <summary>切换为只读查看模式（在 InitializeForEdit 之后调用）。</summary>
+        public void EnterViewOnlyMode()
+        {
+            _isViewOnly = true;
+            OnPropertyChanged(nameof(IsViewOnly));
+            OnPropertyChanged(nameof(CanEdit));
+            OnPropertyChanged(nameof(IsReadOnly));
+            OnPropertyChanged(nameof(IsContentReadOnly));
+        }
 
         public void AttachHelpEditor(Func<string?> read, Action<string?> write)
         {
@@ -1277,10 +1292,16 @@ namespace GeoChemistryNexus.ViewModels
                 string raw = ScriptDefinition?.RequiredDataSeries ?? string.Empty;
                 // 单位按位置与列名一一对应（保留空项），脚本格式 1.3 之前的模板没有单位，对应位置即为空
                 var units = (ScriptDefinition?.DataSeriesUnits ?? string.Empty).Split(',', StringSplitOptions.TrimEntries);
+                string defaultLanguage = GetGroupDefaultLanguage();
                 int index = 0;
                 foreach (var part in raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                 {
-                    DataSeriesColumns.Add(new DiagramDataSeriesColumn(part) { Unit = index < units.Length ? units[index] : string.Empty });
+                    DataSeriesColumns.Add(new DiagramDataSeriesColumn(part)
+                    {
+                        Unit = index < units.Length ? units[index] : string.Empty,
+                        // 分组标题以列名引用列；输入框里显示默认语言的文字（该语言还没填时显示已有的任意语言文字）
+                        Group = ScriptDefinition?.DataSeriesGroups?.FirstOrDefault(group => group != null && group.Contains(part))?.ResolveTitle(defaultLanguage) ?? string.Empty
+                    });
                     index++;
                 }
 
@@ -1304,8 +1325,107 @@ namespace GeoChemistryNexus.ViewModels
 
         private void OnDataSeriesColumnChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is nameof(DiagramDataSeriesColumn.Id) or nameof(DiagramDataSeriesColumn.Unit))
+            if (e.PropertyName is nameof(DiagramDataSeriesColumn.Id) or nameof(DiagramDataSeriesColumn.Unit) or nameof(DiagramDataSeriesColumn.Group))
                 CommitDataSeriesColumnsToScript();
+        }
+
+        /// <summary>分组标题的默认语言：语言列表第一项，没有语言时回退到工作模板的默认语言。</summary>
+        private string GetGroupDefaultLanguage()
+        {
+            string? language = LanguageParts.FirstOrDefault()?.Text;
+            if (string.IsNullOrWhiteSpace(language)) language = _workingTemplate?.DefaultLanguage;
+            return string.IsNullOrWhiteSpace(language) ? AppCultureRegistry.DefaultContentLanguage : language;
+        }
+
+        /// <summary>
+        /// 由各列的分组标题重建脚本里的分组：同一个默认语言标题只对应一个分组（共用一份翻译），
+        /// 标题没变的分组原样保留翻译；被改名的分组沿用原分组的其它语言翻译，没有分组时整体置空（不写入模板内容）。
+        /// </summary>
+        private void CommitDataSeriesGroups(IReadOnlyList<DiagramDataSeriesColumn> named)
+        {
+            if (ScriptDefinition == null) return;
+
+            var titles = new List<(string Title, List<string> Columns)>();
+            foreach (var column in named)
+            {
+                string title = column.Group?.Trim() ?? string.Empty;
+                if (title.Length == 0) continue;
+                int index = titles.FindIndex(item => item.Title == title);
+                if (index < 0) titles.Add((title, new List<string> { column.Id.Trim() }));
+                else titles[index].Columns.Add(column.Id.Trim());
+            }
+
+            var previous = ScriptDefinition.DataSeriesGroups ?? new List<DataSeriesGroup>();
+            if (titles.Count == 0)
+            {
+                if (previous.Count > 0) ScriptDefinition.DataSeriesGroups = null;
+                return;
+            }
+
+            string defaultLanguage = GetGroupDefaultLanguage();
+            string DefaultText(DataSeriesGroup group) => group.Title?.Translations != null && group.Title.Translations.TryGetValue(defaultLanguage, out var text) ? text.Trim() : string.Empty;
+
+            var used = new HashSet<DataSeriesGroup>();
+            var result = new List<DataSeriesGroup>();
+            foreach (var (title, columns) in titles)
+            {
+                var group = previous.FirstOrDefault(item => !used.Contains(item) && DefaultText(item) == title);
+                if (group != null)
+                {
+                    used.Add(group);
+                }
+                else
+                {
+                    // 改名：沿用该分组第一列原来所在分组的其它语言翻译（该分组的旧标题已不在任何列上时）
+                    var source = previous.FirstOrDefault(item => !used.Contains(item) && item.Contains(columns[0])
+                                                                 && !titles.Any(other => other.Title == DefaultText(item)));
+                    group = new DataSeriesGroup();
+                    if (source != null)
+                    {
+                        used.Add(source);
+                        group.Title.Translations = new Dictionary<string, string>(source.Title.Translations ?? new Dictionary<string, string>());
+                    }
+                }
+
+                group.Title.Default = defaultLanguage;
+                group.Title.Translations[defaultLanguage] = title;
+                group.Columns = columns;
+                result.Add(group);
+            }
+
+            ScriptDefinition.DataSeriesGroups = result;
+        }
+
+        /// <summary>分组标题变化后，让“多语言”页的表格同步出现 / 更新 / 去掉对应的分组行（不重建数据序列表，避免打断输入）。</summary>
+        private void RefreshTranslationAfterGroupChange()
+        {
+            var languages = LanguageParts.Select(l => l.Text).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+            if (_workingTemplate == null || languages.Count == 0 || TranslationTable == null) return;
+
+            DiagramTemplateTranslationHelper.SyncTemplateLanguages(_workingTemplate, languages);
+            TranslationTable = DiagramTemplateTranslationHelper.SyncTableLanguages(TranslationTable, languages, _workingTemplate);
+        }
+
+        /// <summary>“多语言”页修改了分组的默认语言标题后，把新的标题带回数据序列表的分组输入框。</summary>
+        private void ReloadGroupTextsFromScript()
+        {
+            if (ScriptDefinition == null) return;
+
+            string defaultLanguage = GetGroupDefaultLanguage();
+            var previousSuppress = _suppressDataSeriesSync;
+            _suppressDataSeriesSync = true;
+            try
+            {
+                foreach (var column in DataSeriesColumns)
+                {
+                    string title = ScriptDefinition.DataSeriesGroups?.FirstOrDefault(group => group != null && group.Contains(column.Id))?.ResolveTitle(defaultLanguage) ?? string.Empty;
+                    if (column.Group != title) column.Group = title;
+                }
+            }
+            finally
+            {
+                _suppressDataSeriesSync = previousSuppress;
+            }
         }
 
         private void CommitDataSeriesColumnsToScript()
@@ -1317,6 +1437,13 @@ namespace GeoChemistryNexus.ViewModels
             var units = named.Select(c => (c.Unit ?? string.Empty).Replace(',', ' ').Replace(';', ' ').Trim()).ToList();
             // 所有列都没有单位时保持为空串，与 1.3 之前的模板内容一致
             ScriptDefinition.DataSeriesUnits = units.Any(u => u.Length > 0) ? string.Join(",", units) : string.Empty;
+
+            // 分组标题（格式 1.3）：分组集合有增减 / 改名时，“多语言”页的分组行要跟着更新
+            var groupsBefore = ScriptDefinition.DataSeriesGroups?.ToList() ?? new List<DataSeriesGroup>();
+            CommitDataSeriesGroups(named);
+            var groupsAfter = ScriptDefinition.DataSeriesGroups ?? new List<DataSeriesGroup>();
+            if (!groupsBefore.SequenceEqual(groupsAfter))
+                RefreshTranslationAfterGroupChange();
         }
 
         [RelayCommand]
@@ -1377,6 +1504,8 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (_workingTemplate == null || TranslationTable == null) return;
             DiagramTemplateTranslationHelper.ApplyTranslationTable(TranslationTable, _workingTemplate);
+            // 表格里改了分组的默认语言标题时，数据序列表里的分组输入框同步显示新标题
+            ReloadGroupTextsFromScript();
         }
 
         private void RefreshTranslationTableBinding()
@@ -1423,7 +1552,9 @@ namespace GeoChemistryNexus.ViewModels
             foreach (DataRow dataRow in TranslationTable.Rows)
             {
                 string label = dataRow["Context"] as string ?? string.Empty;
-                var source = new EpmaLocalizationRow(EpmaLocalizationRowKind.Name, label, languages.Count);
+                // 与 EPMA / 温压计的多语言窗口一致：分组标题是单行格（行矮、垂直居中、不接受回车），其余文本是多行格
+                bool isGroup = DiagramTemplateTranslationHelper.IsGroupKey(dataRow[DiagramTemplateTranslationHelper.TranslationKeyColumn] as string);
+                var source = new EpmaLocalizationRow(isGroup ? EpmaLocalizationRowKind.Group : EpmaLocalizationRowKind.Description, label, languages.Count);
                 var cells = new List<EpmaLocalizationCell>();
                 for (int i = 0; i < languages.Count; i++)
                 {
@@ -1432,7 +1563,7 @@ namespace GeoChemistryNexus.ViewModels
                         ? dataRow[lang] as string ?? string.Empty
                         : string.Empty;
                     source.Values[i] = value;
-                    var cell = new EpmaLocalizationCell(value, placeholder, isMultiline: true, TranslationColumns[i]);
+                    var cell = new EpmaLocalizationCell(value, placeholder, isMultiline: !isGroup, TranslationColumns[i]);
                     int langIndex = i;
                     string langCode = lang;
                     DataRow capturedRow = dataRow;
@@ -1519,6 +1650,10 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>该数据列的单位（可选，留空表示没有单位）。</summary>
         [ObservableProperty]
         private string _unit = string.Empty;
+
+        /// <summary>该数据列的分组标题（模板默认语言的文字，留空表示不分组）；相邻且同名的列在表头上合并成一个分组带，其它语言的标题在“多语言”页填写。</summary>
+        [ObservableProperty]
+        private string _group = string.Empty;
 
         public DiagramDataSeriesColumn(string id) => Id = id ?? string.Empty;
     }

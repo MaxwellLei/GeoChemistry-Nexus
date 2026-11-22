@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
 using System.Collections.Generic;
@@ -56,8 +56,8 @@ public static class EpmaUpdateService
                     {
                         Status = EpmaUpdateCheckStatus.Success,
                         ListOutdated = true,
-                        NotInstalledCount = CountByStatus(EpmaInstallStatus.NotInstalled),
-                        OutdatedCount = CountByStatus(EpmaInstallStatus.Outdated),
+                        NotInstalledCount = CountByStatus(ContentInstallStatus.NotInstalled),
+                        OutdatedCount = CountByStatus(ContentInstallStatus.Outdated),
                     };
 
                 listJson = await OfficialContentMirrorClient.GetStringAsync(EpmaRelative(OfficialContentEndpoints.EpmaListFileName));
@@ -86,6 +86,7 @@ public static class EpmaUpdateService
                 ListDownloaded = listDownloaded,
                 CatalogChanged = sync.CatalogChanged,
                 NotInstalledCount = sync.NotInstalledCount,
+                AddedCount = sync.AddedCount,
                 OutdatedCount = sync.OutdatedCount,
                 RemovalCount = sync.RemovalCount,
                 RequiresAppUpgrade = sync.RequiresAppUpgrade,
@@ -121,6 +122,7 @@ public static class EpmaUpdateService
     {
         public bool CatalogChanged { get; set; }
         public int NotInstalledCount { get; set; }
+        public int AddedCount { get; set; }
         public int OutdatedCount { get; set; }
         public int RemovalCount { get; set; }
         public List<EpmaIndexEntry> RequiresAppUpgrade { get; } = new();
@@ -138,25 +140,26 @@ public static class EpmaUpdateService
         // 避免一次错误发布把本地所有官方模板清空（与图解的空清单保护一致）
         if (!list.Templates.Any(t => t != null && !string.IsNullOrWhiteSpace(t.Id)))
         {
-            result.NotInstalledCount = CountByStatus(EpmaInstallStatus.NotInstalled);
-            result.OutdatedCount = CountByStatus(EpmaInstallStatus.Outdated);
+            result.NotInstalledCount = CountByStatus(ContentInstallStatus.NotInstalled);
+            result.OutdatedCount = CountByStatus(ContentInstallStatus.Outdated);
             return result;
         }
 
         foreach (var entry in list.Templates.Where(t => !string.IsNullOrWhiteSpace(t.Id)))
         {
             if (!serverIds.Add(entry.Id)) continue;
-            bool requiresUpgrade = entry.FormatVersion > EpmaScriptPackage.CurrentFormatVersion;
+            bool requiresUpgrade = EpmaScriptPackage.RequiresAppUpgrade(entry.Version, entry.Requires);
             if (requiresUpgrade) result.RequiresAppUpgrade.Add(entry);
 
             if (!existing.TryGetValue(entry.Id, out var summary))
             {
-                Database.UpsertEntity(CreateStub(entry, requiresUpgrade ? EpmaInstallStatus.RequiresAppUpgrade : EpmaInstallStatus.NotInstalled));
+                Database.UpsertEntity(CreateStub(entry, requiresUpgrade ? ContentInstallStatus.RequiresAppUpgrade : ContentInstallStatus.NotInstalled));
+                result.AddedCount++;
                 result.CatalogChanged = true;
                 continue;
             }
 
-            // 与图解 / 温压计共用同一套状态规则；EPMA 以包内整数 formatVersion 判断是否需要升级软件
+            // 与图解 / 温压计共用同一套状态规则；EPMA 以包版本 x.y（高于程序的 EPMA 模块版本）或 requires 里不认识的能力判断是否需要升级软件
             string newStatus = ContentInstallStatus.Resolve(summary.IsInstalled, requiresUpgrade,
                 summary.FileHash, entry.Hash, summary.Version, entry.Version);
 
@@ -178,15 +181,15 @@ public static class EpmaUpdateService
         foreach (var local in existing.Values)
         {
             if (serverIds.Contains(local.PackageId)) continue;
-            // Never-published local officials (no server hash) are kept; they are the developer's own work.
-            if (local.IsInstalled && string.IsNullOrEmpty(local.ServerHash)) continue;
+            // 开发者本地新建 / 由个人模板升级而来的官方模板尚未发布（无服务器哈希），待发布的修改同理，都不能当作“服务器已下架”删除（与图解、温压计一致）
+            if (local.IsInstalled && (string.IsNullOrEmpty(local.ServerHash) || local.PendingPublish)) continue;
             Database.DeleteEntity(local.Id);
             result.RemovalCount++;
             result.CatalogChanged = true;
         }
 
-        result.NotInstalledCount = CountByStatus(EpmaInstallStatus.NotInstalled);
-        result.OutdatedCount = CountByStatus(EpmaInstallStatus.Outdated);
+        result.NotInstalledCount = CountByStatus(ContentInstallStatus.NotInstalled);
+        result.OutdatedCount = CountByStatus(ContentInstallStatus.Outdated);
         return result;
     }
 
@@ -211,7 +214,6 @@ public static class EpmaUpdateService
     private static void ApplyStubMetadata(EpmaTemplateEntity entity, EpmaIndexEntry entry)
     {
         entity.Version = string.IsNullOrWhiteSpace(entry.Version) ? "1.0.0" : entry.Version;
-        entity.FormatVersion = entry.FormatVersion;
         entity.NameJson = EpmaTemplateCatalog.RawJson(entry.Name, "null");
         entity.DescriptionJson = EpmaTemplateCatalog.RawJson(entry.Description, "null");
         entity.TagsJson = TagsJson(entry);
@@ -223,7 +225,6 @@ public static class EpmaUpdateService
 
     private static bool StubMetadataDiffers(EpmaTemplateEntity stub, EpmaIndexEntry entry)
         => stub.Version != (string.IsNullOrWhiteSpace(entry.Version) ? "1.0.0" : entry.Version)
-           || stub.FormatVersion != entry.FormatVersion
            || stub.NameJson != EpmaTemplateCatalog.RawJson(entry.Name, "null")
            || stub.DescriptionJson != EpmaTemplateCatalog.RawJson(entry.Description, "null")
            || stub.TagsJson != TagsJson(entry)
@@ -266,9 +267,9 @@ public static class EpmaUpdateService
         => string.IsNullOrWhiteSpace(packageId) ? null
             : TryLoadLocalList()?.Templates?.FirstOrDefault(t => string.Equals(t.Id, packageId, StringComparison.OrdinalIgnoreCase));
 
-    public static List<EpmaIndexEntry> GetNotInstalledEntries() => GetEntriesByStatus(EpmaInstallStatus.NotInstalled);
+    public static List<EpmaIndexEntry> GetNotInstalledEntries() => GetEntriesByStatus(ContentInstallStatus.NotInstalled);
 
-    public static List<EpmaIndexEntry> GetOutdatedEntries() => GetEntriesByStatus(EpmaInstallStatus.Outdated);
+    public static List<EpmaIndexEntry> GetOutdatedEntries() => GetEntriesByStatus(ContentInstallStatus.Outdated);
 
     private static List<EpmaIndexEntry> GetEntriesByStatus(string status)
     {
@@ -283,8 +284,12 @@ public static class EpmaUpdateService
             .OfType<EpmaIndexEntry>().ToList();
     }
 
+    /// <summary>服务器版本高于当前软件、暂时无法下载 / 更新的官方模板数量（用于批量下载后的汇总提示）。</summary>
+    public static int GetRequiresAppUpgradeCount()
+        => CountByStatus(ContentInstallStatus.RequiresAppUpgrade);
+
     public static (int NotInstalled, int Outdated) GetPendingInstallCounts()
-        => (CountByStatus(EpmaInstallStatus.NotInstalled), CountByStatus(EpmaInstallStatus.Outdated));
+        => (CountByStatus(ContentInstallStatus.NotInstalled), CountByStatus(ContentInstallStatus.Outdated));
 
     /// <summary>Pulls a fresh list from the server (ignoring the local hash cache) and returns one entry; used for forced updates.</summary>
     public static async Task<(EpmaIndexEntry? Entry, string? ErrorMessage)> FetchFreshEntryAsync(string packageId)
@@ -333,7 +338,7 @@ public static class EpmaUpdateService
         string temporary = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + EpmaScriptPackage.Extension);
         try
         {
-            if (entry.FormatVersion > EpmaScriptPackage.CurrentFormatVersion)
+            if (EpmaScriptPackage.RequiresAppUpgrade(entry.Version, entry.Requires))
                 return EpmaDownloadItemResult.Failed(entry.Id, LanguageService.Instance["template_version_too_high"]);
 
             await DownloadPackageAsync(entry.DownloadUrl, temporary);
@@ -390,18 +395,20 @@ public static class EpmaUpdateService
     }
 
     public static async Task<EpmaBatchDownloadResult> DownloadAndReloadAsync(IReadOnlyList<EpmaIndexEntry> entries,
-        IProgress<(int current, int total, string name)>? progress = null)
+        IProgress<(int current, int total, string name)>? progress = null, System.Threading.CancellationToken token = default)
     {
         int success = 0, current = 0;
+        bool cancelled = false;
         var failures = new List<EpmaDownloadItemResult>();
         var listRefreshed = new System.Runtime.CompilerServices.StrongBox<bool>(false);
         foreach (var entry in entries)
         {
+            if (token.IsCancellationRequested) { cancelled = true; break; }
             progress?.Report((++current, entries.Count, entry.Id));
             var item = await DownloadWithRefreshAsync(entry, listRefreshed);
             if (item.Success) success++; else failures.Add(item);
         }
         if (success > 0) await Catalog.ReloadAsync();
-        return new EpmaBatchDownloadResult { SuccessCount = success, Failures = failures };
+        return new EpmaBatchDownloadResult { SuccessCount = success, Failures = failures, Cancelled = cancelled };
     }
 }

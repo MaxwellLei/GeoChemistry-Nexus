@@ -1,5 +1,6 @@
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Services.Epma;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -73,8 +74,24 @@ namespace GeoChemistryNexus.Helpers
                 }
             }
 
+            // 数据列分组标题（图解脚本格式 1.3）
+            if (template.Script?.DataSeriesGroups != null)
+            {
+                foreach (var group in template.Script.DataSeriesGroups)
+                {
+                    if (group?.Title != null)
+                        result.Add(group.Title);
+                }
+            }
+
             return result.Distinct().ToList();
         }
+
+        /// <summary>翻译表里分组标题行的键前缀（group.0、group.1 ...）。</summary>
+        public const string GroupKeyPrefix = "group.";
+
+        public static bool IsGroupKey(string? translationKey) =>
+            translationKey != null && translationKey.StartsWith(GroupKeyPrefix, StringComparison.OrdinalIgnoreCase);
 
         public static DataTable BuildTranslationTable(GraphMapTemplate template, IEnumerable<string>? languageOrder = null)
         {
@@ -148,6 +165,18 @@ namespace GeoChemistryNexus.Helpers
 
                     string preview = GetPreviewText(annotation.Content, template.DefaultLanguage, $"Annotation #{i + 1}");
                     AddRow(dt, $"{LanguageService.Instance["translation_annotation"] ?? "Annotation"} #{i + 1} ({preview})", $"annotation.{i}", annotation.Content, orderedLanguages);
+                }
+            }
+
+            // 数据列分组标题：一个分组一行（同名的列共用一个分组），标签与 EPMA / 温压计的多语言表一致
+            if (template.Script?.DataSeriesGroups != null)
+            {
+                for (int i = 0; i < template.Script.DataSeriesGroups.Count; i++)
+                {
+                    var group = template.Script.DataSeriesGroups[i];
+                    if (group?.Title == null) continue;
+
+                    AddRow(dt, EpmaLocalizer.Format("epma_loc_row_group", i + 1), $"{GroupKeyPrefix}{i}", group.Title, orderedLanguages);
                 }
             }
 

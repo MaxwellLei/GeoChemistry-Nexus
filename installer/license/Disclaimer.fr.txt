@@ -1,0 +1,42 @@
+﻿Avertissement
+
+Merci d'utiliser GeoChemistry Nexus. Veuillez lire attentivement l'avertissement suivant avant d'utiliser ce logiciel. En téléchargeant, en installant ou en utilisant ce logiciel, vous reconnaissez avoir compris et accepté les conditions ci-dessous.
+
+1. Objet du logiciel
+
+GeoChemistry Nexus est un outil d'aide à la recherche destiné aux chercheurs en géochimie, pétrologie, minéralogie et géologie des gisements. Il vise à faciliter le traitement des données géologiques, l'analyse par le calcul et la visualisation.
+
+Les résultats de calcul, les diagrammes et les informations d'analyse associés fournis par ce logiciel sont destinés uniquement à la recherche, à l'enseignement et à la référence technique. Ils ne peuvent pas se substituer directement au jugement indépendant de professionnels qualifiés, à la vérification expérimentale ni à une évaluation professionnelle formelle.
+
+2. Résultats de calcul et exactitude
+
+Ce logiciel met en œuvre ses fonctions de calcul, dans la mesure du possible, conformément à la littérature scientifique publiée, aux méthodes académiques et aux normes pertinentes. Toutefois, différentes méthodes de calcul peuvent reposer sur des hypothèses théoriques, des conditions d'application, des paramètres et des règles de traitement des données distincts, de sorte que les résultats peuvent différer.
+
+Les utilisateurs doivent :
+
+- s'assurer de l'exactitude et de l'exhaustivité des données saisies ;
+- choisir des méthodes de calcul et des paramètres adaptés à l'objet réel de l'étude ;
+- vérifier de manière indépendante les résultats de calcul importants et les apprécier à la lumière de la littérature pertinente ;
+- vérifier, dans les articles scientifiques, les rapports de recherche ou tout autre résultat formel, les méthodes, les paramètres et les résultats de calcul utilisés.
+
+GeoChemistry Nexus ne garantit pas que tous les résultats de calcul soient parfaitement exacts ou applicables dans toutes les conditions de données et tous les contextes d'utilisation.
+
+3. Risques d'utilisation et responsabilités
+
+Les utilisateurs doivent apprécier eux-mêmes si les résultats de calcul du logiciel conviennent à leur objectif de recherche particulier, et assument la responsabilité correspondante des données, diagrammes et résultats d'analyse produits par ce logiciel ainsi que de leur utilisation ultérieure.
+
+Pour les écarts de conclusions scientifiques, les usages inappropriés de données, les erreurs d'analyse ou les autres pertes connexes résultant de l'utilisation de ce logiciel ou de la confiance accordée à ses résultats de calcul, le développeur assumera la responsabilité correspondante dans la mesure permise par le droit applicable.
+
+4. Mises à jour du logiciel et ressources tierces
+
+Ce logiciel peut contenir ou utiliser des algorithmes, des données, des modèles de diagrammes, des composants open source et d'autres ressources tierces. Les droits de propriété intellectuelle et les droits d'utilisation de ces contenus appartiennent à leurs titulaires respectifs.
+
+Les modèles en ligne, les algorithmes de calcul et les fonctionnalités du logiciel peuvent évoluer avec les mises à jour de version. Le développeur se réserve le droit de modifier, de mettre à jour ou de cesser de fournir les fonctionnalités, les méthodes de calcul, l'interface et les ressources associées du logiciel.
+
+5. Mise à jour du présent avertissement
+
+Le présent avertissement peut être révisé en fonction de l'évolution des fonctionnalités du logiciel, des services proposés et des lois et règlements applicables. Le contenu mis à jour sera publié sur le site officiel ou sur les pages correspondantes.
+
+Si vous avez des questions concernant le présent avertissement ou l'utilisation du logiciel, vous pouvez transmettre vos remarques par l'intermédiaire du dépôt GitHub du projet.
+
+Rappel final : GeoChemistry Nexus est un outil d'aide à la recherche, et non le fondement définitif des conclusions scientifiques. Veuillez toujours vérifier et interpréter les résultats de calcul en les confrontant au contexte géologique, aux données expérimentales, à la littérature scientifique et à vos connaissances professionnelles.

@@ -15,24 +15,21 @@ public static class EpmaResultExport
     public static ExportTable Full(EpmaScriptRun run, IReadOnlySet<int> stale)
     {
         var headers = run.Input.Headers.Select(h => "Input:" + h).Concat(new[] { "Input_Row", "Row_Status", "QC:Severity", "QC:Flags", "QC:Stale" })
-            .Concat(run.Fields.Select(f => "Result:" + f.Id)).Concat(new[] { "Provenance:Undefined_Reasons", "Provenance:Field_Sources", "Process:Trace" }).ToArray();
+            .Concat(run.Fields.Select(f => "Result:" + f.Id)).ToArray();
         var rows = run.Rows.Where(r => r.Result.Status != "Empty").Select(row => {
             var cells = Enumerable.Range(0, run.Input.Headers.Count).Select(c => (ExportCell)new ExportCell.Text(ValueParser.RawText(run.Input.Rows[row.InputRow - 1][c]))).ToList();
             cells.AddRange(new ExportCell[] { new ExportCell.Number(row.InputRow), new ExportCell.Text(row.Result.Status), new ExportCell.Text(row.HighestSeverity),
                 new ExportCell.Text(JsonSerializer.Serialize(row.Flags)), new ExportCell.Text(stale.Contains(row.InputRow) ? "true" : "false") });
             cells.AddRange(run.Fields.Select(f => row.Result.Values.TryGetValue(f.Id, out var v) ? Cell(v) : new ExportCell.Empty()));
-            cells.AddRange(new ExportCell[] { new ExportCell.Text(JsonSerializer.Serialize(row.Result.UndefinedReasons)),
-                new ExportCell.Text(JsonSerializer.Serialize(row.Result.FieldSources)), new ExportCell.Text(Text(row.Result.Trace)) });
             return (IReadOnlyList<ExportCell>)cells.ToArray();
         }).ToArray();
         return new(headers, rows);
     }
-    private static string Text(JsonElement value) => value.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null ? "" : value.GetRawText();
     public static JsonElement Metadata(EpmaScriptRun run) => JsonSerializer.SerializeToElement(new {
         format = "GeoChemistryNexus.Epma.Result", version = 1,
-        method = new { id = run.Package.Manifest.PackageId, version = run.Package.Manifest.Version, sha256 = run.Package.Sha256, protocol = run.Package.Manifest.FormatVersion },
+        method = new { id = run.Package.Manifest.PackageId, version = run.Package.Manifest.Version, sha256 = run.Package.Sha256 },
         engine = run.EngineVersion, softwareVersion = typeof(EpmaResultExport).Assembly.GetName().Version?.ToString(),
-        calculatedAt = run.CalculatedAt, numericFormat = run.NumericFormat.ToString(), parameters = run.Parameters,
+        calculatedAt = run.CalculatedAt, numericFormat = run.NumericFormat.ToString(),
     });
     public static ExportTable MetadataTable(EpmaScriptRun run)
     {
@@ -46,7 +43,7 @@ public static class EpmaResultExport
         }
         return new(new[] { "Key", "Part", "JSON" }, rows);
     }
-    private static readonly string[] RecordHeaders = { "QC:Flags", "Provenance:Undefined_Reasons", "Provenance:Field_Sources", "Process:Trace" };
+    private static readonly string[] RecordHeaders = { "QC:Flags" };
     public static (ExportTable Results, ExportTable Records) WorkbookTables(ExportTable full)
     {
         var results = Enumerable.Range(0, full.Headers.Count).Where(i => !RecordHeaders.Contains(full.Headers[i])).ToArray();

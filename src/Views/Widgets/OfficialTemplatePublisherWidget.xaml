@@ -143,10 +143,10 @@
                             Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.25*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Margin="34,30,16,30" VerticalAlignment="Top">
+                        <StackPanel Grid.Column="0" Margin="34,20,12,14" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal">
                                 <Border Style="{StaticResource HomeSlideTagBorderStyle}"
                                         Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -159,7 +159,7 @@
                             <TextBlock Text="{Binding Title}" Style="{StaticResource HomeSlideTitleStyle}"/>
                             <TextBlock Text="{Binding Body}" Style="{StaticResource HomeSlideBodyStyle}"
                                        Visibility="{Binding HasBody, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <Button Margin="0,14,0,0"
+                            <Button Margin="0,10,0,0"
                                     Style="{StaticResource HomeSlideActionButtonStyle}"
                                     Content="{Binding ActionLabel}"
                                     Command="{Binding DataContext.OpenAnnouncementPreviewActionCommand, RelativeSource={RelativeSource AncestorType=widgets:OfficialTemplatePublisherWidget}}"
@@ -518,9 +518,9 @@
                         <Border Grid.Column="2" VerticalAlignment="Top" Style="{StaticResource WidgetCard}" Margin="0" Padding="0"
                                 Visibility="{Binding HasSelectedAnnouncementEntry, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel>
-                                <!-- 实时预览：改字、换色、换图立刻看到效果 -->
-                                <Border Style="{StaticResource HomeSurfaceCardStyle}" Height="250" CornerRadius="12" Margin="16,16,16,0"
-                                        helpers:HomeRoundedClip.Radius="12">
+                                <!-- 实时预览：改字、换色、换图立刻看到效果；高度与主页公告舞台一致（368 - 66 缩略条 = 302） -->
+                                <Border Style="{StaticResource HomeSurfaceCardStyle}" Height="302" CornerRadius="18" Margin="16,16,16,0"
+                                        helpers:HomeRoundedClip.Radius="18">
                                     <ContentControl Content="{Binding SelectedAnnouncementLivePreview}"
                                                     ContentTemplate="{StaticResource PublisherAnnouncementPreviewTemplate}"/>
                                 </Border>

@@ -1,0 +1,42 @@
+﻿Aviso de isenção de responsabilidade
+
+Obrigado por usar o GeoChemistry Nexus. Leia atentamente o seguinte aviso de isenção de responsabilidade antes de usar este software. Ao baixar, instalar ou usar este software, você reconhece que compreendeu e aceitou os termos abaixo.
+
+1. Finalidade do software
+
+O GeoChemistry Nexus é uma ferramenta de apoio à pesquisa destinada a pesquisadores das áreas de geoquímica, petrologia, mineralogia e geologia de depósitos minerais. Seu objetivo é facilitar o processamento de dados geológicos, a análise computacional e a visualização.
+
+Os resultados de cálculo, os diagramas e as informações analíticas relacionadas fornecidos por este software destinam-se apenas à pesquisa, ao ensino e à referência técnica. Eles não substituem diretamente o julgamento independente de profissionais qualificados, a verificação experimental nem uma avaliação profissional formal.
+
+2. Resultados de cálculo e exatidão
+
+Este software implementa suas funções de cálculo, na medida do possível, com base na literatura científica publicada, em métodos acadêmicos e em normas pertinentes. No entanto, diferentes métodos de cálculo podem adotar pressupostos teóricos, condições de aplicabilidade, configurações de parâmetros e regras de tratamento de dados distintos, de modo que os resultados podem divergir.
+
+Os usuários devem:
+
+- garantir a exatidão e a integridade dos dados de entrada;
+- selecionar métodos de cálculo e parâmetros adequados ao objeto real de estudo;
+- verificar de forma independente os resultados de cálculo importantes e avaliá-los à luz da literatura pertinente;
+- conferir, em artigos acadêmicos, relatórios de pesquisa ou outros resultados formais, os métodos, os parâmetros e os resultados de cálculo utilizados.
+
+O GeoChemistry Nexus não garante que todos os resultados de cálculo sejam completamente exatos ou aplicáveis em quaisquer condições de dados e cenários de uso.
+
+3. Riscos de uso e responsabilidade
+
+Os usuários devem avaliar por si mesmos se os resultados de cálculo do software são adequados à finalidade específica da pesquisa e assumem a responsabilidade correspondente pelos dados, diagramas e resultados de análise produzidos por este software e por seu uso posterior.
+
+Por desvios nas conclusões científicas, uso indevido de dados, erros de análise ou outras perdas relacionadas decorrentes do uso deste software ou da confiança em seus resultados de cálculo, o desenvolvedor assumirá a responsabilidade correspondente na medida permitida pela legislação aplicável.
+
+4. Atualizações do software e recursos de terceiros
+
+Este software pode conter ou utilizar algoritmos, dados, modelos de diagramas, componentes de código aberto e outros recursos de terceiros. Os direitos de propriedade intelectual e as permissões de uso desses conteúdos pertencem aos respectivos titulares.
+
+Os modelos na nuvem, os algoritmos de cálculo e as funcionalidades do software podem mudar com as atualizações de versão. O desenvolvedor reserva-se o direito de modificar, atualizar ou deixar de fornecer as funcionalidades, os métodos de cálculo, a interface e os recursos relacionados do software.
+
+5. Atualização deste aviso
+
+Este aviso de isenção de responsabilidade pode ser revisado em razão de mudanças nas funcionalidades do software, nos serviços oferecidos e nas leis e regulamentos aplicáveis. O conteúdo atualizado será publicado no site oficial ou nas páginas correspondentes.
+
+Se você tiver dúvidas sobre este aviso ou sobre o uso do software, envie seus comentários pelo repositório do projeto no GitHub.
+
+Lembrete final: o GeoChemistry Nexus é uma ferramenta de apoio à pesquisa, e não a base definitiva para conclusões científicas. Verifique e interprete sempre os resultados de cálculo combinando o contexto geológico, os dados experimentais, a literatura acadêmica e o conhecimento profissional.

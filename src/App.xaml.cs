@@ -297,6 +297,7 @@ namespace GeoChemistryNexus
                     if (failures.Count < targets.Count)
                     {
                         GraphMapTemplatePublishService.ClearPendingPublishFlags();
+                        GeothermometerPublishService.ApplyPublishedResult(geoResult);
                         if (epmaResult != null)
                             EpmaPublishService.ApplyPublishedResultAsync(epmaResult).GetAwaiter().GetResult();
                     }

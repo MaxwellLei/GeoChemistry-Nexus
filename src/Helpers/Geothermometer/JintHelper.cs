@@ -293,20 +293,63 @@ namespace GeoChemistryNexus.Helpers
         /// 注入后,脚本中可以调用 trace(message) 来记录计算过程,例如:
         /// trace(`X = ${K2O} + ${Na2O} = ${result1}`);
         /// 所有调用都会被收集到 logs 列表中,供后续UI展示使用。
+        /// 同时支持多语言写法:传入以语言代码为键的对象,例如
+        /// trace({ "zh-CN": `X = ${r}`, "en-US": `X = ${r}` });
+        /// 此时按当前 App 语言取文本,取不到时依次回退到 <paramref name="defaultLanguage"/>、en-US、首个可用语言。
         /// </remarks>
-        public static void InjectTraceFunction(Engine engine, List<string> logs)
+        /// <param name="defaultLanguage">多语言对象中找不到当前语言时优先回退的语言(通常为模板默认语言)。</param>
+        public static void InjectTraceFunction(Engine engine, List<string> logs, string? defaultLanguage = null)
         {
             if (engine == null) throw new ArgumentNullException(nameof(engine));
             if (logs == null) throw new ArgumentNullException(nameof(logs));
-    
-            // 注入 trace 函数,将传入的消息添加到 logs 列表
-            engine.SetValue("trace", new Action<object>(message =>
+
+            // 注入 trace 函数,将传入的消息(字符串或多语言对象)添加到 logs 列表
+            engine.SetValue("trace", new Action<JsValue>(message =>
             {
-                if (message != null)
+                var text = ResolveTraceMessage(message, defaultLanguage);
+                if (text != null)
                 {
-                    logs.Add(message.ToString() ?? string.Empty);
+                    logs.Add(text);
                 }
             }));
+        }
+
+        /// <summary>
+        /// 解析 trace 的参数:普通对象视为 { 语言代码: 文本 } 的多语言字典,其他值按字符串处理。
+        /// 返回 null 表示忽略该次调用。
+        /// </summary>
+        private static string? ResolveTraceMessage(JsValue message, string? defaultLanguage)
+        {
+            if (message == null || message.IsNull() || message.IsUndefined())
+                return null;
+
+            if (!message.IsObject() || message.IsArray())
+                return message.ToString();
+
+            var obj = message.AsObject();
+            var translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var property in obj.GetOwnProperties())
+            {
+                if (!property.Key.IsString() || !property.Value.Enumerable)
+                    continue;
+
+                var value = obj.Get(property.Key);
+                if (value.IsNull() || value.IsUndefined())
+                    continue;
+
+                translations[property.Key.AsString()] = value.ToString();
+            }
+
+            // 不是语言字典(如空对象或 Date 等),退回默认字符串表示
+            if (translations.Count == 0)
+                return message.ToString();
+
+            var resolved = AppCultureRegistry.GetLocalizedValue(
+                translations,
+                Services.LanguageService.CurrentLanguage,
+                defaultLanguage);
+
+            return string.IsNullOrEmpty(resolved) ? message.ToString() : resolved;
         }
     }
 

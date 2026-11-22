@@ -862,9 +862,9 @@
             </controls:NotificationHost>
 
             <!-- Notify Icon (Tray) -->
-            <controls:TrayIcon x:Name="notifyIcon" Text="GeoChemistry Nexus" Icon="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/logo.png">
+            <controls:TrayIcon x:Name="notifyIcon" Text="GeoChemistry Nexus" Icon="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/GeoChemistryNexus_Icon.ico">
                 <controls:TrayIcon.ContextMenu>
-                    <ContextMenu Width="160" Placement="Right">
+                    <ContextMenu MinWidth="136">
                         <MenuItem Header="{Binding [Show],Source={x:Static lg:LanguageService.Instance}}" Click="ShowWindow"/>
                         <Separator/>
                         <MenuItem Header="{Binding [Exit],Source={x:Static lg:LanguageService.Instance}}" Click="ShutDownWindow"/>

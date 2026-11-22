@@ -30,8 +30,10 @@ public sealed class EpmaWorksheetAdapter
     public event Action? PasteRejected;
     private IReadOnlyList<string> _headers = Array.Empty<string>();
     // Units shown under the column names: input units come from the template manifest, output units from the result fields.
-    private readonly WorksheetColumnUnitProvider _unitProvider = new();
+    // The first column is always the "Sample" input: its header Text stays "Sample" (it is the input id), only the displayed name is translated.
+    private readonly WorksheetColumnUnitProvider _unitProvider = new(localizedLeadingColumns: 1);
     private IReadOnlyList<string?> _inputUnits = Array.Empty<string?>();
+    private IReadOnlyList<string?> _inputGroups = Array.Empty<string?>();
     public event Action<int>? SelectionChanged;
     public event Action? SelectedCellChanged;
     private Worksheet Sheet => _grid.CurrentWorksheet;
@@ -93,15 +95,24 @@ public sealed class EpmaWorksheetAdapter
         long i => new RawCell.NativeNumber(i), short i => new RawCell.NativeNumber(i),
         _ => new RawCell.Text(Convert.ToString(value, CultureInfo.InvariantCulture) ?? ""),
     };
-    /// <summary>Units of the active input columns, in column order (null or empty for a column without a unit). Call before <see cref="Load"/>.</summary>
-    public void SetInputUnits(IEnumerable<string?> units) => _inputUnits = units.ToArray();
+    /// <summary>Units and group headings of the active input columns, in column order (null or empty when a column has none). Call before <see cref="Load"/>.</summary>
+    public void SetInputHeaders(IEnumerable<string?> units, IEnumerable<string?> groups)
+    {
+        _inputUnits = units.ToArray();
+        _inputGroups = groups.ToArray();
+    }
     private void RefreshColumnUnits()
     {
         var units = new List<string?>(InputColumnCount + 1 + _displayFields.Count);
         for (int c = 0; c < InputColumnCount; c++) units.Add(c < _inputUnits.Count ? _inputUnits[c] : null);
         units.Add(null);   // separator column
         foreach (var field in _displayFields) units.Add(field.DisplayUnit);
-        _unitProvider.SetUnits(units);
+        // Group bands come from the package's "group" of an input or output column.
+        var groups = new List<string?>(units.Count);
+        for (int c = 0; c < InputColumnCount; c++) groups.Add(c < _inputGroups.Count ? _inputGroups[c] : null);
+        groups.Add(null);   // separator column
+        foreach (var field in _displayFields) groups.Add(field.DisplayGroup);
+        _unitProvider.SetHeaders(units, groups);
     }
     public void Load(InputTableSnapshot input)
     {
@@ -145,7 +156,12 @@ public sealed class EpmaWorksheetAdapter
         });
     }
     private void SizeColumnToHeader(int column, string header)
-        => SetColumnContentWidth(column, MeasureTextWidth(header, true));
+    {
+        double width = MeasureTextWidth(header, true);
+        // The first column shows the translated "Sample" name; make sure it fits in every language.
+        if (column == 0) width = Math.Max(width, MeasureTextWidth(BuiltInColumnHeaders.GetDisplayText(header), true));
+        SetColumnContentWidth(column, width);
+    }
 
     private double MeasureTextWidth(string value, bool header = false)
     {
@@ -286,13 +302,15 @@ public sealed class EpmaWorksheetAdapter
         }
         finally { _writing = false; SelectedCellChanged?.Invoke(); }
     }
-    public void SelectInputRow(int row)
+    /// <summary>Registers the dots drawn in the row headers (ok / warning / error / stale / not calculated).</summary>
+    public void SetRowStatusProvider(IWorksheetRowStatusProvider provider) => ReoGridTableAppearance.SetRowStatusProvider(_grid, provider);
+    /// <summary>Whether the input columns of a worksheet row (zero-based) hold anything; used to tell empty rows from uncalculated ones.</summary>
+    public bool HasInput(int row)
     {
-        _grid.Dispatcher.VerifyAccess();
-        if (row < 1 || row > Sheet.RowCount) return;
-        Sheet.SelectionRange = new RangePosition(row - 1, 0, 1, 1);
-        Sheet.ScrollToCell(row - 1, 0);
-        _grid.Focus();
+        if (row < 0 || row >= Sheet.RowCount) return false;
+        for (int c = 0; c < InputColumnCount; c++)
+            if (Sheet.GetCellData(row, c) is { } value && (value is not string text || text.Length > 0)) return true;
+        return false;
     }
     private void CellChanged(object? sender, CellEventArgs e)
     {

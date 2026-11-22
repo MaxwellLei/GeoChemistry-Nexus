@@ -26,8 +26,8 @@ public sealed class EpmaTemplateDatabaseService
 
     // 列表查询投影：绝不读取 PackageBytes
     private const string SummaryProjection =
-        "{ _id: $._id, PackageId: $.PackageId, Version: $.Version, FormatVersion: $.FormatVersion, FileHash: $.FileHash, " +
-        "LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, " +
+        "{ _id: $._id, PackageId: $.PackageId, Version: $.Version, FileHash: $.FileHash, " +
+        "LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, PendingPublish: $.PendingPublish, " +
         "NameJson: $.NameJson, DescriptionJson: $.DescriptionJson, TagsJson: $.TagsJson, Author: $.Author, " +
         "UpdatedAt: $.UpdatedAt, Icon: $.Icon }";
 
@@ -66,7 +66,7 @@ public sealed class EpmaTemplateDatabaseService
             query = query.Where(BsonExpression.Create("$.IsOfficial = @0", isOfficial.Value));
 
         var entities = query.Select(SummaryProjection).ToList()
-            .Select(doc => db.Mapper.ToObject<EpmaTemplateEntity>(doc))
+            .Select(doc => MapEntity(db, doc))
             .ToList();
 
         foreach (var entity in entities)
@@ -84,9 +84,17 @@ public sealed class EpmaTemplateDatabaseService
         if (doc == null)
             return null;
 
-        var entity = db.Mapper.ToObject<EpmaTemplateEntity>(doc);
+        var entity = MapEntity(db, doc);
         Normalize(entity);
         return entity;
+    }
+
+    /// <summary>旧记录没有 PendingPublish 字段，投影为 null 时直接映射到 bool 会抛 NullReferenceException，先移除。</summary>
+    private static EpmaTemplateEntity MapEntity(LiteDatabase db, BsonDocument doc)
+    {
+        if (doc.TryGetValue("PendingPublish", out var pending) && pending.IsNull)
+            doc.Remove("PendingPublish");
+        return db.Mapper.ToObject<EpmaTemplateEntity>(doc);
     }
 
     /// <summary>获取完整实体（含 PackageBytes）</summary>

@@ -81,8 +81,8 @@ namespace GeoChemistryNexus.ViewModels
         private const long SnapCheckIntervalMs = 16;
         private Coordinates? _lastSnapSearchResult;
         private bool _lastSnapSearchHasResult;
-        private readonly HashSet<int> _scriptInvalidRows = [];
-        private readonly Dictionary<int, List<ScriptInvalidCellVisualSnapshot>> _scriptInvalidRowVisualSnapshots = [];
+        /// <summary>数据表行头状态点（已投图 / 无法投图 / 投图后已修改 / 未投图），三种图解模式共用。</summary>
+        private readonly DiagramRowStatusProvider _rowStatus = new();
 
         private readonly Dictionary<ScottPlot.IPlottable, LayerItemViewModel> _plottableLayerLookup = [];
 
@@ -90,17 +90,6 @@ namespace GeoChemistryNexus.ViewModels
         private const long PreviewRefreshIntervalMs = 16;
 
         private bool _usePreparedCoordinateScript;
-
-        private sealed class ScriptInvalidCellVisualSnapshot
-        {
-            public int Column { get; init; }
-            public bool HasBackColor { get; init; }
-            public System.Windows.Media.Color BackColor { get; init; }
-            public RangeBorderStyle TopBorder { get; init; }
-            public RangeBorderStyle RightBorder { get; init; }
-            public RangeBorderStyle BottomBorder { get; init; }
-            public RangeBorderStyle LeftBorder { get; init; }
-        }
 
         private enum PropertyEditRefreshMode
         {
@@ -190,13 +179,22 @@ namespace GeoChemistryNexus.ViewModels
             _lastHitTestTimeMs = 0;
         }
 
+        /// <summary>
+        /// 开发者操作：将个人图解升级为在线图解模板（随官方库一起发布）
+        /// </summary>
         [RelayCommand]
-        private static void ConvertToBuiltIn(TemplateCardViewModel card)
+        private async Task ConvertToBuiltIn(TemplateCardViewModel card)
         {
-            if (card == null || !card.TemplateId.HasValue) return;
+            if (card == null || !card.IsCustomTemplate || !AppCultureRegistry.IsDeveloperModeEnabled() || !card.TemplateId.HasValue) return;
 
             try
             {
+                if (!await MessageHelper.ShowAsyncDialog(
+                        LanguageService.Instance["confirm_promote_diagram_template"],
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["Confirm"])) return;
+
+
                 var oldId = card.TemplateId.Value;
                 var entity = GraphMapDatabaseService.Instance.GetTemplate(oldId);
                 if (entity != null)
@@ -257,6 +255,43 @@ namespace GeoChemistryNexus.ViewModels
 
                     MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 开发者操作：将官方图解降级为个人图解（不再随官方库发布）
+        /// </summary>
+        [RelayCommand]
+        private async Task DemoteToCustom(TemplateCardViewModel card)
+        {
+            if (card == null || card.IsCustomTemplate || !AppCultureRegistry.IsDeveloperModeEnabled() || !card.TemplateId.HasValue) return;
+
+            try
+            {
+                if (!await MessageHelper.ShowAsyncDialog(
+                        LanguageService.Instance["confirm_demote_diagram_template"],
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["Confirm"])) return;
+
+                if (GraphMapTemplateService.DemoteToCustom(card.TemplateId.Value) == null)
+                {
+                    MessageHelper.Error(LanguageService.Instance["force_update_template_not_found"]);
+                    return;
+                }
+
+                // 与删除官方图解一致：清掉本地官方清单缓存，下次同步重新生成
+                string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
+                if (File.Exists(localListPath))
+                {
+                    File.Delete(localListPath);
+                }
+
+                await RefreshTemplateLibraryAfterDataChangeAsync();
+                MessageHelper.Success(LanguageService.Instance["template_demote_success"]);
             }
             catch (Exception ex)
             {
@@ -387,8 +422,6 @@ namespace GeoChemistryNexus.ViewModels
                 IsCalculationVerificationVisible = false;
                 CalculationResultSummary = string.Empty;
                 CalculationLogs.Clear();
-
-                ClearDataGridPlotRefreshPending();
                         
                 // 5. 刷新绘图（使用 RefreshPlotFromLayers 确保图例被正确更新）
                 RefreshPlotFromLayers();
@@ -1969,12 +2002,6 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _isDataStateReminderVisible = false;
 
-        /// <summary>
-        /// 数据表格已修改但尚未重新投图时，在表格底部状态栏显示提示。
-        /// </summary>
-        [ObservableProperty]
-        private bool _isDataGridPlotRefreshPending;
-
         private CancellationTokenSource? _reminderCts;
 
         partial void OnIsDataStateReminderVisibleChanged(bool value)
@@ -2378,6 +2405,9 @@ namespace GeoChemistryNexus.ViewModels
 
             // 订阅数据表格行数自动扩充
             AttachDataGridWorksheetEvents(_dataGrid.CurrentWorksheet);
+            // 行头状态点：已投图 / 无法投图 / 投图后已修改 / 未投图
+            _rowStatus.Attach(_dataGrid.CurrentWorksheet);
+            ReoGridTableAppearance.SetRowStatusProvider(_dataGrid, _rowStatus);
             _dataGrid.PreviewMouseLeftButtonDown += DataGrid_PreviewMouseLeftButtonDown;
 
             // 禁用原生右键菜单：
@@ -3574,6 +3604,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void PrepareDataGridForInput()
         {
+            // 表格即将重建，之前的行头状态点全部作废
+            _rowStatus.Reset();
+
             // Harker 多联图的列由设置页的 X / Y 变量决定，不走图解脚本的列定义
             if (IsHarkerPlotMode)
             {
@@ -3606,7 +3639,7 @@ namespace GeoChemistryNexus.ViewModels
             worksheet.Reset(); // 重置表格内容
             worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
-            // 脚本数值列 + Category 分组列（Category 不参与脚本计算）
+            // Category（分组/图例）+ Sample（样品编号，仅标明数据来源）+ 脚本数值列（Category、Sample 都不参与脚本计算）
             var dataSeriesColumns = PlotDataGridHelper.ParseScriptDataColumns(CurrentTemplate.Script.RequiredDataSeries);
             if (dataSeriesColumns.Count == 0)
             {
@@ -3620,7 +3653,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            var requiredColumns = new List<string> { "Category" };
+            var requiredColumns = new List<string> { CategoryColumnName, SampleColumnName };
             requiredColumns.AddRange(dataSeriesColumns);
 
             worksheet.ColumnCount = requiredColumns.Count;
@@ -3632,12 +3665,12 @@ namespace GeoChemistryNexus.ViewModels
                 worksheet.ColumnHeaders[i].Text = requiredColumns[i];
 
                 // 自适应列宽，包含表头（按列头实际字体计算：粗体 Segoe UI + 左右留白）
-                worksheet.SetColumnsWidth(i, 1, ReoGridTableAppearance.GetHeaderColumnWidth(requiredColumns[i], 60, ushort.MaxValue));
+                worksheet.SetColumnsWidth(i, 1, GetDataGridHeaderWidth(i, requiredColumns[i], 60));
             }
 
-            // 模板（图解脚本 1.3）为数据列声明了单位时，按统一的单位位置显示在列名下方；单位为空的列只显示列名
-            SetDataColumnUnits(PlotDataGridHelper.ParseScriptDataUnits(
-                CurrentTemplate.Script.RequiredDataSeries, CurrentTemplate.Script.DataSeriesUnits));
+            // 模板（图解脚本 1.3）为数据列声明了单位时，按统一的单位位置显示在列名下方；单位为空的列只显示列名。
+            // 模板（图解脚本 1.3）为数据列声明了分组时，分组带显示在列名上方，标题按图解内容语言解析。
+            SetDataColumnHeaders(CurrentTemplate.Script);
 
             RestoreWorksheetSelectionToSafeCell(worksheet);
             FreezeDataGridFirstColumn(worksheet);
@@ -3645,20 +3678,76 @@ namespace GeoChemistryNexus.ViewModels
             RequestDataGridScrollReset();
         }
 
-        /// <summary>数据表格表头的单位提供者（第 0 列 Category 之后才是数据列）。</summary>
+        /// <summary>数据表格第 0 列表头：分组名称，控制图层分组与图例。</summary>
+        internal const string CategoryColumnName = "Category";
+
+        /// <summary>数据表格第 1 列表头：样品编号，仅标明数据来自哪个样品，不参与绘图与分组。</summary>
+        internal const string SampleColumnName = "Sample";
+
+        /// <summary>数据表格中非数据的前导列数（Category + Sample），数据列从该列号开始。</summary>
+        internal const int DataGridLeadingColumnCount = 2;
+
+        /// <summary>
+        /// 数据表格列宽：按表头文字计算。前导列（Category / Sample）的列头 Text 是英文标识、显示的是翻译后的文字，
+        /// 取两者中较宽的，保证任何界面语言下都放得下。
+        /// </summary>
+        internal static ushort GetDataGridHeaderWidth(int column, string headerText, int minWidth)
+        {
+            ushort width = ReoGridTableAppearance.GetHeaderColumnWidth(headerText, minWidth, ushort.MaxValue);
+            if (column >= DataGridLeadingColumnCount) return width;
+
+            ushort localized = ReoGridTableAppearance.GetHeaderColumnWidth(
+                BuiltInColumnHeaders.GetDisplayText(headerText), minWidth, ushort.MaxValue);
+            return Math.Max(width, localized);
+        }
+
+        /// <summary>数据表格表头的单位提供者（第 0、1 列 Category / Sample 之后才是数据列）。</summary>
         private WorksheetColumnUnitProvider? _dataUnitProvider;
 
         /// <summary>设置数据列单位并刷新表头；传 null 表示当前表格没有任何单位。</summary>
         private void SetDataColumnUnits(IEnumerable<string?>? units)
         {
+            // 只有单位的表格（蛛网图、Harker、重置）没有脚本分组，语言切换时也不需要刷新
+            _scriptDataGridTemplate = null;
+            ApplyDataColumnHeaders(units, null);
+        }
+
+        /// <summary>当前数据表格按其脚本定义（单位 + 分组）建好表头时对应的模板；语言切换时据此刷新分组带。</summary>
+        private GraphMapTemplate? _scriptDataGridTemplate;
+
+        /// <summary>按脚本定义设置数据列的单位与分组并刷新表头。</summary>
+        private void SetDataColumnHeaders(ScriptDefinition script)
+        {
+            ApplyDataColumnHeaders(
+                PlotDataGridHelper.ParseScriptDataUnits(script.RequiredDataSeries, script.DataSeriesUnits),
+                PlotDataGridHelper.ParseScriptDataGroups(script, CurrentDiagramLanguage));
+            _scriptDataGridTemplate = CurrentTemplate;
+        }
+
+        /// <summary>图解内容语言切换后，按新语言重新解析分组带标题（不重建表格，不影响已输入的数据）。</summary>
+        private void RefreshDataColumnGroups()
+        {
+            var template = _scriptDataGridTemplate;
+            if (template?.Script == null || !ReferenceEquals(template, CurrentTemplate) || _dataUnitProvider == null) return;
+
+            _dataUnitProvider.SetHeaders(
+                PlotDataGridHelper.ParseScriptDataUnits(template.Script.RequiredDataSeries, template.Script.DataSeriesUnits),
+                PlotDataGridHelper.ParseScriptDataGroups(template.Script, CurrentDiagramLanguage));
+        }
+
+        private void ApplyDataColumnHeaders(IEnumerable<string?>? units, IEnumerable<string?>? groups)
+        {
             if (_dataGrid == null) return;
             if (_dataUnitProvider == null)
             {
-                if (units == null) return;   // 从未注册过且没有单位：保持表头与原来完全一致
-                _dataUnitProvider = new WorksheetColumnUnitProvider(firstColumn: 1);
+                // 即使没有单位也要注册：前两列（Category / Sample）的列名需要按界面语言显示翻译，列头 Text 不变。
+                // 没有单位和分组时列头高度与未注册时完全一致。
+                _dataUnitProvider = new WorksheetColumnUnitProvider(
+                    firstColumn: DataGridLeadingColumnCount,
+                    localizedLeadingColumns: DataGridLeadingColumnCount);
                 ReoGridTableAppearance.SetColumnHeaderProvider(_dataGrid, _dataUnitProvider);
             }
-            _dataUnitProvider.SetUnits(units);
+            _dataUnitProvider.SetHeaders(units, groups);
         }
 
         /// <summary>
@@ -3670,15 +3759,15 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 冻结数据表格第 1 列（Category / 样品号），向右滚动时始终可见；只冻结列，不冻结行。
+        /// 冻结数据表格前两列（Category / Sample），向右滚动时始终可见；只冻结列，不冻结行。
         /// Reset 会清除冻结状态，因此每次重建表格结构后都要重新调用。
         /// </summary>
         private static void FreezeDataGridFirstColumn(Worksheet? worksheet)
         {
-            if (worksheet == null || worksheet.ColumnCount < 2)
+            if (worksheet == null || worksheet.ColumnCount <= DataGridLeadingColumnCount)
                 return;
 
-            worksheet.FreezeToCell(0, 1);
+            worksheet.FreezeToCell(0, DataGridLeadingColumnCount);
         }
 
         /// <summary>
@@ -3734,7 +3823,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            MarkDataGridPlotRefreshPending();
+            _rowStatus.MarkEdited(e.Cell.Row);
         }
 
         private void CurrentWorksheet_BeforeCellKeyDown(object? sender, unvell.ReoGrid.Events.BeforeCellKeyDownEventArgs e)
@@ -3803,7 +3892,11 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (e.KeyCode is unvell.ReoGrid.Interaction.KeyCode.Delete or unvell.ReoGrid.Interaction.KeyCode.Back)
             {
-                MarkDataGridPlotRefreshPending();
+                if (sender is Worksheet worksheet)
+                {
+                    var selection = worksheet.SelectionRange;
+                    _rowStatus.MarkEdited(selection.Row, selection.Rows);
+                }
             }
         }
 
@@ -3814,7 +3907,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            MarkDataGridPlotRefreshPending();
+            _rowStatus.MarkEdited(e.Range.Row, e.Range.Rows);
         }
 
         /// <summary>
@@ -4012,7 +4105,6 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             worksheet[targetRow, targetCol] = newValue;
-            MarkDataGridPlotRefreshPending();
         }
 
         private static string ColumnIndexToName(int columnIndex)
@@ -4539,7 +4631,7 @@ namespace GeoChemistryNexus.ViewModels
             if (validRowIndices.Count == 0)
                 return;
 
-            bool wasPending = IsDataGridPlotRefreshPending;
+            // 属性面板改名回写分组列：用同步标志跳过编辑跟踪，避免已投图的行被标成“已修改”
             _isSyncingLayerNameToDataGrid = true;
             try
             {
@@ -4551,11 +4643,6 @@ namespace GeoChemistryNexus.ViewModels
             finally
             {
                 _isSyncingLayerNameToDataGrid = false;
-                // 属性面板改名回写分组列不应留下「请刷新投图」提示
-                if (!wasPending)
-                {
-                    ClearDataGridPlotRefreshPending();
-                }
             }
         }
 
@@ -4567,8 +4654,7 @@ namespace GeoChemistryNexus.ViewModels
             SyncLayerNameToDataGrid(
                 scatterLayer.OriginalRowIndices,
                 scatterName,
-                "Category",
-                "Sample");
+                CategoryColumnName);
         }
 
         private void SyncSpiderSampleNameToDataGrid(SpiderSampleLayerItemViewModel spiderLayer, string sampleName)
@@ -4580,7 +4666,7 @@ namespace GeoChemistryNexus.ViewModels
                 .SelectMany(sample => sample.SourceRowIndices)
                 .ToList();
 
-            SyncLayerNameToDataGrid(rowIndices, sampleName, "Category", "Sample");
+            SyncLayerNameToDataGrid(rowIndices, sampleName, CategoryColumnName);
         }
 
         /// <summary>
@@ -5724,7 +5810,6 @@ namespace GeoChemistryNexus.ViewModels
 
             var selection = worksheet.SelectionRange;
             worksheet.InsertRows(selection.Row, count);
-            MarkDataGridPlotRefreshPending();
             UpdateSelectedRowToolbarText();
         }
 
@@ -5743,7 +5828,6 @@ namespace GeoChemistryNexus.ViewModels
 
             var selection = worksheet.SelectionRange;
             worksheet.InsertRows(selection.Row + selection.Rows, count);
-            MarkDataGridPlotRefreshPending();
             UpdateSelectedRowToolbarText();
         }
 
@@ -5773,13 +5857,11 @@ namespace GeoChemistryNexus.ViewModels
                     if (worksheet.RowCount > 1)
                     {
                         worksheet.DeleteRows(selection.Row, worksheet.RowCount - 1);
-                        MarkDataGridPlotRefreshPending();
                     }
                     return;
                 }
 
                 worksheet.DeleteRows(selection.Row, selection.Rows);
-                MarkDataGridPlotRefreshPending();
                 UpdateSelectedRowToolbarText();
             }
             catch (Exception ex)
@@ -6690,7 +6772,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 按当前元素顺序准备蛛网图数据表。每个元素列的单位都是 ppm，Category 列没有单位。
+        /// 按当前元素顺序准备蛛网图数据表：Category + Sample + 各元素列。每个元素列的单位都是 ppm，Category / Sample 列没有单位。
         /// </summary>
         private void PrepareSpiderDataGrid()
         {
@@ -6699,23 +6781,26 @@ namespace GeoChemistryNexus.ViewModels
 
             var elements = SpiderDiagramViewModel.ElementOrder;
             var sheet = _dataGrid.CurrentWorksheet;
+            _rowStatus.Reset();
             SetDataColumnUnits(null);
             sheet.Reset();
             sheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
-            sheet.ColumnCount = elements.Count + 1;
+            sheet.ColumnCount = elements.Count + DataGridLeadingColumnCount;
             ReoGridTableAppearance.StyleColumnHeaders(_dataGrid);
 
-            sheet.ColumnHeaders[0].Text = "Category";
+            sheet.ColumnHeaders[0].Text = CategoryColumnName;
+            sheet.ColumnHeaders[1].Text = SampleColumnName;
             for (int i = 0; i < elements.Count; i++)
             {
-                sheet.ColumnHeaders[i + 1].Text = elements[i];
+                sheet.ColumnHeaders[i + DataGridLeadingColumnCount].Text = elements[i];
             }
 
-            sheet.SetColumnsWidth(0, 1, 80);
+            sheet.SetColumnsWidth(0, 1, GetDataGridHeaderWidth(0, CategoryColumnName, 80));
+            sheet.SetColumnsWidth(1, 1, GetDataGridHeaderWidth(1, SampleColumnName, 80));
             for (int i = 0; i < elements.Count; i++)
             {
-                sheet.SetColumnsWidth(i + 1, 1, 60);
+                sheet.SetColumnsWidth(i + DataGridLeadingColumnCount, 1, 60);
             }
 
             SetDataColumnUnits(Enumerable.Repeat<string?>(NormalizationData.ConcentrationUnit, elements.Count));
@@ -7661,6 +7746,9 @@ namespace GeoChemistryNexus.ViewModels
             DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(value);
             SyncDiagramLanguageContext(value);
 
+            // 数据表格表头的分组带按新语言重新解析
+            RefreshDataColumnGroups();
+
             // 自动根据内容检测并设置字体
             AutoDetectFonts();
 
@@ -7685,7 +7773,6 @@ namespace GeoChemistryNexus.ViewModels
 
             // 确保先关闭提示
             IsDataStateReminderVisible = false;
-            ClearDataGridPlotRefreshPending();
             // 然后再重置状态，确保新模板开始时是false
             _hasViewedHelpForCurrentDiagram = false;
 
@@ -8637,9 +8724,9 @@ namespace GeoChemistryNexus.ViewModels
         {
             return status switch
             {
-                "UP_TO_DATE" => TemplateState.Ready,
-                "OUTDATED" => TemplateState.UpdateAvailable,
-                "NOT_INSTALLED" => TemplateState.NotDownloaded,
+                ContentInstallStatus.UpToDate => TemplateState.Ready,
+                ContentInstallStatus.Outdated => TemplateState.UpdateAvailable,
+                ContentInstallStatus.NotInstalled => TemplateState.NotDownloaded,
                 _ => TemplateState.Loading
             };
         }
@@ -8724,11 +8811,23 @@ namespace GeoChemistryNexus.ViewModels
                 ThumbnailImage = null,
                 OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),
                 DownloadHandler = (vm) => DownloadSingleTemplate(vm, showNotification: true, refreshServerMetadata: true),
+                ConfirmUpdateHandler = ConfirmOfficialTemplateUpdateAsync,
                 CheckUpdateHandler = CheckSingleTemplateUpdate,
                 ToggleFavoriteHandler = ToggleFavorite,
                 DeleteHandler = PerformDeleteTemplate,
                 EditHandler = EditTemplate
             };
+        }
+
+        /// <summary>
+        /// 更新已下载的官方图解会用官方版本覆盖本地内容（含开发者本地修改），更新前确认（与温压计、EPMA 一致）
+        /// </summary>
+        private static Task<bool> ConfirmOfficialTemplateUpdateAsync(TemplateCardViewModel card)
+        {
+            return MessageHelper.ShowAsyncDialog(
+                string.Format(LanguageService.Instance["diagram_update_overwrite_confirm"], card.Name),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
         }
 
         /// <summary>
@@ -8980,7 +9079,8 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="skipConfirmation">是否跳过二次确认（右 Alt 快捷删除时为 true）</param>
         private async Task PerformDeleteTemplate(TemplateCardViewModel card, bool skipConfirmation)
         {
-            if (card == null || (!card.IsCustomTemplate && !IsDeveloperMode) || !card.TemplateId.HasValue) return;
+            // 官方图解不能直接删除：先“移除在线图解模板”降级为我的图解，再删除（与 EPMA、温压计一致）
+            if (card == null || !card.IsCustomTemplate || !card.TemplateId.HasValue) return;
 
             if (!skipConfirmation)
             {
@@ -8997,16 +9097,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 使用数据库服务删除
                 GraphMapDatabaseService.Instance.DeleteTemplate(card.TemplateId.Value);
-
-                // 如果删除的是官方模板（开发者模式），同步删除本地 GraphMapList.json
-                if (!card.IsCustomTemplate)
-                {
-                    string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
-                    if (File.Exists(localListPath))
-                    {
-                        File.Delete(localListPath);
-                    }
-                }
 
                 await RefreshTemplateLibraryAfterDataChangeAsync();
 
@@ -9318,6 +9408,35 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 只读查看官方图解模板（非开发者模式；与 EPMA、温压计允许只读查看官方模板一致）
+        /// </summary>
+        [RelayCommand]
+        private void ViewTemplate(TemplateCardViewModel card)
+        {
+            if (card == null || !card.TemplateId.HasValue) return;
+
+            try
+            {
+                var entity = GraphMapDatabaseService.Instance.GetTemplate(card.TemplateId.Value);
+                if (entity == null || entity.Content == null)
+                {
+                    MessageHelper.Error(LanguageService.Instance["diagram_template_source_missing"]);
+                    return;
+                }
+
+                var viewWindow = new DiagramPlotEditorWindow();
+                TrySetDialogOwner(viewWindow);
+                viewWindow.InitializeForView(entity);
+                viewWindow.CancelCommand = new RelayCommand<DiagramPlotEditorViewModel>(_ => viewWindow.Close());
+                viewWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["edit_failed"] + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// 编辑图解模板元数据（分类、语言）
         /// </summary>
         [RelayCommand]
@@ -9390,7 +9509,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         entity.PendingPublish = true;
                         bool isHashSame = string.Equals(entity.FileHash, card.ServerHash, StringComparison.OrdinalIgnoreCase);
-                        entity.Status = isHashSame ? "UP_TO_DATE" : "OUTDATED";
+                        entity.Status = isHashSame ? ContentInstallStatus.UpToDate : ContentInstallStatus.Outdated;
                     }
 
                     if (newId != oldId)
@@ -11244,125 +11363,6 @@ namespace GeoChemistryNexus.ViewModels
             return builder.ToString().TrimEnd();
         }
 
-        private void MarkScriptInvalidRow(Worksheet worksheet, int rowIndex)
-        {
-            if (worksheet == null || rowIndex < 0 || rowIndex >= worksheet.RowCount)
-            {
-                return;
-            }
-
-            if (!_scriptInvalidRowVisualSnapshots.ContainsKey(rowIndex))
-            {
-                var snapshots = new List<ScriptInvalidCellVisualSnapshot>();
-                for (int col = 0; col < worksheet.ColumnCount; col++)
-                {
-                    var style = worksheet.GetCellStyles(rowIndex, col);
-                    var hasBackColor = style != null && style.HasStyle(PlainStyleFlag.BackColor);
-                    var borders = worksheet.GetRangeBorders(new RangePosition(rowIndex, col, 1, 1), BorderPositions.All, true);
-                    snapshots.Add(new ScriptInvalidCellVisualSnapshot
-                    {
-                        Column = col,
-                        HasBackColor = hasBackColor,
-                        BackColor = hasBackColor ? ToMediaColor(style!.BackColor) : System.Windows.Media.Colors.Transparent,
-                        TopBorder = borders.Top,
-                        RightBorder = borders.Right,
-                        BottomBorder = borders.Bottom,
-                        LeftBorder = borders.Left
-                    });
-                }
-
-                _scriptInvalidRowVisualSnapshots[rowIndex] = snapshots;
-            }
-
-            _scriptInvalidRows.Add(rowIndex);
-            for (int col = 0; col < worksheet.ColumnCount; col++)
-            {
-                ApplyScriptInvalidRowBackColor(worksheet, rowIndex, col, System.Windows.Media.Color.FromArgb(36, 255, 0, 0));
-                ApplyScriptInvalidRowGridLines(worksheet, rowIndex, col);
-            }
-        }
-
-        private void ClearScriptInvalidRowMarks(Worksheet worksheet)
-        {
-            if (worksheet == null || _scriptInvalidRows.Count == 0)
-            {
-                _scriptInvalidRows.Clear();
-                _scriptInvalidRowVisualSnapshots.Clear();
-                return;
-            }
-
-            foreach (var rowIndex in _scriptInvalidRows.ToList())
-            {
-                if (rowIndex >= 0 && rowIndex < worksheet.RowCount)
-                {
-                    if (_scriptInvalidRowVisualSnapshots.TryGetValue(rowIndex, out var snapshots))
-                    {
-                        foreach (var snapshot in snapshots)
-                        {
-                            if (snapshot.Column >= 0 && snapshot.Column < worksheet.ColumnCount)
-                            {
-                                var range = new RangePosition(rowIndex, snapshot.Column, 1, 1);
-                                if (snapshot.HasBackColor)
-                                {
-                                    ApplyScriptInvalidRowBackColor(worksheet, rowIndex, snapshot.Column, snapshot.BackColor);
-                                }
-                                else
-                                {
-                                    worksheet.RemoveRangeStyles(range, PlainStyleFlag.BackColor);
-                                }
-
-                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Top, snapshot.TopBorder);
-                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Right, snapshot.RightBorder);
-                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Bottom, snapshot.BottomBorder);
-                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Left, snapshot.LeftBorder);
-                            }
-                        }
-                    }
-                }
-            }
-
-            _scriptInvalidRows.Clear();
-            _scriptInvalidRowVisualSnapshots.Clear();
-        }
-
-        private static void ApplyScriptInvalidRowBackColor(Worksheet worksheet, int rowIndex, int columnIndex, System.Windows.Media.Color color)
-        {
-            worksheet.SetRangeStyles(new RangePosition(rowIndex, columnIndex, 1, 1), new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.BackColor,
-                BackColor = ToReoGridColor(color)
-            });
-        }
-
-        private static void ApplyScriptInvalidRowGridLines(Worksheet worksheet, int rowIndex, int columnIndex)
-        {
-            worksheet.SetRangeBorders(
-                new RangePosition(rowIndex, columnIndex, 1, 1),
-                BorderPositions.All,
-                RangeBorderStyle.SilverSolid);
-        }
-
-        private static void RestoreScriptInvalidRowBorder(Worksheet worksheet, RangePosition range, BorderPositions position, RangeBorderStyle borderStyle)
-        {
-            if (borderStyle.IsEmpty)
-            {
-                worksheet.RemoveRangeBorders(range, position);
-                return;
-            }
-
-            worksheet.SetRangeBorders(range, position, borderStyle);
-        }
-
-        private static System.Windows.Media.Color ToMediaColor(unvell.ReoGrid.Graphics.SolidColor color)
-        {
-            return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
-        }
-
-        private static unvell.ReoGrid.Graphics.SolidColor ToReoGridColor(System.Windows.Media.Color color)
-        {
-            return unvell.ReoGrid.Graphics.SolidColor.FromArgb(color.A, color.R, color.G, color.B);
-        }
-        
         /// <summary>
         /// 计算并显示当前选中行的计算结果
         /// </summary>
@@ -11399,12 +11399,18 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            if (_scriptInvalidRows.Contains(rowIndex))
+            // 上一次投图时被跳过的行（行头红点）：直接给出原因；跳过之后又改过的行会重新计算
+            switch (_rowStatus.GetSkipReason(rowIndex))
             {
-                IsCalculationVerificationVisible = true;
-                CalculationResultSummary = Lang("plot_row_script_result_invalid", "This row's script result is invalid.");
-                CalculationLogs.Add(BuildInvalidCoordinateHint());
-                return;
+                case DiagramRowSkipReason.InvalidCoordinate:
+                    IsCalculationVerificationVisible = true;
+                    CalculationResultSummary = LanguageService.GetString("plot_row_script_result_invalid", "This row's script result is invalid.");
+                    CalculationLogs.Add(BuildInvalidCoordinateHint());
+                    return;
+                case DiagramRowSkipReason.MissingCategory:
+                    IsCalculationVerificationVisible = true;
+                    CalculationResultSummary = LanguageService.GetString("plot_row_missing_category", "This row has no Category, so it was not plotted.");
+                    return;
             }
             
             try
@@ -11438,7 +11444,7 @@ namespace GeoChemistryNexus.ViewModels
         
                 // 创建Jint引擎并注入trace函数
                 var engine = JintHelper.CreateEngine();
-                JintHelper.InjectTraceFunction(engine, logs);
+                JintHelper.InjectTraceFunction(engine, logs, CurrentTemplate.DefaultLanguage);
 
                 if (!TrySetCoordinateScriptInputs(engine, sheet, rowIndex, dataColumns, out var inputInvalidReason))
                 {
@@ -12392,49 +12398,14 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 判断当前图解是否已有投图产生的数据图层。
-        /// </summary>
-        private bool HasPlottedDataLayers()
-        {
-            var dataRootNode = LayerTree.FirstOrDefault(node =>
-                node is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["data_point"]);
-            if (dataRootNode?.Children.Any() == true)
-            {
-                return true;
-            }
-
-            var spiderDataCategory = LayerTree.FirstOrDefault(layer =>
-                layer is CategoryLayerItemViewModel category
-                && category.Name == (LanguageService.Instance["Data"] ?? "Data"));
-            if (spiderDataCategory?.Children.Any() == true)
-            {
-                return true;
-            }
-
-            return SpiderDiagramViewModel.IsSpiderPlotMode && SpiderDiagramViewModel.Samples.Count > 0;
-        }
-
-        private void MarkDataGridPlotRefreshPending()
-        {
-            if (!HasPlottedDataLayers())
-            {
-                return;
-            }
-
-            IsDataGridPlotRefreshPending = true;
-        }
-
-        private void ClearDataGridPlotRefreshPending()
-        {
-            IsDataGridPlotRefreshPending = false;
-        }
-
-        /// <summary>
         /// 辅助方法，用于清除当前绘图中的所有由数据导入的点。
         /// 这个方法不会清空数据表格，也不会显示确认弹窗。
         /// </summary>
         private void ClearExistingPlottedData()
         {
+            // 图上的数据点没了，表格行头不能再显示“已投图”
+            _rowStatus.Reset();
+
             if (SpiderDiagramViewModel.IsSpiderPlotMode && CurrentTemplate?.TemplateType == "Spider")
             {
                 SpiderDiagramViewModel.Samples.Clear();
@@ -12825,10 +12796,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 4. 重置表格的表头
                 PrepareDataGridForInput();
 
-                // 5. 清除待刷新提示
-                ClearDataGridPlotRefreshPending();
-
-                // 6. 成功提示
+                // 5. 成功提示
                 MessageHelper.Success(LanguageService.Instance["all_data_cleared"]);
             }
         }
@@ -13952,7 +13920,8 @@ namespace GeoChemistryNexus.ViewModels
 
             if (await ImportCustomTemplatesBatchAsync(openFileDialog.FileNames))
             {
-                await RefreshTemplateLibraryAfterDataChangeAsync();
+                // 菜单导入与拖入导入一致：导入后切到“我的”图解
+                await NavigateToPersonalTemplatesAfterImportAsync();
             }
         }
 
@@ -14200,23 +14169,9 @@ namespace GeoChemistryNexus.ViewModels
 
         private async Task<bool> FinalizeImport(string templateName, GraphMapTemplate template, Func<string, Task> copyAction)
         {
-            // 检查数据库中是否存在同名模板
+            // 与 EPMA 一致：以包内标识（模板名）确定身份；同一个包再次导入静默成功，内容不同才询问是否替换
             var existingId = GraphMapDatabaseService.GenerateId(templateName, true);
             var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(existingId));
-
-
-
-            if (existingTemplate != null)
-            {
-                // 自定义图解模板已经存在，是否覆盖？
-                bool confirm = await MessageHelper.ShowAsyncDialog(
-                    LanguageService.Instance["custom_diagram_template"] + templateName +
-                    LanguageService.Instance["already_exists_overwrite_confirm"],
-                    LanguageService.Instance["Cancel"],
-                    LanguageService.Instance["overwrite"]);
-
-                if (!confirm) return false;
-            }
 
             // 创建临时目录用于解压/处理文件 (为了获取 RTF 和缩略图)
             string tempDir = Path.Combine(Path.GetTempPath(), "GeoChemistryNexus", "ImportTemp", Guid.NewGuid().ToString());
@@ -14238,6 +14193,26 @@ namespace GeoChemistryNexus.ViewModels
                     fileHash = UpdateHelper.ComputeFileMd5(targetJsonPath);
                 }
 
+                if (existingTemplate != null)
+                {
+                    // 同一个包再次导入：内容完全一致，无需询问也无需改写
+                    if (!string.IsNullOrEmpty(fileHash)
+                        && string.Equals(existingTemplate.FileHash, fileHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
+                        return true;
+                    }
+
+                    // 自定义图解模板已经存在且内容不同，是否替换？
+                    bool confirm = await MessageHelper.ShowAsyncDialog(
+                        LanguageService.Instance["custom_diagram_template"] + templateName +
+                        LanguageService.Instance["already_exists_overwrite_confirm"],
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["overwrite"]);
+
+                    if (!confirm) return false;
+                }
+
                 // 同步写入 LiteDB
                 await Task.Run(() =>
                 {
@@ -14252,7 +14227,9 @@ namespace GeoChemistryNexus.ViewModels
                         NodeList = template.NodeList,
                         TemplateType = template.TemplateType,
                         Version = template.Version,
-                        Content = template
+                        Content = template,
+                        // 替换同名个人图解时保留收藏状态（与 EPMA 一致）
+                        IsFavorite = existingTemplate?.IsFavorite ?? false
                     };
 
                     // 加载 RTF 帮助文档
@@ -14514,6 +14491,21 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void PlotDataFromGrid()
         {
+            // 三种模式（标准图解 / 蛛网图 / Harker）都在各自的投图过程中登记行状态，
+            // 这里统一在开始前清空、结束（含提前返回、异常）后通知行头重绘。
+            _rowStatus.Reset();
+            try
+            {
+                PlotDataFromGridCore();
+            }
+            finally
+            {
+                _rowStatus.NotifyChanged();
+            }
+        }
+
+        private void PlotDataFromGridCore()
+        {
             // Harker 多联图使用专用逻辑
             if (IsHarkerPlotMode)
             {
@@ -14530,7 +14522,6 @@ namespace GeoChemistryNexus.ViewModels
 
             // 关闭数据状态栏提示
             IsDataStateReminderVisible = false;
-            ClearDataGridPlotRefreshPending();
 
             // 验证模板和脚本是否有效
             if (CurrentTemplate?.Script == null || string.IsNullOrEmpty(CurrentTemplate.Script.RequiredDataSeries))
@@ -14613,9 +14604,8 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            // 清除之前导入的数据点
+            // 清除之前导入的数据点（同时清空行头状态点）
             ClearExistingPlottedData();
-            ClearScriptInvalidRowMarks(worksheet);
 
             // 1. 确定 Category 列
             // 优先查找名为 "Category" 的列
@@ -14658,7 +14648,7 @@ namespace GeoChemistryNexus.ViewModels
             var dataColumns = requiredSeries;
 
             // 先对数据进行分组（Category 允许任意非空文本，不要求数值）
-            var groupedData = dataTable.AsEnumerable()
+            var categorizedRows = dataTable.AsEnumerable()
                 .Select(row => new { Row = row, OriginalRowIndex = row.Field<int>("OriginalRowIndex") })
                 .Select(x => new
                 {
@@ -14666,6 +14656,15 @@ namespace GeoChemistryNexus.ViewModels
                     x.OriginalRowIndex,
                     CategoryValue = PlotDataGridHelper.GetRowColumnText(x.Row, categoryColumn)
                 })
+                .ToList();
+
+            // Category 为空的行无法分组，会被跳过：在行头标红，避免静默丢失数据
+            foreach (var skipped in categorizedRows.Where(x => string.IsNullOrWhiteSpace(x.CategoryValue)))
+            {
+                _rowStatus.MarkSkipped(skipped.OriginalRowIndex, DiagramRowSkipReason.MissingCategory);
+            }
+
+            var groupedData = categorizedRows
                 .Where(x => !string.IsNullOrWhiteSpace(x.CategoryValue))
                 .GroupBy(x => x.CategoryValue)
                 .ToList(); // 物化一次，避免 Any() 与后续 foreach 重复执行整条查询
@@ -14690,7 +14689,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (invalidCoordinateRows.Add(rowIndex))
                 {
-                    MarkScriptInvalidRow(worksheet, rowIndex);
+                    _rowStatus.MarkSkipped(rowIndex, DiagramRowSkipReason.InvalidCoordinate);
                     invalidCoordinateMessages.Add(string.Format(
                         Lang("plot_invalid_row_example", "Row {0}: {1}"),
                         rowIndex + 1,
@@ -14701,7 +14700,7 @@ namespace GeoChemistryNexus.ViewModels
             // 创建Jint引擎并注入trace函数
             var engine = JintHelper.CreateEngine();
             var engineLogs = new List<string>(); // 收集日志
-            JintHelper.InjectTraceFunction(engine, engineLogs);
+            JintHelper.InjectTraceFunction(engine, engineLogs, CurrentTemplate?.DefaultLanguage);
 
             _usePreparedCoordinateScript = JintHelper.TryPrepareCoordinateScript(engine, scriptDefinition.ScriptBody);
             if (!_usePreparedCoordinateScript)
@@ -14795,6 +14794,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
 
                     if (cartesianCoords.Count == 0) continue;
+                    _rowStatus.MarkPlotted(rowIndices);
 
                     var scatterDefForCategory = new ScatterDefinition
                     {
@@ -14865,6 +14865,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
 
                     if (xs.Count == 0) continue;
+                    _rowStatus.MarkPlotted(rowIndices);
 
                     // 准备坐标点列表
                     var points = new List<Coordinates>();
@@ -14933,8 +14934,6 @@ namespace GeoChemistryNexus.ViewModels
             if (_dataGrid == null || WpfPlot1 == null)
                 return;
 
-            ClearDataGridPlotRefreshPending();
-
             // 启用标准化时必须有方案；禁用标准化时则不依赖方案
             if (SpiderDiagramViewModel.IsNormalizationEnabled && SpiderDiagramViewModel.SelectedStandard == null)
                 return;
@@ -14953,10 +14952,10 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
-            // 找到样品/分类名称列索引，优先使用 Category，兼容旧表头 Sample
-            int sampleColIdx = columnMap.TryGetValue("Category", out var categoryColIdx)
+            // 找到样品/分类名称列索引（Category 列；Sample 列仅标明数据来源，不参与绘图）
+            int sampleColIdx = columnMap.TryGetValue(CategoryColumnName, out var categoryColIdx)
                 ? categoryColIdx
-                : (columnMap.TryGetValue("Sample", out var sampleColIdxValue) ? sampleColIdxValue : -1);
+                : -1;
 
             // 预编译元素列索引，避免逐行反复按名称查找
             var elementColumns = new List<(string Element, int ColumnIndex)>(elements.Count);
@@ -15001,6 +15000,12 @@ namespace GeoChemistryNexus.ViewModels
                         SourceRowIndices = [row]
                     });
                     sourceRowIndices.Add(row);
+                    _rowStatus.MarkPlotted(row);
+                }
+                else
+                {
+                    // 有内容但没有任何可解析的元素数值：这一行不会出现在蛛网图里
+                    _rowStatus.MarkSkippedIfHasContent(row, DiagramRowSkipReason.NoValidData);
                 }
             }
 
@@ -16497,6 +16502,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 清除数据表格
             var worksheet = _dataGrid.Worksheets[0];
+            _rowStatus.Reset();
             worksheet.Reset();
             worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
             RestoreWorksheetSelectionToSafeCell(worksheet);
@@ -16923,10 +16929,19 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task ForceUpdateTemplate(TemplateCardViewModel card)
         {
-            if (card == null || card.IsCustomTemplate || !IsDeveloperMode || !card.TemplateId.HasValue)
+            if (card == null || card.IsCustomTemplate || !AppCultureRegistry.IsDeveloperModeEnabled() || !card.TemplateId.HasValue)
                 return;
 
-            if (card.State == TemplateState.Downloading)
+            if (card.State == TemplateState.Downloading || card.IsNotDownloaded)
+                return;
+
+            // 强制更新会覆盖本地内容，先确认（与温压计、EPMA 一致）
+            if (!await MessageHelper.ShowAsyncDialog(
+                    string.Format(
+                        LanguageService.GetString("diagram_update_overwrite_confirm", "更新将用官方版本覆盖“{0}”（含本地修改），是否继续？"),
+                        card.Name),
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"]))
                 return;
 
             try
@@ -17074,7 +17089,7 @@ namespace GeoChemistryNexus.ViewModels
                             GraphMapPath = card.TemplatePath,
                             Name = card.TemplatePath,
                             FileHash = card.ServerHash,
-                            Status = "UP_TO_DATE",
+                            Status = ContentInstallStatus.UpToDate,
                             IsCustom = false,
                             LastModified = DateTime.Now,
                             Content = template,
@@ -17231,7 +17246,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 筛选出 Status 为 NOT_INSTALLED 且为官方模板的模板
                 var notInstalledTemplates = allTemplates.Where(t => 
                     !t.IsCustom && 
-                    t.Status == "NOT_INSTALLED"
+                    t.Status == ContentInstallStatus.NotInstalled
                 ).ToList();
 
                 // 更新按钮显示状态
@@ -17254,7 +17269,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 var outdatedTemplates = GraphMapDatabaseService.Instance.GetSummaries()
-                    .Where(t => !t.IsCustom && t.Status == "OUTDATED")
+                    .Where(t => !t.IsCustom && t.Status == ContentInstallStatus.Outdated)
                     .ToList();
 
                 BatchUpdatePendingCount = outdatedTemplates.Count;
@@ -17317,7 +17332,7 @@ namespace GeoChemistryNexus.ViewModels
                 var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
                 var notInstalledTemplates = allTemplates.Where(t => 
                     !t.IsCustom && 
-                    t.Status == "NOT_INSTALLED"
+                    t.Status == ContentInstallStatus.NotInstalled
                 ).ToList();
 
                 if (notInstalledTemplates.Count == 0)
@@ -17504,7 +17519,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
                 var outdatedTemplates = allTemplates
-                    .Where(t => !t.IsCustom && t.Status == "OUTDATED")
+                    .Where(t => !t.IsCustom && t.Status == ContentInstallStatus.Outdated)
                     .ToList();
 
                 if (outdatedTemplates.Count == 0)
