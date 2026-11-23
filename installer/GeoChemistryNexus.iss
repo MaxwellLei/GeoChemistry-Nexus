@@ -34,6 +34,11 @@ UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
+; Inno Setup 6 默认不显示欢迎页，开启后欢迎页与结束页都会带左侧大图
+DisableWelcomePage=no
+; 现代经典风格：欢迎/结束页左侧大图 + 内页右上角小图（由 tools\make_wizard_images.py 生成，覆盖 100%~300% 缩放）
+WizardImageFile=assets\wizard-large-164x314.png,assets\wizard-large-192x386.png,assets\wizard-large-246x459.png,assets\wizard-large-273x556.png,assets\wizard-large-328x628.png,assets\wizard-large-355x700.png
+WizardSmallImageFile=assets\wizard-small-55x55.png,assets\wizard-small-64x68.png,assets\wizard-small-83x80.png,assets\wizard-small-92x97.png,assets\wizard-small-110x106.png,assets\wizard-small-119x123.png,assets\wizard-small-138x140.png
 ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -126,12 +131,11 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Registry]
 ; 旧版登记过 .gndiag / .gngtm。升级时整键删除，不再创建新关联。
+; 各用户 HKCU 下的 FileExts 残留不清理（管理员安装模式下 HKCU 不一定是目标用户，残留无实际影响）。
 Root: HKLM; Subkey: "Software\Classes\.gndiag"; Flags: deletekey
 Root: HKLM; Subkey: "Software\Classes\.gngtm"; Flags: deletekey
 Root: HKLM; Subkey: "Software\Classes\GeoChemistryNexus.DiagramTemplate"; Flags: deletekey
 Root: HKLM; Subkey: "Software\Classes\GeoChemistryNexus.Geothermometer"; Flags: deletekey
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gndiag"; Flags: deletekey
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gngtm"; Flags: deletekey
 
 [Run]
 Filename: "{tmp}\{#DotNetRedistFile}"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing .NET 10 Desktop Runtime..."; Check: not IsDotNet10DesktopInstalled; Flags: waituntilterminated
@@ -141,7 +145,8 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 var
   DeleteUserData: Boolean;
 
-{ .NET 运行时在注册表中以“值名称”记录已安装版本（如 10.0.15），位于 32 位视图（WOW6432Node）下的 x64\sharedfx 键 }
+{ .NET 运行时在注册表中以“值名称”记录已安装版本（如 10.0.15），位于 32 位视图（WOW6432Node）下的 x64\sharedfx 键。
+  dotnet 宿主（hostfxr）读取该键时同样使用 KEY_WOW64_32KEY，故此处必须用 HKLM32，不能用 HKLM64。 }
 function IsDotNet10DesktopInstalled: Boolean;
 var
   ValueNames: TArrayOfString;
@@ -159,6 +164,98 @@ begin
       end;
     end;
   end;
+end;
+
+const
+  { 品牌色 #3C4A98、进度条底色 #DFE2EE、分隔线色 #E3E5EE（Delphi 颜色为 BGR 顺序） }
+  BrandColor = $984A3C;
+  TrackColor = $EEE2DF;
+  LineColor = $EEE5E3;
+
+function SendMessage(hWnd: HWND; Msg: UINT; wParam: Longint; lParam: Longint): Longint;
+  external 'SendMessageW@user32.dll stdcall';
+
+var
+  ProgressTrack: TPanel;
+  ProgressFill: TPanel;
+  ProgressPercent: TNewStaticText;
+
+{ 原生进度条颜色跟随系统主题（绿色）且无法修改，这里隐藏它，用两个面板自绘靛蓝进度条 }
+procedure CreateBrandProgressBar;
+var
+  Gauge: TNewProgressBar;
+  BarHeight: Integer;
+begin
+  Gauge := WizardForm.ProgressGauge;
+  BarHeight := ScaleY(8);
+
+  ProgressTrack := TPanel.Create(WizardForm);
+  ProgressTrack.Parent := WizardForm.InstallingPage;
+  ProgressTrack.BevelOuter := bvNone;
+  ProgressTrack.ParentBackground := False;
+  ProgressTrack.Color := TrackColor;
+  ProgressTrack.Left := Gauge.Left;
+  ProgressTrack.Width := Gauge.Width;
+  ProgressTrack.Height := BarHeight;
+  ProgressTrack.Top := Gauge.Top + (Gauge.Height - BarHeight) div 2;
+
+  ProgressFill := TPanel.Create(WizardForm);
+  ProgressFill.Parent := ProgressTrack;
+  ProgressFill.BevelOuter := bvNone;
+  ProgressFill.ParentBackground := False;
+  ProgressFill.Color := BrandColor;
+  ProgressFill.Left := 0;
+  ProgressFill.Top := 0;
+  ProgressFill.Width := 0;
+  ProgressFill.Height := BarHeight;
+
+  ProgressPercent := TNewStaticText.Create(WizardForm);
+  ProgressPercent.Parent := WizardForm.InstallingPage;
+  ProgressPercent.Caption := '0%';
+  ProgressPercent.Top := ProgressTrack.Top + BarHeight + ScaleY(8);
+  ProgressPercent.Left := ProgressTrack.Left + ProgressTrack.Width - ProgressPercent.Width;
+
+  Gauge.Visible := False;
+end;
+
+procedure InitializeWizard;
+var
+  Line: TPanel;
+begin
+  { 页面标题、欢迎页与结束页标题使用品牌色 }
+  WizardForm.PageNameLabel.Font.Color := BrandColor;
+  WizardForm.WelcomeLabel1.Font.Color := BrandColor;
+  WizardForm.FinishedHeadingLabel.Font.Color := BrandColor;
+
+  { 页面标题区底部加一条分隔线 }
+  Line := TPanel.Create(WizardForm);
+  Line.Parent := WizardForm.MainPanel;
+  Line.Align := alBottom;
+  Line.Height := ScaleY(1);
+  Line.BevelOuter := bvNone;
+  Line.ParentBackground := False;
+  Line.Color := LineColor;
+
+  { “准备安装”页摘要框默认是灰底，改为白底与许可协议框一致 }
+  WizardForm.ReadyMemo.Color := clWindow;
+  SendMessage(WizardForm.ReadyMemo.Handle, $0443 { EM_SETBKGNDCOLOR }, 0, $FFFFFF);
+
+  CreateBrandProgressBar;
+end;
+
+{ 文件复制进度变化时同步自绘进度条与百分比 }
+procedure CurInstallProgressChanged(CurProgress, MaxProgress: Integer);
+var
+  Done: Int64;
+begin
+  if MaxProgress <= 0 then
+    Exit;
+  Done := CurProgress;
+  if Done > MaxProgress then
+    Done := MaxProgress;
+  ProgressFill.Width := Integer((Done * ProgressTrack.Width) div MaxProgress);
+  ProgressPercent.Caption := IntToStr(Integer((Done * 100) div MaxProgress)) + '%';
+  ProgressPercent.Left := ProgressTrack.Left + ProgressTrack.Width - ProgressPercent.Width;
 end;
 
 function CmdLineParamExists(const Param: String): Boolean;

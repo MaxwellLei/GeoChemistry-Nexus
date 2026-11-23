@@ -1304,6 +1304,9 @@ namespace GeoChemistryNexus.Views
             ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
         }
 
+        /// <summary>模板卡片列表垂直滚动条宽度（可见时记录，隐藏时用于补偿列数计算）。</summary>
+        private double _templateCardScrollBarWidth = SystemParameters.VerticalScrollBarWidth;
+
         private double _lastTemplateCardAvailableWidth;
         private bool _templateCardItemSizeUpdateScheduled;
         private bool _pendingPreserveScrollRatio;
@@ -1346,9 +1349,21 @@ namespace GeoChemistryNexus.Views
             if (panel == null)
                 return;
 
+            // 列数按“始终预留滚动条”的宽度决定：卡片少、没有滚动条的列表（如我的图解模板）
+            // 与卡片多、有滚动条的列表（如在线图解模板）在同一窗口宽度下列数保持一致。
+            double columnBasisWidth = availableWidth;
+            if (scrollViewer.Template?.FindName("PART_VerticalScrollBar", scrollViewer) is ScrollBar verticalBar)
+            {
+                if (verticalBar.Visibility == Visibility.Visible && verticalBar.ActualWidth > 0)
+                    _templateCardScrollBarWidth = verticalBar.ActualWidth;
+                else
+                    columnBasisWidth -= _templateCardScrollBarWidth;
+            }
+
             var newSize = TemplateCardLayoutHelper.ComputeItemSize(
                 availableWidth,
-                viewModel.TemplateCardSizePreset);
+                viewModel.TemplateCardSizePreset,
+                columnBasisWidth);
 
             bool widthUnchanged = Math.Abs(availableWidth - _lastTemplateCardAvailableWidth) < 0.5;
             // 比较当前面板，避免模板重建后沿用旧面板的尺寸缓存而跳过更新。

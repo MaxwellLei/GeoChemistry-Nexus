@@ -121,6 +121,16 @@ namespace GeoChemistryNexus
         /// <summary>首帧渲染前为 false：此阶段 DPI 变化时把系统建议矩形改为正中。</summary>
         private bool _startupCentered;
 
+        /// <summary>
+        /// 页面切换保护期：用户在中间手动调整过窗口大小/位置后，切换页面（尤其是首次创建的懒加载页面）
+        /// 期间产生的自适应复位（回到默认 1360×780 并居中）一律不允许发生。
+        /// </summary>
+        private static readonly TimeSpan NavigationGuardDuration = TimeSpan.FromMilliseconds(1500);
+        private readonly DispatcherTimer _navigationGuardTimer;
+        private bool _isNavigationGuardActive;
+        private bool _isRestoringGuardedBounds;
+        private Rect _navigationGuardBounds;
+
         public MainWindow()
         {
             // 初始化窗体
@@ -129,6 +139,13 @@ namespace GeoChemistryNexus
             this.DataContext = new MainWindowViewModel();
             MyNav.Navigate(HomePageView.GetPage());
 
+            _navigationGuardTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = NavigationGuardDuration
+            };
+            _navigationGuardTimer.Tick += (_, _) => EndNavigationSizeGuard();
+            MyNav.Navigating += MyNav_Navigating;
+            this.SizeChanged += (_, _) => RestoreBoundsChangedDuringNavigation();
             // 监听窗口状态 / 位置 / DPI 变化，校正混 DPI 多屏最大化尺寸
             this.StateChanged += MainWindow_StateChanged;
             this.LocationChanged += MainWindow_LocationChanged;
@@ -142,8 +159,68 @@ namespace GeoChemistryNexus
             UiScaleHelper.Attach(this);
             WeakReferenceMessenger.Default.Register<UiScaleModeChangedMessage>(this, (_, __) =>
             {
-                Dispatcher.BeginInvoke(new Action(ApplyAdaptiveWindowSizeForCurrentMonitor));
+                // 用户主动修改界面缩放，属于明确意图，不受页面切换保护期限制
+                Dispatcher.BeginInvoke(new Action(() => ApplyAdaptiveWindowSizeForCurrentMonitor(force: true)));
             });
+        }
+
+        /// <summary>开始页面切换保护：记录切换前用户设置的窗口位置与大小。</summary>
+        private void MyNav_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (WindowState != WindowState.Normal || !IsLoaded)
+                return;
+
+            _navigationGuardBounds = new Rect(Left, Top, ActualWidth, ActualHeight);
+            _isNavigationGuardActive = true;
+            _navigationGuardTimer.Stop();
+            _navigationGuardTimer.Start();
+        }
+
+        private void EndNavigationSizeGuard()
+        {
+            _navigationGuardTimer.Stop();
+            _isNavigationGuardActive = false;
+        }
+
+        /// <summary>
+        /// 保护期内窗口大小/位置被非用户操作改变时，恢复为切换页面前的状态。
+        /// 用户正在按住鼠标拖动 / 调整窗口，或窗口已最大化/最小化时不干预。
+        /// </summary>
+        private void RestoreBoundsChangedDuringNavigation()
+        {
+            if (!_isNavigationGuardActive || _isRestoringGuardedBounds)
+                return;
+
+            if (WindowState != WindowState.Normal)
+            {
+                EndNavigationSizeGuard();
+                return;
+            }
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                // 用户正在手动调整，以用户的新尺寸为准
+                _navigationGuardBounds = new Rect(Left, Top, ActualWidth, ActualHeight);
+                return;
+            }
+
+            var target = _navigationGuardBounds;
+            if (DoubleUtilEquals(Width, target.Width) && DoubleUtilEquals(Height, target.Height)
+                && DoubleUtilEquals(Left, target.Left) && DoubleUtilEquals(Top, target.Top))
+                return;
+
+            _isRestoringGuardedBounds = true;
+            try
+            {
+                Width = target.Width;
+                Height = target.Height;
+                Left = target.Left;
+                Top = target.Top;
+            }
+            finally
+            {
+                _isRestoringGuardedBounds = false;
+            }
         }
 
         /// <summary>
@@ -191,9 +268,13 @@ namespace GeoChemistryNexus
                 && Keyboard.IsKeyDown(Key.OemComma);
         }
 
-        private void ApplyAdaptiveWindowSizeForCurrentMonitor()
+        private void ApplyAdaptiveWindowSizeForCurrentMonitor(bool force = false)
         {
             if (WindowState != WindowState.Normal || _isApplyingAdaptiveWindowSize)
+                return;
+
+            // 页面切换期间不做自适应复位，避免把用户调小的窗口撑回默认尺寸
+            if (_isNavigationGuardActive && !force)
                 return;
 
             _isApplyingAdaptiveWindowSize = true;
@@ -322,6 +403,8 @@ namespace GeoChemistryNexus
 
         private void MainWindow_LocationChanged(object? sender, EventArgs e)
         {
+            RestoreBoundsChangedDuringNavigation();
+
             // 启动阶段位置/尺寸已由 SourceInitialized 与 WM_DPICHANGED 钩子确定，不再二次调整
             if (_isApplyingAdaptiveWindowSize || !_startupCentered)
                 return;
@@ -337,8 +420,18 @@ namespace GeoChemistryNexus
 
         private void MainWindow_DpiChanged(object? sender, DpiChangedEventArgs e)
         {
+            // DpiChanged 是冒泡路由事件：页面里任何子元素（如模板卡片缩略图 Image）加入可视树时
+            // 都会向上冒泡到窗口，只有窗口自身真正的 DPI 变化才允许重算窗口尺寸，
+            // 否则切换模板分类时会把用户调整过的窗口撑回默认大小。
+            if (!ReferenceEquals(e.OriginalSource, this))
+                return;
+
             // 启动阶段 DIP 尺寸已按目标显示器 DPI 算好，系统缩放建议矩形会保持该 DIP 尺寸，无需再调整
             if (!_startupCentered)
+                return;
+
+            // DPI 实际未变化时不需要重新计算窗口尺寸
+            if (e.OldDpi.Equals(e.NewDpi))
                 return;
 
             ApplyAdaptiveWindowSizeForCurrentMonitor();

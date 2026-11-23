@@ -29,6 +29,18 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
+  // Cloudflare Web Analytics (与 Google Tag Manager / GA 可同时使用)
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: {
+        defer: 'true',
+        src: 'https://static.cloudflareinsights.com/beacon.min.js',
+        'data-cf-beacon': '{"token": "c8b9a5804d4d43d4bcb7bd59266e7eab"}',
+      },
+    },
+  ],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -135,8 +147,9 @@ const config = {
         theme: {
           customCss: './src/css/custom.css',
         },
-        googleTagManager: {
-          containerId: 'GTM-WTTNHNP3',
+        // Google Analytics 4 (数据流: geochemistry-nexus.pages.dev)
+        gtag: {
+          trackingID: 'G-XKH32ZMLQP',
         },
       }),
     ],

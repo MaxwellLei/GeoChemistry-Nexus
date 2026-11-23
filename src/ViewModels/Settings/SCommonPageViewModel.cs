@@ -43,7 +43,17 @@ namespace GeoChemistryNexus.ViewModels
         private string version;     // 软件版本
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsDeveloperModeEntryVisible))]
         private bool _developerMode; // 开发者模式
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsDeveloperModeEntryVisible))]
+        private bool _isDeveloperModeEntryUnlocked = DeveloperModeEntryUnlockedMessage.IsUnlocked; // 是否已在关于页解锁开发者模式入口
+
+        /// <summary>
+        /// 开发者模式开关是否显示：默认隐藏，解锁后显示；若已处于开启状态也保持可见，避免无法关闭。
+        /// </summary>
+        public bool IsDeveloperModeEntryVisible => IsDeveloperModeEntryUnlocked || DeveloperMode;
 
         [ObservableProperty]
         private bool isAppUpdateOverlayVisible;
@@ -94,6 +104,8 @@ namespace GeoChemistryNexus.ViewModels
             ForceUpdateCommand = new AsyncRelayCommand(ExecuteForceUpdateCommandAsync);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
+            WeakReferenceMessenger.Default.Register<SCommonPageViewModel, DeveloperModeEntryUnlockedMessage>(
+                this, static (recipient, _) => recipient.IsDeveloperModeEntryUnlocked = true);
             ReadConfig();   // 读取配置文件
 
             // 获取版本信息

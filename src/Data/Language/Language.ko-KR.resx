@@ -339,6 +339,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>개발자 모드</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>개발자 모드 항목이 일반 설정에 표시되었습니다.</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>데이터 행을 선택하세요</value>
   </data>
@@ -5111,6 +5114,9 @@
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>다이어그램 템플릿 보기(읽기 전용)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>보기</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>플롯됨</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>플롯 불가</value></data>

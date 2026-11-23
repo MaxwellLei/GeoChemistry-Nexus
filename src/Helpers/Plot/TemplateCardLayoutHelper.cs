@@ -21,17 +21,27 @@ namespace GeoChemistryNexus.Helpers
 
         public const double DefaultCellSize = StandardPreferredSize;
 
-        public static Size ComputeItemSize(double availableWidth, TemplateCardSizePreset preset)
+        /// <param name="availableWidth">实际可用于排布卡片的宽度（决定单元格边长）。</param>
+        /// <param name="preset">卡片尺寸档位。</param>
+        /// <param name="columnBasisWidth">
+        /// 用于决定列数的宽度。传入“始终预留滚动条”的稳定宽度，
+        /// 可避免列表是否出现滚动条导致不同列表的列数不一致；为 null 时与 <paramref name="availableWidth"/> 相同。
+        /// </param>
+        public static Size ComputeItemSize(double availableWidth, TemplateCardSizePreset preset, double? columnBasisWidth = null)
         {
             if (availableWidth <= 0 || double.IsNaN(availableWidth) || double.IsInfinity(availableWidth))
                 return new Size(DefaultCellSize, DefaultCellSize);
 
-            int columns = ComputeStandardColumns(availableWidth);
+            double basisWidth = columnBasisWidth is double basis && basis > 0 && double.IsFinite(basis)
+                ? Math.Min(basis, availableWidth)
+                : availableWidth;
+
+            int columns = ComputeStandardColumns(basisWidth);
 
             if (preset == TemplateCardSizePreset.Compact)
             {
                 int compactColumns = columns + 1;
-                if (availableWidth / compactColumns >= MinCellSize)
+                if (basisWidth / compactColumns >= MinCellSize)
                     columns = compactColumns;
             }
 

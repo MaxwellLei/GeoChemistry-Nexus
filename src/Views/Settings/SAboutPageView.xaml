@@ -35,6 +35,9 @@
                                 <Border Style="{StaticResource AboutElementShadowStyle}"/>
                                 <Border Style="{StaticResource AboutElementRingStyle}">
                                     <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="14" Padding="14,12">
+                                        <Border.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding UnlockDeveloperModeCommand}"/>
+                                        </Border.InputBindings>
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -109,7 +112,7 @@
 
                     <!-- Email -->
                     <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource AboutBondButtonStyle}"
-                            Command="{Binding OpenUrlCommand}" CommandParameter="mailto:maxwelllei@qq.com">
+                            Command="{Binding CopyTextCommand}" CommandParameter="maxwelllei@qq.com">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

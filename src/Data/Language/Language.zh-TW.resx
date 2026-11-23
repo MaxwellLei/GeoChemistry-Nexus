@@ -345,6 +345,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>開發者模式</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>開發者模式選項已在一般設定中顯示。</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>請選擇資料列</value>
   </data>
@@ -5107,6 +5110,9 @@
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>檢視圖解模板（唯讀）</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>檢視</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>已投圖</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>無法投圖</value></data>

@@ -339,6 +339,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Entwicklermodus</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>Die Option „Entwicklermodus“ ist jetzt unter Allgemeine Einstellungen verfügbar.</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Bitte wählen Sie eine Datenzeile</value>
   </data>
@@ -5112,6 +5115,9 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>Diagrammvorlage anzeigen (schreibgeschützt)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>Anzeigen</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Dargestellt</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>Nicht darstellbar</value></data>

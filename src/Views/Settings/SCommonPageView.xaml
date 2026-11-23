@@ -142,20 +142,22 @@
                             <ToggleButton IsChecked="{Binding Boot}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
                         </Grid>
                         
-                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+                        <!-- Developer Mode（默认隐藏，在关于页连续点击 Gn 块 5 次后显示） -->
+                        <StackPanel Visibility="{Binding IsDeveloperModeEntryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
-                        <!-- Developer Mode -->
-                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                <TextBlock Text="{Binding [developer_mode],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='开发者模式'}" FontSize="13"/>
-                                <TextBlock Text="{Binding [developer_mode_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启用后显示开发与调试相关功能}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
-                            </StackPanel>
-                            <ToggleButton IsChecked="{Binding DeveloperMode}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
-                        </Grid>
+                            <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                    <TextBlock Text="{Binding [developer_mode],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='开发者模式'}" FontSize="13"/>
+                                    <TextBlock Text="{Binding [developer_mode_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启用后显示开发与调试相关功能}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                                </StackPanel>
+                                <ToggleButton IsChecked="{Binding DeveloperMode}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 

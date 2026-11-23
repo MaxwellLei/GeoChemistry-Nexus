@@ -600,6 +600,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>开发者模式</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>开发者模式选项已在常规设置中显示。</value>
+  </data>
   <data name="geo_validate_tags_required" xml:space="preserve">
     <value>请至少添加一个温压计标签。</value>
   </data>
@@ -5017,6 +5020,9 @@
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>查看图解模板（只读）</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>查看</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>已投图</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>无法投图</value></data>

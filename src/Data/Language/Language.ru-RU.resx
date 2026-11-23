@@ -339,6 +339,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Режим разработчика</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>Параметр «Режим разработчика» теперь доступен в разделе «Общие настройки».</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Выберите строку данных</value>
   </data>
@@ -5111,6 +5114,9 @@
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>Просмотр шаблона диаграммы (только чтение)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>Просмотр</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Построена</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>Невозможно построить</value></data>

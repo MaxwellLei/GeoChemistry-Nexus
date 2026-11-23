@@ -1404,6 +1404,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Mode développeur</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>L'option Mode développeur est désormais disponible dans Paramètres généraux.</value>
+  </data>
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Déconseillé aux non-développeurs : cela peut entraîner des problèmes inutiles.</value>
   </data>
@@ -4980,6 +4983,9 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>Afficher le modèle de diagramme (lecture seule)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>Afficher</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Tracé</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>Impossible à tracer</value></data>

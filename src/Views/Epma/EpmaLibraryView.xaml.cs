@@ -42,23 +42,26 @@ public partial class EpmaLibraryView : UserControl
         var favoriteEntry = new MenuItem { Header = EpmaLocalizer.Format(viewModel.IsFavorite(item) ? "epma_library_favorite_remove" : "epma_library_favorite_add") };
         favoriteEntry.Click += async (_, _) => await viewModel.ToggleFavorite(item);
         menu.Items.Add(favoriteEntry);
-        var actions = EpmaTemplateMenuPolicy.Actions(item.IsCustom, AppCultureRegistry.IsDeveloperModeEnabled(), item.IsInstalled);
+        bool developerMode = AppCultureRegistry.IsDeveloperModeEnabled();
+        var actions = EpmaTemplateMenuPolicy.Actions(item.IsCustom, developerMode, item.IsInstalled);
         if (actions.Count > 0) menu.Items.Add(new Separator());
         foreach (var action in actions)
         {
             string key = action switch
             {
-                EpmaTemplateAction.Edit => "epma_library_edit", EpmaTemplateAction.Delete => "epma_library_delete",
+                // Official templates are read-only outside developer mode, so the entry is labelled "View".
+                EpmaTemplateAction.Edit => !item.IsCustom && !developerMode ? "ctx_view" : "epma_library_edit", EpmaTemplateAction.Delete => "epma_library_delete",
                 EpmaTemplateAction.Export => "epma_library_export", EpmaTemplateAction.PromoteOfficial => "epma_library_promote",
-                EpmaTemplateAction.ForceUpdate => "force_update_template",
+                EpmaTemplateAction.ForceUpdate => "force_update_template", EpmaTemplateAction.Download => "epma_update_download",
                 _ => "epma_library_remove_official"
             };
-            // Not-yet-downloaded official templates get no local actions at all (see EpmaTemplateMenuPolicy).
+            // Not-yet-downloaded official templates only get Download (see EpmaTemplateMenuPolicy).
             var entry = new MenuItem { Header = EpmaLocalizer.Format(key), IsEnabled = viewModel.CanManageTemplates };
             if (action == EpmaTemplateAction.Delete) entry.Tag = "Danger";
             if (action == EpmaTemplateAction.PromoteOfficial) entry.Click += async (_, _) => await viewModel.PromoteLibraryTemplateAsync(item);
             if (action == EpmaTemplateAction.RemoveOfficial) entry.Click += async (_, _) => await viewModel.DemoteLibraryTemplateAsync(item);
             if (action == EpmaTemplateAction.ForceUpdate) entry.Click += async (_, _) => await viewModel.ForceUpdateLibraryTemplateAsync(item);
+            if (action == EpmaTemplateAction.Download) entry.Click += async (_, _) => await viewModel.DownloadSelectedCommand.ExecuteAsync(item);
             if (action == EpmaTemplateAction.Edit) entry.Click += (_, _) => OpenEditor(item);
             if (action == EpmaTemplateAction.Delete) entry.Click += async (_, _) => await viewModel.DeleteLibraryTemplateAsync(item);
             if (action == EpmaTemplateAction.Export) entry.Click += async (_, _) => await viewModel.ExportLibraryTemplateAsync(item, Window.GetWindow(this));

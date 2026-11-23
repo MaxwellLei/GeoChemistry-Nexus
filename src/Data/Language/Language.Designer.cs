@@ -3025,6 +3025,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 View 的本地化字符串。
+        /// </summary>
+        internal static string ctx_view {
+            get {
+                return ResourceManager.GetString("ctx_view", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Current Diagram Version 的本地化字符串。
         /// </summary>
         internal static string current_diagram_version {
@@ -3516,6 +3525,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string developer_mode {
             get {
                 return ResourceManager.GetString("developer_mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Developer mode option is now available in General Settings. 的本地化字符串。
+        /// </summary>
+        internal static string developer_mode_entry_unlocked {
+            get {
+                return ResourceManager.GetString("developer_mode_entry_unlocked", resourceCulture);
             }
         }
         

@@ -1404,6 +1404,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Developer Mode</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>Developer mode option is now available in General Settings.</value>
+  </data>
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Not recommended for non-developers; it may cause unnecessary issues.</value>
   </data>
@@ -4990,6 +4993,9 @@ Replace the installed package? Different methods must use different IDs.</value>
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>View Diagram Template (Read-only)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>View</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Plotted</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>Cannot plot</value></data>

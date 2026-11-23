@@ -107,21 +107,23 @@
                         </Style.Triggers>
                     </Style>
                 </MenuItem.Style>
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                </MenuItem.Icon>
             </MenuItem>
             <Separator/>
-            <MenuItem Header="{Binding [geo_ctx_edit],Source={x:Static lg:LanguageService.Instance}, FallbackValue=编辑}"
-                      Command="{Binding PlacementTarget.Tag.EditCustomThermometerCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            <MenuItem Command="{Binding PlacementTarget.Tag.EditCustomThermometerCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Header" Value="{Binding [geo_ctx_edit],Source={x:Static lg:LanguageService.Instance}, FallbackValue=编辑}"/>
                         <Style.Triggers>
+                            <!-- 非开发者模式下，内置（官方）温压计只读，显示为“查看” -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsBuiltIn, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Header" Value="{Binding [ctx_view],Source={x:Static lg:LanguageService.Instance}, FallbackValue=查看}"/>
+                            </MultiDataTrigger>
                             <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
@@ -129,16 +131,17 @@
                     </Style>
                 </MenuItem.Style>
             </MenuItem>
-            <MenuItem Header="{Binding [geo_ctx_export_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出 ZIP}"
+            <MenuItem Header="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}"
                       Command="{Binding PlacementTarget.Tag.ExportPluginCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
+                            <!-- 非开发者模式下隐藏导出 -->
+                            <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
@@ -149,9 +152,6 @@
             <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
                       Command="{Binding PlacementTarget.Tag.ForceUpdatePluginCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -188,9 +188,6 @@
             <MenuItem Header="{Binding [geo_ctx_demote],Source={x:Static lg:LanguageService.Instance}, FallbackValue=降级为自定义}"
                       Command="{Binding PlacementTarget.Tag.ConvertToCustomCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#E65100"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -210,9 +207,6 @@
             <MenuItem Header="{Binding [geo_ctx_promote],Source={x:Static lg:LanguageService.Instance}, FallbackValue=转换为官方}"
                       Command="{Binding PlacementTarget.Tag.ConvertToOfficialCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#107C10"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -245,9 +239,6 @@
                       CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                       Tag="Danger"
                       Foreground="#D13438">
-                <MenuItem.Icon>
-                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438"/>
-                </MenuItem.Icon>
                 <MenuItem.Style>
                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Visibility" Value="Collapsed"/>

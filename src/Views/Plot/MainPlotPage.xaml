@@ -1344,7 +1344,7 @@
                                         </MenuItem>
                                         <Separator/>
                                         <!--编辑图解模板-->
-                                        <MenuItem Header="{Binding [edit_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   CommandParameter="{Binding}">
                                             <MenuItem.Style>
@@ -1372,7 +1372,7 @@
                                             </MenuItem.Style>
                                         </MenuItem>
                                         <!--只读查看官方图解模板 (非开发者模式 + 已下载的官方图解)-->
-                                        <MenuItem Header="{Binding [view_diagram_template],Source={x:Static lg:LanguageService.Instance}}"
+                                        <MenuItem Header="{Binding [ctx_view],Source={x:Static lg:LanguageService.Instance}}"
                                                   Command="{Binding PlacementTarget.Tag.ViewTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   CommandParameter="{Binding}">
                                             <MenuItem.Style>
@@ -1392,12 +1392,17 @@
                                             </MenuItem.Style>
                                         </MenuItem>
                                         <!--导出图解模板 (未下载的官方图解隐藏)-->
-                                        <MenuItem Header="{Binding [export_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                        <MenuItem Header="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   CommandParameter="{Binding}">
                                             <MenuItem.Style>
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                     <Style.Triggers>
+                                                        <!-- 非开发者模式下隐藏导出 -->
+                                                        <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>

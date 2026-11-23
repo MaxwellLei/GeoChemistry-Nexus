@@ -339,6 +339,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>開発者モード</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>開発者モードの項目が一般設定に表示されました。</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>データ行を選択してください</value>
   </data>
@@ -5111,6 +5114,9 @@
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>図解テンプレートを表示（読み取り専用）</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>表示</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>プロット済み</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>プロット不可</value></data>

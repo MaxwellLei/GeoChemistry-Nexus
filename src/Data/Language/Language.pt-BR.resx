@@ -1404,6 +1404,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Modo de desenvolvedor</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>A opção Modo de desenvolvedor agora está disponível em Configurações gerais.</value>
+  </data>
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Não recomendado para quem não é desenvolvedor: pode causar problemas desnecessários.</value>
   </data>
@@ -4980,6 +4983,9 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>Ver modelo de diagrama (somente leitura)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>Ver</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Plotada</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>Não é possível plotar</value></data>

@@ -339,6 +339,9 @@
   <data name="developer_mode" xml:space="preserve">
     <value>Modo de desarrollador</value>
   </data>
+  <data name="developer_mode_entry_unlocked" xml:space="preserve">
+    <value>La opción Modo de desarrollador ya está disponible en Configuración general.</value>
+  </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Seleccione una fila de datos</value>
   </data>
@@ -5112,6 +5115,9 @@ Importado: {3} (v{4})
   </data>
   <data name="view_diagram_template" xml:space="preserve">
     <value>Ver plantilla de diagrama (solo lectura)</value>
+  </data>
+  <data name="ctx_view" xml:space="preserve">
+    <value>Ver</value>
   </data>
   <data name="data_row_status_ok" xml:space="preserve"><value>Graficada</value></data>
   <data name="data_row_status_error" xml:space="preserve"><value>No se puede graficar</value></data>
