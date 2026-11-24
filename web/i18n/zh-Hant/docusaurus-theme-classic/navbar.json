@@ -4,11 +4,11 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "My Site Logo",
+    "message": "網站標誌",
     "description": "The alt text of navbar logo"
   },
   "item.label.Tutorial": {
-    "message": "文檔",
+    "message": "文件",
     "description": "Navbar item with label Tutorial"
   },
   "item.label.GitHub": {

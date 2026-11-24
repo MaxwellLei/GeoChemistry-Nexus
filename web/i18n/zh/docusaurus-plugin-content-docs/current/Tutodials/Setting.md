@@ -2,6 +2,8 @@
 sidebar_position: 7
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # 设置
 
 软件的设置部分非常多样化，并将随着功能的扩展不断更新更多的个性化选项。
@@ -10,12 +12,18 @@ sidebar_position: 7
 
 设置主要分为四个部分：文件路径、国际化与个性化、消息通知和其他。下面是对主要设置的简要说明：
 
-![tutorial_settings1](/img/v0.7.1/tutorial_settings1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/setting.webp')}
+    alt="常规设置"
+    style={{width: '100%'}}
+  />
+</div>
 
 ### 🌍 语言 & 外观
 
--   **语言**：目前支持简体中文、繁体中文，英语、德语、西班牙语、日语、韩语和俄语。
--   **启动背景图像**：软件启动时显示的背景图像。
+-   **语言**：目前支持简体中文、繁体中文，英语、德语、西班牙语、日语、韩语、俄语、法语和葡萄牙语。
+-   **UI缩放**：为不同分辨率屏幕提供的不同缩放设置，一般默认即可。
 
 :::info
 
@@ -25,12 +33,11 @@ sidebar_position: 7
 
 ### 🗨️ 消息通知
 
--   **自动关闭时长**：软件运行期间消息通知弹窗自动关闭的时长。请注意，错误和警告消息需要手动关闭。
+-   **自动关闭时长**：软件运行期间消息通知弹窗自动关闭的时长。其中，错误和警告消息需要手动关闭。
 
 ### ⚙️ 其他
 
 -   **随系统启动**：软件将在系统启动时自动启动。
--   **开发者模式**：此模式为开发者提供调试功能。建议非开发者不要启用，以免误操作。
 -   **自动检查更新**：软件将在启动时自动检查更新。
 -   **退出方式**：软件可以通过两种方式退出：直接退出或最小化到系统托盘。如果你选择最小化到托盘，你可以右键点击托盘图标并选择退出来关闭软件。
 
@@ -43,10 +50,22 @@ sidebar_position: 7
 *   图表默认加载语言
 *   图表模板和分类结构的自动更新
 
-![tutorial_settings2](/img/v0.7.1/tutorial_settings2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/diagram_settings.webp')}
+    alt="图解设置"
+    style={{width: '100%'}}
+  />
+</div>
 
 ## 关于
 
-程序的关于页面。
+所有为本软件作出贡献的人员，均会在本页面予以记录并致以感谢。贡献形式包括但不限于软件功能建议、问题反馈、界面与翻译校对，以及其他有助于软件改进和发展的支持与帮助。
 
-![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/about.webp')}
+    alt="关于设置"
+    style={{width: '100%'}}
+  />
+</div>

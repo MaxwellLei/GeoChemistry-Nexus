@@ -12,6 +12,7 @@ public partial class EpmaLocalizationWindow : Window
         sheet.HostWindow = this;
         GeoChemistryNexus.Helpers.UiScaleHelper.Attach(this);
         GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+        GeoChemistryNexus.Helpers.ChildWindowPlacementHelper.Attach(this);
         sheet.CloseRequested += confirmed => DialogResult = confirmed;
     }
 

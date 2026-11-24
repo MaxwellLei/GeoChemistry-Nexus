@@ -2,44 +2,97 @@
 sidebar_position: 1
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # 🌍 Einführung
 
-**GeoChemistry Nexus ist eine integrierte Arbeitsumgebung für Geochemiker und Petrographen**: Datenvorverarbeitung, Erstellung diskriminativer Diagramme, Geothermometer- und CIPW-Berechnungen sowie PNG/SVG-Export werden in einer Oberfläche gebündelt; über ein Cloud-Template-Ökosystem lassen sich Diagramme und Algorithmen fortlaufend aktualisieren und leicht teilen.
+**GeoChemistry Nexus ist eine integrierte Forschungsplattform für Wissenschaftlerinnen und Wissenschaftler in Geochemie, Petrologie, Mineralogie und Lagerstättenkunde.**
 
-Lassen Sie uns in **5 Minuten** mit **GeoChemistry Nexus** beginnen ⏱️.
+Die Software führt gängige Forschungsberechnungen — Diskriminierungsdiagramme, Geothermobarometrie, mineralchemische EPMA-Berechnung, CIPW-Normberechnung und Niggli-Normberechnung — in einer gemeinsamen Arbeitsumgebung zusammen. So müssen Sie seltener zwischen verschiedenen Programmen wechseln, und die Verarbeitung, Berechnung und Visualisierung geologischer Daten wird zusammenhängender und effizienter.
+
+Über ein Cloud-Vorlagenökosystem unterstützt GeoChemistry Nexus außerdem die fortlaufende Aktualisierung, Weitergabe und Wiederverwendung von Diagrammvorlagen und Berechnungsalgorithmen. Die Werkzeuge können so zu einer offenen, flexiblen und dauerhaft nutzbaren geowissenschaftlichen Arbeitsumgebung wachsen.
+
+**In 3 Minuten mit GeoChemistry Nexus beginnen** ⏱️.
 
 ## Voraussetzungen 🛠️
 
-Vorab sei darauf hingewiesen: **Die Software ist derzeit ausschließlich für Windows-Nutzer verfügbar.**
+**GeoChemistry Nexus unterstützt derzeit nur Windows.** Native Versionen für macOS und Linux gibt es noch nicht.
 
-Derzeit liegen keine ausführlichen Anleitungen für Linux und Mac vor. Es wird empfohlen, das Programm vorrangig in einer virtuellen Maschine auszuführen. Wir planen, in Zukunft auf `Avalonia` umzusteigen, um vollständige plattformübergreifende Kompatibilität zu erreichen. 📅
+- **Windows**: Windows 7 oder höher
+- **macOS / Linux**: Es gibt noch keine native Ausführung. Sie können GeoChemistry Nexus in einer virtuellen Windows-Maschine versuchen. Kompatibilität und Leistung hängen von dieser virtuellen Maschine ab.
 
-:::tip
+### 🚀 Plan für plattformübergreifende Unterstützung
 
-**Windows-Nutzer**: Bitte stellen Sie sicher, dass Ihre Betriebssystemversion mindestens Windows 7 ist.
+Wir planen die Anpassung an weitere Plattformen und werden eine Migration auf Basis von `Avalonia UI` prüfen, um macOS, Linux und weitere Betriebssysteme schrittweise zu unterstützen.
 
-:::
+## Loslegen 🚀
 
-## Los geht's 🚀
+[Klicken Sie hier](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases), um die Download-Seite zu öffnen. Wählen Sie eine passende Version und laden Sie das Installationspaket herunter.
 
-[Klicken Sie hier](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases), um die Download-Seite aufzurufen. Wählen Sie die passende Version, laden Sie sie herunter und installieren Sie sie. Doppelklicken Sie anschließend auf `GeoChemistry Nexus.exe` 🖱️.
+Folgen Sie nach dem Download dem Installationsassistenten. Nach erfolgreicher Installation starten Sie die Software mit einem Doppelklick auf `GeoChemistry Nexus.exe`. 🖱️
 
-![Benutzeroberflächen-Beispiel](/img/v0.7.1/intro_user_interface_example1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_1.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
 
-![Benutzeroberflächen-Beispiel](/img/v0.7.1/intro_user_interface_example2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_2.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
 
-![Benutzeroberflächen-Beispiel](/img/v0.7.1/intro_user_interface_example3.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_3.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
 
-![Benutzeroberflächen-Beispiel](/img/v0.7.1/intro_user_interface_example4.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_4.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
 
-![Benutzeroberflächen-Beispiel](/img/v0.7.1/intro_user_interface_example5.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_5.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
+
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_6.webp')}
+    alt="Beispiel der Benutzeroberfläche"
+    style={{width: '100%'}}
+  />
+</div>
 
 ----
 
-Viel Spaß beim Entdecken! 🎉 Wenn Sie Fragen haben, treten Sie bitte unserer Community bei und kontaktieren Sie mich über die untenstehenden Kanäle oder reichen Sie ein Issue auf [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus) ein.
+Viel Freude beim Erkunden! 🎉 Bei Fragen treten Sie der Community bei, kontaktieren Sie mich unten oder öffnen Sie ein Issue auf [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus).
 
 | Kanal      | Information                   |
 | ---------- | ----------------------------- |
-| 📧 E-Mail   | `maxwelllei@qq.com`           |
+| 📧 E-Mail  | `maxwelllei@qq.com`           |
 | 💬 QQ-Gruppe | `1076647740`                |
 | 🎮 Discord | https://discord.gg/mRm8dbwa4W |
+
+### Softwarefehler und Rückmeldungen 💬
+
+GeoChemistry Nexus wird weiterhin entwickelt und verbessert. Als Entwickler übersehe ich zwangsläufig Fälle oder mache Fehler bei der Umsetzung. In Funktionsdesign, Berechnungslogik, Datenverarbeitung und Bedienung können noch unentdeckte Probleme stecken. Ich bemühe mich um Zuverlässigkeit und rechnerische Genauigkeit, kann aber nicht zusichern, dass die Software in jeder Situation fehlerfrei ist.
+
+Wenn Sie einen Bug, eine Berechnungsanomalie, ein unplausibles Ergebnis oder einen besseren Funktionsvorschlag finden, melden Sie das bitte über GitHub Issues. Jede Rückmeldung ist ein wichtiger Antrieb für die weitere Verbesserung von GeoChemistry Nexus.
+
+**Die Software wird nur mit der Hilfe der Menschen besser, die sie verwenden. Vielen Dank für Ihr Verständnis, Ihre Unterstützung und Ihre Mitarbeit!**

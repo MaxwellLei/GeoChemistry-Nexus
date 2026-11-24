@@ -525,6 +525,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 设置标题
             plot.Axes.Title.Label.Text = Title;
+            plot.Axes.Title.Label.FontName = DiagramFontHelper.Detect(Title, plot.Axes.Title.Label.FontName);
 
             // 获取有效的元素列表：启用标准化时按方案中存在参考值过滤，禁用时使用全部已选元素
             var validElements = IsNormalizationEnabled

@@ -22,28 +22,38 @@ namespace GeoChemistryNexus.Helpers
 
         public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize)
         {
-            ApplyStyle(items);
+            ApplyStyle(legend, items);
             var layout = _inner.GetLayout(legend, items, maxSize);
-            ApplyStyle(layout.LegendItems);
+            ApplyStyle(legend, layout.LegendItems);
             return layout;
         }
 
-        private void ApplyStyle(LegendItem[]? items)
+        private void ApplyStyle(Legend legend, LegendItem[]? items)
         {
             if (items == null)
             {
                 return;
             }
 
+            string legendFont = string.IsNullOrWhiteSpace(legend.FontName) ? Fonts.Default : legend.FontName;
+
             foreach (var item in items)
             {
                 item.LabelBold = Bold;
                 item.LabelItalic = Italic;
+
+                // 图例文本来自数据（样品 / 分类名称），可能含有图例字体无法显示的字符：
+                // 仅在图例字体不能显示该条目时，才按内容改用自动检测的字体
+                string resolved = DiagramFontHelper.Resolve(legendFont, item.LabelText);
+                if (!string.Equals(resolved, legendFont, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    item.LabelFontName = resolved;
+                }
             }
         }
 
         /// <summary>
-        /// 给图例设置粗体 / 斜体；样式全部关闭且尚未包装过布局时不改动图例，保持 ScottPlot 默认行为。
+        /// 给图例设置粗体 / 斜体，并包装布局以便按图例条目内容自动选择字体。
         /// </summary>
         public static void Apply(Legend legend, bool bold, bool italic)
         {
@@ -51,11 +61,6 @@ namespace GeoChemistryNexus.Helpers
             {
                 styled.Bold = bold;
                 styled.Italic = italic;
-                return;
-            }
-
-            if (!bold && !italic)
-            {
                 return;
             }
 

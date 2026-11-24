@@ -6,7 +6,13 @@
 #define MyAppVersion "0.9.0"
 
 #define PublishDir "..\src\_publish\win-x64"
-#define MyAppOutputBase "GeoChemistryNexus-Setup-" + MyAppVersion + "-x64"
+; 精简版（不内置 .NET 运行时）：由 GeoChemistryNexus-Lite.iss 先 #define LITE 再包含本脚本，
+; 或命令行 ISCC /DLITE GeoChemistryNexus.iss。输出文件名带 -lite 后缀，须与客户端 OfficialContentEndpoints.LiteInstallerAssetSuffix 一致。
+#ifdef LITE
+  #define MyAppOutputBase "GeoChemistryNexus-Setup-" + MyAppVersion + "-x64-lite"
+#else
+  #define MyAppOutputBase "GeoChemistryNexus-Setup-" + MyAppVersion + "-x64"
+#endif
 ; 与 GeoChemistryNexus.csproj 的 TargetFramework（net10.0-windows）保持一致；升级运行时补丁版本时只需改这里和 redist 中的文件
 #define DotNetRedistFile "windowsdesktop-runtime-10.0.15-win-x64.exe"
 
@@ -112,13 +118,29 @@ brazilianportuguese.DeleteUserData=Excluir também os dados locais do usuário
 brazilianportuguese.UninstallContinue=Continuar
 brazilianportuguese.UninstallCancel=Cancelar
 
+#ifdef LITE
+; 精简版在未安装 .NET 10 桌面运行时的电脑上提示改用完整版安装包
+english.LiteRuntimeMissing=This is the Lite installer, which does not include the .NET 10 Desktop Runtime, and the runtime was not found on this computer.%n%nPlease download and run the full installer (the one without "lite" in its file name) instead.%n%nOpen the download page now?
+chinesesimp.LiteRuntimeMissing=这是精简版安装包，不包含 .NET 10 桌面运行时，而本机未检测到该运行时。%n%n请改为下载并运行完整版安装包（文件名中不带 "lite"）。%n%n是否现在打开下载页面？
+chinesetrad.LiteRuntimeMissing=這是精簡版安裝程式，不包含 .NET 10 桌面執行階段，而本機未偵測到該執行階段。%n%n請改為下載並執行完整版安裝程式（檔名中不含 "lite"）。%n%n是否現在開啟下載頁面？
+german.LiteRuntimeMissing=Dies ist das Lite-Installationsprogramm. Es enthält die .NET 10 Desktop Runtime nicht, und die Runtime wurde auf diesem Computer nicht gefunden.%n%nBitte laden Sie stattdessen das vollständige Installationsprogramm herunter (ohne "lite" im Dateinamen).%n%nDie Download-Seite jetzt öffnen?
+french.LiteRuntimeMissing=Ceci est l'installateur allégé (Lite), qui n'inclut pas le .NET 10 Desktop Runtime, et ce runtime est introuvable sur cet ordinateur.%n%nVeuillez télécharger et exécuter l'installateur complet (celui sans "lite" dans le nom du fichier).%n%nOuvrir la page de téléchargement maintenant ?
+spanish.LiteRuntimeMissing=Este es el instalador Lite, que no incluye el .NET 10 Desktop Runtime, y el runtime no se encontró en este equipo.%n%nDescargue y ejecute en su lugar el instalador completo (el que no lleva "lite" en el nombre del archivo).%n%n¿Abrir la página de descarga ahora?
+russian.LiteRuntimeMissing=Это облегчённый (Lite) установщик: он не содержит .NET 10 Desktop Runtime, а на этом компьютере среда выполнения не найдена.%n%nСкачайте и запустите полный установщик (без "lite" в имени файла).%n%nОткрыть страницу загрузки сейчас?
+japanese.LiteRuntimeMissing=これは .NET 10 デスクトップ ランタイムを含まない Lite 版インストーラーで、このコンピューターにはランタイムが見つかりませんでした。%n%n代わりに完全版インストーラー（ファイル名に "lite" を含まないもの）をダウンロードして実行してください。%n%nダウンロード ページを今すぐ開きますか？
+korean.LiteRuntimeMissing=이 설치 프로그램은 .NET 10 데스크톱 런타임이 포함되지 않은 Lite 버전이며, 이 컴퓨터에서 런타임을 찾을 수 없습니다.%n%n대신 전체 버전 설치 프로그램(파일 이름에 "lite"가 없는 것)을 다운로드하여 실행하세요.%n%n지금 다운로드 페이지를 여시겠습니까?
+brazilianportuguese.LiteRuntimeMissing=Este é o instalador Lite, que não inclui o .NET 10 Desktop Runtime, e o runtime não foi encontrado neste computador.%n%nBaixe e execute o instalador completo (aquele sem "lite" no nome do arquivo).%n%nAbrir a página de download agora?
+#endif
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 ; 路径相对于本 .iss 文件所在目录（installer\）
 Source: "{#PublishDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "Templates.db,Geothermometer.db,GraphMapList.json,GeoT-List.json,Logs\*,portable.flag"
+#ifndef LITE
 Source: "redist\{#DotNetRedistFile}"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: not IsDotNet10DesktopInstalled
+#endif
 
 [InstallDelete]
 Type: files; Name: "{app}\FileTypeIcons\diagram-template.ico"
@@ -138,7 +160,9 @@ Root: HKLM; Subkey: "Software\Classes\GeoChemistryNexus.DiagramTemplate"; Flags:
 Root: HKLM; Subkey: "Software\Classes\GeoChemistryNexus.Geothermometer"; Flags: deletekey
 
 [Run]
+#ifndef LITE
 Filename: "{tmp}\{#DotNetRedistFile}"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing .NET 10 Desktop Runtime..."; Check: not IsDotNet10DesktopInstalled; Flags: waituntilterminated
+#endif
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
@@ -165,6 +189,26 @@ begin
     end;
   end;
 end;
+
+#ifdef LITE
+{ 精简版不内置运行时：缺少运行时就在复制任何文件之前中止，并引导用户去下载完整版 }
+function InitializeSetup(): Boolean;
+var
+  ErrorCode: Integer;
+begin
+  Result := True;
+  if not IsDotNet10DesktopInstalled then
+  begin
+    { 静默安装不弹窗，直接以失败退出 }
+    if not WizardSilent then
+    begin
+      if MsgBox(ExpandConstant('{cm:LiteRuntimeMissing}'), mbError, MB_YESNO) = IDYES then
+        ShellExec('open', '{#MyAppURL}/releases/latest', '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
+    end;
+    Result := False;
+  end;
+end;
+#endif
 
 const
   { 品牌色 #3C4A98、进度条底色 #DFE2EE、分隔线色 #E3E5EE（Delphi 颜色为 BGR 顺序） }

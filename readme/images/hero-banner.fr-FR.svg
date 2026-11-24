@@ -1,0 +1,60 @@
+<svg width="1000" height="208" viewBox="0 0 1000 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GeoChemistry Nexus Hero Banner">
+  <defs>
+    <linearGradient id="heroLightBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#f6f8ff"/>
+      <stop offset="100%" stop-color="#eef3ff"/>
+    </linearGradient>
+    <radialGradient id="softGlowA" cx="16%" cy="50%" r="48%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gnTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4e5bc0"/>
+      <stop offset="100%" stop-color="#2e3a86"/>
+    </linearGradient>
+    <pattern id="lightGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#64748b" stroke-opacity="0.055" stroke-width="1"/>
+    </pattern>
+    <filter id="tileShadow" x="-15%" y="-15%" width="130%" height="135%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1e293b" flood-opacity="0.11"/>
+    </filter>
+  </defs>
+
+  <rect x="1" y="1" width="998" height="206" rx="16" fill="url(#heroLightBg)" stroke="#dce4f4" stroke-width="1.3"/>
+  <rect x="1" y="1" width="998" height="206" rx="16" fill="url(#lightGrid)"/>
+  <rect x="1" y="1" width="998" height="206" rx="16" fill="url(#softGlowA)"/>
+
+  <g transform="translate(792, 16) scale(0.78)" opacity="0.42" stroke="#94a3b8" fill="none">
+    <polygon points="110,18 20,185 200,185" stroke-width="1.5"/>
+    <polygon points="110,56 54,162 166,162" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="65" y1="102" x2="155" y2="102" stroke-width="1"/>
+    <line x1="110" y1="18" x2="110" y2="185" stroke-width="1" stroke-dasharray="3 4"/>
+    <circle cx="96" cy="126" r="4.2" fill="#4f46e5" stroke="none" opacity="0.75"/>
+    <circle cx="124" cy="112" r="3.6" fill="#0ea5e9" stroke="none" opacity="0.75"/>
+    <circle cx="136" cy="142" r="4.2" fill="#0d9488" stroke="none" opacity="0.75"/>
+    <circle cx="82" cy="148" r="3.4" fill="#f59e0b" stroke="none" opacity="0.75"/>
+    <text x="110" y="10" fill="#64748b" stroke="none" font-size="10.5" text-anchor="middle" font-family="Consolas, monospace">Q-A-P · T-P-X</text>
+  </g>
+
+  <g transform="translate(52, 29)">
+    <rect x="-6" y="-6" width="136" height="162" rx="24" fill="#ffffff" fill-opacity="0.75" stroke="#c7d2fe" stroke-width="1.2"/>
+    <rect width="124" height="150" rx="20" fill="url(#gnTile)" filter="url(#tileShadow)"/>
+    <text x="13" y="22" fill="#e0e7ff" font-size="10.5" font-family="Consolas, monospace" font-weight="600">v0.9.0</text>
+    <text x="111" y="22" fill="#c7d2fe" font-size="10" font-family="Consolas, monospace" text-anchor="end">GPL-3.0</text>
+    <rect x="35" y="32" width="54" height="54" rx="13" fill="#ffffff"/>
+    <g transform="translate(40, 37) scale(0.228)" stroke-linejoin="round" stroke-width="5">
+      <polygon points="70,38 137,38 128,93 53,144 19,132 20,98" fill="#4353c9" stroke="#4353c9"/>
+      <polygon points="152,37 175,105 160,120 141,94" fill="#2c3880" stroke="#2c3880"/>
+      <polygon points="131,105 148,127 106,159 69,148" fill="#6e80e2" stroke="#6e80e2"/>
+    </g>
+    <text x="14" y="122" fill="#ffffff" font-size="28" font-weight="800" font-family="Segoe UI, Inter, sans-serif">Gn</text>
+    <text x="14" y="139" fill="#dbeafe" font-size="9.5" font-family="Segoe UI, sans-serif">GeoChemistry Nexus</text>
+  </g>
+
+  <g transform="translate(212, 56)">
+    <text x="0" y="34" fill="#0f172a" font-size="40" font-weight="800" letter-spacing="-0.6" font-family="Segoe UI, Inter, Arial, sans-serif">GeoChemistry Nexus</text>
+    <text x="0" y="72" fill="#334155" font-size="15.2" font-weight="600" font-family="Segoe UI, Inter, Arial, sans-serif">Atelier ouvert de géochimie &amp; minéralogie : <tspan fill="#3645d8" font-weight="750">Diagrammes · Calcul · Cloud</tspan></text>
+    <text x="0" y="102" fill="#64748b" font-size="12.2" font-family="Segoe UI, Inter, Arial, sans-serif">Réunit tableurs, scripts et logiciels de dessin autour d’un écosystème cloud évolutif de modèles</text>
+  </g>
+</svg>

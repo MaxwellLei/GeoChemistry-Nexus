@@ -4,27 +4,19 @@
     "description": "The label for version current"
   },
   "sidebar.tutorialSidebar.category.📝 Tutorial": {
-    "message": "📝 Anleitung",
+    "message": "📝 Grundlagentutorials",
     "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.📝 Tutorial.link.generated-index.title": {
-    "message": "Anleitungsübersicht",
+    "message": "Überblick über die Grundlagentutorials",
     "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials": {
-    "message": "🌟 Fortgeschrittene Anleitungen",
-    "description": "The label for category 🌟 Advanced Tutorials in sidebar tutorialSidebar"
+    "message": "🌟 Fortgeschrittene Tutorials",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
-    "message": "Anleitungsübersicht",
-    "description": "The generated-index page title for category 🌟 Advanced Tutorials in sidebar tutorialSidebar"
-  },
-  "sidebar.tutorialSidebar.category.💻 Developer Guide": {
-    "message": "💻 Entwicklerhandbuch",
-    "description": "The label for category 💻 Developer Guide in sidebar tutorialSidebar"
-  },
-  "sidebar.tutorialSidebar.category.💻 Developer Guide.link.generated-index.title": {
-    "message": "Entwicklerhandbuch-Übersicht",
-    "description": "The generated-index page title for category 💻 Developer Guide in sidebar tutorialSidebar"
+    "message": "Überblick über die fortgeschrittenen Tutorials",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
   }
 }

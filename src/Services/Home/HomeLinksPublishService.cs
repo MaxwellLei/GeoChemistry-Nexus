@@ -178,7 +178,8 @@ namespace GeoChemistryNexus.Services
             string? announcement,
             string? minimumSupportedVersion = null,
             string? latestAppVersion = null,
-            HomeAnnouncementCatalog? announcementsCatalog = null)
+            HomeAnnouncementCatalog? announcementsCatalog = null,
+            AppInstallerReleaseInfo? installerInfo = null)
         {
             if (string.IsNullOrWhiteSpace(outputDir))
                 throw new ArgumentException("Output directory is required.", nameof(outputDir));
@@ -192,6 +193,8 @@ namespace GeoChemistryNexus.Services
                 serverInfo.MinimumSupportedVersion = minimumSupportedVersion;
             if (latestAppVersion != null)
                 serverInfo.LatestAppVersion = latestAppVersion;
+            // 安装包校验值与最新版本号一起发布；后续主页链接/图解导出从暂存目录合并 server_info 时会原样保留
+            installerInfo?.ApplyTo(serverInfo);
 
             // 多语言公告目录：写入 Announcements.json 并把 hash 记入 server_info，客户端据此增量同步
             string announcementsPath = string.Empty;

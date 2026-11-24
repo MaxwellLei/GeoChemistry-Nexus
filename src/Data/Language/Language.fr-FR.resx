@@ -993,9 +993,6 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Sélectionnez d'abord un groupe.</value>
   </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>L'éditeur des catégories de diagrammes a été rechargé.</value>
-  </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>L'éditeur d'étiquettes minérales de géothermobaromètre a été rechargé.</value>
   </data>
@@ -1078,7 +1075,7 @@
     <value>Forcer la mise à jour</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Passer en modèle de diagramme en ligne</value>
+    <value>Mettre à niveau</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Retirer le modèle de diagramme en ligne</value>
@@ -1418,9 +1415,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Échec de la modification : </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>Les catégories de diagrammes ont changé ; cette publication inclura les fichiers d'index des diagrammes.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>Les étiquettes minérales GeoT ont changé ; cette publication inclura les fichiers d’index des géothermobaromètres.</value>
@@ -1791,7 +1785,7 @@
     <value>Supprimer</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Passer en modèle de géothermobaromètre en ligne</value>
+    <value>Mettre à niveau</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Appliquer</value>
@@ -4522,6 +4516,8 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   <data name="epma_editor_id_exists" xml:space="preserve"><value>Cet identifiant de modèle existe déjà. Choisissez-en un nouveau dans les informations de base.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Modèle personnel</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Modèle officiel</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>En ligne</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>Mes</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Modifier le modèle de calcul</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Un modèle officiel peut seulement être consulté, copié et essayé. Activez le mode développeur pour le modifier.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>L’identifiant unique ne peut pas être modifié lors de l’édition d’un modèle existant.</value></data>
@@ -4544,7 +4540,7 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   <data name="epma_library_delete" xml:space="preserve"><value>Supprimer</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Exporter</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Passer en modèle de calcul en ligne</value>
+    <value>Mettre à niveau</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Retirer le modèle de calcul en ligne</value>
@@ -4995,4 +4991,192 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   <data name="table_col_sample" xml:space="preserve"><value>Échantillon</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Groupe</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>Liste mise à jour : {0} ajoutés / {1} à mettre à jour / {2} retirés</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>Animation de transition de page</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>Jouer une animation fluide lors du changement de page ; l’activation peut affecter les performances</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>Il se trouve déjà à cet emplacement.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Dossier créé.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Supprimer le dossier</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>Supprimer le dossier « {0} » ?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>Supprimer le dossier « {0} » et les {1} modèle(s) qu'il contient ? Cette action est irréversible.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Dossier supprimé.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>Un dossier ne peut pas être déplacé dans lui-même ni dans l'un de ses sous-dossiers.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Déplacement effectué.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Déplacer vers</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Déplacer vers…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Réduire</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Créer dans : {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Actuel : {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Saisissez le nom du dossier pour chaque langue. Les langues laissées vides reprennent un nom existant.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>Un dossier du même nom existe déjà ici.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Développer</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Les langues laissées vides utilisent un nom existant.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} renseignés</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Noms saisis pour {0} langues</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Nom du dossier</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Facultatif : nommer le dossier séparément pour les autres langues</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Noms localisés</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Saisir un nom de dossier</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Veuillez saisir un nom de dossier.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>Langue de l'interface</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>Nouveau dossier…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>Nouveau sous-dossier</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>Nouveau diagramme ici</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>Nouveau dossier</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>Le dossier n'existe plus. Actualisez, puis réessayez.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Déplacer</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Déplacement du dossier</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Déplacement du diagramme</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Élément à déplacer</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>Aucun dossier ne correspond à « {0} »</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>Le dossier racine ne peut pas être sélectionné. Veuillez choisir un dossier.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Rechercher des dossiers…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Emplacement sélectionné</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Choisir un dossier de destination</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Actuel</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>En déplacement</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Déplacer vers</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>{0} diagramme(s)</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Renommer</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Dossier renommé.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Renommer le dossier</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Veuillez sélectionner un dossier.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Seuls les dossiers officiels vides peuvent être supprimés.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Téléchargez tous les modèles de ce dossier avant de le modifier.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>Le même dossier des modèles de diagramme en ligne contient déjà un modèle de ce nom. Renommez-le ou déplacez-le avant de le passer en ligne.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Nom du modèle</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>Un modèle du même nom existe déjà dans ce dossier.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>p. ex. Auteur (année) Nom du diagramme</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Veuillez saisir un nom de modèle.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Emplacement d'enregistrement</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Choisir…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Choisir l'emplacement d'enregistrement</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>Aucun dossier sélectionné</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Veuillez choisir où enregistrer le modèle.</value>
+  </data>
 </root>

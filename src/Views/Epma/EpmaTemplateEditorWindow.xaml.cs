@@ -41,6 +41,7 @@ public partial class EpmaTemplateEditorWindow : Window, INotificationCenterHost
         });
         GeoChemistryNexus.Helpers.UiScaleHelper.Attach(this);
         GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+        GeoChemistryNexus.Helpers.ChildWindowPlacementHelper.Attach(this);
         SourceInitialized += (_, _) =>
         {
             // Let the compositor draw the native shadow outside the window. No bitmap effect wraps the editor.

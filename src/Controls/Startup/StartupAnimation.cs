@@ -844,7 +844,7 @@ public sealed class StartupAnimation : FrameworkElement
 			{
 				Vector val4 = g.Position - rock;
 				return val4.LengthSquared;
-			});
+			})!;
 			string[] array2 = MineralElements[grain.Mineral];
 			string key = array2[_random.Next(array2.Length)];
 			Point3D point3D = _sites[num2 % _sites.Count];
@@ -909,7 +909,7 @@ public sealed class StartupAnimation : FrameworkElement
 	{
 		size *= ((size >= 40.0) ? 1.1 : 1.3);
 		(string, double, bool, bool, double, bool, int) key = (value, size, bold, mono, maxWidth, wrap, align);
-		if (!_texts.TryGetValue(key, out FormattedText value2))
+		if (!_texts.TryGetValue(key, out FormattedText? value2))
 		{
 			if (_texts.Count > 220)
 			{
@@ -960,7 +960,7 @@ public sealed class StartupAnimation : FrameworkElement
 	{
 		byte b = (byte)Math.Min(255.0, Math.Round(Clamp(alpha) * 255.0 / 8.0) * 8.0);
 		uint key = (uint)((b << 24) | (color.R << 16) | (color.G << 8) | color.B);
-		if (!_brushes.TryGetValue(key, out SolidColorBrush value))
+		if (!_brushes.TryGetValue(key, out SolidColorBrush? value))
 		{
 			if (_brushes.Count > 12000)
 			{

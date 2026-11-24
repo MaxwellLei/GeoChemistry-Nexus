@@ -53,7 +53,6 @@ namespace GeoChemistryNexus.ViewModels
         public const string SectionEpma = "epma";
         public const string SectionHomeLinks = "homeLinks";
         public const string SectionAnnouncement = "announcement";
-        public const string SectionPlotCategories = "plotCategories";
         public const string SectionGeoTCategories = "geotCategories";
 
         [ObservableProperty]
@@ -101,12 +100,6 @@ namespace GeoChemistryNexus.ViewModels
             set { if (value) SelectedSection = SectionAnnouncement; }
         }
 
-        public bool IsPlotCategoriesSection
-        {
-            get => SelectedSection == SectionPlotCategories;
-            set { if (value) SelectedSection = SectionPlotCategories; }
-        }
-
         public bool IsGeoTCategoriesSection
         {
             get => SelectedSection == SectionGeoTCategories;
@@ -122,7 +115,6 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(IsEpmaSection));
             OnPropertyChanged(nameof(IsHomeLinksSection));
             OnPropertyChanged(nameof(IsAnnouncementSection));
-            OnPropertyChanged(nameof(IsPlotCategoriesSection));
             OnPropertyChanged(nameof(IsGeoTCategoriesSection));
             OnPropertyChanged(nameof(IsLibrarySection));
             OnPropertyChanged(nameof(SectionTitle));
@@ -134,7 +126,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             SectionAnnouncement => "公告与版本",
             SectionHomeLinks => "导航链接",
-            SectionDiagrams => "图解与分类",
+            SectionDiagrams => "图解",
             SectionGeothermometers => "温压计与矿物分类",
             SectionEpma => "EPMA 计算模板",
             SectionTargets => "发布目标",
@@ -175,7 +167,9 @@ namespace GeoChemistryNexus.ViewModels
         public string HomeLinksReleaseChip => !PublishHomeLinks ? "不发布" : HomeLinksHasRemoteChanges ? "有改动" : "纳入";
 
         public string DiagramReleaseStatus =>
-            $"新增 {DiagramNewCount} · 更新 {DiagramUpdatedCount} · 移除 {DiagramRemovedCount} · 未变化 {DiagramUnchangedCount}";
+            DiagramPathChangedCount > 0
+                ? $"新增 {DiagramNewCount} · 更新 {DiagramUpdatedCount}（含路径变更 {DiagramPathChangedCount}） · 移除 {DiagramRemovedCount} · 未变化 {DiagramUnchangedCount}"
+                : $"新增 {DiagramNewCount} · 更新 {DiagramUpdatedCount} · 移除 {DiagramRemovedCount} · 未变化 {DiagramUnchangedCount}";
 
         public string DiagramReleaseChip =>
             !PublishDiagrams ? "不发布" : DiagramPackHasChanges ? "有改动" : "纳入";
@@ -241,12 +235,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public bool HasSelectedHomeLink => SelectedHomeLink != null;
 
-        public bool HasSelectedPlotCategory => SelectedPlotCategoryEntry != null;
-
         public bool HasSelectedMineralCategory => SelectedGeoTMineralEntry != null;
-
-        partial void OnSelectedPlotCategoryEntryChanged(LocalizedCategoryEntryViewModel? value)
-            => OnPropertyChanged(nameof(HasSelectedPlotCategory));
 
         partial void OnSelectedGeoTMineralEntryChanged(LocalizedCategoryEntryViewModel? value)
             => OnPropertyChanged(nameof(HasSelectedMineralCategory));
@@ -286,11 +275,120 @@ namespace GeoChemistryNexus.ViewModels
                 SelectedPreviewFilter = filter;
         }
 
+        /// <summary>
+        /// 图解的文件夹结构只在图解页右键编辑；这里回到图解页去改。
+        /// </summary>
         [RelayCommand]
-        private void SetPlotCategoryLevel(string? level)
+        private void OpenDiagramPage()
         {
-            if (!string.IsNullOrWhiteSpace(level) && PlotCategoryLevelKeys.Contains(level))
-                SelectedPlotCategoryLevel = level;
+            WeakReferenceMessenger.Default.Send(new OpenDiagramPageRequestMessage());
+        }
+
+        /// <summary>
+        /// 导出全部官方图解文件夹的多语言名称，方便在外部批量翻译。
+        /// </summary>
+        [RelayCommand]
+        private async Task ExportDiagramFolderNames()
+        {
+            if (!EnsureDeveloperMode()) return;
+            if (IsBusy) return;
+
+            string? path = await FileHelper.GetSaveFilePath2Async(
+                "导出图解文件夹名称",
+                FileDialogFilterHelper.JsonOnly,
+                ".json",
+                "DiagramFolderNames.json",
+                OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            try
+            {
+                var file = await Task.Run(() => TemplateFolderService.ExportFolderNames(isCustom: false));
+                if (file.Folders.Count == 0)
+                {
+                    ShowWarning("没有可导出的文件夹。");
+                    return;
+                }
+
+                PublisherConfigHelper.ExportRelaxed(file, path);
+                Log($"已导出 {file.Folders.Count} 个图解文件夹的名称");
+                ShowSuccess($"已导出 {file.Folders.Count} 个文件夹");
+            }
+            catch (Exception ex)
+            {
+                Log($"导出图解文件夹名称失败: {ex.Message}");
+                ShowError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 导入外部翻译好的文件夹多语言名称，按 key 匹配并改写官方图解的路径。
+        /// </summary>
+        [RelayCommand]
+        private async Task ImportDiagramFolderNames()
+        {
+            if (!EnsureDeveloperMode()) return;
+            if (IsBusy) return;
+
+            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            TemplateFolderNameFile? file = null;
+            try
+            {
+                string? json = JsonHelper.ReadJsonFile(path);
+                if (!string.IsNullOrWhiteSpace(json))
+                    file = JsonHelper.Deserialize<TemplateFolderNameFile>(json);
+            }
+            catch (Exception ex)
+            {
+                Log($"读取图解文件夹名称失败: {ex.Message}");
+            }
+
+            if (file?.Folders == null || file.Folders.Count == 0)
+            {
+                ShowWarning("这个文件不是图解文件夹名称。");
+                return;
+            }
+
+            bool confirmed = await ShowConfirmAsync(
+                "导入会按文件夹改写官方图解的路径，涉及的图解发布时会重新打包，用户端会重新下载。继续吗？",
+                "取消",
+                "导入");
+            if (!confirmed)
+                return;
+
+            TemplateFolderResult result;
+            IsBusy = true;
+            try
+            {
+                result = await Task.Run(() => TemplateFolderService.ImportFolderNames(isCustom: false, file));
+            }
+            catch (Exception ex)
+            {
+                Log($"导入图解文件夹名称失败: {ex.Message}");
+                ShowError(ex.Message);
+                return;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (!result.Success)
+            {
+                Log($"导入图解文件夹名称失败: {result.Message}");
+                ShowWarning(result.Message);
+                return;
+            }
+
+            // 通知图解页刷新模板库，再重算发布预览
+            WeakReferenceMessenger.Default.Send(new DiagramDatabaseResetMessage());
+            Log(result.Message);
+            ShowSuccess(result.Message);
+            await RefreshPreview();
         }
 
         private int _publishExportStepCount;
@@ -380,6 +478,16 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int diagramUnchangedCount;
 
+        /// <summary>更新项中路径变化的数量（DiagramUpdatedCount 的子集）。</summary>
+        [ObservableProperty]
+        private int diagramPathChangedCount;
+
+        /// <summary>官方图解的文件夹结构预览（只读）。</summary>
+        public ObservableCollection<PublishPathNode> DiagramPathTree { get; } = new();
+
+        [ObservableProperty]
+        private bool hasDiagramPathTree;
+
         [ObservableProperty]
         private int geoNewCount;
 
@@ -422,13 +530,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public ContentLanguageContext HomeLinksLanguageContext { get; } = new();
 
-        public ContentLanguageContext PlotCategoriesLanguageContext { get; } = new();
-
         public ContentLanguageContext GeoTMineralCategoriesLanguageContext { get; } = new();
-
-        public IReadOnlyList<string> PlotCategoryLevelKeys { get; } = new[] { "Level1", "Level2", "Level3" };
-
-        public ObservableCollection<LocalizedCategoryEntryViewModel> PlotCategoryEntries { get; } = new();
 
         public ObservableCollection<LocalizedCategoryEntryViewModel> GeoTMineralEntries { get; } = new();
 
@@ -438,46 +540,22 @@ namespace GeoChemistryNexus.ViewModels
         private string selectedHomeLinksLanguage = AppCultureRegistry.DefaultContentLanguage;
 
         [ObservableProperty]
-        private string selectedPlotCategoriesLanguage = AppCultureRegistry.DefaultContentLanguage;
-
-        [ObservableProperty]
         private string selectedGeoTMineralCategoriesLanguage = AppCultureRegistry.DefaultContentLanguage;
-
-        [ObservableProperty]
-        private string selectedPlotCategoryLevel = "Level1";
-
-        [ObservableProperty]
-        private LocalizedCategoryEntryViewModel? selectedPlotCategoryEntry;
 
         [ObservableProperty]
         private LocalizedCategoryEntryViewModel? selectedGeoTMineralEntry;
 
         [ObservableProperty]
-        private int plotCategoryEntryCount;
-
-        [ObservableProperty]
         private int geoTMineralEntryCount;
-
-        private readonly Dictionary<string, ObservableCollection<LocalizedCategoryEntryViewModel>> _plotCategoryEntriesByLevel = new();
 
         partial void OnSelectedHomeLinksLanguageChanged(string value)
         {
             HomeLinksLanguageContext.ContentLanguage = value;
         }
 
-        partial void OnSelectedPlotCategoriesLanguageChanged(string value)
-        {
-            PlotCategoriesLanguageContext.ContentLanguage = value;
-        }
-
         partial void OnSelectedGeoTMineralCategoriesLanguageChanged(string value)
         {
             GeoTMineralCategoriesLanguageContext.ContentLanguage = value;
-        }
-
-        partial void OnSelectedPlotCategoryLevelChanged(string value)
-        {
-            RefreshPlotCategoryEntriesForSelectedLevel();
         }
 
         private bool _suppressHomeLinksTracking;
@@ -570,8 +648,6 @@ namespace GeoChemistryNexus.ViewModels
 
             SelectedHomeLinksLanguage = AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage);
             HomeLinksLanguageContext.ContentLanguage = SelectedHomeLinksLanguage;
-            SelectedPlotCategoriesLanguage = SelectedHomeLinksLanguage;
-            PlotCategoriesLanguageContext.ContentLanguage = SelectedPlotCategoriesLanguage;
             SelectedGeoTMineralCategoriesLanguage = SelectedHomeLinksLanguage;
             GeoTMineralCategoriesLanguageContext.ContentLanguage = SelectedGeoTMineralCategoriesLanguage;
             SelectedAnnouncementsLanguage = SelectedHomeLinksLanguage;
@@ -581,7 +657,6 @@ namespace GeoChemistryNexus.ViewModels
             RefreshAnnouncementTranslationChips();
             AnnouncementEntries.CollectionChanged += OnAnnouncementEntriesChanged;
             LoadHomeLinksEditor();
-            LoadPlotCategoriesEditor();
             LoadGeoTMineralCategoriesEditor();
             _ = InitializeHomeLinksEditorAsync();
             _ = InitializeRemoteStateAsync();
@@ -616,6 +691,7 @@ namespace GeoChemistryNexus.ViewModels
                 AnnouncementText = _remoteAnnouncementText;
                 MinimumSupportedVersionText = _remoteMinimumSupportedVersion;
                 LatestAppVersionText = _remoteLatestAppVersion;
+                ApplyRemoteInstallerInfo(info, fillEditor: true);
                 UpdateServerConfigChangeState();
                 Log(LanguageService.Instance["official_publisher_announcement_loaded"] ?? "Announcement loaded from server.");
             }
@@ -642,6 +718,8 @@ namespace GeoChemistryNexus.ViewModels
                 LatestAppVersionText?.Trim(),
                 _remoteLatestAppVersion?.Trim(),
                 StringComparison.OrdinalIgnoreCase);
+
+            UpdateInstallerChangeState();
             NotifyReleaseSheet();
             RequestDraftSave(PublisherDraftKinds.Announcements);
         }
@@ -823,8 +901,10 @@ namespace GeoChemistryNexus.ViewModels
                 DiagramUpdatedCount = _diagramPreview.UpdatedItems.Count;
                 DiagramRemovedCount = _diagramPreview.RemovedItems.Count;
                 DiagramUnchangedCount = _diagramPreview.UnchangedItems.Count;
+                DiagramPathChangedCount = _diagramPreview.PathChangedCount;
                 FillDiffRows(DiagramPreviewItems, _diagramPreview);
-                Log($"图解：新增 {DiagramNewCount}，更新 {DiagramUpdatedCount}，移除 {DiagramRemovedCount}，未变化 {DiagramUnchangedCount}");
+                FillDiagramPathTree(_diagramPreview);
+                Log($"图解：新增 {DiagramNewCount}，更新 {DiagramUpdatedCount}（路径变更 {DiagramPathChangedCount}），移除 {DiagramRemovedCount}，未变化 {DiagramUnchangedCount}");
 
                 _geothermometerPreview = await GeothermometerPublishService.GetPublishPreviewAsync();
                 GeoNewCount = _geothermometerPreview.NewItems.Count;
@@ -860,6 +940,7 @@ namespace GeoChemistryNexus.ViewModels
                         _remoteAnnouncementText = remoteInfo?.Announcement ?? string.Empty;
                         _remoteMinimumSupportedVersion = remoteInfo?.MinimumSupportedVersion ?? string.Empty;
                         _remoteLatestAppVersion = remoteInfo?.LatestAppVersion ?? string.Empty;
+                        ApplyRemoteInstallerInfo(remoteInfo, fillEditor: false);
                     }
                     UpdateServerConfigChangeState();
 
@@ -905,6 +986,17 @@ namespace GeoChemistryNexus.ViewModels
                     if (!string.IsNullOrWhiteSpace(normalizedLatestVersion))
                     {
                         AnnouncementPreviewLines.Add($"Installer file: {OfficialContentEndpoints.BuildInstallerFileName(normalizedLatestVersion)}");
+                        AnnouncementPreviewLines.Add($"Lite installer file: {OfficialContentEndpoints.BuildInstallerFileName(normalizedLatestVersion, lite: true)}");
+                        AnnouncementPreviewLines.Add($"Installer SHA256 (full): {(string.IsNullOrWhiteSpace(FullInstallerSha256Text) ? "(empty)" : FullInstallerSha256Text.Trim())}");
+                        AnnouncementPreviewLines.Add($"Installer SHA256 (lite): {(string.IsNullOrWhiteSpace(LiteInstallerSha256Text) ? "(empty)" : LiteInstallerSha256Text.Trim())}");
+                        AnnouncementPreviewLines.Add($"Required runtime major: {(ParseRuntimeMajorOrZero(RequiredRuntimeMajorText) > 0 ? RequiredRuntimeMajorText.Trim() : "(empty)")}");
+
+                        // 哈希缺失不会让发布失败，但等于客户端少了一道校验，必须在预览里明确提示
+                        foreach (var installerWarning in CollectInstallerWarnings(normalizedLatestVersion))
+                        {
+                            AnnouncementPreviewLines.Add(installerWarning);
+                            Log(installerWarning);
+                        }
                     }
 
                     if (!string.IsNullOrWhiteSpace(AnnouncementText))
@@ -950,7 +1042,6 @@ namespace GeoChemistryNexus.ViewModels
             if (!EnsureDeveloperMode()) return;
             if (IsBusy) return;
 
-            SavePlotCategoriesToLocal();
             SaveGeoTMineralCategoriesToLocal();
             if (!await EnsurePublishTargetSelectedAsync()) return;
             if (!EnsureDiagramsDownloadedForPublish()) return;
@@ -965,6 +1056,7 @@ namespace GeoChemistryNexus.ViewModels
                 string? announcement = await ResolveAnnouncementForPublishAsync();
                 string? minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync();
                 string? latestAppVersion = await ResolveLatestAppVersionForPublishAsync();
+                var installerInfo = await ResolveInstallerInfoForPublishAsync();
                 SaveHomeLinksToLocal();
 
                 var (exportDiagrams, exportGeothermometers) = await ResolveCategoryExportFlagsAsync();
@@ -981,7 +1073,7 @@ namespace GeoChemistryNexus.ViewModels
                     publishedAnnouncementsCatalog = BuildAnnouncementsCatalogFromEditor();
                     var announcementsCatalog = publishedAnnouncementsCatalog;
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog, installerInfo));
                     Log(announcementResult.Summary);
                 }
 
@@ -1047,7 +1139,6 @@ namespace GeoChemistryNexus.ViewModels
             if (!EnsureDeveloperMode()) return;
             if (IsBusy) return;
 
-            SavePlotCategoriesToLocal();
             SaveGeoTMineralCategoriesToLocal();
             if (!await EnsurePublishTargetSelectedAsync()) return;
             if (!EnsureDiagramsDownloadedForPublish()) return;
@@ -1068,13 +1159,15 @@ namespace GeoChemistryNexus.ViewModels
             var included = new List<string>();
             if (PublishAnnouncement) included.Add($"公告与版本（{AnnouncementReleaseChip}）");
             if (PublishHomeLinks) included.Add($"导航链接（{HomeLinksReleaseChip}）");
-            if (PublishDiagrams) included.Add($"图解与分类（{DiagramReleaseChip}）");
+            if (PublishDiagrams) included.Add($"图解（{DiagramReleaseChip}）");
             if (PublishGeothermometers) included.Add($"温压计与矿物分类（{GeoReleaseChip}）");
             if (PublishEpma) included.Add($"EPMA 计算模板（{EpmaReleaseChip}）");
             string serverNames = string.Join("、", targets.Select(target =>
                 string.IsNullOrWhiteSpace(target.Name) ? target.Bucket : target.Name.Trim()));
+            string installerWarningText = BuildInstallerWarningText();
             bool confirm = await ShowConfirmAsync(
-                $"发布这些内容？\n{string.Join("\n", included.Select(item => "· " + item))}\n\n发布到：{serverNames}",
+                $"发布这些内容？\n{string.Join("\n", included.Select(item => "· " + item))}\n\n发布到：{serverNames}"
+                + (installerWarningText.Length > 0 ? $"\n\n{installerWarningText}" : string.Empty),
                 "取消",
                 "发布");
             if (!confirm) return;
@@ -1093,6 +1186,7 @@ namespace GeoChemistryNexus.ViewModels
                 string? announcement = await ResolveAnnouncementForPublishAsync();
                 string? minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync();
                 string? latestAppVersion = await ResolveLatestAppVersionForPublishAsync();
+                var installerInfo = await ResolveInstallerInfoForPublishAsync();
                 SaveHomeLinksToLocal();
                 LogCategoryOnlyExportNotice(exportDiagrams, exportGeothermometers);
 
@@ -1113,7 +1207,7 @@ namespace GeoChemistryNexus.ViewModels
                     publishedAnnouncementsCatalog = BuildAnnouncementsCatalogFromEditor();
                     var announcementsCatalog = publishedAnnouncementsCatalog;
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog, installerInfo));
                     Log(announcementResult.Summary);
                 }
 
@@ -1273,6 +1367,12 @@ namespace GeoChemistryNexus.ViewModels
                     _remoteAnnouncementText = announcement ?? string.Empty;
                     _remoteMinimumSupportedVersion = minimumSupportedVersion ?? string.Empty;
                     _remoteLatestAppVersion = latestAppVersion ?? string.Empty;
+                    if (installerInfo != null)
+                    {
+                        _remoteFullInstallerSha256 = installerInfo.FullSha256;
+                        _remoteLiteInstallerSha256 = installerInfo.LiteSha256;
+                        _remoteRequiredRuntimeMajor = installerInfo.RequiredRuntimeMajor;
+                    }
                     if (publishedAnnouncementsCatalog != null)
                         RememberRemoteAnnouncementsCatalog(publishedAnnouncementsCatalog, known: true);
                     UpdateServerConfigChangeState();
@@ -1496,12 +1596,6 @@ namespace GeoChemistryNexus.ViewModels
 
         private void LogCategoryOnlyExportNotice(bool exportDiagrams, bool exportGeothermometers)
         {
-            if (exportDiagrams && !PublishDiagrams)
-            {
-                Log(LanguageService.Instance["official_publisher_plot_categories_auto_included"]
-                    ?? "Plot categories changed; including diagram index files in this publish.");
-            }
-
             if (exportGeothermometers && !PublishGeothermometers)
             {
                 Log(LanguageService.Instance["official_publisher_geot_categories_auto_included"]
@@ -2009,107 +2103,6 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         [RelayCommand]
-        private void ReloadPlotCategoriesEditor()
-        {
-            LoadPlotCategoriesEditor();
-            Log(LanguageService.Instance["official_publisher_plot_categories_reloaded"] ?? "Plot categories editor reloaded.");
-        }
-
-        [RelayCommand]
-        private void SavePlotCategoriesDraft()
-        {
-            if (!EnsureDeveloperMode())
-                return;
-
-            SavePlotCategoriesToLocal();
-            Log("图解分类已保存");
-            ShowSuccess("图解分类已保存");
-        }
-
-        [RelayCommand]
-        private async Task ExportPlotCategories()
-        {
-            string? path = await FileHelper.GetSaveFilePath2Async(
-                "导出图解分类",
-                FileDialogFilterHelper.JsonOnly,
-                ".json",
-                "PlotTemplateCategories.json",
-                OwnerWindow);
-            if (string.IsNullOrWhiteSpace(path))
-                return;
-
-            PublisherConfigHelper.ExportRelaxed(BuildPlotCategoryConfigFromEditor(), path);
-            Log("已导出图解分类");
-            ShowSuccess("已导出图解分类");
-        }
-
-        [RelayCommand]
-        private async Task ImportPlotCategories()
-        {
-            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
-            if (string.IsNullOrWhiteSpace(path))
-                return;
-
-            string? json = JsonHelper.ReadJsonFile(path);
-            var config = string.IsNullOrWhiteSpace(json) ? null : JsonHelper.Deserialize<PlotTemplateCategoryConfig>(json);
-            if (config == null || !config.Keys.Any(key => key.StartsWith("Level", StringComparison.OrdinalIgnoreCase)))
-            {
-                ShowWarning("这个文件不是图解分类。");
-                return;
-            }
-
-            if (_plotCategoryEntriesByLevel.Values.Any(list => list.Count > 0))
-            {
-                bool confirmed = await ShowConfirmAsync("导入会替换当前图解分类。", "取消", "导入");
-                if (!confirmed)
-                    return;
-            }
-
-            LoadPlotCategories(config);
-            PublishDiagrams = true;
-            Log("已导入图解分类");
-            ShowSuccess("已导入图解分类");
-        }
-
-        [RelayCommand]
-        private void AddPlotCategoryEntry()
-        {
-            var entry = new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext);
-            entry.PropertyChanged += OnPlotCategoryEntryChanged;
-            GetPlotCategoryCollection(SelectedPlotCategoryLevel).Add(entry);
-            PlotCategoryEntries.Add(entry);
-            SelectedPlotCategoryEntry = entry;
-            UpdatePlotCategoryEntryCount();
-            PublishDiagrams = true;
-        }
-
-        [RelayCommand]
-        private void EditPlotCategoryEntry()
-        {
-            if (SelectedPlotCategoryEntry == null)
-                return;
-
-            if (!TryEditCategoryEntry(SelectedPlotCategoryEntry, PlotCategoriesLanguageContext, out var updated) || updated == null)
-                return;
-
-            SelectedPlotCategoryEntry.ReplaceTitle(updated.Title);
-        }
-
-        [RelayCommand]
-        private void RemovePlotCategoryEntry()
-        {
-            if (SelectedPlotCategoryEntry == null)
-                return;
-
-            SelectedPlotCategoryEntry.PropertyChanged -= OnPlotCategoryEntryChanged;
-            GetPlotCategoryCollection(SelectedPlotCategoryLevel).Remove(SelectedPlotCategoryEntry);
-            PlotCategoryEntries.Remove(SelectedPlotCategoryEntry);
-            SelectedPlotCategoryEntry = PlotCategoryEntries.FirstOrDefault();
-            UpdatePlotCategoryEntryCount();
-            PublishDiagrams = true;
-        }
-
-        [RelayCommand]
         private void ReloadGeoTMineralCategoriesEditor()
         {
             LoadGeoTMineralCategoriesEditor();
@@ -2209,49 +2202,6 @@ namespace GeoChemistryNexus.ViewModels
             PublishGeothermometers = true;
         }
 
-        private void LoadPlotCategoriesEditor()
-        {
-            LoadPlotCategories(PlotCategoryHelper.LoadPublisherConfig());
-        }
-
-        private void LoadPlotCategories(PlotTemplateCategoryConfig config)
-        {
-            _suppressCategoryTracking = true;
-            try
-            {
-                foreach (var existing in _plotCategoryEntriesByLevel.Values.SelectMany(entries => entries))
-                    existing.PropertyChanged -= OnPlotCategoryEntryChanged;
-
-                _plotCategoryEntriesByLevel.Clear();
-                config ??= new PlotTemplateCategoryConfig();
-
-                foreach (string level in PlotCategoryLevelKeys)
-                {
-                    var entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
-                    if (config.TryGetValue(level, out var items))
-                    {
-                        foreach (var item in items ?? Enumerable.Empty<Dictionary<string, string>>())
-                        {
-                            var entry = new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext)
-                            {
-                                Title = HomeLinksLocalization.FromDictionary(item)
-                            };
-                            entry.PropertyChanged += OnPlotCategoryEntryChanged;
-                            entries.Add(entry);
-                        }
-                    }
-
-                    _plotCategoryEntriesByLevel[level] = entries;
-                }
-
-                RefreshPlotCategoryEntriesForSelectedLevel();
-            }
-            finally
-            {
-                _suppressCategoryTracking = false;
-            }
-        }
-
         private void LoadGeoTMineralCategoriesEditor()
         {
             LoadGeoTMineralCategories(GeoTMineralCategoryHelper.LoadPublisherConfig());
@@ -2287,15 +2237,6 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private void OnPlotCategoryEntryChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (_suppressCategoryTracking || e.PropertyName != nameof(LocalizedCategoryEntryViewModel.Title))
-                return;
-
-            PublishDiagrams = true;
-            RequestDraftSave(PublisherDraftKinds.PlotCategories);
-        }
-
         private void OnGeoTMineralEntryChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (_suppressCategoryTracking || e.PropertyName != nameof(LocalizedCategoryEntryViewModel.Title))
@@ -2303,46 +2244,6 @@ namespace GeoChemistryNexus.ViewModels
 
             PublishGeothermometers = true;
             RequestDraftSave(PublisherDraftKinds.GeoTCategories);
-        }
-
-        private void RefreshPlotCategoryEntriesForSelectedLevel()
-        {
-            PlotCategoryEntries.Clear();
-            foreach (var entry in GetPlotCategoryCollection(SelectedPlotCategoryLevel))
-                PlotCategoryEntries.Add(entry);
-
-            SelectedPlotCategoryEntry = PlotCategoryEntries.FirstOrDefault();
-            UpdatePlotCategoryEntryCount();
-        }
-
-        private ObservableCollection<LocalizedCategoryEntryViewModel> GetPlotCategoryCollection(string level)
-        {
-            level ??= PlotCategoryLevelKeys[0];
-            if (!_plotCategoryEntriesByLevel.TryGetValue(level, out var entries))
-            {
-                entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
-                _plotCategoryEntriesByLevel[level] = entries;
-            }
-
-            return entries;
-        }
-
-        private PlotTemplateCategoryConfig BuildPlotCategoryConfigFromEditor()
-        {
-            var config = new PlotTemplateCategoryConfig();
-            foreach (string level in PlotCategoryLevelKeys)
-            {
-                var items = GetPlotCategoryCollection(level)
-                    .Where(entry => HomeLinksLocalization.HasText(entry.Title, PlotCategoriesLanguageContext))
-                    .Select(entry => HomeLinksLocalization.ToDictionary(entry.Title))
-                    .Where(dict => dict.Count > 0)
-                    .ToList();
-
-                if (items.Count > 0)
-                    config[level] = items;
-            }
-
-            return config;
         }
 
         private GeoTMineralCategoryConfig BuildGeoTMineralCategoryConfigFromEditor()
@@ -2357,21 +2258,9 @@ namespace GeoChemistryNexus.ViewModels
             };
         }
 
-        private void SavePlotCategoriesToLocal()
-        {
-            PlotCategoryHelper.SavePublisherConfig(BuildPlotCategoryConfigFromEditor());
-        }
-
         private void SaveGeoTMineralCategoriesToLocal()
         {
             GeoTMineralCategoryHelper.SavePublisherConfig(BuildGeoTMineralCategoryConfigFromEditor());
-        }
-
-        private void UpdatePlotCategoryEntryCount()
-        {
-            PlotCategoryEntryCount = GetPlotCategoryCollection(SelectedPlotCategoryLevel).Count;
-            if (!_suppressCategoryTracking)
-                RequestDraftSave(PublisherDraftKinds.PlotCategories);
         }
 
         private void UpdateGeoTMineralEntryCount()
@@ -2413,6 +2302,15 @@ namespace GeoChemistryNexus.ViewModels
                 return false;
 
             return SelectedPreviewFilter == "all" || row.Action == SelectedPreviewFilter;
+        }
+
+        private void FillDiagramPathTree(PublishPreview? preview)
+        {
+            DiagramPathTree.Clear();
+            foreach (var node in PublishPathTreeBuilder.Build(preview))
+                DiagramPathTree.Add(node);
+
+            HasDiagramPathTree = DiagramPathTree.Count > 0;
         }
 
         private static void FillDiffRows(ObservableCollection<PublishDiffRow> rows, PublishPreview? preview)

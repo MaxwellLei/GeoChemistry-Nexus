@@ -390,9 +390,6 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>请先选择一个分组。</value>
   </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>图解分类编辑器已重新加载。</value>
-  </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>温压计矿物标签编辑器已重新加载。</value>
   </data>
@@ -412,7 +409,7 @@
     <value>可选。填写 https://... 时将覆盖上方预设图标。</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>升级为在线温压计模板</value>
+    <value>升级</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>验证失败:</value>
@@ -1007,9 +1004,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>编辑失败： </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>图解分类已变更，本次发布将包含图解索引文件。</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>温压计矿物标签已变更，本次发布将包含温压计索引文件。</value>
@@ -2060,7 +2054,7 @@
     <value>强制更新</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>升级为在线图解模板</value>
+    <value>升级</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>移除在线图解模板</value>
@@ -4564,6 +4558,8 @@
   <data name="epma_editor_id_exists" xml:space="preserve"><value>此模板标识已存在，请在基本信息中使用新的唯一标识。</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>个人模板</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>官方模板</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>在线</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>我的</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>编辑计算模板</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>官方计算模板仅可查看、复制和试算。启用开发者模式后可编辑。</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>编辑已有模板时不能修改唯一标识。</value></data>
@@ -4586,7 +4582,7 @@
   <data name="epma_library_delete" xml:space="preserve"><value>删除</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>导出</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>升级为在线计算模板</value>
+    <value>升级</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>移除在线计算模板</value>
@@ -5032,4 +5028,196 @@
   <data name="table_col_sample" xml:space="preserve"><value>样品</value></data>
   <data name="table_col_category" xml:space="preserve"><value>分组</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>列表已更新，新增 {0} / 可更新 {1} / 下架 {2}</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>已经在该位置了。</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>文件夹已创建。</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>删除文件夹</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>确定删除文件夹“{0}”吗？</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>确定删除文件夹“{0}”及其中的 {1} 个图解模板吗？此操作无法撤销。</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>文件夹已删除。</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>不能把文件夹移动到它自身或它的子文件夹中。</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>移动成功。</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>移动到</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>移动到…</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>为每种语言填写文件夹名称，留空的语言将使用已有名称。</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>此处已存在同名文件夹。</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>请输入文件夹名称。</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>新建文件夹…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>新建子文件夹</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>在此新建图解</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>新建文件夹</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>文件夹已不存在，请刷新后重试。</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>文件夹已重命名。</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>重命名文件夹</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>请选择一个文件夹。</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>文件夹名称</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>请输入文件夹名称</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>界面语言</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>多语言名称</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>可选，为其他界面语言单独命名</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>已填 {0} / {1}</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>将创建在：{0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>当前：{0}</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>已填写 {0} 种语言的名称</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>留空的语言将使用已有名称。</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>选择目标文件夹</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>正在移动文件夹</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>正在移动图解</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>含 {0} 个图解</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>搜索文件夹…</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>没有匹配“{0}”的文件夹</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>目标位置</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>移动中</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>当前位置</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>不能选择根目录，请选择一个文件夹。</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>移动</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>官方图解文件夹只有在为空时才能删除。</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>请先下载该文件夹中的所有图解模板，再进行修改。</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>模板名称</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>该文件夹中已存在同名图解模板。</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>例如：作者 (年份) 图解名称</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>请输入模板名称。</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>保存位置</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>选择…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>选择保存位置</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>尚未选择文件夹</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>请选择模板的保存位置。</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>在线图解模板的同一文件夹中已存在同名模板，请先重命名或移动后再升级。</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>移动对象</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>将移动到</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>已选位置</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>收起</value>
+  </data>
+  <data name="page_transition_animation" xml:space="preserve">
+    <value>页面切换动画</value>
+  </data>
+  <data name="page_transition_animation_hint" xml:space="preserve">
+    <value>切换页面时播放平滑过渡动画，开启后可能会影响性能</value>
+  </data>
 </root>

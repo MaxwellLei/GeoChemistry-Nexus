@@ -95,6 +95,21 @@
                                      Style="{StaticResource ThemeSwatchListBoxStyle}"
                                      ItemContainerStyle="{StaticResource ThemeSwatchItemStyle}"/>
                         </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Page Transition Animation -->
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [page_transition_animation],Source={x:Static lg:LanguageService.Instance}, FallbackValue=页面切换动画}" FontSize="13"/>
+                                <TextBlock Text="{Binding [page_transition_animation_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=切换页面时播放平滑过渡动画，开启后可能会影响性能}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ToggleButton IsChecked="{Binding PageTransitionAnimation}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
 

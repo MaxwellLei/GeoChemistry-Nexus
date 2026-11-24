@@ -252,6 +252,8 @@ namespace GeoChemistryNexus.ViewModels
                 CurrentTemplate = ToolDiagramTemplateFactory.CreateScatter2DTemplate();
                 CurrentTemplate.DefaultLanguage = ResolveBuiltInDiagramLanguage();
                 SetLocalizedText(CurrentTemplate.Info.Title.Label, GetHarkerDiagramName());
+                CurrentTemplate.Info.Title.Family = DiagramFontHelper.Detect(
+                    GetHarkerDiagramName(), CurrentTemplate.Info.Title.Family);
                 CurrentCategoryName = GetHarkerDiagramName();
 
                 IsTemplateMode = false;
@@ -511,6 +513,9 @@ namespace GeoChemistryNexus.ViewModels
                         axis.Minimum = y.DefaultMin;
                         axis.Maximum = y.DefaultMax;
                     }
+
+                    // 轴标题含化学式（上下标等）时，按内容自动设定字体
+                    axis.Family = DiagramFontHelper.DetectAxisFamily(axis, DiagramLanguage);
                 }
 
                 var layers = CreateLayersFromTemplate(template, attachEvents: true);

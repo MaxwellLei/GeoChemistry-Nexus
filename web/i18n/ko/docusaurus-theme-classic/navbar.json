@@ -8,7 +8,7 @@
     "description": "The alt text of navbar logo"
   },
   "item.label.Tutorial": {
-    "message": "튜토리얼",
+    "message": "문서",
     "description": "Navbar item with label Tutorial"
   },
   "item.label.GitHub": {

@@ -259,7 +259,7 @@
     <value>新增連結</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>升級為線上溫壓計模板</value>
+    <value>升級</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>驗證失敗:</value>
@@ -719,9 +719,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>編輯失敗： </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>圖解分類已變更，本次發布將包含圖解索引檔。</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>溫壓計礦物標籤已變更，本次發布將包含溫壓計索引檔。</value>
@@ -2356,7 +2353,7 @@
     <value>強制更新</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>升級為線上圖解模板</value>
+    <value>升級</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>移除線上圖解模板</value>
@@ -2636,9 +2633,6 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>文字</value>
-  </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>圖解分類編輯器已重新載入。</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>溫壓計礦物分類編輯器已重新載入。</value>
@@ -4898,6 +4892,8 @@
   <data name="epma_editor_id_exists" xml:space="preserve"><value>此範本識別已存在，請在基本資訊中使用新的唯一識別。</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>個人範本</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>官方範本</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>線上</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>我的</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>編輯計算範本</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>官方計算範本僅可檢視、複製和試算。啟用開發者模式後可編輯。</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>編輯既有範本時不能修改唯一識別。</value></data>
@@ -4919,7 +4915,7 @@
   <data name="epma_library_delete" xml:space="preserve"><value>刪除</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>匯出</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>升級為線上計算模板</value>
+    <value>升級</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>移除線上計算模板</value>
@@ -5122,4 +5118,196 @@
   <data name="table_col_sample" xml:space="preserve"><value>樣品</value></data>
   <data name="table_col_category" xml:space="preserve"><value>分組</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>清單已更新，新增 {0} / 可更新 {1} / 下架 {2}</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>已經在該位置了。</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>資料夾已建立。</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>刪除資料夾</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>確定刪除資料夾「{0}」嗎？</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>確定刪除資料夾「{0}」及其中的 {1} 個圖解範本嗎？此操作無法復原。</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>資料夾已刪除。</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>不能把資料夾移動到它自身或它的子資料夾中。</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>移動成功。</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>移動到</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>移動到…</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>為每種語言填寫資料夾名稱，留空的語言將使用已有名稱。</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>此處已存在同名資料夾。</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>請輸入資料夾名稱。</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>新增資料夾…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>新增子資料夾</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>在此新增圖解</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>新增資料夾</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>資料夾已不存在，請重新整理後再試。</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>重新命名</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>資料夾已重新命名。</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>重新命名資料夾</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>請選擇一個資料夾。</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>資料夾名稱</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>請輸入資料夾名稱</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>介面語言</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>多語言名稱</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>選填，為其他介面語言單獨命名</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>已填 {0} / {1}</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>將建立在：{0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>目前：{0}</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>建立</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>儲存</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>已填寫 {0} 種語言的名稱</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>留空的語言將使用已有名稱。</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>選擇目標資料夾</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>正在移動資料夾</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>正在移動圖解</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>含 {0} 個圖解</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>搜尋資料夾…</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>沒有符合「{0}」的資料夾</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>目標位置</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>移動中</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>目前位置</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>不能選擇根目錄，請選擇一個資料夾。</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>移動</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>官方圖解資料夾只有在為空時才能刪除。</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>請先下載該資料夾中的所有圖解範本，再進行修改。</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>範本名稱</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>該資料夾中已存在同名圖解範本。</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>例如：作者 (年份) 圖解名稱</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>請輸入範本名稱。</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>儲存位置</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>選擇…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>選擇儲存位置</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>尚未選擇資料夾</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>請選擇範本的儲存位置。</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>線上圖解範本的同一資料夾中已存在同名範本，請先重新命名或移動後再升級。</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>移動對象</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>將移動到</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>已選位置</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>展開</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>收起</value>
+  </data>
+  <data name="page_transition_animation" xml:space="preserve">
+    <value>頁面切換動畫</value>
+  </data>
+  <data name="page_transition_animation_hint" xml:space="preserve">
+    <value>切換頁面時播放平滑過渡動畫，開啟後可能會影響效能</value>
+  </data>
 </root>

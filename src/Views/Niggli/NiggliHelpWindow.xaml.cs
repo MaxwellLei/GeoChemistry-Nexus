@@ -10,6 +10,7 @@ namespace GeoChemistryNexus.Views
         public NiggliHelpWindow()
         {
             InitializeComponent();
+            GeoChemistryNexus.Helpers.ChildWindowPlacementHelper.Attach(this);
         }
 
         private void OnCloseClick(object sender, RoutedEventArgs e)

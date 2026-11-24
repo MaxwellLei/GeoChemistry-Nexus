@@ -1,7 +1,9 @@
+using System;
+using System.Windows.Controls;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Views;
-using System.Windows.Controls;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -12,43 +14,58 @@ namespace GeoChemistryNexus.ViewModels
         public SettingPageViewModel(Frame nav)
         {
             _nav = nav;
-            nav.Navigate(SCommonPageView.GetPage());
+            NavigateTo(SCommonPageView.GetPage());
+        }
+
+        private void NavigateTo(object pageContent)
+        {
+            if (_nav == null || ReferenceEquals(_nav.Content, pageContent))
+                return;
+
+            _nav.Navigate(pageContent);
+            _nav.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+            {
+                while (_nav.CanGoBack)
+                {
+                    _nav.RemoveBackEntry();
+                }
+            }));
         }
 
         [RelayCommand]
         private void CommonPage()
         {
-            _nav.Navigate(SCommonPageView.GetPage());
+            NavigateTo(SCommonPageView.GetPage());
         }
 
         [RelayCommand]
         private void PlotPage()
         {
-            _nav.Navigate(SPlotPageView.GetPage());
+            NavigateTo(SPlotPageView.GetPage());
         }
 
         [RelayCommand]
         private void ShortcutPage()
         {
-            _nav.Navigate(SShortcutPageView.GetPage());
+            NavigateTo(SShortcutPageView.GetPage());
         }
 
         [RelayCommand]
         private void AboutPage()
         {
-            _nav.Navigate(SAboutPageView.GetPage());
+            NavigateTo(SAboutPageView.GetPage());
         }
 
         [RelayCommand]
         private void GeothermometerPage()
         {
-            _nav.Navigate(SGeothermometerPageView.GetPage());
+            NavigateTo(SGeothermometerPageView.GetPage());
         }
 
         [RelayCommand]
         private void EpmaPage()
         {
-            _nav.Navigate(SEpmaPageView.GetPage());
+            NavigateTo(SEpmaPageView.GetPage());
         }
     }
 }

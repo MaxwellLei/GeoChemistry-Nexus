@@ -1,165 +1,135 @@
 <div align="center">
 
-<img src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png" width="96" alt="GeoChemistry Nexus Logo">
+<img src="./images/hero-banner.zh-CN.svg" width="100%" alt="GeoChemistry Nexus — 新一代开放式地球化学与岩石矿物学成图·计算·云模板一体化工作台" />
 
-# GeoChemistry Nexus
+<br />
 
-**🌍 新一代地球化学与岩石学图解和计算工作台，地球科学家的好帮手**
+[![Latest Release](https://img.shields.io/badge/Release-v0.9.0-3645D8?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+[![.NET 10.0 WPF](https://img.shields.io/badge/.NET-10.0%20WPF-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/10.0)
+[![Platform Windows x64](https://img.shields.io/badge/Platform-Windows%20x64-0078D4?style=flat-square&logo=windows)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+![Core Size ~9MB](https://img.shields.io/badge/Core%20Size-~9%20MB-0D9488?style=flat-square)
+[![License GPL v3](https://img.shields.io/badge/License-GPL--3.0-D97706?style=flat-square)](../LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github&color=1e293b)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
 
-[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
-[![Latest Release](https://img.shields.io/github/v/release/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
-[![License: GPL v3](https://img.shields.io/github/license/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/blob/main/LICENSE)
-[![.NET 6](https://img.shields.io/badge/.NET-6.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/6.0)
+[English](../README.md) · **简体中文** · [繁體中文](./README.zh-TW.md) · [Deutsch](./README.de-DE.md) · [Español](./README.es-ES.md) · [Français](./README.fr-FR.md) · [日本語](./README.ja-JP.md) · [한국어](./README.ko-KR.md) · [Português](./README.pt-BR.md) · [Русский](./README.ru-RU.md)
 
-[English](../README.md) · **简体中文** · [繁體中文](./README.zh-HK.md) · [Deutsch](./README.de-DE.md) · [日本語](./README.ja-JP.md) · [한국어](./README.ko-KR.md)
-
-<br>
-
-📥 [下载最新版](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) · 📖 [在线文档](https://geochemistry-nexus.pages.dev/) · 💬 [反馈与讨论](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
+<kbd>📥 <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus/releases"><strong>下载最新版安装包</strong></a></kbd> &nbsp; <kbd>🌐 <a href="https://geochemistry-nexus.pages.dev/zh/docs/intro"><strong>官网演示与在线文档</strong></a></kbd> &nbsp; <kbd>🧪 <a href="#-共建地球科学开源生态"><strong>提交新图解 / 新公式</strong></a></kbd> &nbsp; <kbd>💬 <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus/issues"><strong>问题反馈与建议</strong></a></kbd>
 
 </div>
 
 ---
 
-## 💡 为什么需要 GeoChemistry Nexus
+## 💡 为什么构建 GeoChemistry Nexus？
 
-在地球化学与岩石学研究中，**成图**与**计算**往往分散在不同工具里：📋 数据整理靠表格软件，✏️ 底图绘制靠通用矢量工具，🌡️ 温压计计算又要另开脚本或老旧程序。流程割裂、格式不统一、复现成本高，是不少研究者日常面对的摩擦。
+在地球化学、岩石学、矿物学与矿床学研究中，日常工作往往被拆散在不同软件之间：表格里整理数据、脚本或旧程序里算温压计与矿物化学式、再切去通用绘图软件描底图——不仅链路割裂，手工转绘还容易引入坐标误差。与此同时，许多传统地学工具长期停更，而新发表的判别图解、温压标定公式与校正方案往往停留在论文附录里，缺乏持续触达同行的开放渠道。
 
-另一方面，许多常用的判别图解、温压计及相关计算工具 **长期缺乏持续更新**——新发表的算法与经典模型的修订难以及时纳入，研究者往往只能沿用停滞多年的旧版本。更现实的问题是：当科研工作者 **自行开发** 新的算法或图解后，往往 **缺少便捷、开放的推送渠道**，成果停留在论文附录、个人脚本或小范围分享中，难以在同领域快速普及与复用。
-
-**GeoChemistry Nexus** 希望把这条链路收拢到一处——从样品数据导入、预处理与校正，到判别图解绘制、地温计计算与 CIPW 标准矿物计算，再到 PNG / SVG 等格式导出，尽量在同一套界面里完成；同时通过 **云端模板生态** 与 **社区协作机制**，让图解与算法能够持续迭代、快速触达更多研究者。
-
-> 🚀 **我们的愿景**：构建一个融合基础地球化学与岩石学图解、计算功能的一体化平台，显著提升科研效率，降低技术门槛，让科学家专注于科学发现本身。
+正如名称中的 **Nexus（连接中枢）** 所寓意，本项目采用**「原生高性能内核 + 云端活态模板生态」**的解耦设计：客户端保持极致轻快，而上层的**判别图解、地质温压计、电子探针（EPMA）矿物模型与桌面微工具库则随学科文献进展在云端持续更新增加**，无需升级软件即可直接获取最新科研模型。
 
 <div align="center">
-  <img src="./images/software_ui_show.webp" alt="GeoChemistry Nexus 软件界面" width="88%" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-  <br>
-  <sub>📈 判别图解 · 📐 数据投影 · 🧩 模板编辑 · 🌐 多语言界面</sub>
+  <img src="./images/workflow.zh-CN.svg" width="100%" alt="GeoChemistry Nexus 架构工作流" />
 </div>
-
----
 
 ## 🧭 能做什么
 
-| 模块 | 说明 |
-| :---: | --- |
-| 🏠 **主页** | 快捷链接、实用小组件与常用地球科学资源入口，减少窗口切换 |
-| 📊 **数据预处理** | 导入与整理分析数据，为后续成图与计算做准备 |
-| 📈 **判别图解** | 基于模板库绘制三角图、散点图、蛛网图等，支持数据投影与样式编辑 |
-| 🌡️ **地温计** | 集成多种地质温压计模板，面向单矿物等常见计算场景 |
-| 🪨 **CIPW 计算** | 标准矿物 norm 计算，配合岩石学分析流程 |
-| ☁️ **模板生态** | 官方与社区模板云端更新；支持自定义模板打包、分享与协作 |
+围绕「岩石地球化学—微区矿物学—日常地学查算」构建完整闭环，所有模板驱动型模块均支持云端持续上新与自定义扩展（界面截图与操作演示见 [官方网站与在线文档](https://geochemistry-nexus.pages.dev/zh/docs/intro)）：
 
----
+1. **判别图解与多维可视化**：集云端模板库、个人工作区与通用工具图解于一体。内置图解从火成岩分类与构造背景判别，持续向变质、沉积、矿床成因等多学科体系扩充；同时原生配备稀土（REE）/ 微量元素蛛网图（内置多套标准化方案）、Harker 哈克多联图及二维 / 三元散点投图。
+2. **地质温压计与自由公式表**：云端持续收录并迭代单矿物、矿物对温压计以及氧逸度计、湿度计、饱和温度模型。既可按模板列引导拖拽填充柄批量计算，也可开启独立自由工作表，像使用 Excel 一样输入 `=函数名()` 在同一张表内横向对比多套标定公式。
+3. **EPMA 电子探针矿物解算**：面向微区氧化物分析数据，在线模板库不断覆盖造岩硅酸盐、副矿物及氧化物 / 硫化物族系，自动完成氧原子或阳离子基准归一化、晶位分配（`apfu`）、端元比例拆解与 `Fe³⁺/Fe²⁺` 电价平衡估算。
+4. **CIPW 全岩标准矿物计算**：支持 12 项主量与 7 项次要 / 挥发分组分（含 `CO₂ / SO₃ / F / Cl / S` 氧置换校正）批量换算 30 余种理想标准矿物（`wt.%`），自动识别实测铁或按 `Fe³⁺/ΣFe` 拆分，实时给出硅饱和度、铝饱和指数与 `10⁻⁶` 级质量平衡闭合检验。
+5. **Niggli 参数与分子标准矿物**：以阳离子百分比（`cat.%`）消除铁等重元素在质量分数中的偏倚，更贴合薄片真实矿物体积比例。单次输入同步输出完整尼格里参数（`si, al, fm, c, alk, k, mg, qz, ti, p`）与 Barth–Niggli 分子标准矿物（Catanorm），附斜长石 `An%`、镁指数与七步去硅历程。
+6. **地学资源门户与随手工具箱**：首页聚合 `GEOROC`、`EarthChem`、`PetDB`、`GeoReM` 等权威地球化学数据库直达入口，并内置持续丰富的交互式地球化学周期表、ICS 国际年代地层速查卡、元素↔氧化物换算、地质常用单位换算及水样碱度 / 硬度、黑体辐射计算器等轻量小组件。
 
 ## ✨ 核心特性
 
-* **🎨 强大的自定义绘图**
-    * 内置丰富的绘图元工具（线条、多边形、文本、箭头、函数曲线等）。
-    * 支持自定义脚本，灵活设定数据导入与运算规则，满足深度定制需求。
+1. **多语言模板，不同语种一键切换**：图解底层采用多语种词条映射架构，同一份投图成果可一键无损切换简中、繁中、英、德、法、西、俄、日、韩、葡等多种语言标注。
+2. **出版级矢量，直连主流修图软件**：画布内 7 类矢量图层（数据点、文本、箭头、自定义函数曲线、线段、多边形、坐标轴）支持样式微调；除导出 `SVG / PNG / JPG / BMP` 与剪贴板速贴外，更可跳过手动存盘中转，一键唤醒 Inkscape、CorelDRAW 或 Adobe Illustrator 继续拼版精修。
+3. **白盒化核查，逐行状态灯与过程追溯**：拒绝“只给结果、不知过程”的黑箱计算。温压计、EPMA、CIPW 与 Niggli 工作表每行均配有动态诊断状态灯，点选任意样品即可在侧栏逐项审阅归一化系数、中间对数项、铁价态处理方式及去硅反应消耗量，便于审稿溯源与教学复核。
+4. **模板可编程，内置可视化与脚本构建器**：内置图解、温压计与 EPMA 可视化编辑器及 `Jint` JavaScript 脚本沙箱。课题组新发表的判别边界或热力学经验公式无需重编译软件，即可封装为含多语种词条与 RTF 文献说明的标准模板包，一键导出在团队间共享或提交并入官方云端库。
 
-* **🌐 原生多语言支持**
-    * **图解国际化**：同一模板支持中英等多语言一键切换，一份成果，全球发布。
-    * **界面本地化**：软件界面全面支持英语（US）、简体中文、德语等。
+## 📦 下载与运行环境
 
-* **☁️ 云端模板生态**
-    * 内置由官方与社区共同维护的图解模板库。
-    * 支持动态更新，无需升级软件即可实时获取最新的科研图解模板。
+前往 [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) 下载最新 Windows 安装包。无需配置任何 Python / R 等环境。
 
-* **🤝 便捷的分发与协作**
-    * 支持将自定义图解模板打包导出，轻松实现跨团队、跨机构的科研成果共享。
+| 项目 | 规格要求 |
+| :--- | :--- |
+| 🖥️ **操作系统** | Windows 7 SP1 / Windows 10 / Windows 11（64 位 x64） |
+| ⚙️ **运行环境** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚡ **软件体积** | 客户端本体约 `9 MB`（不含 .NET 运行时版本） |
 
-* **🧮 专业地质计算模块**
-    * 集成单矿物等多种类型的地质温度计模板，满足多样化的参数计算需求。
+## 🗺️ 路线图
 
----
+GeoChemistry Nexus 是一项计划持续维护五年以上的长期开源工程。在高频扩充现有云端模板库的同时，正沿以下三个阶段稳步推进（完整规划见 [在线文档 · Roadmap](https://geochemistry-nexus.pages.dev/zh/docs/Roadmap)）：
 
-## ⚡ 快速开始
+<table>
+  <tr>
+    <td width="33.3%" valign="top">
+      <p><strong>🟢 阶段一 · 已就绪并持续生长</strong></p>
+      <p><strong>岩石与矿物化学核心闭环</strong></p>
+      <ul>
+        <li>多学科判别图解、蛛网图与 Harker 多联图</li>
+        <li>类 Excel 地质温压计与自由公式对比表</li>
+        <li>EPMA 微区矿物结构式云端模板库</li>
+        <li>CIPW 与 Niggli / Catanorm 白盒解算</li>
+        <li>10+ 语种国际化与第三方矢量软件直连</li>
+      </ul>
+    </td>
+    <td width="33.3%" valign="top">
+      <p><strong>🔵 阶段二 · 近期重点推进</strong></p>
+      <p><strong>同位素年代学与地球化学分形</strong></p>
+      <ul>
+        <li>锆石 U-Pb 谐和图（Concordia）成图模块</li>
+        <li><code>Rb-Sr</code> / <code>Sm-Nd</code> / <code>Lu-Hf</code> 等多元等时线</li>
+        <li><code>C-N</code> / <code>C-A</code> 等地球化学分形与多重分形模型</li>
+        <li>双对数分段拟合与化探背景 / 异常下限自动划分</li>
+      </ul>
+    </td>
+    <td width="33.3%" valign="top">
+      <p><strong>🟣 阶段三 · 中长期演进愿景</strong></p>
+      <p><strong>智能判别模型与全平台生态</strong></p>
+      <ul>
+        <li>免配 Python 环境的地球化学机器学习分类评估</li>
+        <li>支持加载大数据训练的可扩展「新图解」判别模型</li>
+        <li>融合地球科学文献与内置知识库的 RAG 科研助手</li>
+        <li>评估推进 <code>Avalonia UI</code> 架构，原生支持 macOS / Linux</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-### 📥 下载安装
+## 🤝 共建地球科学开源生态
 
-前往 GitHub **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)** 页面，下载 Windows 安装包（当前版本 **v0.7.1**），按向导完成安装即可。
+> [!IMPORTANT]
+> **🧪 致地球科学研究者与课题组：让您的新图解与新公式被全球同行直接调用！**
+>
+> 如果您或您的团队发表了新的**构造/成因判别图解、地质温压计、氧逸度计或矿物化学计算方法**，欢迎封装或联系我们收录进官方云端模板库！所有收录模板均会在软件说明面板中**完整标注原论文引用、作者署名及个人/课题组主页链接**，并列入贡献者致谢名录，让学术成果跨越论文附录，真正成为同行日常高频调用的研究工具。
 
-### 💻 系统要求
+| 参与方向 | 您可以如何加入 |
+| :--- | :--- |
+| 📈 **图解与算法共建** | 分享自研模板包、推荐领域内亟需收录的经典/前沿公式，或协助校验现有模型的边界条件与测试集 |
+| 💻 **代码与架构贡献** | 欢迎熟悉 `C# / WPF`、科学可视化、电子表格引擎或地球化学数值计算的开发者 Fork 仓库并提交 Pull Request |
+| 🌍 **多语种术语校对** | 协助润色中、英、德、法、西、俄、日、韩、葡等语种的地学专业术语本地化与在线教程翻译 |
+| 🐛 **异常反馈与建议** | 发现计算偏差、界面交互问题或有新功能构想，请随时提交至 [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues) |
 
-| 项目 | 要求 |
-| --- | --- |
-| 🖥️ 操作系统 | Windows 7 SP1 及以上（推荐 Windows 10 / 11） |
-| ⚙️ 运行环境 | [.NET 6.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/6.0) |
-| 📦 架构 | x64 |
+### 💬 联系与交流
 
-> 💡 若系统未安装 .NET 运行时，安装程序或首次启动时会引导下载。
+1. **作者邮箱**：[`maxwelllei@qq.com`](mailto:maxwelllei@qq.com)（图解与算法投稿、学术及项目合作）
+2. **QQ 交流群**：`1076647740`
+3. **Discord 社区**：https://discord.gg/mRm8dbwa4W
+4. **问题反馈与建议**：[GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
 
-### 🚀 建议上手路径
-
-| 步骤 | 操作 |
-| :---: | --- |
-| 1️⃣ | 在 **主页** 熟悉界面与快捷入口 |
-| 2️⃣ | 用示例数据在 **判别图解** 中打开官方模板，完成第一次成图 |
-| 3️⃣ | 按需进入 **地温计** 或 **CIPW** 模块尝试计算 |
-| 4️⃣ | 导出 PNG / JPG / BMP / SVG，并查阅 [官方文档](https://geochemistry-nexus.pages.dev/) 了解进阶用法 |
-
----
-
-## 🛠️ 技术概览
-
-| 类别 | 说明 |
-| --- | --- |
-| 💻 语言与框架 | C# · WPF · .NET 6 |
-| 🏗️ 架构模式 | MVVM（CommunityToolkit.Mvvm） |
-| 📊 绘图与导出 | ScottPlot；支持 PNG / JPG / BMP / SVG |
-| 📜 脚本引擎 | Jint（模板内自定义逻辑） |
-| 📄 授权协议 | [GNU GPL v3](../LICENSE) |
-
-> 🔧 本地编译与贡献说明见仓库内 `src/` 目录；Issue 与 Pull Request 均欢迎在 GitHub 提交。
-
----
-
-## 🗺️ 发展路线
-
-项目目标不只是一个「画图软件」，而是逐步建成 **数据 · 图解 · 计算 · 协作** 一体化的科研工具链。
-
-| 阶段 | 方向 |
-| --- | --- |
-| 🔥 **进行中** | 持续扩充常用地球化学 / 岩石学图解；完善地温计与地压计模板 |
-| 📅 **近期计划** | 同位素年代学相关成图；更丰富的地球化学计算工具 |
-| 🔭 **中长期** | 科研社区与模板共享 · 机器学习辅助分析 · 可加载的「新图解」判别模型 · 基于 RAG 的 AI 科研助手 |
-
-📌 完整路线图见 [官方文档 · Roadmap](https://geochemistry-nexus.pages.dev/docs/Roadmap)。
-
----
-
-## 👋 参与与联系
-
-无论您擅长 **地质理论**、**算法推导**、**模板设计** 还是 **C# 开发**，都欢迎参与：
-
-| 方式 | 说明 |
-| --- | --- |
-| 🐛 反馈问题 | 提交 Bug 报告或功能建议 → [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues) |
-| 💻 贡献代码 | Fork 后发起 Pull Request |
-| 🌍 协助翻译 | 界面与文档本地化（中 / 英 / 德 / 日 / 韩等） |
-| 📈 分享模板 | 上传自研判别图解模板，供社区使用 |
-
-### 💬 社区渠道
-
-| 渠道 | 信息 |
-| --- | --- |
-| 📧 邮箱 | `maxwelllei@qq.com` |
-| 💬 QQ 群 | `1076647740` |
-| 🎮 Discord | https://discord.gg/mRm8dbwa4W |
-
----
-
-## ⭐ Star 趋势
-
-<p align="center">
-  <a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
-    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History">
-  </a>
-</p>
+## ⭐ Star 增长趋势
 
 <div align="center">
 
-✨ 如果 GeoChemistry Nexus 对您的研究有帮助，欢迎 **Star** 支持项目持续更新 ✨
+<a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
+  <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=Date" width="80%" alt="Star History Chart" />
+</a>
+
+🙏 特别感谢[所有参与模板建设、测试反馈与多语种校对的贡献者](https://geochemistry-nexus.pages.dev/zh/docs/Special%20Thanks)
+
+**✨ 如果 GeoChemistry Nexus 为您的科研或教学节省了时间，欢迎点亮右上角 `Star ⭐` 支持项目长期演进！ ✨**
+
+地学垂直领域的开源软件步履不易，我们真的非常需要您的关注与支持——您的每一颗 Star 与每一次向身边同行的推荐，都是支撑项目持续走下去的最大动力！
 
 </div>

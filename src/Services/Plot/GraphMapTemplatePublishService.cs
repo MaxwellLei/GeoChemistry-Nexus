@@ -57,10 +57,17 @@ namespace GeoChemistryNexus.Services
                     continue;
                 }
 
-                if (string.Equals(localHash, remote.FileHash, StringComparison.OrdinalIgnoreCase))
-                    preview.UnchangedItems.Add(CreatePreviewItem(local, localHash, remote.FileHash, PublishAction.Skip));
+                // 路径是模板内容的一部分，改过路径哈希必然不同，所以路径变更一定落在“更新”里
+                var item = string.Equals(localHash, remote.FileHash, StringComparison.OrdinalIgnoreCase)
+                    ? CreatePreviewItem(local, localHash, remote.FileHash, PublishAction.Skip)
+                    : CreatePreviewItem(local, localHash, remote.FileHash, PublishAction.Update);
+                item.RemoteNodeList = remote.NodeList;
+                item.PathChanged = HasPathChanged(local.NodeList, remote.NodeList);
+
+                if (item.Action == PublishAction.Skip)
+                    preview.UnchangedItems.Add(item);
                 else
-                    preview.UpdatedItems.Add(CreatePreviewItem(local, localHash, remote.FileHash, PublishAction.Update));
+                    preview.UpdatedItems.Add(item);
             }
 
             foreach (var remote in remoteMap.Values)
@@ -72,13 +79,58 @@ namespace GeoChemistryNexus.Services
                 {
                     Id = remoteId,
                     GraphMapPath = remote.GraphMapPath,
-                    Name = remote.GraphMapPath,
+                    Name = ResolvePathName(remote.NodeList) ?? remote.GraphMapPath,
                     RemoteHash = remote.FileHash,
-                    Action = PublishAction.Remove
+                    Action = PublishAction.Remove,
+                    RemoteNodeList = remote.NodeList
                 });
             }
 
             return preview;
+        }
+
+        /// <summary>
+        /// 本地与线上的 NodeList 是否一致。逐语言比较，忽略分隔符两侧的空白。
+        /// </summary>
+        public static bool HasPathChanged(LocalizedString? local, LocalizedString? remote)
+        {
+            var localPaths = NormalizePaths(local);
+            var remotePaths = NormalizePaths(remote);
+
+            if (localPaths.Count != remotePaths.Count)
+                return true;
+
+            foreach (var (language, path) in localPaths)
+            {
+                if (!remotePaths.TryGetValue(language, out string? remotePath)
+                    || !string.Equals(path, remotePath, StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static Dictionary<string, string> NormalizePaths(LocalizedString? nodeList)
+        {
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (nodeList?.Translations == null)
+                return result;
+
+            foreach (var (language, path) in nodeList.Translations)
+            {
+                string normalized = string.Join(">", TemplateFolderService.SplitPath(path));
+                if (!string.IsNullOrEmpty(normalized))
+                    result[language] = normalized;
+            }
+
+            return result;
+        }
+
+        /// <summary>路径的最后一段（模板名），按当前界面语言解析。</summary>
+        private static string? ResolvePathName(LocalizedString? nodeList)
+        {
+            var segments = TemplateFolderService.GetDisplaySegments(nodeList);
+            return segments.Length == 0 ? null : segments[^1];
         }
 
         /// <summary>
@@ -214,14 +266,7 @@ namespace GeoChemistryNexus.Services
             string graphMapListPath = Path.Combine(outputDir, OfficialContentEndpoints.GraphMapListFileName);
             File.WriteAllText(graphMapListPath, JsonSerializer.Serialize(exportList, PublishJsonOptions));
 
-            string categoriesFileName = OfficialContentEndpoints.PlotTemplateCategoriesFileName;
-            string srcCategoriesPath = PlotCategoryHelper.ResolveExportConfigPath();
-            string dstCategoriesPath = Path.Combine(outputDir, categoriesFileName);
-            if (File.Exists(srcCategoriesPath))
-                File.Copy(srcCategoriesPath, dstCategoriesPath, true);
-
             string listHash = UpdateHelper.ComputeFileMd5(graphMapListPath);
-            string categoriesHash = File.Exists(dstCategoriesPath) ? UpdateHelper.ComputeFileMd5(dstCategoriesPath) : string.Empty;
 
             string homeLinksCatalogPath = ExportHomeLinksCatalog(outputDir);
             string homeLinksHash = !string.IsNullOrEmpty(homeLinksCatalogPath) && File.Exists(homeLinksCatalogPath)
@@ -230,7 +275,6 @@ namespace GeoChemistryNexus.Services
 
             var serverInfo = UpdateHelper.LoadMergedServerInfo(outputDir);
             serverInfo.ListHash = listHash;
-            serverInfo.ListPlotCategoriesHash = categoriesHash;
             serverInfo.HomeLinksHash = homeLinksHash;
             if (options.PreserveAnnouncement != null)
                 serverInfo.Announcement = options.PreserveAnnouncement;
@@ -255,7 +299,6 @@ namespace GeoChemistryNexus.Services
                 HomeLinksCatalogPath = homeLinksCatalogPath,
                 HomeLinksHash = homeLinksHash,
                 ServerInfoPath = serverInfoPath,
-                CategoriesPath = dstCategoriesPath,
                 ManifestPath = manifestPath,
                 ListHash = listHash,
                 MinimumSupportedVersion = serverInfo.MinimumSupportedVersion ?? string.Empty,
@@ -343,7 +386,8 @@ namespace GeoChemistryNexus.Services
                 Name = local.Name ?? local.GraphMapPath,
                 LocalHash = localHash,
                 RemoteHash = remoteHash ?? string.Empty,
-                Action = action
+                Action = action,
+                LocalNodeList = local.NodeList
             };
         }
 

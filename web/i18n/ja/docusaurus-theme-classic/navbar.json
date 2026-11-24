@@ -4,11 +4,11 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "サイトロゴ",
+    "message": "サイトのロゴ",
     "description": "The alt text of navbar logo"
   },
   "item.label.Tutorial": {
-    "message": "チュートリアル",
+    "message": "ドキュメント",
     "description": "Navbar item with label Tutorial"
   },
   "item.label.GitHub": {

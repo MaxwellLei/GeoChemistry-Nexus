@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # 🌍 简介
 
 **GeoChemistry Nexus 是一款面向地球化学、岩石学、矿物学与矿床学等领域研究人员的一体化科研工作平台。**
@@ -29,15 +31,53 @@ sidebar_position: 1
 
 下载完成后，按照安装向导完成安装。安装成功后，双击 `GeoChemistry Nexus.exe` 即可启动软件，开始使用！ 🖱️
 
-![用户界面示例](/img/v0.7.1/intro_user_interface_example1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_1.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
 
-![用户界面示例](/img/v0.7.1/intro_user_interface_example2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_2.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
 
-![用户界面示例](/img/v0.7.1/intro_user_interface_example3.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_3.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
 
-![用户界面示例](/img/v0.7.1/intro_user_interface_example4.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_4.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
 
-![用户界面示例](/img/v0.7.1/intro_user_interface_example5.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_5.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
+
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/example_interface_6.webp')}
+    alt="用户界面示例"
+    style={{width: '100%'}}
+  />
+</div>
 
 ----
 

@@ -2,50 +2,56 @@
 sidebar_position: 6
 ---
 
-# ℹ️ Über uns
+# ℹ️ Über
 
 :::info
 
-**„Ich habe meinen Traum-Sportwagen nicht gefunden, also habe ich einen selbst gebaut.“ — Ferdinand Porsche**
+**„Ich fand den Sportwagen meiner Träume nicht, also habe ich ihn selbst gebaut.“ — Ferdinand Porsche**
 
 :::
 
-**GeoChemistry Nexus** ist mein erstes Projekt, das ich langfristig pflegen möchte — ich beabsichtige, es mindestens fünf Jahre lang kontinuierlich weiterzuentwickeln.
+**GeoChemistry Nexus** ist das erste Projekt, das ich über einen sehr langen Zeitraum pflegen möchte. Ich beabsichtige, es mindestens in den kommenden fünf Jahren fortlaufend zu aktualisieren.
 
-Interessanterweise hieß es ursprünglich **Geo-Thermometer**. Anfangs wollte ich lediglich ein grundlegendes Programm für geologische Thermometer entwickeln, um Berechnungen und Diagramme zu erleichtern. Im Laufe des Projekts, insbesondere nach Abschluss des Diagrammmoduls, wurde mir jedoch klar, dass ein weitaus größeres Ziel erreichbar ist. Das Projekt wurde daher konzeptionell und funktional erweitert und entwickelte sich von Geo-Thermometer zu GeoChemistry Nexus.
+Bemerkenswert ist, dass es ursprünglich **Geo-Thermometer** hieß. Anfangs wollte ich lediglich ein grundlegendes Programm für geologische Thermometer entwickeln, um Berechnungen und Zeichnungen zu erleichtern. Im weiteren Verlauf des Projekts, insbesondere nach Fertigstellung des Zeichenmoduls, wurde mir jedoch klar, dass sich ein weit größeres Ziel verwirklichen ließ. Das Projekt wurde deshalb in Konzept und Funktionsumfang erweitert und entwickelte sich von Geo-Thermometer zu GeoChemistry Nexus.
 
-## Warum GeoChemistry Nexus?
+## Warum dieser Name
 
-In der geochemischen und petrographischen Forschung sind **Diagrammerstellung** und **Berechnungen** oft auf verschiedene Werkzeuge verteilt: Datenaufbereitung in Tabellenkalkulationen, Basiskartenerstellung in allgemeinen Vektorprogrammen, Thermobarometer-Berechnungen in separaten Skripten oder veralteten Programmen. Fragmentierte Workflows, uneinheitliche Formate und hohe Reproduzierbarkeitskosten sind alltägliche Reibungspunkte für viele Forschende.
+**GeoChemistry** steht für Geochemie. **Nexus** bedeutet Verbindungspunkt, Knoten oder Ort des Zusammentreffens.
 
-Gleichzeitig fehlt bei vielen gängigen diskriminativen Diagrammen, Thermobarometern und zugehörigen Berechnungstools **eine kontinuierliche Weiterentwicklung** — neu publizierte Algorithmen und überarbeitete klassische Modelle lassen sich nur schwer zeitnah integrieren; Forschende sind oft auf jahrelang unveränderte Versionen angewiesen. Ein weiteres praktisches Problem: Wenn Wissenschaftler **eigene** Algorithmen oder Diagramme entwickeln, fehlt häufig ein **bequemer, offener Kanal zur Verbreitung** — Ergebnisse bleiben in Anhängen, persönlichen Skripten oder kleinen Kreisen und lassen sich in der Fachgemeinschaft nur schwer schnell verbreiten und wiederverwenden.
+Wir möchten verstreute geochemische Berechnungsverfahren, Werkzeuge der Datenverarbeitung, mineralchemische Auswertungen, geologische Diagramme und Weiteres in einer einheitlichen Plattform zusammenführen.
+
+## Warum GeoChemistry Nexus benötigt wird
+
+In der geochemischen und petrologischen Forschung sind **das Erstellen von Abbildungen** und **die Berechnung** häufig auf verschiedene Werkzeuge verteilt: Daten werden in Tabellenprogrammen aufbereitet, Basiskarten in allgemeinen Vektorprogrammen gezeichnet, und Geothermobarometer erfordern ein weiteres Skript oder ein veraltetes Programm. Zerrissene Abläufe, uneinheitliche Formate und hoher Aufwand für die Reproduktion sind Reibungen, denen viele Forschende im Alltag begegnen.
+
+Andererseits **werden viele gebräuchliche Diskriminationsdiagramme, Geothermobarometer und zugehörige Berechnungswerkzeuge seit Langem nicht fortlaufend aktualisiert**. Neu veröffentlichte Algorithmen und Überarbeitungen klassischer Modelle lassen sich nur schwer zeitnah aufnehmen, und Forschende bleiben oft bei seit Jahren stillstehenden alten Versionen. Noch unmittelbarer ist dieses Problem: Wenn Forschende einen neuen Algorithmus oder ein neues Diagramm **selbst entwickeln**, **fehlt häufig ein bequemer und offener Weg, das Ergebnis weiterzugeben**. Die Arbeit bleibt im Anhang einer Veröffentlichung, in einem persönlichen Skript oder in einem kleinen Kreis und lässt sich im Fachgebiet nur schwer schnell verbreiten und wiederverwenden.
 
 ![plot_home_ui](/img/about-illustrations/02-research-tool-pain-points.png)
 
-Darüber hinaus habe ich in der Forschung auch weniger sorgfältige Vorgehensweisen beobachtet — etwa wenn geologische Basiskarten mit CorelDRAW grob skizziert werden. Visuell mag der Unterschied gering sein, doch aus wissenschaftlicher Sicht widerspricht dies dem Anspruch an rigorose Forschung.
+Darüber hinaus sind mir in der Forschung auch Vorgehensweisen begegnet, denen es an Sorgfalt fehlt. So zeichnen manche die Formen einer geologischen Basiskarte in CorelDRAW nur grob nach. Der visuelle Unterschied ist zwar gering, aus wissenschaftlicher Sicht widerspricht ein solches Vorgehen jedoch dem Anspruch wissenschaftlicher Sorgfalt.
 
-Also dachte ich: **Warum entwickle ich nicht einfach selbst ein Werkzeug?**
+Deshalb fragte ich mich: **Warum nicht selbst ein Werkzeug entwickeln?**
 
-Ein Tool, das zahlreiche geologische und geochemische Diagrammvorlagen integriert, verschiedene geologische Thermometer/Barometer unterstützt und sich auf geochemische Berechnungen sowie aktuelle Machine-Learning-Funktionen ausweitet. Fehlen passende Vorlagen, bietet es visuelle Zeichenwerkzeuge zum Erstellen und Teilen. Mit modernem Interface-Design und Mehrsprachigkeit sollen Forschende die meisten grundlegenden wissenschaftlichen Diagramm- und Berechnungsaufgaben in einer Software erledigen können.
+Ein Werkzeug, das eine große Zahl geologischer und geochemischer Diagrammvorlagen zusammenführt, verschiedene geologische Thermometer und Barometer berechnen kann und sich auf geochemische Berechnungen sowie auf derzeit verbreitete Funktionen des maschinellen Lernens erweitern lässt. Liegt keine fertige Vorlage vor, stellt es visuelle Zeichenwerkzeuge bereit, mit denen sich Vorlagen erstellen und weitergeben lassen. Ergänzt durch eine moderne Oberflächengestaltung und Mehrsprachigkeit können Forschende die grundlegenden Arbeiten des wissenschaftlichen Zeichnens und Rechnens weitgehend in einer einzigen Software erledigen.
 
-**GeoChemistry Nexus** möchte diese Kette an einem Ort bündeln — vom Import und der Vorverarbeitung von Probedaten über diskriminative Diagramme, Geothermometer-Berechnungen und CIPW-Standardmineralberechnungen bis zum Export in PNG / SVG — möglichst in derselben Oberfläche; gleichzeitig sollen **Cloud-Template-Ökosystem** und **Community-Kollaboration** Diagramme und Algorithmen kontinuierlich weiterentwickeln und schneller mehr Forschenden zugänglich machen.
+**GeoChemistry Nexus** soll diese Kette an einem Ort zusammenführen: vom Import der Probendaten über Vorverarbeitung und Korrektur bis zum Zeichnen von Diskriminationsdiagrammen, zur Berechnung von Geothermometern und zur CIPW-Normberechnung und weiter zum Export in Formate wie PNG und SVG, möglichst in derselben Oberfläche. Zugleich sollen Diagramme und Algorithmen über ein **Ökosystem von Cloud-Vorlagen** und **Mechanismen der Zusammenarbeit in der Community** fortlaufend weiterentwickelt werden und mehr Forschende schnell erreichen.
 
-## Die ursprüngliche Entwicklungsidee
+## Der ursprüngliche Entwicklungsgedanke
 
-Zufällig beherrsche ich Programmiersprachen wie C# und Python sowie Desktop-Softwareentwicklung. Im Dezember 2024 begann ich daher mit der Entwicklung eines Demos. In der anfänglichen Technologieauswahl habe ich sorgfältig abgewogen: **Welche Sprache und Architektur eignen sich am besten für dieses Ziel?**
+Zufällig beherrsche ich Programmiersprachen wie C# und Python und die Entwicklung von Desktop-Software. Im Dezember 2024 begann ich deshalb mit der Entwicklung eines Demos. In der ersten Phase der Technikauswahl habe ich sorgfältig überlegt: **Welche Sprache und welche Architektur verwirklichen dieses Ziel am besten?**
 
-Mein erster Gedanke war Python — schnelle Prototypen sind für Entwickler vorteilhaft. Aus Nutzersicht hat es jedoch entscheidende Nachteile: geringe Ausführungseffizienz (bei kleinen Datenmengen weniger spürbar, aber dennoch ein Performance-Unterschied) und sehr große Installationspakete. Ich habe ein einfaches Programm, ursprünglich in WPF geschrieben, einmal mit Python neu implementiert. Selbst in einer frischen virtuellen Umgebung betrug das Paket mehrere hundert MB, während das .NET-Paket nur etwa ein Dutzend MB umfasste — ein enormer Unterschied. **Nutzer zu zwingen, für einfache Funktionen hunderte MB oder sogar GB zu installieren und komplexe Konfigurationen durchzuführen, ist keine gute Lösung.**
+Mein erster Gedanke war Python. Damit ließe sich schnell ein Prototyp erstellen, was für Entwickler günstig ist. Aus Sicht der Benutzer hat es jedoch entscheidende Nachteile. Erstens ist die Ausführungsgeschwindigkeit gering. Bei kleinen Datenmengen fällt das wenig ins Gewicht, ein Leistungsunterschied bleibt dennoch. Zweitens entsteht ein sehr großes Installationspaket. Ich habe einmal ein einfaches, ursprünglich in WPF geschriebenes Programm in Python neu aufgebaut. Selbst wenn es in einer vollständig neuen virtuellen Umgebung gepackt wurde, umfasste das Ergebnis mehrere hundert MB, während das mit .NET gepackte Programm nur etwas mehr als zehn MB groß war. Der Unterschied ist erheblich. **Benutzerinnen und Benutzer zu zwingen, für eine einfache Funktion eine Installation von mehreren hundert MB oder sogar mehreren GB und eine aufwendige Konfiguration hinzunehmen, ist keine gute Lösung.**
 
-Als Nächstes erwog ich Webentwicklung. Die Vorteile liegen auf der Hand — keine Installation, sofort einsatzbereit. Problematisch war jedoch: Einerseits beherrsche ich Webtechnologien nicht umfassend; andererseits überstiegen die langfristigen Serverkosten meine persönlichen Wartungsmöglichkeiten. Daher verlagerte ich den Schwerpunkt zurück auf Client-Entwicklung.
+Danach habe ich die Webentwicklung erwogen. Der Vorteil liegt auf der Hand: keine Installation, sofortige Nutzung. Das Problem ist, dass die dauerhaft hohen Kosten eines Servers meine persönlichen Möglichkeiten der Pflege übersteigen. Deshalb habe ich den Schwerpunkt wieder auf die Client-Entwicklung gelegt.
 
 ![plot_home_ui](/img/about-illustrations/03-technology-choice-path.png)
 
-Für Client-Entwicklung gibt es viele Optionen; im Vergleich zu C++-basiertem Qt bin ich mit .NET vertrauter. In Verbindung mit der hohen Ausführungseffizienz von .NET und der Verbreitung von Windows wählte ich .NET als Hauptplattform. Anfangs erwog ich auch Avalonia für plattformübergreifende Unterstützung unter Windows, Linux und macOS; während der Entwicklung stellte sich jedoch heraus, dass einige Projektabhängigkeiten mit Avalonia inkompatibel sind, was hohe Migrationskosten verursacht. Mit meinen persönlichen Ressourcen ist es in der Frühphase schwer, diese Module umzubauen. Daher konzentriert sich meine Arbeit derzeit weiterhin auf Windows; eine plattformübergreifende Version könnte irgendwann folgen.
+Für die Client-Entwicklung gibt es viele technische Wege. Im Vergleich mit dem auf C++ beruhenden Qt bin ich mit .NET jedoch vertrauter. Zusammen mit der hohen Ausführungsgeschwindigkeit von .NET und der Verbreitung von Windows habe ich .NET schließlich als Hauptentwicklungsplattform gewählt. Anfangs habe ich auch Avalonia erwogen, um Windows, Linux und macOS plattformübergreifend zu unterstützen. Während der Entwicklung stellte ich fest, dass einige Projektabhängigkeiten mit Avalonia nicht vereinbar sind und die Kosten einer Migration sehr hoch wären. Mit meinen eigenen Kräften lassen sich diese Module in einer frühen Phase kaum neu aufbauen. Deshalb konzentriert sich meine Arbeit zumindest gegenwärtig weiter auf die Windows-Plattform. Eine plattformübergreifende Version kann an einem späteren Tag entstehen.
 
 ## Kontakt
 
-Wenn Sie sich für Softwareentwicklung interessieren und mit mir zusammenarbeiten möchten — oder Vorschläge und Feedback, Diagrammvorlagen, Algorithmen oder sogar eine geschäftliche Zusammenarbeit anbieten — kontaktieren Sie mich gerne unter **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)**.
+Wenn Sie sich für die Softwareentwicklung interessieren und mit mir zusammenarbeiten möchten, oder wenn Sie Vorschläge und Rückmeldungen, Diagrammvorlagen, Unterstützung bei Algorithmen oder auch eine geschäftliche Zusammenarbeit anbieten möchten, erreichen Sie mich jederzeit unter **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)**.
 
-*Wenn Sie beim Einsatz der Software Mängel oder Probleme feststellen, geben Sie uns bitte jederzeit Feedback. Da die Funktionalität stetig wächst und komplexer wird, ist es schwer, alle Szenarien im Test abzudecken; es können Lücken oder Ungenauigkeiten bleiben. Ich werde mich bemühen, diese zu beheben und zu optimieren, um Ihnen ein stabileres und zuverlässigeres Nutzererlebnis zu bieten.*
+*Wenn Ihnen bei der Verwendung der Software Mängel oder Probleme auffallen, geben Sie bitte jederzeit Rückmeldung. Da der Funktionsumfang stetig wächst und komplexer wird, können Tests kaum alle Fälle abdecken, und es können Lücken oder Ungenauigkeiten bleiben. Ich werde mich bemühen, sie zu beheben und zu verbessern, damit Sie eine stabilere und zuverlässigere Nutzung erhalten.*
 
 ![plot_home_ui](/img/about-illustrations/04-long-term-maintenance.png)

@@ -253,7 +253,7 @@
     <value>Link hinzufügen</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Zur Online-Thermobarometer-Vorlage hochstufen</value>
+    <value>Hochstufen</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Validierung fehlgeschlagen:</value>
@@ -713,9 +713,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Bearbeiten fehlgeschlagen: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>Diagrammkategorien wurden geändert; die Diagrammindexdateien werden in diese Veröffentlichung aufgenommen.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>Die GeoT-Mineral-Tags wurden geändert; diese Veröffentlichung enthält die Indexdateien der Geothermobarometer.</value>
@@ -2137,7 +2134,7 @@
     <value>Aktualisierung erzwingen</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Zur Online-Diagrammvorlage hochstufen</value>
+    <value>Hochstufen</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Online-Diagrammvorlage entfernen</value>
@@ -2570,9 +2567,6 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>Text</value>
-  </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>Editor für Diagramm-Kategorien neu geladen.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>Editor für GeoT-Mineralkategorien neu geladen.</value>
@@ -4856,6 +4850,8 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   <data name="epma_editor_id_exists" xml:space="preserve"><value>Diese Vorlagenkennung existiert bereits. Verwenden Sie in den Basisinformationen eine neue eindeutige Kennung.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Persönliche Vorlage</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Offizielle Vorlage</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>Online</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>Meine</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Berechnungsvorlage bearbeiten</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Offizielle Berechnungsvorlagen können nur angesehen, kopiert und probeweise berechnet werden. Zum Bearbeiten den Entwicklermodus aktivieren.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>Beim Bearbeiten einer vorhandenen Vorlage kann die eindeutige Kennung nicht geändert werden.</value></data>
@@ -4877,7 +4873,7 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   <data name="epma_library_delete" xml:space="preserve"><value>Löschen</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Exportieren</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Zur Online-Berechnungsvorlage hochstufen</value>
+    <value>Hochstufen</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Online-Berechnungsvorlage entfernen</value>
@@ -5127,4 +5123,192 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   <data name="table_col_sample" xml:space="preserve"><value>Probe</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Gruppe</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>Liste aktualisiert: {0} neu / {1} aktualisierbar / {2} entfernt</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>Seitenübergangsanimation</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>Flüssige Animationen beim Seitenwechsel abspielen; das Aktivieren kann die Leistung beeinträchtigen</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>Es befindet sich bereits an diesem Ort.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Ordner erstellt.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Ordner löschen</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>Ordner „{0}“ löschen?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>Ordner „{0}“ und die darin enthaltenen {1} Vorlage(n) löschen? Dies kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Ordner gelöscht.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>Ein Ordner kann nicht in sich selbst oder in einen seiner Unterordner verschoben werden.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Erfolgreich verschoben.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Verschieben nach</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Verschieben nach…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Einklappen</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Erstellen in: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Aktuell: {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Geben Sie den Ordnernamen für jede Sprache ein. Leere Sprachen verwenden einen vorhandenen Namen.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>Hier existiert bereits ein Ordner mit demselben Namen.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Ausklappen</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Leere Sprachen verwenden einen vorhandenen Namen.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} ausgefüllt</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Namen in {0} Sprachen eingegeben</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Ordnername</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Optional: Ordner für andere Sprachen separat benennen</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Lokalisierte Namen</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Ordnernamen eingeben</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Bitte geben Sie einen Ordnernamen ein.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>Oberflächensprache</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>Neuer Ordner…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>Neuer Unterordner</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>Hier neues Diagramm</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>Neuer Ordner</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>Der Ordner ist nicht mehr vorhanden. Bitte aktualisieren und erneut versuchen.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Verschieben</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Ordner wird verschoben</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Diagramm wird verschoben</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Zu verschiebendes Element</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>Keine Ordner entsprechen „{0}“</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>Der Stammordner kann nicht ausgewählt werden. Bitte wählen Sie einen Ordner.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Ordner suchen…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Ausgewählter Ort</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Zielordner auswählen</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Aktuell</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>Wird verschoben</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Verschieben nach</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>{0} Diagramm(e)</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Ordner umbenannt.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Ordner umbenennen</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Bitte wählen Sie einen Ordner.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Nur leere offizielle Ordner können gelöscht werden.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Laden Sie alle Vorlagen in diesem Ordner herunter, bevor Sie ihn ändern.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>Im selben Ordner der Online-Diagrammvorlagen ist bereits eine Vorlage mit diesem Namen vorhanden. Benennen Sie sie um oder verschieben Sie sie, bevor Sie sie hochstufen.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Vorlagenname</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>In diesem Ordner ist bereits eine Vorlage mit demselben Namen vorhanden.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>z. B. Autor (Jahr) Diagrammname</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Bitte geben Sie einen Vorlagennamen ein.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Speicherort</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Auswählen…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Speicherort auswählen</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>Kein Ordner ausgewählt</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Bitte wählen Sie, wo die Vorlage gespeichert werden soll.</value>
+  </data>
 </root>

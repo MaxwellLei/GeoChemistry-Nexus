@@ -311,7 +311,7 @@
     "description": "The title of the tag list page"
   },
   "home.button.content": {
-    "message": "開始 GeoChemistry Nexus 教程 - 5min ⏱️",
+    "message": "開始 GeoChemistry Nexus 教學 - 5min ⏱️",
     "description": "Link label for the GeoChemistry Nexus tutorial"
   },
   "home.button.getStarted": {
@@ -328,18 +328,18 @@
     "message": "全面的繪圖工具箱"
   },
   "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
-    "message": "GeoChemistry Nexus 內置地球科學繪圖模塊，包含構造環境判別、岩石分類等模板。提供從數據導入到出版級導出（支持 SVG）的完整工作流。"
+    "message": "GeoChemistry Nexus 內建地球科學繪圖模組，包含構造環境判別、岩石分類等範本。提供從資料匯入到出版級匯出（支援 SVG）的完整工作流程。"
   },
   "Excel-like Geothermometers": {
     "message": "類 Excel 地質溫度計"
   },
   "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
-    "message": "使用直觀的類 Excel 界面進行鋯石、黑雲母等礦物的地質溫度計計算。使用內置模板或自定義函數（如 =FuncName(args)）加速您的研究，無需編程技能。"
+    "message": "使用直觀的類 Excel 介面進行鋯石、黑雲母等礦物的地質溫度計計算。使用內建範本或自訂函數（如 =FuncName(args)）加速您的研究，無需程式設計技能。"
   },
   "Customizable & Extensible": {
-    "message": "高度可定制與擴展"
+    "message": "高度可自訂與擴充"
   },
   "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
-    "message": "使用我們基於 JSON/ZIP 的擴展系統創建並分享您自己的圖表模板。平台支持多語言模板、自定義腳本（JavaScript），並與 Inkscape 和 CorelDRAW 等第三方軟件無縫集成。"
+    "message": "使用我們以 JSON/ZIP 為基礎的擴充系統建立並分享您自己的圖表範本。平台支援多語言範本、自訂指令碼（JavaScript），並與 Inkscape 和 CorelDRAW 等第三方軟體無縫整合。"
   }
 }

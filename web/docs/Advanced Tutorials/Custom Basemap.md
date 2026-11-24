@@ -2,168 +2,238 @@
 sidebar_position: 1
 ---
 
-# Custom Chart Templates
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
-:::warning
-This documentation is currently being updated / not yet fully updated. Please be patient.
-:::
+# Make a diagram template
 
-For chart templates not in the built-in library, users can choose to create custom chart templates. By creating custom templates and packaging them into template packages, you can quickly share with other researchers.
+For a diagram that is not yet in the online diagram template library, you can make a custom diagram template. Package the custom template as a template package, and you can share it quickly with other researchers.
 
-You can also choose to upload your template to our community for open source sharing, or provide it to developers for inclusion in the built-in library. We sincerely thank any participant's contribution.
+You can also offer your template to the developer for inclusion in the online diagram template library. We are sincerely grateful for every contribution.
 
-> Note: The chart template community platform is currently in the planning stage and will be launched later. Stay tuned.
+## Create quickly
 
-## Create a New Chart Template
+You can create a new diagram template from the menu bar with `File` -> `New Diagram Template`, as shown below:
 
-Now, you can customize chart templates through the menu bar by selecting `File` -> `New Plot Template`, as shown below:
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/new_graphic_template.webp')}
+    alt="Diagram settings"
+    style={{width: '50%'}}
+  />
+</div>
 
-![plot_new_template_1](../Tutodials/imgs/plot_new_template_1.png)
+After you click New Diagram Template, a dialog for creating a new diagram template appears:
 
-After clicking [New Plot Template], a dialog for creating a new chart template will appear:
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/new_graphic_template_interface.webp')}
+    alt="New diagram interface"
+    style={{width: '100%'}}
+  />
+</div>
 
-![plot_new_template_2](../Tutodials/imgs/plot_new_template_2.png)
+A new custom diagram template has three main parts to configure:
 
-For a new custom chart template, there are mainly three parts to configure:
+1. **Default supported languages**: you can choose a built-in language shortcut from the selection box on the right. We provide ten languages, including Simplified Chinese, Traditional Chinese, American English, Japanese, Russian, Korean, and German.
 
-1.  **Default Supported Languages**: You can select built-in language shortcut options from the selection box on the right. We provide: Simplified Chinese, Traditional Chinese, American English, Japanese, Russian, Korean, German, and Spanish. You can also manually enter language codes for custom settings. For specific language codes, please refer to: [Language Culture Names Table](https://learn.microsoft.com/zh-cn/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c)
+    > The default language is the fallback used when another language is untranslated or an error occurs. In the new version, we no longer allow users to define custom language codes. If you need support for your language, contact the developer.
 
-    > Note: Among the default supported languages, the first language entered will be used as the chart's default language. If other languages are not translated or errors occur, the system will fall back to this default language.
+2. **Diagram template category (hierarchy)**: we provide a built-in shortcut category structure. This setting controls where your template sits in the hierarchy of the diagram template list.
 
-2.  **Chart Template Category (Hierarchy)**: Similarly, we provide built-in shortcut category structures. This setting affects your template's hierarchy position in the chart template list.
+3. **Diagram template type**: two types are supported today: a **two-dimensional coordinate system** and ternary diagrams.
 
-3.  **Chart Template Type**: Currently supports two types: **2D Coordinate System** and Ternary Diagram.
+When the settings are complete, click OK to enter the custom drawing interface. From here, focus on the Edit toolbar. After you click Edit, the system shows a confirmation dialog before the chart is edited. After you confirm, you enter edit mode, where you can view and use the tools on the edit toolbar.
 
-After completing the settings, click [OK] to enter the custom plotting interface. Next, we focus on the [Edit] function bar. After clicking [Edit], the system will display a secondary confirmation dialog to edit the chart. After confirming, you will enter edit mode, where you can view and use various tools in the edit function bar.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/empty_diagram_template.webp')}
+    alt="Empty diagram"
+    style={{width: '100%'}}
+  />
+</div>
 
-![plot_new_template_edit](../Tutodials/imgs/plot_new_template_edit.png)
+## Draw the diagram
 
-## Custom Chart Templates
+In edit mode, the following actions are available:
 
-Under the edit function bar, the following operations are allowed:
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/graphical_toolbar.webp')}
+    alt="Draw the diagram"
+    style={{width: '100%'}}
+  />
+</div>
 
-![plot_new_template_edittoobar](../Tutodials/imgs/plot_new_template_edittoobar.png)
+* **Save**: save the diagram template. After you click it, the program generates a matching thumbnail from the current drawing state by default.
+* **Save As**: save the diagram template to a different file location.
+* **Add Line**: when enabled, you enter Add Line mode. Click the first point in the plot area to start the line, and click the second point to finish the line object.
+* **Add Text**: also called an annotation. When enabled, you enter Add Text mode. Click a location on the plot to create it. The default text is `Text`. You can change the position or the content in the properties section of the layer panel.
+* **Add Polygon**: when enabled, you enter Add Polygon mode. Add a closed polygon by left-clicking vertices in sequence, then right-click to close the shape.
+* **Add Arrow**: when enabled, you enter Add Arrow mode. Adding an arrow is similar to creating a line.
+* **Add Function**: clicking this adds a default function, `sin(x)`, with a domain of [-10, 10]. You can customize the formula in the property panel.
+* **Undo/Redo**: these are disabled when no drawing object has been created or deleted. By default, only the last 10 actions are stored in the history.
+* **Delete**: delete a drawing object. First select the object (for example, text), then click Delete to remove it.
 
-* **Save**: Save the chart template. After clicking, the program will generate a corresponding thumbnail based on the current plotting state by default.
-* **Save As**: Save the chart template to a different file location.
-* **Add Line**: When enabled, enters "Add Line" mode. Click the first point in the plotting area to start drawing a line, click the second point to complete the line object.
-* **Add Text**: Also known as annotation. When enabled, enters "Add Text" mode. Click a specific location in the plot to create. Default text is `Text`. You can modify position or content through the properties section in the layer panel.
-* **Add Polygon**: When enabled, enters "Add Polygon" mode. Add a closed polygon by continuously left-clicking to create vertices, right-click to close the shape.
-* **Add Arrow**: When enabled, enters "Add Arrow" mode. The adding process is similar to creating a line.
-* **Add Function**: After clicking, adds a default function `sin(x)` with domain range [-10, 10]. You can customize the formula in the property panel.
-* **Undo/Redo**: If no drawing objects have been created or deleted, these functions will be disabled. By default, only the last 10 operations are stored in history.
-* **Delete**: Delete drawing objects. First select an object (e.g., text), then click delete to remove it.
+### Add a line
 
-### Add Line
+Below is an example of the property panel for adding a line. Through the property panel you can adjust the line position and other properties precisely.
 
-Below is an example of the property panel for adding a line. Through the property panel, you can precisely adjust the line's position and other properties.
+**The Pick Coordinates button to the right of each coordinate lets you readjust and capture a coordinate in the plot area.** Once it is triggered, the next left-click in the plot area picks that click location as the coordinate.
 
-The positioning icon button above each coordinate allows you to re-adjust and snap coordinates in the plotting area. Once triggered, left-clicking in the plotting area will automatically set the coordinate to the clicked location.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/add_line.webp')}
+    alt="Add a line"
+    style={{width: '100%'}}
+  />
+</div>
 
-![plot_line_attribute](../Tutodials/imgs/plot_line_attribute.png)
+### Add an arrow
 
-### Add Polygon
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/add_arrow.webp')}
+    alt="Add an arrow"
+    style={{width: '100%'}}
+  />
+</div>
 
-Below is an example of the property panel for adding a polygon. Polygon objects have a vertex list. A confirmation dialog appears when deleting vertices. You can hold the `Ctrl` key and left-click the delete button to continuously delete vertices.
+### Add a polygon
 
-![plot_polygon_attribute](../Tutodials/imgs/plot_polygon_attribute.png)
+**After Add Polygon is enabled, left-click in the canvas to confirm polygon vertices in sequence. A preview of the polygon is shown while you do this. Right-click to finish creating the polygon.** A polygon object has a vertex list. You can select, modify, or delete any vertex at any time.
 
-### Add Text
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/add_polygon.webp')}
+    alt="Add a polygon"
+    style={{width: '100%'}}
+  />
+</div>
 
-Below is an example of the property panel for adding text. For text objects, by default, the added text will use the first language (default language) set during template creation as the initial content.
+### Add text
 
-Since charts natively support multilingual content, multilingual text content settings will be explained later.
+After Add Text is enabled, left-click anywhere in the canvas to create a text object at that location. The status bar at the bottom of the canvas shows which language the content of the current text object belongs to.
 
-![plot_text_attribute](../Tutodials/imgs/plot_text_attribute.png)
+Because diagrams support multiple languages natively, translation of multilingual content is explained in detail later.
 
-### Add Function
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/add_text.webp')}
+    alt="Add text"
+    style={{width: '100%'}}
+  />
+</div>
 
-Below is an example of the property panel for adding a function. The default function used is `sin(x)`. You only need to enter a formula related to $x$. Default is `y = formula content`.
+### Add a function
 
-For function objects, the two most important parameters are: **Domain** and **Sample Points**. Domain defines the display range of the function. Sample points control the precision of function plotting, which in turn affects the accuracy of mouse snap selection algorithms. Default value is `1000`.
+Adding a function differs from the objects above. **After you click Add Function, a default function object is added immediately.** The default function is `sin(x)`. You can change the formula in the property panel to define your function.
 
-![plot_func_attribute](../Tutodials/imgs/plot_func_attribute.png)
+For a function object, the two most important parameters are the **domain** and the **sampling points**.
 
-## Complete the Template
+* **The domain defines the range in which the function is displayed on the canvas.**
+* **The sampling points control the drawing precision of the function on the canvas**, which in turn affects the accuracy of the mouse hit-test. The default is `1000`. The higher the precision, the finer the rendering, but it also increases the program’s rendering load.
 
-After completing basic graphic drawing, a complete template still needs:
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/add_function.webp')}
+    alt="Add a function"
+    style={{width: '100%'}}
+  />
+</div>
 
-1.  **Script Settings**: Define the template's input data and data calculation/plotting algorithms.
-2.  **Guide Writing**: Chart documentation.
-3.  **Multilingual**: If the template is set to support multiple languages, the corresponding sections must be filled in. This includes in-chart text and chart guide documentation.
+## Complete the diagram template
 
-### Script Settings
+After the basic graphics are drawn, a complete template still needs:
 
-Script settings are the key part of plotting, as they define the custom plotting logic.
+1. **Data and script**: defines the template’s input data and the data-calculation algorithm, that is, how the data are calculated and plotted.
+2. **Diagram document**: the help text that explains the diagram.
+3. **Languages**: if the diagram template is set to more than one language, those parts must be translated. That includes the diagram document above and text objects on the diagram canvas.
 
-Two parameters are required: **Chart Variable Parameters** and **Calculation Script**, as shown below:
+You can complete the template on the diagram operation page, but we still recommend doing it in the diagram editor window, which is more convenient.
 
-![plot_scripts](../Tutodials/imgs/plot_scripts.png)
+### Data and script
 
-Scripts are written in `JavaScript` by default. Basic `JavaScript` syntax is not covered here.
+Data and script are a key part of a diagram template, because they define how data in the diagram are calculated and finally shown on the plot.
 
-For **data parameters**, these represent which columns of data need to be read from the data list. **Input rules use English comma `,` as separator.**
+Two parameters are required: the template’s **variable parameters** and the **calculation algorithm (script)**, as shown below:
 
-**By default, the first parameter can be a `Group` variable**. If not added, the program will add this variable in the background. Its role is to distinguish different data point categories during plotting, affecting legend display. Remaining parameters should be defined according to custom basemap needs.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/diagram_data_and_script.webp')}
+    alt="Diagram data and script"
+    style={{width: '100%'}}
+  />
+</div>
 
-Script content involves writing calculation algorithms using the above data parameters (predefined variables), returning final $[x, y]$ values to project points onto the chart.
+For the template’s **variable parameters**, you can add columns at the top to represent the input columns the diagram needs. There are two optional parameters.
 
-For example, for a TAS diagram, parameters should be: `SiO2, Na2O, K2O`. Script content would be:
+1. Unit is the unit of the input column. It is for display only and does not affect the data algorithm.
+2. Group is the group of the input column. It is for display only and does not affect the data algorithm.
+
+**The column titles you define in the data table become registered variables that the script below can call directly.** You do not need to define the input-column variables again in the script.
+
+The **calculation algorithm (script)** is written in `JavaScript` by default. The default script example is `return [X,Y]`, which returns the input columns `X` and `Y` defined in the data table to the two-dimensional axes.
+
+For example, for a TAS diagram the parameters should be `SiO2, Na2O, K2O`. The script is:
 
 ```javascript
-// Calculate using variables K2O + Na2O
+// Calculate using the variables K2O + Na2O
 var result1 = K2O + Na2O;
 // Use SiO2
 var result2 = SiO2;
-// Return two calculated values. Note, for default 2D coordinate images, there are only two return values.
-// First position represents X return value, second represents Y return value.
-[result2, result1]
+// Return the two calculated values. For the default two-dimensional plot, there are only two return values.
+// The first position is the X return value, and the second is the Y return value.
+return [result2, result1]
 ```
 
-Alternatively, you can write the script as follows:
+Or you can write the script as follows:
 
 ```javascript
 var result = K2O + Na2O
-[SiO2, result]
+return [SiO2, result]
 ```
 
-Note that return value positions are fixed. In `[x, y]`, the first value is always X (bottom axis), the second is Y (left axis).
+Note that the positions of the return values are fixed. In `[x, y]`, the first value is always X (bottom axis) and the second is Y (left axis).
 
 :::info
 
-For ternary diagrams, the final return format is `[x, y, z]`, where the first value is X (bottom axis), the second is Y (left axis), and the third is Z (right axis).
+For a ternary diagram, the final return format is `[A, B, C]`, where the first value is A (bottom axis), the second is B (left axis), and the third is C (right axis).
 
 :::
 
-### Guide Writing
+### Diagram document
 
-Writing a guide is a necessary step to help other researchers quickly understand the basemap's basic information and usage.
+The diagram document is a necessary step so other researchers can quickly learn the basic information and how to use the diagram.
 
-Write the guide at the location shown below. We provide simple toolbar functions to meet routine documentation needs. You can also click `Office Word` on the right to open the guide file in Word for more advanced formatting and features.
+Write the diagram document on the help document page. We provide a simple toolbar for ordinary document needs. You can also write the content in `Office Word` and paste it here. Most of that formatting is compatible.
 
-> Note: Content in the chart guide panel can only be edited after confirming entry into edit mode.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/diagram_help_document.webp')}
+    alt="Diagram help document"
+    style={{width: '100%'}}
+  />
+</div>
 
-For guide format, we recommend following these standards:
+For the format of the diagram document, we recommend the following standard:
 
-*   **Introduction**: Explain the basemap's basic concepts and functions to help users quickly understand.
-*   **Data Format**: Specify the input data format and column headers required for valid data reading.
-*   **References**: List references used to create the basemap and its content.
-*   **Contributors**: Names or nicknames of people involved in basemap creation. You are even encouraged to include your personal website.
+* **Introduction**: explain the basic concept and function of the diagram template, so users can understand it quickly.
+* **Data format**: specify the input data format and column titles required to read valid data.
+* **References**: list the references used to create the diagram template and its content.
+* **Contributors**: the names of the people who took part in making the diagram template. You are encouraged to include your personal website.
 
-### Multilingual
+### Languages
 
-We have established two methods for setting up multilingual content:
+We provide two ways to set multiple languages:
 
-The first is using the **Switch Language** option in the plotting function bar. This allows you to set specific content for a second language.
+The first is the **Switch Language** option in the top toolbar of the diagram page. It lets you set specific content for a second language.
 
-The second method is using our home page widget; we provide a multilingual component to facilitate template localization.
+The second is to edit multilingual content in the diagram editor window, as shown below.
 
-The third method is directly editing the chart template's source file.
-
-> These methods are still being documented...
-
-:::info
-
-Some features may not be fully implemented yet; we are working to improve them to provide a better user experience. ✨
-
-:::
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/illustrated_multilingual.webp')}
+    alt="Diagram data and script"
+    style={{width: '100%'}}
+  />
+</div>

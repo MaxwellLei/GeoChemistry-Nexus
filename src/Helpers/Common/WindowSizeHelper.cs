@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.Helpers
     {
         /// <summary>相对 1080p 设计的默认客户区尺寸（与 MainWindow XAML 一致）。</summary>
         public const double DesignWidth = 1360;
-        public const double DesignHeight = 780;
+        public const double DesignHeight = 750;
 
         /// <summary>尺寸换算参考工作区（1080p）。</summary>
         private const double ReferenceWorkWidth = 1920;

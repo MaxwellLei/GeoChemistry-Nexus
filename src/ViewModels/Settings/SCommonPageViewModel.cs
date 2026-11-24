@@ -70,6 +70,9 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int mainSidebarCollapseMode; // 主窗体侧边栏收起样式(0是全部收起;1是保留图标)
 
+        [ObservableProperty]
+        private bool pageTransitionAnimation; // 页面切换动画（默认关闭）
+
         /// <summary>
         /// 界面缩放：0=自动，1=100%，2=125%，3=150%，4=200%
         /// </summary>
@@ -153,15 +156,6 @@ namespace GeoChemistryNexus.ViewModels
 
                     await DownloadAndInstallAppUpdateAsync(updateInfo, hasCachedInstaller: hasCachedInstaller);
                     return;
-                }
-
-                try
-                {
-                    await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
-                }
-                catch
-                {
-                    // 忽略更新 PlotTemplateCategories.json 的错误
                 }
 
                 MessageHelper.Success(LanguageService.Instance["already_latest_version"]);
@@ -321,6 +315,16 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
+        // 页面切换动画
+        partial void OnPageTransitionAnimationChanged(bool value)
+        {
+            if (isLoading) return;
+
+            FrameNavigationTransitionBehavior.IsTransitionEnabled = value;
+            ConfigHelper.SetConfig(ConfigKeys.PageTransitionAnimation, value.ToString());
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
         // 界面语言切换后刷新主题名称（色块的悬浮提示）与语言选择器中的语言名称
         private void OnAppLanguageChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -455,6 +459,8 @@ namespace GeoChemistryNexus.ViewModels
 
             UiScaleModeIndex = UiScaleModeToIndex(UiScaleHelper.GetMode());
             SelectedThemeId = AppThemeHelper.CurrentId;
+            PageTransitionAnimation = bool.TryParse(Helpers.ConfigHelper.GetConfig(ConfigKeys.PageTransitionAnimation), out bool pageAnim) && pageAnim;
+            FrameNavigationTransitionBehavior.IsTransitionEnabled = PageTransitionAnimation;
 
             isLoading = false;
         }

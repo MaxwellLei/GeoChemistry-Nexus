@@ -56,10 +56,10 @@ namespace GeoChemistryNexus.Services
             return string.Empty;
         }
 
-        // 获取语言的友好显示名称
+        // 获取语言的友好显示名称（不附带文化代码，与各“添加语言”列表保持一致）
         public static string GetLanguageDisplayName(string code)
         {
-            return AppCultureRegistry.GetDisplayName(code);
+            return AppCultureRegistry.GetDisplayName(code, false);
         }
 
         public string this[string name]

@@ -993,9 +993,6 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Selecione um grupo primeiro.</value>
   </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>O editor de categorias de diagramas foi recarregado.</value>
-  </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>O editor de etiquetas minerais de geotermobarômetro foi recarregado.</value>
   </data>
@@ -1078,7 +1075,7 @@
     <value>Forçar atualização</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Atualizar para modelo de diagrama online</value>
+    <value>Atualizar</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Remover modelo de diagrama online</value>
@@ -1418,9 +1415,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Falha na edição: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>As categorias de diagramas foram alteradas; esta publicação incluirá os arquivos de índice dos diagramas.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>Os rótulos minerais do GeoT mudaram; esta publicação incluirá os arquivos de índice dos geotermobarômetros.</value>
@@ -1791,7 +1785,7 @@
     <value>Excluir</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Atualizar para modelo de geotermobarômetro online</value>
+    <value>Atualizar</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Aplicar</value>
@@ -4522,6 +4516,8 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   <data name="epma_editor_id_exists" xml:space="preserve"><value>Este identificador de modelo já existe. Use outro nas informações básicas.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Modelo pessoal</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Modelo oficial</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>Online</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>Meus</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Editar modelo de cálculo</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Um modelo oficial só pode ser visto, copiado e testado. Ative o modo de desenvolvedor para editá-lo.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>O identificador único não pode ser alterado ao editar um modelo existente.</value></data>
@@ -4544,7 +4540,7 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   <data name="epma_library_delete" xml:space="preserve"><value>Excluir</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Exportar</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Atualizar para modelo de cálculo online</value>
+    <value>Atualizar</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Remover modelo de cálculo online</value>
@@ -4995,4 +4991,192 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   <data name="table_col_sample" xml:space="preserve"><value>Amostra</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Grupo</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>Lista atualizada: {0} novos / {1} atualizáveis / {2} removidos</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>Animação de transição de página</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>Reproduzir animações suaves ao alternar páginas; ativar esta opção pode afetar o desempenho</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>Já está neste local.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Pasta criada.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Excluir pasta</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>Excluir a pasta "{0}"?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>Excluir a pasta "{0}" e o(s) {1} modelo(s) dentro dela? Esta ação não pode ser desfeita.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Pasta excluída.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>Uma pasta não pode ser movida para dentro de si mesma nem de uma de suas subpastas.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Movido com sucesso.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Mover para</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Mover para…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Recolher</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Criar em: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Atual: {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Informe o nome da pasta para cada idioma. Idiomas em branco usam um nome existente.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>Já existe uma pasta com o mesmo nome aqui.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Expandir</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Idiomas em branco usam um nome existente.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} preenchidos</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Nomes informados em {0} idiomas</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Nome da pasta</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Opcional: nomeie a pasta separadamente para outros idiomas</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Nomes localizados</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Digite um nome de pasta</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Digite um nome de pasta.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>Idioma da interface</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>Nova pasta…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>Nova subpasta</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>Novo diagrama aqui</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>Nova pasta</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>A pasta não existe mais. Atualize e tente novamente.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Destino</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Mover</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Movendo pasta</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Movendo diagrama</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Item a mover</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>Nenhuma pasta corresponde a "{0}"</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>A pasta raiz não pode ser selecionada. Escolha uma pasta.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Pesquisar pastas…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Local selecionado</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Escolha uma pasta de destino</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Atual</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>Em movimento</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Mover para</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>{0} diagrama(s)</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Renomear</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Pasta renomeada.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Renomear pasta</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Selecione uma pasta.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Somente pastas oficiais vazias podem ser excluídas.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Baixe todos os modelos desta pasta antes de alterá-la.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>A mesma pasta dos modelos de diagrama online já contém um modelo com este nome. Renomeie-o ou mova-o antes de atualizá-lo.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Nome do modelo</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>Já existe um modelo com o mesmo nome nesta pasta.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>ex.: Autor (ano) Nome do diagrama</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Digite um nome de modelo.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Local de salvamento</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Escolher…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Escolher local de salvamento</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>Nenhuma pasta selecionada</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Escolha onde salvar o modelo.</value>
+  </data>
 </root>

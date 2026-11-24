@@ -87,6 +87,7 @@ namespace GeoChemistryNexus.Views.Widgets
             Loaded += (_, _) => AdoptHostContent(Content as DependencyObject, 0);
             UiScaleHelper.Attach(this);
             WindowWorkAreaHelper.Attach(this);
+            ChildWindowPlacementHelper.Attach(this);
         }
 
         /// <summary>

@@ -1,165 +1,135 @@
 <div align="center">
 
-<img src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png" width="96" alt="GeoChemistry Nexus Logo">
+<img src="./images/hero-banner.ko-KR.svg" width="100%" alt="GeoChemistry Nexus — 차세대 개방형 지구화학·암석광물학 작도 · 계산 · 클라우드 통합 워크벤치" />
 
-# GeoChemistry Nexus
+<br />
 
-**🌍 차세대 지구화학 및 암석학 도표·계산 워크벤치 — 지구과학자의 든든한 파트너**
+[![Latest Release](https://img.shields.io/badge/Release-v0.9.0-3645D8?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+[![.NET 10.0 WPF](https://img.shields.io/badge/.NET-10.0%20WPF-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/10.0)
+[![Platform Windows x64](https://img.shields.io/badge/Platform-Windows%20x64-0078D4?style=flat-square&logo=windows)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+![Core Size ~9MB](https://img.shields.io/badge/Core%20Size-~9%20MB-0D9488?style=flat-square)
+[![License GPL v3](https://img.shields.io/badge/License-GPL--3.0-D97706?style=flat-square)](../LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github&color=1e293b)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
 
-[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
-[![Latest Release](https://img.shields.io/github/v/release/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
-[![License: GPL v3](https://img.shields.io/github/license/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/blob/main/LICENSE)
-[![.NET 6](https://img.shields.io/badge/.NET-6.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/6.0)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [繁體中文](./README.zh-TW.md) · [Deutsch](./README.de-DE.md) · [Español](./README.es-ES.md) · [Français](./README.fr-FR.md) · [日本語](./README.ja-JP.md) · **한국어** · [Português](./README.pt-BR.md) · [Русский](./README.ru-RU.md)
 
-[English](../README.md) · [简体中文](./README.zh-CN.md) · [繁體中文](./README.zh-HK.md) · [Deutsch](./README.de-DE.md) · [日本語](./README.ja-JP.md) · **한국어**
-
-<br>
-
-📥 [최신 버전 다운로드](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) · 📖 [온라인 문서](https://geochemistry-nexus.pages.dev/) · 💬 [피드백 및 토론](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
+<kbd>📥 <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus/releases"><strong>최신 설치 파일 다운로드</strong></a></kbd> &nbsp; <kbd>🌐 <a href="https://geochemistry-nexus.pages.dev/ko/docs/intro"><strong>공식 웹사이트 및 문서</strong></a></kbd> &nbsp; <kbd>🧪 <a href="#-지구과학-오픈소스-생태계-함께-만들기"><strong>새 도해 / 수식 제출</strong></a></kbd> &nbsp; <kbd>💬 <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus/issues"><strong>문제 제보 및 건의</strong></a></kbd>
 
 </div>
 
 ---
 
-## 💡 왜 GeoChemistry Nexus인가
+## 💡 왜 GeoChemistry Nexus를 만들었나요?
 
-지구화학 및 암석학 연구에서 **작도**와 **계산**은 종종 서로 다른 도구에 분산되어 있습니다: 📋 데이터 정리는 스프레드시트, ✏️ 배경 도면 작성은 범용 벡터 소프트웨어, 🌡️ 온압계 계산은 별도 스크립트나 오래된 프로그램——. 워크플로우 단절, 형식 불일치, 높은 재현 비용은 많은 연구자가 매일 마주하는 마찰입니다.
+지구화학·암석학·광물학·광상학 연구에서는 일상적인 작업이 여러 프로그램에 흩어져 있는 경우가 많습니다. 스프레드시트에서 데이터를 정리하고, 별도의 스크립트나 오래된 프로그램으로 지질 온압계와 광물 화학식을 계산한 뒤, 다시 범용 그래픽 프로그램으로 옮겨 바탕 도면을 따라 그리는 과정에서 흐름이 끊길 뿐 아니라 수작업 전사로 인한 좌표 오차도 발생하기 쉽습니다. 또한 기존의 많은 지학 도구들이 오랫동안 업데이트되지 않는 반면, 새로 발표되는 판별 도해·온압 보정식·보정 모델은 논문 부록에만 머물러 동료 연구자들에게 널리 전달될 열린 통로가 부족했습니다.
 
-또한 많이 사용되는 판별도, 온압계 및 관련 계산 도구는 **지속적인 업데이트가 부족**하여, 새로 발표된 알고리즘과 고전 모델의 개정이 제때 반영되지 않고, 연구자들은 수년간 정체된 구버전을 사용하는 경우가 많습니다. 더 현실적인 문제는, 연구자가 **새로운 알고리즘이나 도표를 직접 개발**한 뒤 **편리하고 개방적인 배포 채널**이 부족해, 성과가 논문 부록, 개인 스크립트, 소규모 공유에 머물러 동일 분야 내 빠른 보급과 재사용이 어렵다는 점입니다.
-
-**GeoChemistry Nexus**는 이 전체 흐름을 한곳으로 모으고자 합니다——시료 데이터 가져오기, 전처리 및 보정부터 판별도 작성, 지온계 계산, CIPW 표준광물 계산, PNG / SVG 등으로 내보내기까지, 가능한 한 하나의 인터페이스에서 완료합니다. **클라우드 템플릿 생태계**와 **커뮤니티 협업**을 통해 도표와 알고리즘이 지속적으로 발전하고 더 많은 연구자에게 빠르게 전달되도록 합니다.
-
-> 🚀 **우리의 비전**: 기초 지구화학 및 암석학 도표와 계산 기능을 융합한 통합 플랫폼을 구축하여 연구 효율성을 획기적으로 높이고 기술 장벽을 낮춤으로써, 과학자들이 과학적 발견 그 자체에 집중할 수 있도록 돕는 것입니다.
+이름 속 **Nexus(연결 허브)** 가 뜻하듯, 본 프로젝트는 **「네이티브 고성능 코어 + 살아 움직이는 클라우드 템플릿 생태계」** 의 분리형 아키텍처를 채택했습니다. 클라이언트 본체는 매우 가볍고 쾌적하게 유지하면서, 상위의 **판별 도해·지질 온압계·전자현미분석(EPMA) 광물 모델·데스크톱 미니 도구함을 최신 학술 문헌에 맞춰 클라우드에서 지속적으로 업데이트 및 확충**하여 소프트웨어 업그레이드 없이도 최신 연구 모델을 바로 사용할 수 있습니다.
 
 <div align="center">
-  <img src="./images/software_ui_show.webp" alt="GeoChemistry Nexus 소프트웨어 UI" width="88%" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-  <br>
-  <sub>📈 판별도 · 📐 데이터 투영 · 🧩 템플릿 편집 · 🌐 다국어 UI</sub>
+  <img src="./images/workflow.ko-KR.svg" width="100%" alt="GeoChemistry Nexus 아키텍처 워크플로" />
 </div>
 
----
+## 🧭 무엇을 할 수 있나요?
 
-## 🧭 할 수 있는 일
+「전암 지구화학 — 미소영역 광물학 — 일상 지학 계산」의 완결된 순환 구조를 중심으로, 모든 템플릿 기반 모듈은 클라우드 상시 업데이트와 사용자 정의 확장을 지원합니다(화면 스크린샷 및 사용 예시는 [공식 웹사이트 및 온라인 문서](https://geochemistry-nexus.pages.dev/ko/docs/intro) 참조):
 
-| 모듈 | 설명 |
-| :---: | --- |
-| 🏠 **홈** | 빠른 링크, 실용 위젯, 지구과학 리소스 바로가기——창 전환 최소화 |
-| 📊 **데이터 전처리** | 분석 데이터 가져오기 및 정리, 작도·계산 준비 |
-| 📈 **판별도** | 템플릿 라이브러리로 삼각도, 산점도, 스파이더 다이어그램 등 작성; 데이터 투영 및 스타일 편집 지원 |
-| 🌡️ **지온계** | 단일 광물 계산 등 일반적인 시나리오를 위한 지질 온압계 템플릿 통합 |
-| 🪨 **CIPW 계산** | 표준광물 norm 계산, 암석학 분석 워크플로우 지원 |
-| ☁️ **템플릿 생태계** | 공식·커뮤니티 템플릿 클라우드 업데이트; 사용자 정의 템플릿 패키징·공유·협업 |
+1. **판별 도해 및 다차원 시각화**: 클라우드 템플릿 라이브러리, 개인 작업 공간, 범용 작도 도구를 하나로 통합했습니다. 내장 도해는 화성암 분류와 지구조 배경 판별에서 변성·퇴적·광상 성인 등 다학제 체계로 계속 확장되며, 희토류(REE)/미량원소 거미줄 도해(다양한 표준화 방안 내장), Harker 다중 패널 도해 및 2차원/삼각 산점도를 기본 제공합니다.
+2. **지질 온압계 및 자유 수식 시트**: 단광물·광물쌍 지질 온압계와 산소 분압계, 습도계, 포화 온도 모델을 클라우드에서 지속적으로 수록·개선합니다. 템플릿 열 안내에 따라 채우기 핸들을 끌어 일괄 계산할 수 있을 뿐 아니라, 독립된 자유 워크시트를 열어 Excel처럼 `=함수명()`을 입력해 여러 보정식을 한 시트에서 나란히 비교할 수 있습니다.
+3. **EPMA 전자현미분석 광물 계산**: 미소영역 산화물 점분석 데이터를 위해 조암 규산염, 부성분 광물 및 산화물/황화물 계열 템플릿을 온라인으로 폭넓게 지원하며, 산소 또는 양이온 기준 정규화, 결정 자리 배분(`apfu`), 단성분 비율 분해 및 `Fe³⁺/Fe²⁺` 전하 균형 추정을 자동으로 수행합니다.
+4. **CIPW 전암 표준광물 계산**: 주원소 12종과 미량/휘발성 성분 7종(`CO₂ / SO₃ / F / Cl / S` 산소 치환 보정 포함)으로부터 30여 종의 이상적 표준광물(`wt.%`)을 일괄 환산하며, 실측 철 자동 인식 또는 `Fe³⁺/ΣFe` 분할, 규산 포화도·알루미나 포화 지수 및 `10⁻⁶` 수준의 질량 균형 폐합 검증을 실시간으로 제공합니다.
+5. **Niggli 파라미터 및 분자 표준광물**: 양이온 백분율(`cat.%`)을 사용해 철 등 무거운 원소가 질량 분율에서 일으키는 편향을 제거하여 박편 내 실제 광물 부피 비율에 더욱 부합합니다. 한 번의 입력으로 전체 Niggli 파라미터(`si, al, fm, c, alk, k, mg, qz, ti, p`)와 Barth–Niggli 분자 표준광물(Catanorm), 사장석 `An%`, Mg 지수 및 7단계 탈규산 과정을 동시에 출력합니다.
+6. **지구과학 리소스 포털 및 간편 도구함**: 홈 화면에 `GEOROC`, `EarthChem`, `PetDB`, `GeoReM` 등 권위 있는 지구화학 데이터베이스 바로가기를 모았으며, 대화형 지구화학 주기율표, ICS 국제 층서 연대표 카드, 원소↔산화물 환산기, 지질 단위 환산기, 수질 알칼리도/경도 및 흑체 복사 계산기 등 경량 위젯을 계속해서 확충하고 있습니다.
 
----
+## ✨ 핵심 특징
 
-## ✨ 핵심 기능
+1. **다국어 템플릿, 클릭 한 번으로 언어 전환**: 도해 하부에 다국어 어휘 매핑 구조를 적용하여, 동일한 투점 결과물을 중국어 간체·번체, 영어, 독일어, 프랑스어, 스페인어, 러시아어, 일본어, 한국어, 포르투갈어 등 다양한 언어 표기로 손실 없이 즉시 전환할 수 있습니다.
+2. **출판급 벡터 그래픽, 주요 편집 프로그램 직결**: 캔버스 내 7종 벡터 레이어(데이터 점, 텍스트, 화살표, 사용자 정의 함수 곡선, 선분, 다각형, 좌표축)의 세밀한 스타일 조정을 지원하며, `SVG / PNG / JPG / BMP` 내보내기와 클립보드 복사는 물론 중간 파일 저장 없이 클릭 한 번으로 Inkscape, CorelDRAW, Adobe Illustrator를 바로 호출해 편집을 이어갈 수 있습니다.
+3. **화이트박스 검증, 행별 상태등 및 계산 과정 추적**: 결과만 보여주고 과정은 알 수 없는 블랙박스 계산을 지양합니다. 온압계·EPMA·CIPW·Niggli 시트의 모든 행에 동적 진단 상태등이 제공되며, 임의의 시료를 클릭하면 정규화 계수, 중간 로그항, 철 원자가 처리 방식 및 탈규산 반응 소모량을 사이드 패널에서 항목별로 검토할 수 있어 논문 심사 소명과 교육용 검산에 편리합니다.
+4. **프로그래밍 가능한 템플릿, 내장 비주얼 및 스크립트 빌더**: 도해·온압계·EPMA 비주얼 편집기와 `Jint` JavaScript 스크립트 샌드박스를 내장했습니다. 연구실에서 새로 발표한 판별 경계선이나 열역학 경험식을 프로그램 재컴파일 없이 다국어 용어와 RTF 문헌 설명이 포함된 표준 템플릿 패키지로 묶어 팀원 간 공유하거나 공식 클라우드 라이브러리에 등록할 수 있습니다.
 
-* **🎨 강력한 커스텀 작도**
-    * 풍부한 작도 도구 내장 (선, 다각형, 텍스트, 화살표, 함수 곡선 등).
-    * 커스텀 스크립트를 지원하여 데이터 가져오기 및 연산 규칙을 유연하게 설정, 고도의 커스터마이징 요구 충족.
+## 📦 다운로드 및 실행 환경
 
-* **🌐 네이티브 다국어 지원**
-    * **도표 국제화**: 하나의 템플릿으로 한국어, 영어, 중국어 등 다국어 원클릭 전환 지원. 한 번의 작업으로 전 세계 배포 가능.
-    * **인터페이스 현지화**: 소프트웨어 인터페이스는 영어(US), 간체 중국어, 독일어 등을 전면 지원합니다.
+[**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)에서 최신 Windows 설치 파일을 다운로드하세요. Python / R 등 별도의 외부 환경을 구성할 필요가 없습니다.
 
-* **☁️ 클라우드 템플릿 생태계**
-    * 공식 팀과 커뮤니티가 공동으로 유지 관리하는 도표 템플릿 라이브러리 내장.
-    * 동적 업데이트를 지원하여 소프트웨어를 업그레이드하지 않고도 최신 연구용 도표 템플릿을 실시간으로 받을 수 있습니다.
-
-* **🤝 편리한 배포 및 협업**
-    * 커스텀 도표 템플릿의 패키징 및 내보내기를 지원하여, 팀이나 기관 간의 연구 성과 공유를 쉽게 실현합니다.
-
-* **🧮 전문 지질학 계산 모듈**
-    * 단일 광물 등 다양한 유형의 지온계(Geothermometer) 템플릿을 통합하여, 다양한 매개변수 계산 요구를 충족합니다.
-
----
-
-## ⚡ 빠른 시작
-
-### 📥 다운로드 및 설치
-
-GitHub **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)** 페이지에서 Windows 설치 패키지(현재 버전 **v0.7.1**)를 다운로드한 뒤, 마법사에 따라 설치하세요.
-
-### 💻 시스템 요구 사항
-
-| 항목 | 요구 사항 |
-| --- | --- |
-| 🖥️ 운영 체제 | Windows 7 SP1 이상 (Windows 10 / 11 권장) |
-| ⚙️ 실행 환경 | [.NET 6.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/6.0) |
-| 📦 아키텍처 | x64 |
-
-> 💡 .NET Runtime이 설치되어 있지 않으면, 설치 프로그램 또는 첫 실행 시 다운로드를 안내합니다.
-
-### 🚀 권장 시작 경로
-
-| 단계 | 작업 |
-| :---: | --- |
-| 1️⃣ | **홈**에서 인터페이스와 바로가기 익히기 |
-| 2️⃣ | 샘플 데이터로 **판별도**에서 공식 템플릿을 열어 첫 작도 완료 |
-| 3️⃣ | 필요에 따라 **지온계** 또는 **CIPW** 모듈에서 계산 시도 |
-| 4️⃣ | PNG / JPG / BMP / SVG로 내보내고 [공식 문서](https://geochemistry-nexus.pages.dev/)에서 고급 사용법 학습 |
-
----
-
-## 🛠️ 기술 개요
-
-| 분류 | 설명 |
-| --- | --- |
-| 💻 언어 및 프레임워크 | C# · WPF · .NET 6 |
-| 🏗️ 아키텍처 | MVVM (CommunityToolkit.Mvvm) |
-| 📊 작도 및 내보내기 | ScottPlot; PNG / JPG / BMP / SVG 지원 |
-| 📜 스크립트 엔진 | Jint (템플릿 내 사용자 정의 로직) |
-| 📄 라이선스 | [GNU GPL v3](../LICENSE) |
-
-> 🔧 로컬 빌드 및 기여 안내는 `src/` 디렉터리 참조; Issue와 Pull Request는 GitHub에서 환영합니다.
-
----
+| 항목 | 사양 요구사항 |
+| :--- | :--- |
+| 🖥️ **운영체제** | Windows 7 SP1 / Windows 10 / Windows 11 (64비트 x64) |
+| ⚙️ **실행 환경** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚡ **소프트웨어 용량** | 클라이언트 본체 약 `9 MB` (.NET 런타임 미포함 버전) |
 
 ## 🗺️ 로드맵
 
-목표는 단순한 「작도 소프트웨어」가 아니라, **데이터 · 도표 · 계산 · 협업**이 통합된 연구 도구 체인을 구축하는 것입니다.
+GeoChemistry Nexus는 5년 이상 장기 유지보수를 목표로 하는 오픈소스 엔지니어링 프로젝트입니다. 기존 클라우드 템플릿 라이브러리를 꾸준히 확충하는 동시에 다음 세 단계에 걸쳐 체계적으로 발전하고 있습니다(전체 계획은 [온라인 문서 · Roadmap](https://geochemistry-nexus.pages.dev/ko/docs/Roadmap) 참조):
 
-| 단계 | 방향 |
-| --- | --- |
-| 🔥 **진행 중** | 일반적인 지구화학·암석학 도표 지속 확충; 지온계·지압계 템플릿 개선 |
-| 📅 **단기 계획** | 동位원 연대측정 관련 작도; 더 풍부한 지구화학 계산 도구 |
-| 🔭 **중장기** | 연구 커뮤니티 및 템플릿 공유 · ML 보조 분석 · 로드 가능한 「새로운 도표」 판별 모델 · RAG 기반 AI 연구 어시스턴트 |
+<table>
+  <tr>
+    <td width="33.3%" valign="top">
+      <p><strong>🟢 1단계 · 구축 완료 및 지속 확장</strong></p>
+      <p><strong>암석·광물화학 핵심 워크플로</strong></p>
+      <ul>
+        <li>다학제 판별 도해, 거미줄 도해 및 Harker 다중 패널 도해</li>
+        <li>Excel형 지질 온압계 및 자유 수식 비교 시트</li>
+        <li>EPMA 미소영역 광물 구조식 클라우드 템플릿 라이브러리</li>
+        <li>CIPW 및 Niggli / Catanorm 화이트박스 계산</li>
+        <li>10개 이상 다국어 현지화 및 외부 벡터 소프트웨어 직결</li>
+      </ul>
+    </td>
+    <td width="33.3%" valign="top">
+      <p><strong>🔵 2단계 · 단기 중점 추진</strong></p>
+      <p><strong>동위원소 연대측정 및 지구화학 프랙탈</strong></p>
+      <ul>
+        <li>저콘 U-Pb 조화도(Concordia) 작도 모듈</li>
+        <li><code>Rb-Sr</code> / <code>Sm-Nd</code> / <code>Lu-Hf</code> 등 다원 등시선도</li>
+        <li><code>C-N</code> / <code>C-A</code> 등 지구화학 프랙탈 및 다중 프랙탈 모델</li>
+        <li>양대수 구간 회귀 피팅 및 지화학 탐사 배경값 / 이상치 하한 자동 구분</li>
+      </ul>
+    </td>
+    <td width="33.3%" valign="top">
+      <p><strong>🟣 3단계 · 중장기 비전</strong></p>
+      <p><strong>지능형 판별 모델 및 크로스플랫폼 생태계</strong></p>
+      <ul>
+        <li>Python 환경 설정이 필요 없는 지구화학 머신러닝 분류 평가</li>
+        <li>대규모 데이터로 학습된 확장형 「신규 도해」 판별 모델 로드 지원</li>
+        <li>지구과학 문헌과 내장 지식베이스를 결합한 RAG 연구 도우미</li>
+        <li><code>Avalonia UI</code> 아키텍처 검토를 통한 macOS / Linux 네이티브 지원</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-📌 전체 로드맵: [공식 문서 · Roadmap](https://geochemistry-nexus.pages.dev/docs/Roadmap)
+## 🤝 지구과학 오픈소스 생태계 함께 만들기
 
----
+> [!IMPORTANT]
+> **🧪 지구과학 연구자 및 연구실 여러분께: 새로 발표하신 도해와 수식을 전 세계 동료들이 바로 호출해 쓰도록 해보세요!**
+>
+> 연구자님 또는 연구팀에서 새로운 **지구조/성인 판별 도해, 지질 온압계, 산소 분압계 또는 광물화학 계산법**을 발표하셨다면, 직접 패키징하시거나 저희에게 연락해 공식 클라우드 템플릿 라이브러리에 수록해 보세요! 수록된 모든 템플릿은 소프트웨어 설명 패널에 **원논문 인용 정보, 저자 표기 및 개인/연구실 홈페이지 링크**를 명확히 기재하며 공식 기여자 명단에도 등재됩니다.
 
-## 👋 참여 및 연락처
+| 참여 분야 | 참여 방법 |
+| :--- | :--- |
+| 📈 **도해 및 알고리즘 공동 구축** | 자체 제작 템플릿 패키지 공유, 수록이 시급한 고전/최신 수식 추천, 기존 모델의 경계 조건 및 테스트 데이터셋 검증 지원 |
+| 💻 **코드 및 아키텍처 기여** | `C# / WPF`, 과학 시각화, 스프레드시트 엔진 또는 지구화학 수치 계산에 익숙한 개발자분들의 저장소 Fork 및 Pull Request를 환영합니다 |
+| 🌍 **다국어 전문용어 교정** | 중국어, 영어, 독일어, 프랑스어, 스페인어, 러시아어, 일본어, 한국어, 포르투갈어 등 지학 전문용어 현지화 및 온라인 튜토리얼 번역 다듬기 |
+| 🐛 **오류 제보 및 기능 건의** | 계산 편차, 인터페이스 불편 사항이나 새로운 기능 아이디어가 있다면 언제든 [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)에 남겨 주세요 |
 
-**지질학 이론**, **알고리즘 개발**, **템플릿 디자인**, **C# 개발** 중 어디에 강점이 있든 환영합니다:
+### 💬 연락 및 소통
 
-| 방법 | 설명 |
-| --- | --- |
-| 🐛 문제 보고 | Bug 보고 또는 기능 제안 → [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues) |
-| 💻 코드 기여 | Fork 후 Pull Request 제출 |
-| 🌍 번역 지원 | UI 및 문서 현지화 (중 / 영 / 독 / 일 / 한 등) |
-| 📈 템플릿 공유 | 자작 판별도 템플릿을 커뮤니티에 제공 |
+1. **개발자 이메일**: [`maxwelllei@qq.com`](mailto:maxwelllei@qq.com) (도해·알고리즘 투고, 학술 및 프로젝트 협력)
+2. **QQ 교류 그룹**: `1076647740`
+3. **Discord 커뮤니티**: https://discord.gg/mRm8dbwa4W
+4. **문제 제보 및 건의**: [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
 
-### 💬 커뮤니티 채널
-
-| 채널 | 정보 |
-| --- | --- |
-| 📧 이메일 | `maxwelllei@qq.com` |
-| 💬 QQ 그룹 | `1076647740` |
-| 🎮 Discord | https://discord.gg/mRm8dbwa4W |
-
----
-
-## ⭐ Star 추이
-
-<p align="center">
-  <a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
-    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History">
-  </a>
-</p>
+## ⭐ Star 증가 추이
 
 <div align="center">
 
-✨ GeoChemistry Nexus가 연구에 도움이 되었다면, 지속적인 업데이트를 위해 **Star**를 눌러 주세요 ✨
+<a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
+  <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=Date" width="80%" alt="Star History Chart" />
+</a>
+
+🙏 [템플릿 구축, 테스트 피드백 및 다국어 교정에 참여해 주신 모든 기여자분들](https://geochemistry-nexus.pages.dev/ko/docs/Special%20Thanks)께 깊이 감사드립니다
+
+**✨ GeoChemistry Nexus가 연구나 강의 시간을 아껴 드렸다면, 오른쪽 위의 `Star ⭐`를 눌러 프로젝트의 장기적인 발전을 응원해 주세요! ✨**
+
+지구과학이라는 전문 분야에서 오픈소스 소프트웨어를 꾸준히 일구어 가는 일은 결코 쉽지 않습니다. 여러분의 관심과 응원이 정말 절실합니다—눌러 주시는 Star 하나와 주변 동료 연구자분들께 전하는 추천 한마디가 프로젝트를 계속 나아가게 하는 가장 큰 원동력입니다!
 
 </div>

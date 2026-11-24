@@ -26,10 +26,7 @@ namespace GeoChemistryNexus.Models
         public const string HomeLinksCatalogUrl = CosBaseUrl + "/HomeLinksCatalog.json";
         public const string AnnouncementsUrl = CosBaseUrl + "/Announcements.json";
         public const string GraphMapListUrl = CosBaseUrl + "/GraphMapList.json";
-        public const string PlotTemplateCategoriesUrl = CosBaseUrl + "/PlotTemplateCategories.json";
-
         public const string GraphMapListFileName = "GraphMapList.json";
-        public const string PlotTemplateCategoriesFileName = "PlotTemplateCategories.json";
         public const string ServerInfoFileName = "server_info.json";
         public const string HomeLinksCatalogFileName = "HomeLinksCatalog.json";
         public const string AnnouncementsFileName = "Announcements.json";
@@ -41,6 +38,8 @@ namespace GeoChemistryNexus.Models
         public const string GitHubReleaseDownloadBaseUrl = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/download";
         public const string InstallerAssetPrefix = "GeoChemistryNexus-Setup-";
         public const string InstallerAssetSuffix = "-x64.exe";
+        /// <summary>精简版安装包（不内置 .NET 运行时）的文件名后缀。</summary>
+        public const string LiteInstallerAssetSuffix = "-x64-lite.exe";
 
         public const string DefaultRegion = "ap-hongkong";
         public const string DefaultBucket = "geochemistrynexus-1303234197";
@@ -63,19 +62,19 @@ namespace GeoChemistryNexus.Models
         public const string EpmaIndexFileName = "EPMA-index.json";
         public const string EpmaPublishManifestFileName = "epma_publish_manifest.json";
 
-        public static string BuildInstallerFileName(string version)
+        public static string BuildInstallerFileName(string version, bool lite = false)
         {
-            return $"{InstallerAssetPrefix}{version}{InstallerAssetSuffix}";
+            return $"{InstallerAssetPrefix}{version}{(lite ? LiteInstallerAssetSuffix : InstallerAssetSuffix)}";
         }
 
-        public static string BuildGitHubInstallerUrl(string version)
+        public static string BuildGitHubInstallerUrl(string version, bool lite = false)
         {
-            return $"{GitHubReleaseDownloadBaseUrl}/v{version}/{BuildInstallerFileName(version)}";
+            return $"{GitHubReleaseDownloadBaseUrl}/v{version}/{BuildInstallerFileName(version, lite)}";
         }
 
-        public static string BuildCosInstallerUrl(string version)
+        public static string BuildCosInstallerUrl(string version, bool lite = false)
         {
-            return $"{CosBaseUrl}/{InstallersFolderName}/{BuildInstallerFileName(version)}";
+            return $"{CosBaseUrl}/{InstallersFolderName}/{BuildInstallerFileName(version, lite)}";
         }
 
         /// <summary>

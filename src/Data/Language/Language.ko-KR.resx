@@ -253,7 +253,7 @@
     <value>링크 추가</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>온라인 온도압력계 템플릿으로 업그레이드</value>
+    <value>업그레이드</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>검사 실패:</value>
@@ -713,9 +713,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>편집 실패: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>다이어그램 분류가 변경되어 이번 게시에 다이어그램 색인 파일을 포함합니다.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>지온지압계 광물 태그가 변경되어 이번 게시에 지온지압계 색인 파일을 포함합니다.</value>
@@ -2137,7 +2134,7 @@
     <value>강제 업데이트</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>온라인 다이어그램 템플릿으로 업그레이드</value>
+    <value>업그레이드</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>온라인 다이어그램 템플릿 제거</value>
@@ -2570,9 +2567,6 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>텍스트</value>
-  </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>도표 분류 편집기를 다시 불러왔습니다.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>GeoT 광물 분류 편집기를 다시 불러왔습니다.</value>
@@ -4855,6 +4849,8 @@
   <data name="epma_editor_id_exists" xml:space="preserve"><value>이 템플릿 식별자가 이미 있습니다. 기본 정보에서 새 고유 식별자를 사용하세요.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>개인 템플릿</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>공식 템플릿</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>온라인</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>내 것</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>계산 템플릿 편집</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>공식 계산 템플릿은 보기, 복사, 시험 계산만 할 수 있습니다. 개발자 모드를 켜면 편집할 수 있습니다.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>기존 템플릿을 편집할 때는 고유 식별자를 바꿀 수 없습니다.</value></data>
@@ -4876,7 +4872,7 @@
   <data name="epma_library_delete" xml:space="preserve"><value>삭제</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>내보내기</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>온라인 계산 템플릿으로 업그레이드</value>
+    <value>업그레이드</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>온라인 계산 템플릿 제거</value>
@@ -5126,4 +5122,192 @@
   <data name="table_col_sample" xml:space="preserve"><value>시료</value></data>
   <data name="table_col_category" xml:space="preserve"><value>그룹</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>목록이 업데이트되었습니다. 신규 {0} / 업데이트 가능 {1} / 내려감 {2}</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>페이지 전환 애니메이션</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>페이지를 전환할 때 부드러운 애니메이션을 재생합니다(켜면 성능에 영향을 줄 수 있음)</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>이미 이 위치에 있습니다.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>폴더를 만들었습니다.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>폴더 삭제</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>폴더 "{0}"을(를) 삭제하시겠습니까?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>폴더 "{0}" 및 그 안의 템플릿 {1}개를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>폴더를 삭제했습니다.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>폴더를 자기 자신이나 하위 폴더 안으로 이동할 수 없습니다.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>이동했습니다.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>이동 위치</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>이동…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>접기</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>만들기</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>만들 위치: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>현재: {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>언어별로 폴더 이름을 입력하십시오. 비워 둔 언어는 기존 이름을 사용합니다.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>같은 이름의 폴더가 이미 여기에 있습니다.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>펼치기</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>비워 둔 언어는 기존 이름을 사용합니다.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} 입력됨</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>{0}개 언어의 이름을 입력함</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>폴더 이름</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>선택: 다른 표시 언어에 별도의 이름을 지정합니다</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>다국어 이름</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>폴더 이름 입력</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>폴더 이름을 입력하십시오.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>표시 언어</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>새 폴더…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>새 하위 폴더</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>여기에 새 다이어그램</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>새 폴더</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>폴더가 더 이상 없습니다. 새로 고친 뒤 다시 시도하십시오.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>대상 위치</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>이동 중인 폴더</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>이동 중인 다이어그램</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>이동할 항목</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>"{0}"과(와) 일치하는 폴더가 없습니다</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>루트는 선택할 수 없습니다. 폴더를 선택하십시오.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>폴더 검색…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>선택한 위치</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>대상 폴더 선택</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>현재</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>이동 중</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>이동 위치</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>다이어그램 {0}개</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>이름 바꾸기</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>폴더 이름을 변경했습니다.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>폴더 이름 바꾸기</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>폴더를 선택하십시오.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>비어 있는 공식 폴더만 삭제할 수 있습니다.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>변경하기 전에 이 폴더의 템플릿을 모두 다운로드하십시오.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>온라인 다이어그램 템플릿의 같은 폴더에 같은 이름의 템플릿이 이미 있습니다. 업그레이드하기 전에 이름을 바꾸거나 이동하십시오.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>템플릿 이름</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>이 폴더에 같은 이름의 다이어그램 템플릿이 이미 있습니다.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>예: 저자 (연도) 다이어그램 이름</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>템플릿 이름을 입력하십시오.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>저장 위치</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>선택…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>저장 위치 선택</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>선택한 폴더 없음</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>템플릿을 저장할 위치를 선택하십시오.</value>
+  </data>
 </root>

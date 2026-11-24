@@ -6,46 +6,52 @@ sidebar_position: 6
 
 :::info
 
-**"I couldn't find the sports car of my dreams, so I built it myself." — Ferdinand Porsche**
+**“I could not find the sports car of my dreams, so I built one myself.” — Ferdinand Porsche**
 
 :::
 
-**GeoChemistry Nexus** is the first project I plan to maintain over the long term—I intend to keep updating it for at least the next five years.
+**GeoChemistry Nexus** is the first project I plan to maintain for a very long time. I intend to keep updating it for at least the next five years.
 
-Interestingly, it was originally named **Geo-Thermometer**. At first, I only wanted to develop a basic program related to geothermometers to make calculation and plotting easier. However, as the project progressed, especially after the plotting module was completed, I suddenly realized a much larger goal was within reach. So the project expanded in both concept and functionality, evolving from Geo-Thermometer to GeoChemistry Nexus.
+It was originally named **Geo-Thermometer**. At first I only wanted a basic program related to geothermometers, so that calculation and plotting would be easier. As the project moved forward, especially after the plotting module was finished, I realized a larger goal was possible. The project then grew in both concept and function, from Geo-Thermometer into GeoChemistry Nexus.
 
-## Why GeoChemistry Nexus Is Needed
+## Why this name
 
-In geochemistry and petrology research, **plotting** and **calculation** are often scattered across different tools: data organization relies on spreadsheet software, basemap drawing on general-purpose vector tools, and thermobarometer calculations require separate scripts or legacy programs. Fragmented workflows, inconsistent formats, and high reproducibility costs are friction many researchers face daily.
+**GeoChemistry** means geochemistry. **Nexus** means a connection point, a hub, or a place where things meet.
 
-On the other hand, many commonly used discriminant diagrams, thermobarometers, and related calculation tools **lack ongoing updates for long periods**—newly published algorithms and revisions to classic models are hard to incorporate in time, and researchers often have to rely on versions that have stagnated for years. A more practical problem is that when researchers **develop their own** new algorithms or diagrams, they often **lack convenient, open channels to share them**—results remain in paper appendices, personal scripts, or small-scale sharing, making it difficult to spread and reuse them quickly within the field.
+We want to bring scattered geochemical calculation methods, data-processing tools, mineral-chemistry analysis, geological diagrams, and related work onto one platform.
+
+## Why GeoChemistry Nexus is needed
+
+In geochemistry and petrology, **plotting** and **calculation** are often split across different tools. Spreadsheet software prepares the data, a general vector tool draws the base map, and thermobarometry needs yet another script or an old program. Broken workflows, inconsistent formats, and a high cost of reproduction are everyday friction for many researchers.
+
+Many commonly used discrimination diagrams, thermobarometers, and related calculation tools have also **gone without sustained updates for a long time**. Newly published algorithms and revisions of classic models are hard to bring in promptly, so researchers often have to keep using versions that have stood still for years. A more practical problem is this: after a researcher **builds** a new algorithm or diagram, there is often **no convenient, open channel to distribute it**. The result stays in a paper appendix, a personal script, or a small private share, and does not spread or get reused quickly in the field.
 
 ![plot_home_ui](/img/about-illustrations/02-research-tool-pain-points.png)
 
-In addition, I have seen some less rigorous practices in research—for example, some people use CorelDRAW to roughly sketch geological map basemaps. Although the visual difference may be small, from a scientific research perspective, this approach goes against rigorous scientific spirit.
+I have also seen practices in research that are not rigorous enough. For example, some people sketch geological base maps roughly in CorelDRAW. The visual difference may be small, but from the standpoint of scientific research the practice goes against a rigorous scientific spirit.
 
-So I thought: **Why not develop a tool myself?**
+So I asked: **why not build a tool myself?**
 
-A tool that can integrate a large number of geological and geochemical chart templates, support various geothermometer/barometer calculations, and extend to geochemical calculations and currently popular machine learning features. When ready-made templates are not available, it provides visual plotting tools to make creation and sharing easier. With modern interface design and multilingual support, it allows researchers to complete most of the foundational scientific plotting and calculation work within a single application.
+A tool that can bring together a large set of geological and geochemical diagram templates, support a wide range of geothermometer and geobarometer calculations, and extend to geochemical calculations and machine-learning features that are in use now. When no ready-made template exists, it provides visual drawing tools so a template can be created and shared. With a modern interface and multiple languages, researchers can do most of the basic scientific plotting and calculation inside one program.
 
-**GeoChemistry Nexus** aims to bring this workflow together in one place—from sample data import, preprocessing and correction, to discriminant diagram plotting, geothermometer calculation and CIPW norm mineral calculation, to export in formats such as PNG / SVG, all within the same interface as much as possible; while through a **cloud template ecosystem** and **community collaboration mechanism**, diagrams and algorithms can iterate continuously and reach more researchers quickly.
+**GeoChemistry Nexus** aims to pull that chain into one place. From sample import, preprocessing, and correction, through discrimination diagrams, geothermometer calculation, and CIPW normative mineral calculation, to export in PNG, SVG, and other formats, as much of the work as possible is done in the same interface. Through a **cloud template ecosystem** and **community collaboration**, diagrams and algorithms can keep iterating and reach more researchers quickly.
 
-## Initial Development Ideas
+## How development started
 
-Coincidentally, I am familiar with programming languages such as C# and Python, and I have desktop software development skills. So in December 2024, I started developing a demo. In the initial technology selection phase, I seriously considered: **What language and architecture would best achieve this goal?**
+I happen to know programming languages such as C# and Python, and I know desktop software development. In December 2024 I started building a demo. In the first round of technology choices, I thought carefully about this question: **which language and architecture could best achieve this goal?**
 
-My first thought was Python—it would let me prototype quickly, which is good news for developers. However, from the user's perspective, it has fatal flaws: first, low execution efficiency (though the impact is small for small datasets, there is still a performance gap); second, it leads to huge installation packages. I once refactored a simple program originally written in WPF using Python. Even when packaged in a brand-new virtual environment, the result was hundreds of MB, while a .NET packaged program was only a dozen MB—the gap is huge. **Forcing users to endure hundreds of MB or even GB of installation and complex configuration for simple functionality is not the best choice**.
+My first idea was Python. It would let me prototype quickly, which is good news for a developer. From a user’s point of view it has serious drawbacks. Execution is inefficient. The difference is small when the data set is small, but a performance gap remains. It also produces a very large installer. I once rewrote, in Python, a simple program that had originally been written in WPF. Even when it was packaged in a brand-new virtual environment, the result was hundreds of megabytes, while the .NET package was only a little over ten megabytes. The gap is huge. **Making users accept an install of hundreds of megabytes, or even gigabytes, plus complex setup for a simple feature is not a good choice.**
 
-Then I considered web development. The advantages are obvious—no installation required, ready to use. But the problems are: on one hand, my mastery of web technologies is not comprehensive enough; on the other hand, the long-term high cost of servers exceeds my personal maintenance capacity. Therefore, I eventually shifted my focus back to client-side development.
+I then considered web development. The advantages are obvious: nothing to install, and it opens and runs. The problem is that the long-term cost of a server was more than I could maintain on my own. I therefore moved the focus back to client development.
 
 ![plot_home_ui](/img/about-illustrations/03-technology-choice-path.png)
 
-Client-side development has many technical options, but compared to C++-based Qt, I am more familiar with .NET. Combined with .NET's high execution efficiency and the popularity of Windows, I ultimately chose .NET as the main development platform. Initially, I also considered using Avalonia for cross-platform support on Windows, Linux, and macOS, but during development, I found that some project dependencies were incompatible with Avalonia, leading to very high migration costs. With my personal capacity alone, it is difficult to refactor these modules in the early stage. Therefore, at least at the current stage, my work remains focused on the Windows platform, and a cross-platform version may be realized someday in the future.
+Client development has many technical options. Compared with Qt, which is based on C++, I know .NET better. Given the high execution efficiency of .NET and how widely Windows is used, I chose .NET as the main development platform. At first I also considered Avalonia, so the software could support Windows, Linux, and macOS. During development I found that some project dependencies were incompatible with Avalonia, and the cost of migration was very high. On my own, it was hard to rebuild those modules at an early stage. At least for now, the work remains focused on Windows. A cross-platform version may arrive someday.
 
-## Contact Me
+## Contact me
 
-If you are interested in software development and willing to collaborate with me, or hope to provide suggestions and feedback, diagram templates, algorithm support, or even business cooperation, please feel free to contact me at **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)**.
+If you are interested in software development and want to collaborate, or if you want to offer suggestions and feedback, diagram templates, or algorithm support, or even to discuss commercial cooperation, contact me at any time at **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)**.
 
-*If you find any shortcomings or issues while using the software, please feel free to provide feedback. As software features grow increasingly complex, testing is difficult to cover all scenarios, and there may be omissions or inaccuracies. I will do my best to fix and optimize, providing you with a more stable and reliable user experience.*
+*If you find any shortcoming or problem while using the software, please send feedback at any time. The software has more and more features, and they are increasingly complex, so testing cannot cover every case. Something may be missed or inaccurate. I will do my best to correct and improve it, and to give you a more stable and reliable experience.*
 
 ![plot_home_ui](/img/about-illustrations/04-long-term-maintenance.png)

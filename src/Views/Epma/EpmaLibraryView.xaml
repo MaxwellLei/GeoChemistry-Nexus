@@ -303,7 +303,7 @@
                                                 <Canvas Width="24" Height="24"><Path Style="{StaticResource DiagramLibraryButtonIconStyle}" Data="M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 M12,7 L12,12 L15.5,14"/></Canvas>
                                             </Viewbox>
                                             <TextBlock Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Grid.Column="3" Text="{Binding Origin}" FontSize="11" Margin="6,0,0,0" VerticalAlignment="Center"
+                                            <TextBlock Grid.Column="3" Text="{Binding RecentOrigin}" FontSize="11" Margin="6,0,0,0" VerticalAlignment="Center"
                                                        Foreground="{StaticResource DiagramLibrarySecondaryBrush}"/>
                                         </Grid>
                                     </Button>

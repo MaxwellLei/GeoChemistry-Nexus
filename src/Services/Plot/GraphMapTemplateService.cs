@@ -145,11 +145,14 @@ namespace GeoChemistryNexus.Services
                         item.Version,
                         appFormatVersion);
 
+                    // 待发布的本地改动（如移动、重命名文件夹）以本地分类路径为准，不被服务器目录覆盖
+                    bool syncNodeList = !summary.PendingPublish;
+
                     // 本地版本号只在未安装占位上跟随服务器；已安装的保留模板内容自带的版本号
                     bool metadataChanged =
                         summary.Status != newStatus
                         || summary.GraphMapPath != item.GraphMapPath
-                        || !NodeListEquals(summary.NodeList, item.NodeList)
+                        || (syncNodeList && !NodeListEquals(summary.NodeList, item.NodeList))
                         || (!isInstalled
                             && !string.IsNullOrWhiteSpace(item.Version)
                             && ContentVersionHelper.Compare(summary.Version, item.Version) != 0)
@@ -164,7 +167,8 @@ namespace GeoChemistryNexus.Services
 
                         fullEntity.Status = newStatus;
                         fullEntity.GraphMapPath = item.GraphMapPath;
-                        fullEntity.NodeList = item.NodeList;
+                        if (syncNodeList)
+                            fullEntity.NodeList = item.NodeList;
                         fullEntity.IsNewTemplate = false;
 
                         if (!isInstalled && !string.IsNullOrWhiteSpace(item.Version))
@@ -297,7 +301,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 获取当前 App 界面语言对应的路径，忽略图解内容语言上下文。
         /// </summary>
-        private static string GetPathForAppLanguage(LocalizedString localizedString)
+        public static string GetPathForAppLanguage(LocalizedString? localizedString)
         {
             if (localizedString == null) return string.Empty;
 

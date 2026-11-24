@@ -1,0 +1,254 @@
+<Window x:Class="GeoChemistryNexus.Views.FolderPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:FolderPickerDialogViewModel}"
+        Title="{Binding Title}"
+        Width="520" Height="570" MinWidth="440" MinHeight="440"
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="#F5F7FA"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        UseLayoutRounding="True" FontSize="13"
+        Foreground="#263549"
+        TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
+
+    <!-- 与「新建图解」窗口一致的原生无边框窗口：44 高的顶栏可拖动，阴影由 DWM 绘制 -->
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶栏：左侧标题，右侧确认按钮与关闭按钮 -->
+        <Border Grid.Row="0" BorderBrush="#DFE5ED" BorderThickness="0,0,0,1">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Style="{StaticResource EditorAction}" VerticalAlignment="Center" IsDefault="True"
+                            Command="{Binding ConfirmCommand}"
+                            Content="{Binding ConfirmText}"
+                            Background="{DynamicResource ThemeAccentBrush}" Foreground="White"
+                            BorderBrush="{DynamicResource ThemeAccentBrush}" Padding="16,5"/>
+                    <Border Width="1" Height="18" Background="#DFE5ED" Margin="12,0,8,0"/>
+                    <Button Style="{StaticResource EditorCaptionClose}" Content="&#xeaf2;" IsCancel="True"
+                            Command="{Binding CancelCommand}"
+                            AutomationProperties.Name="{Binding [close],Source={x:Static lg:LanguageService.Instance}}"
+                            ToolTip="{Binding [close],Source={x:Static lg:LanguageService.Instance}}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,12,0">
+                    <Viewbox Width="15" Height="15" Margin="0,0,9,0">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="{Binding IconData}" Stroke="{DynamicResource ThemeAccentBrush}" StrokeThickness="1.8"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- 内容区 -->
+        <Grid Grid.Row="1" Margin="24,18,24,22">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 移动对象 -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,18"
+                        Visibility="{Binding HasMovingContext, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Style="{StaticResource GeoTSectionHeading}" Margin="4,0,0,8"
+                           Text="{Binding [folder_picker_moving_title],Source={x:Static lg:LanguageService.Instance}}"/>
+                <Border Style="{StaticResource GeoTSectionCard}" Padding="14,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Width="32" Height="32" CornerRadius="9" Margin="0,0,12,0"
+                                Background="{DynamicResource ThemeAccentBrush}">
+                            <Viewbox Width="16" Height="16">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="{Binding MovingIconData}" Stroke="White" StrokeThickness="1.8"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding MovingLabel}" FontSize="11.5" Foreground="#8793A3"/>
+                            <TextBlock Text="{Binding MovingName}" ToolTip="{Binding MovingName}"
+                                       FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="{Binding MovingMeta}" ToolTip="{Binding MovingMeta}"
+                                   Margin="12,0,0,0" FontSize="11.5" MaxWidth="200" TextTrimming="CharacterEllipsis"
+                                   Foreground="#8793A3" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- 目标位置：小标题 + 新建文件夹 -->
+            <DockPanel Grid.Row="1" Margin="4,0,0,8" LastChildFill="True">
+                <Button DockPanel.Dock="Right" Style="{StaticResource EditorIconLink}" Tag="&#xE710;" MinHeight="0"
+                        Command="{Binding NewFolderCommand}"
+                        Content="{Binding [folder_new_title],Source={x:Static lg:LanguageService.Instance}}"/>
+                <TextBlock Style="{StaticResource GeoTSectionHeading}"
+                           Text="{Binding [folder_picker_destination],Source={x:Static lg:LanguageService.Instance}}"/>
+            </DockPanel>
+
+            <!-- 搜索 + 文件夹树 -->
+            <Border Grid.Row="2" Style="{StaticResource GeoTSectionCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Padding="10" BorderBrush="#EEF0F4" BorderThickness="0,0,0,1">
+                        <TextBox Style="{StaticResource DialogSearchTextBoxStyle}"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 controls:ControlAssist.Placeholder="{Binding [folder_picker_search_placeholder],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </Border>
+
+                    <Grid Grid.Row="1">
+                        <TreeView x:Name="FolderTree" ItemsSource="{Binding RootNodes}"
+                                  ItemContainerStyle="{StaticResource FolderPickerTreeViewItemStyle}"
+                                  BorderThickness="0" Background="Transparent" Padding="8"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type vm:FolderPickerNodeViewModel}" ItemsSource="{Binding Children}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Viewbox Width="15" Height="15" Margin="0,0,8,0" VerticalAlignment="Center">
+                                            <Canvas Width="24" Height="24">
+                                                <Path>
+                                                    <Path.Style>
+                                                        <Style TargetType="Path" BasedOn="{StaticResource DiagramLibraryTreeItemIconStyle}">
+                                                            <!-- 文件夹 -->
+                                                            <Setter Property="Data" Value="M22,19 A2,2 0 0 1 20,21 L4,21 A2,2 0 0 1 2,19 L2,5 A2,2 0 0 1 4,3 L9,3 L11,6 L20,6 A2,2 0 0 1 22,8 Z"/>
+                                                            <Style.Triggers>
+                                                                <!-- 根节点 -->
+                                                                <DataTrigger Binding="{Binding IsRoot}" Value="True">
+                                                                    <Setter Property="Data" Value="M5,4 L19,4 A2,2 0 0 1 21,6 L21,18 A2,2 0 0 1 19,20 L5,20 A2,2 0 0 1 3,18 L3,6 A2,2 0 0 1 5,4 Z M3,9 L21,9"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Path.Style>
+                                                </Path>
+                                            </Canvas>
+                                        </Viewbox>
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}" ToolTip="{Binding Name}"
+                                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="2" Style="{StaticResource FolderPickerMovingTagStyle}"
+                                                Visibility="{Binding IsMoving, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="{Binding MovingTagText}" FontSize="10.5" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <Border Grid.Column="3" Style="{StaticResource FolderPickerTagStyle}"
+                                                Visibility="{Binding IsCurrent, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="{Binding CurrentTagText}" FontSize="10.5" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="4" Text="{Binding TemplateCount}" FontSize="11.5" Margin="10,0,0,0"
+                                                   Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"
+                                                   Visibility="{Binding HasCount, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource DiagramLibrarySecondaryBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                                            <Setter Property="Foreground" Value="#D9FFFFFF"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
+
+                        <TextBlock Text="{Binding NoMatchText}" Foreground="#8793A3" FontSize="12.5"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
+                                   Visibility="{Binding HasNoMatch, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- 将移动到 / 已选位置：小标题（右侧红色提示）+ 路径文字 -->
+            <StackPanel Grid.Row="3" Margin="0,18,0,0">
+                <DockPanel Margin="4,0,0,8" LastChildFill="True">
+                    <!-- “已经在该位置了”等状态提示、不可选择的错误提示：红色，靠右 -->
+                    <TextBlock DockPanel.Dock="Right" Margin="12,0,0,0" FontSize="12" Foreground="#DB3340"
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                               Text="{Binding StatusMessage}" ToolTip="{Binding StatusMessage}"
+                               Visibility="{Binding HasStatusMessage, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock DockPanel.Dock="Right" Margin="12,0,0,0" FontSize="12" Foreground="#DB3340"
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                               Text="{Binding ErrorMessage}" ToolTip="{Binding ErrorMessage}"
+                               Visibility="{Binding HasErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock Style="{StaticResource GeoTSectionHeading}" Text="{Binding SelectedHeading}"/>
+                </DockPanel>
+
+                <!-- 路径：根 / 文件夹 / 子文件夹，最后一段为主题色 -->
+                <Border Style="{StaticResource GeoTSectionCard}" Padding="14,10">
+                    <ItemsControl ItemsSource="{Binding PathSegments}" Focusable="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="/" Foreground="#B4BDCA" Margin="6,0" VerticalAlignment="Center"
+                                               Visibility="{Binding HasSeparator, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <TextBlock Text="{Binding Text}" ToolTip="{Binding Text}" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#66768B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAccent}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

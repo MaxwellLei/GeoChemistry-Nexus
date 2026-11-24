@@ -21,6 +21,7 @@ namespace GeoChemistryNexus.Views.Widgets
             InitializeComponent();
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (_, _) => Close()));
             UiScaleHelper.Attach(this);
+            ChildWindowPlacementHelper.Attach(this);
 
             IconBox.ItemsSource = HomeIconHelper.CreatePresetIcons();
             IconBox.SelectedIndex = 0;

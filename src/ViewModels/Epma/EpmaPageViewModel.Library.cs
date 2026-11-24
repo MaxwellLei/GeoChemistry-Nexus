@@ -38,6 +38,8 @@ public sealed class EpmaLibraryItem
     }
     public string DetailDescription => Details.DetailDescription;
     public string Origin => EpmaLocalizer.Format(IsCustom ? "epma_library_personal" : "epma_library_official");
+    /// <summary>Short source label ("Online" / "My") shown next to entries in the recent list.</summary>
+    public string RecentOrigin => EpmaLocalizer.Format(IsCustom ? "epma_library_recent_my" : "epma_library_recent_online");
     public IReadOnlyList<string> Tags => Details.Tags;
     public string Author => Details.Author;
     public string UpdateDate => Details.UpdateDate;

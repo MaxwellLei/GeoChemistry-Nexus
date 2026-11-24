@@ -102,11 +102,8 @@ public partial class EpmaTemplateEditorViewModel : ObservableObject, IHelpDocEdi
     partial void OnStepChanged(int value) { OnPropertyChanged(nameof(IsPreviewVisible)); OnPropertyChanged(nameof(ActivePageTitle)); }
     [RelayCommand] private void TogglePreview() => PreviewExpanded = !PreviewExpanded;
     public ObservableCollection<EpmaEditorLanguageOption> LanguageCandidates { get; } = [];
-    public static string LanguageName(string code) => code switch
-    {
-        "zh-CN" => "简体中文", "zh-TW" => "繁體中文", "en-US" => "English",
-        _ => AppCultureRegistry.GetDisplayName(code, false),
-    };
+    /// <summary>语言显示名：与图解操作界面“切换语言”弹窗共用 <see cref="LanguageService.GetLanguageDisplayName"/>，统一由 AppCultureRegistry 维护。</summary>
+    public static string LanguageName(string code) => LanguageService.GetLanguageDisplayName(code);
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _templateId = ContentPackageIdHelper.CreateNew(false);
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _templateName = "";
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(Preview))] private string _version = "1.0.0";

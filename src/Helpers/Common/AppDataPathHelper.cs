@@ -114,10 +114,6 @@ namespace GeoChemistryNexus.Helpers
         private static void SeedDefaultFiles()
         {
             SeedFileIfMissing(
-                GetBundledDataPath("PlotData", OfficialContentEndpoints.PlotTemplateCategoriesFileName),
-                GetDataPath("PlotData", OfficialContentEndpoints.PlotTemplateCategoriesFileName));
-
-            SeedFileIfMissing(
                 GetBundledDataPath("Plugins", OfficialContentEndpoints.GeoTMineralCategoriesFileName),
                 GetDataPath("Plugins", OfficialContentEndpoints.GeoTMineralCategoriesFileName));
 

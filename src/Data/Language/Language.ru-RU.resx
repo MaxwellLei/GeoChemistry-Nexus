@@ -253,7 +253,7 @@
     <value>Добавить ссылку</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Повысить до онлайн-шаблона термобарометра</value>
+    <value>Повысить</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Проверка не удалась:</value>
@@ -713,9 +713,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Не удалось изменить: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>Категории диаграмм изменены; в эту публикацию включены индексные файлы диаграмм.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>Минеральные метки GeoT изменены; в эту публикацию включены индексные файлы геотермобарометра.</value>
@@ -2137,7 +2134,7 @@
     <value>Принудительное обновление</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Повысить до онлайн-шаблона диаграммы</value>
+    <value>Повысить</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Удалить онлайн-шаблон диаграммы</value>
@@ -2570,9 +2567,6 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>Текст</value>
-  </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>Редактор категорий диаграмм перезагружен.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>Редактор минеральных категорий GeoT перезагружен.</value>
@@ -4855,6 +4849,8 @@
   <data name="epma_editor_id_exists" xml:space="preserve"><value>Такой идентификатор шаблона уже есть. Укажите новый в основных сведениях.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Личный шаблон</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Официальный шаблон</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>Онлайн</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>Мои</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Правка расчётного шаблона</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Официальные расчётные шаблоны можно только просматривать, копировать и проверять. Для правки включите режим разработчика.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>При правке существующего шаблона уникальный идентификатор изменить нельзя.</value></data>
@@ -4876,7 +4872,7 @@
   <data name="epma_library_delete" xml:space="preserve"><value>Удалить</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Экспорт</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Повысить до онлайн-шаблона расчёта</value>
+    <value>Повысить</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Удалить онлайн-шаблон расчёта</value>
@@ -5126,4 +5122,192 @@
   <data name="table_col_sample" xml:space="preserve"><value>Образец</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Группа</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>Список обновлен: новых {0} / можно обновить {1} / снято {2}</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>Анимация переключения страниц</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>Воспроизводить плавную анимацию при переключении страниц; включение может повлиять на производительность</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>Уже находится в этом расположении.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Папка создана.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Удалить папку</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>Удалить папку «{0}»?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>Удалить папку «{0}» и шаблоны в ней ({1})? Это действие нельзя отменить.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Папка удалена.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>Папку нельзя переместить в неё саму или в одну из её подпапок.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Перемещение выполнено.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Переместить в</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Переместить в…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Свернуть</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Создать в: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Текущее: {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Введите имя папки для каждого языка. Пустые языки используют уже существующее имя.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>Папка с таким именем уже есть здесь.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Развернуть</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Пустые языки используют уже существующее имя.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} заполнено</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Имена введены для {0} языков</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Имя папки</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Необязательно: задайте отдельное имя папки для других языков</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Локализованные имена</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Введите имя папки</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Введите имя папки.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>Язык интерфейса</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>Новая папка…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>Новая подпапка</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>Новая диаграмма здесь</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>Новая папка</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>Папка больше не существует. Обновите список и повторите попытку.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Назначение</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Переместить</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Перемещение папки</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Перемещение диаграммы</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Перемещаемый элемент</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>Нет папок, соответствующих «{0}»</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>Корневую папку выбрать нельзя. Выберите папку.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Поиск папок…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Выбранное расположение</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Выберите папку назначения</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Текущее</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>Перемещение</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Переместить в</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>Диаграмм: {0}</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Папка переименована.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Переименовать папку</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Выберите папку.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Удалять можно только пустые официальные папки.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Перед изменением загрузите все шаблоны в этой папке.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>В той же папке онлайн-шаблонов диаграмм уже есть шаблон с этим именем. Переименуйте или переместите его перед повышением.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Имя шаблона</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>В этой папке уже есть шаблон с таким именем.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>напр. Автор (год) Название диаграммы</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Введите имя шаблона.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Место сохранения</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Выбрать…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Выбрать место сохранения</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>Папка не выбрана</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Выберите, куда сохранить шаблон.</value>
+  </data>
 </root>

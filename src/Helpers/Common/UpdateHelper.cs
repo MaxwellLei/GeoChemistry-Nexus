@@ -22,6 +22,30 @@ namespace GeoChemistryNexus.Helpers
         public string InstallerFileName { get; set; } = string.Empty;
         /// <summary>服务器公布的安装包 SHA256；为空表示服务器未提供。</summary>
         public string InstallerSha256 { get; set; } = string.Empty;
+
+        /// <summary>当前选用的是否为不内置 .NET 运行时的精简版安装包。</summary>
+        public bool IsLiteInstaller { get; set; }
+
+        /// <summary>选用精简版时保留的完整版安装包信息，精简版下载失败时用于回退。</summary>
+        public AppUpdateInfo? FullInstallerFallback { get; set; }
+
+        /// <summary>
+        /// 精简版不可用时切换为完整版安装包。成功切换返回 true；已是完整版或没有回退信息时返回 false。
+        /// </summary>
+        public bool TrySwitchToFullInstaller()
+        {
+            var full = FullInstallerFallback;
+            if (!IsLiteInstaller || full == null)
+                return false;
+
+            InstallerDownloadUrl = full.InstallerDownloadUrl;
+            FallbackInstallerDownloadUrl = full.FallbackInstallerDownloadUrl;
+            InstallerFileName = full.InstallerFileName;
+            InstallerSha256 = full.InstallerSha256;
+            IsLiteInstaller = false;
+            FullInstallerFallback = null;
+            return true;
+        }
     }
 
     public class AppMinimumVersionCheckResult
@@ -189,6 +213,8 @@ namespace GeoChemistryNexus.Helpers
                     result.InstallerDownloadUrl = OfficialContentEndpoints.BuildGitHubInstallerUrl(normalizedLatestVersion);
                     result.FallbackInstallerDownloadUrl = OfficialContentEndpoints.BuildCosInstallerUrl(normalizedLatestVersion);
                     result.InstallerSha256 = NormalizeSha256(serverInfo?.LatestAppInstallerSha256);
+
+                    TryApplyLiteInstaller(result, serverInfo, normalizedLatestVersion);
                 }
             }
             catch (Exception ex)
@@ -197,6 +223,38 @@ namespace GeoChemistryNexus.Helpers
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 满足条件时把安装包换成不内置 .NET 运行时的精简版，并保留完整版作为回退。
+        /// 条件：服务器同时公布了精简版 SHA256 和所需运行时主版本，且本机已安装该主版本的 Desktop 运行时。
+        /// 任一条件不满足都保持完整版，因此服务器漏填字段时不会让用户下载到不存在的文件。
+        /// </summary>
+        private static void TryApplyLiteInstaller(AppUpdateInfo info, ServerInfo? serverInfo, string version)
+        {
+            if (serverInfo == null)
+                return;
+
+            string liteSha256 = NormalizeSha256(serverInfo.LatestAppInstallerLiteSha256);
+            if (string.IsNullOrEmpty(liteSha256))
+                return;
+
+            if (!DotNetRuntimeHelper.IsRequiredRuntimeSatisfied(serverInfo.RequiredRuntimeMajor))
+                return;
+
+            info.FullInstallerFallback = new AppUpdateInfo
+            {
+                InstallerFileName = info.InstallerFileName,
+                InstallerDownloadUrl = info.InstallerDownloadUrl,
+                FallbackInstallerDownloadUrl = info.FallbackInstallerDownloadUrl,
+                InstallerSha256 = info.InstallerSha256
+            };
+
+            info.IsLiteInstaller = true;
+            info.InstallerFileName = OfficialContentEndpoints.BuildInstallerFileName(version, lite: true);
+            info.InstallerDownloadUrl = OfficialContentEndpoints.BuildGitHubInstallerUrl(version, lite: true);
+            info.FallbackInstallerDownloadUrl = OfficialContentEndpoints.BuildCosInstallerUrl(version, lite: true);
+            info.InstallerSha256 = liteSha256;
         }
 
         public static async Task<bool> CheckForUpdateAsync(string currentVersionString)
@@ -220,36 +278,6 @@ namespace GeoChemistryNexus.Helpers
             {
                 MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {ex.Message}");
                 return false;
-            }
-        }
-
-        public static async Task CheckAndUpdatePlotCategoriesAsync()
-        {
-            try
-            {
-                string serverInfoJson = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
-                var serverInfo = JsonHelper.Deserialize<ServerInfo>(serverInfoJson);
-
-                if (serverInfo == null || string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash))
-                    return;
-
-                string localPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
-                string localHash = File.Exists(localPath) ? ComputeFileMd5(localPath) : string.Empty;
-
-                if (!string.Equals(localHash, serverInfo.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase))
-                {
-                    string? directory = Path.GetDirectoryName(localPath);
-                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
-
-                    await OfficialContentMirrorClient.DownloadFileAsync(
-                        OfficialContentEndpoints.PlotTemplateCategoriesFileName,
-                        localPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Failed to update PlotTemplateCategories.json: {ex.Message}");
             }
         }
 
@@ -344,9 +372,41 @@ namespace GeoChemistryNexus.Helpers
                 && string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static string NormalizeSha256(string? hash)
+        public static string NormalizeSha256(string? hash)
         {
             return (hash ?? string.Empty).Trim().Replace("-", string.Empty).ToLowerInvariant();
+        }
+
+        /// <summary>是否为 64 位十六进制的 SHA256 文本（允许带连字符和大小写）。</summary>
+        public static bool IsValidSha256(string? hash)
+        {
+            string normalized = NormalizeSha256(hash);
+            if (normalized.Length != 64)
+                return false;
+
+            foreach (char c in normalized)
+            {
+                if (!Uri.IsHexDigit(c))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 计算文件的 SHA256（小写十六进制）。在后台线程执行，不阻塞界面；文件不存在返回空串。
+        /// </summary>
+        public static Task<string> ComputeFileSha256Async(string filePath)
+        {
+            return Task.Run(() =>
+            {
+                if (!File.Exists(filePath))
+                    return string.Empty;
+
+                using var sha = System.Security.Cryptography.SHA256.Create();
+                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 81920);
+                return Convert.ToHexString(sha.ComputeHash(stream)).ToLowerInvariant();
+            });
         }
 
         private static bool VerifyFileSha256(string filePath, string expectedSha256)

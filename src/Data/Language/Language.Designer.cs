@@ -2881,7 +2881,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Upgrade to online diagram template 的本地化字符串。
+        ///   查找类似 Upgrade 的本地化字符串。
         /// </summary>
         internal static string convert_to_builtin_template {
             get {
@@ -5446,7 +5446,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Upgrade to online calculation template 的本地化字符串。
+        ///   查找类似 Upgrade 的本地化字符串。
         /// </summary>
         internal static string epma_library_promote {
             get {
@@ -5496,6 +5496,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string epma_library_recent_empty {
             get {
                 return ResourceManager.GetString("epma_library_recent_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 My 的本地化字符串。
+        /// </summary>
+        internal static string epma_library_recent_my {
+            get {
+                return ResourceManager.GetString("epma_library_recent_my", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Online 的本地化字符串。
+        /// </summary>
+        internal static string epma_library_recent_online {
+            get {
+                return ResourceManager.GetString("epma_library_recent_online", resourceCulture);
             }
         }
         
@@ -6421,6 +6439,456 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 It is already in this location. 的本地化字符串。
+        /// </summary>
+        internal static string folder_already_in_location {
+            get {
+                return ResourceManager.GetString("folder_already_in_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Folder created. 的本地化字符串。
+        /// </summary>
+        internal static string folder_create_success {
+            get {
+                return ResourceManager.GetString("folder_create_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete Folder 的本地化字符串。
+        /// </summary>
+        internal static string folder_delete {
+            get {
+                return ResourceManager.GetString("folder_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete the folder &quot;{0}&quot;? 的本地化字符串。
+        /// </summary>
+        internal static string folder_delete_confirm {
+            get {
+                return ResourceManager.GetString("folder_delete_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete the folder &quot;{0}&quot; and the {1} template(s) in it? This cannot be undone. 的本地化字符串。
+        /// </summary>
+        internal static string folder_delete_confirm_with_templates {
+            get {
+                return ResourceManager.GetString("folder_delete_confirm_with_templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Folder deleted. 的本地化字符串。
+        /// </summary>
+        internal static string folder_delete_success {
+            get {
+                return ResourceManager.GetString("folder_delete_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 A folder cannot be moved into itself or one of its subfolders. 的本地化字符串。
+        /// </summary>
+        internal static string folder_move_into_self {
+            get {
+                return ResourceManager.GetString("folder_move_into_self", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Moved successfully. 的本地化字符串。
+        /// </summary>
+        internal static string folder_move_success {
+            get {
+                return ResourceManager.GetString("folder_move_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move To 的本地化字符串。
+        /// </summary>
+        internal static string folder_move_title {
+            get {
+                return ResourceManager.GetString("folder_move_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move To… 的本地化字符串。
+        /// </summary>
+        internal static string folder_move_to {
+            get {
+                return ResourceManager.GetString("folder_move_to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Collapse 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_collapse {
+            get {
+                return ResourceManager.GetString("folder_name_collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_create {
+            get {
+                return ResourceManager.GetString("folder_name_create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create in: {0} 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_create_in {
+            get {
+                return ResourceManager.GetString("folder_name_create_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current: {0} 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_current_location {
+            get {
+                return ResourceManager.GetString("folder_name_current_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter the folder name for each language. Empty languages fall back to an existing name. 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_dialog_hint {
+            get {
+                return ResourceManager.GetString("folder_name_dialog_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 A folder with the same name already exists here. 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_exists {
+            get {
+                return ResourceManager.GetString("folder_name_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Expand 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_expand {
+            get {
+                return ResourceManager.GetString("folder_name_expand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empty languages use an existing name. 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_fallback_hint {
+            get {
+                return ResourceManager.GetString("folder_name_fallback_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} / {1} filled 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_filled_count {
+            get {
+                return ResourceManager.GetString("folder_name_filled_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Names entered in {0} languages 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_footer_filled {
+            get {
+                return ResourceManager.GetString("folder_name_footer_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Folder name 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_label {
+            get {
+                return ResourceManager.GetString("folder_name_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Optional: name the folder separately for other languages 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_multilang_desc {
+            get {
+                return ResourceManager.GetString("folder_name_multilang_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Localized names 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_multilang_title {
+            get {
+                return ResourceManager.GetString("folder_name_multilang_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter a folder name 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_placeholder {
+            get {
+                return ResourceManager.GetString("folder_name_placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please enter a folder name. 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_required {
+            get {
+                return ResourceManager.GetString("folder_name_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_save {
+            get {
+                return ResourceManager.GetString("folder_name_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UI language 的本地化字符串。
+        /// </summary>
+        internal static string folder_name_ui_language {
+            get {
+                return ResourceManager.GetString("folder_name_ui_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Folder… 的本地化字符串。
+        /// </summary>
+        internal static string folder_new_here {
+            get {
+                return ResourceManager.GetString("folder_new_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Subfolder 的本地化字符串。
+        /// </summary>
+        internal static string folder_new_subfolder {
+            get {
+                return ResourceManager.GetString("folder_new_subfolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Diagram Here 的本地化字符串。
+        /// </summary>
+        internal static string folder_new_template_here {
+            get {
+                return ResourceManager.GetString("folder_new_template_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Folder 的本地化字符串。
+        /// </summary>
+        internal static string folder_new_title {
+            get {
+                return ResourceManager.GetString("folder_new_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The folder no longer exists. Please refresh and try again. 的本地化字符串。
+        /// </summary>
+        internal static string folder_not_found {
+            get {
+                return ResourceManager.GetString("folder_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Destination 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_destination {
+            get {
+                return ResourceManager.GetString("folder_picker_destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_move {
+            get {
+                return ResourceManager.GetString("folder_picker_move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Moving folder 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_moving_folder {
+            get {
+                return ResourceManager.GetString("folder_picker_moving_folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Moving diagram 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_moving_template {
+            get {
+                return ResourceManager.GetString("folder_picker_moving_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Item to Move 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_moving_title {
+            get {
+                return ResourceManager.GetString("folder_picker_moving_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No folders match &quot;{0}&quot; 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_no_match {
+            get {
+                return ResourceManager.GetString("folder_picker_no_match", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The root folder cannot be selected. Please choose a folder. 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_root_not_allowed {
+            get {
+                return ResourceManager.GetString("folder_picker_root_not_allowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search folders… 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_search_placeholder {
+            get {
+                return ResourceManager.GetString("folder_picker_search_placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Selected Location 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_selected_title {
+            get {
+                return ResourceManager.GetString("folder_picker_selected_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Choose a destination folder 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_subtitle {
+            get {
+                return ResourceManager.GetString("folder_picker_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_tag_current {
+            get {
+                return ResourceManager.GetString("folder_picker_tag_current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Moving 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_tag_moving {
+            get {
+                return ResourceManager.GetString("folder_picker_tag_moving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move To 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_target_title {
+            get {
+                return ResourceManager.GetString("folder_picker_target_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} diagram(s) 的本地化字符串。
+        /// </summary>
+        internal static string folder_picker_template_count {
+            get {
+                return ResourceManager.GetString("folder_picker_template_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rename 的本地化字符串。
+        /// </summary>
+        internal static string folder_rename {
+            get {
+                return ResourceManager.GetString("folder_rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Folder renamed. 的本地化字符串。
+        /// </summary>
+        internal static string folder_rename_success {
+            get {
+                return ResourceManager.GetString("folder_rename_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rename Folder 的本地化字符串。
+        /// </summary>
+        internal static string folder_rename_title {
+            get {
+                return ResourceManager.GetString("folder_rename_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please select a folder. 的本地化字符串。
+        /// </summary>
+        internal static string folder_select_target {
+            get {
+                return ResourceManager.GetString("folder_select_target", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Font 的本地化字符串。
         /// </summary>
         internal static string font {
@@ -6727,7 +7195,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Upgrade to online geothermobarometer template 的本地化字符串。
+        ///   查找类似 Upgrade 的本地化字符串。
         /// </summary>
         internal static string geo_ctx_promote {
             get {
@@ -12467,6 +12935,24 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Only empty official folders can be deleted. 的本地化字符串。
+        /// </summary>
+        internal static string official_folder_not_empty {
+            get {
+                return ResourceManager.GetString("official_folder_not_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download all templates in this folder before changing it. 的本地化字符串。
+        /// </summary>
+        internal static string official_folder_requires_download {
+            get {
+                return ResourceManager.GetString("official_folder_requires_download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 (empty) 的本地化字符串。
         /// </summary>
         internal static string official_publisher_announcement_empty {
@@ -12796,24 +13282,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_no_target {
             get {
                 return ResourceManager.GetString("official_publisher_no_target", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Plot categories changed; including diagram index files in this publish. 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_plot_categories_auto_included {
-            get {
-                return ResourceManager.GetString("official_publisher_plot_categories_auto_included", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Plot categories editor reloaded. 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_plot_categories_reloaded {
-            get {
-                return ResourceManager.GetString("official_publisher_plot_categories_reloaded", resourceCulture);
             }
         }
         
@@ -13273,6 +13741,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string oxide_element_converter_hint {
             get {
                 return ResourceManager.GetString("oxide_element_converter_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Page Transition Animation 的本地化字符串。
+        /// </summary>
+        internal static string page_transition_animation {
+            get {
+                return ResourceManager.GetString("page_transition_animation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Play smooth animations when switching pages; enabling this may affect performance 的本地化字符串。
+        /// </summary>
+        internal static string page_transition_animation_hint {
+            get {
+                return ResourceManager.GetString("page_transition_animation_hint", resourceCulture);
             }
         }
         
@@ -14146,6 +14632,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string projecting_data {
             get {
                 return ResourceManager.GetString("projecting_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The same folder in the online diagram templates already has a template with this name. Rename or move it before promoting. 的本地化字符串。
+        /// </summary>
+        internal static string promote_template_name_exists {
+            get {
+                return ResourceManager.GetString("promote_template_name_exists", resourceCulture);
             }
         }
         
@@ -15896,6 +16391,42 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Template name 的本地化字符串。
+        /// </summary>
+        internal static string template_name {
+            get {
+                return ResourceManager.GetString("template_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 A template with the same name already exists in this folder. 的本地化字符串。
+        /// </summary>
+        internal static string template_name_exists_in_folder {
+            get {
+                return ResourceManager.GetString("template_name_exists_in_folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 e.g. Author (Year) Diagram name 的本地化字符串。
+        /// </summary>
+        internal static string template_name_placeholder {
+            get {
+                return ResourceManager.GetString("template_name_placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please enter a template name. 的本地化字符串。
+        /// </summary>
+        internal static string template_name_required {
+            get {
+                return ResourceManager.GetString("template_name_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The current template has no multilingual information 的本地化字符串。
         /// </summary>
         internal static string template_no_multilingual_info {
@@ -15919,6 +16450,51 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string template_ready {
             get {
                 return ResourceManager.GetString("template_ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save location 的本地化字符串。
+        /// </summary>
+        internal static string template_save_location {
+            get {
+                return ResourceManager.GetString("template_save_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Choose… 的本地化字符串。
+        /// </summary>
+        internal static string template_save_location_choose {
+            get {
+                return ResourceManager.GetString("template_save_location_choose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Choose Save Location 的本地化字符串。
+        /// </summary>
+        internal static string template_save_location_choose_title {
+            get {
+                return ResourceManager.GetString("template_save_location_choose_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No folder selected 的本地化字符串。
+        /// </summary>
+        internal static string template_save_location_placeholder {
+            get {
+                return ResourceManager.GetString("template_save_location_placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please choose where to save the template. 的本地化字符串。
+        /// </summary>
+        internal static string template_save_location_required {
+            get {
+                return ResourceManager.GetString("template_save_location_required", resourceCulture);
             }
         }
         

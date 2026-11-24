@@ -84,6 +84,10 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>数据表行头状态点（已投图 / 无法投图 / 投图后已修改 / 未投图），三种图解模式共用。</summary>
         private readonly DiagramRowStatusProvider _rowStatus = new();
 
+        /// <summary>标准图解投图时创建的“数据点”根节点及其所属模板，切换图解语言重建图层树时用来原样保留数据点。</summary>
+        private CategoryLayerItemViewModel? _plottedDataRoot;
+        private GraphMapTemplate? _plottedDataTemplate;
+
         private readonly Dictionary<ScottPlot.IPlottable, LayerItemViewModel> _plottableLayerLookup = [];
 
         private long _lastPreviewRefreshMs;
@@ -135,10 +139,6 @@ namespace GeoChemistryNexus.ViewModels
         public void Receive(DeveloperModeChangedMessage message)
         {
             IsDeveloperMode = message.Value;
-            if (!string.IsNullOrEmpty(CurrentDiagramLanguage))
-            {
-                DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentDiagramLanguage);
-            }
         }
 
         partial void OnIsDeveloperModeChanged(bool value)
@@ -196,65 +196,73 @@ namespace GeoChemistryNexus.ViewModels
 
 
                 var oldId = card.TemplateId.Value;
-                var entity = GraphMapDatabaseService.Instance.GetTemplate(oldId);
-                if (entity != null)
+                var db = GraphMapDatabaseService.Instance;
+                var (entity, summaries) = await Task.Run(() => (db.GetTemplate(oldId), db.GetSummaries()));
+                if (entity == null)
                 {
-                    // 1. 根据非自定义模板规则计算新 ID
-                    Guid newId = GraphMapDatabaseService.GenerateId(entity.GraphMapPath, false);
-
-                    if (oldId != newId)
-                    {
-                        // 2. 处理缩略图
-                        byte[]? thumbnailBytes = null;
-                        using (var stream = GraphMapDatabaseService.Instance.GetThumbnail(oldId))
-                        {
-                            if (stream != null)
-                            {
-                                using var ms = new MemoryStream();
-                                stream.CopyTo(ms);
-                                thumbnailBytes = ms.ToArray();
-                            }
-                        }
-
-                        // 3. 删除旧模板
-                        GraphMapDatabaseService.Instance.DeleteTemplate(oldId);
-
-                        // 4. 用新ID和IsCustom标志更新实体
-                        entity.Id = newId;
-                        entity.IsCustom = false;
-                        entity.IsNewTemplate = true;
-                        if (entity.Content != null)
-                            entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
-
-                        // 5. Save new template
-                        GraphMapDatabaseService.Instance.UpsertTemplate(entity);
-
-                        // 6. Restore Thumbnail
-                        if (thumbnailBytes != null)
-                        {
-                            using var ms = new MemoryStream(thumbnailBytes);
-                            GraphMapDatabaseService.Instance.UploadThumbnail(newId, ms);
-                        }
-
-                        // 7. Update local VM
-                        card.TemplateId = newId;
-                        card.IsCustomTemplate = false;
-                        card.IsNewTemplate = true;
-                    }
-                    else
-                    {
-                        // 如果 ID 恰好相同，就仅更新 IsCustom
-                        entity.IsCustom = false;
-                        entity.IsNewTemplate = true;
-                        if (entity.Content != null)
-                            entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
-                        GraphMapDatabaseService.Instance.UpsertTemplate(entity);
-                        card.IsCustomTemplate = false;
-                        card.IsNewTemplate = true;
-                    }
-
-                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+                    MessageHelper.Error(LanguageService.Instance["diagram_template_source_missing"]);
+                    return;
                 }
+
+                // 1. 按原文件夹路径放入在线图解：同一文件夹中不允许同名模板
+                var segments = TemplateFolderService.GetDisplaySegments(entity.NodeList);
+                if (segments.Length > 0 &&
+                    TemplateFolderService.HasTemplateNamed(false, segments[..^1], segments[^1], summaries: summaries))
+                {
+                    MessageHelper.Warning(LanguageService.GetString("promote_template_name_exists",
+                        "The same folder in the online diagram templates already has a template with this name. Rename or move it before promoting."));
+                    return;
+                }
+
+                // 2. 按官方规则生成新 ID；与已有官方模板撞 ID 时给 GraphMapPath 追加序号，避免覆盖
+                var usedIds = summaries.Where(s => s.Id != oldId).Select(s => s.Id).ToHashSet();
+                string basePath = entity.GraphMapPath;
+                string newPath = basePath;
+                for (int suffix = 2; usedIds.Contains(GraphMapDatabaseService.GenerateId(newPath, false)); suffix++)
+                    newPath = $"{basePath}_{suffix}";
+                Guid newId = GraphMapDatabaseService.GenerateId(newPath, false);
+
+                await Task.Run(() =>
+                {
+                    byte[]? thumbnailBytes = null;
+                    using (var stream = db.GetThumbnail(oldId))
+                    {
+                        if (stream != null)
+                        {
+                            using var ms = new MemoryStream();
+                            stream.CopyTo(ms);
+                            thumbnailBytes = ms.ToArray();
+                        }
+                    }
+
+                    db.DeleteTemplate(oldId);
+
+                    if (string.Equals(entity.Name, basePath, StringComparison.Ordinal))
+                        entity.Name = newPath;
+                    entity.GraphMapPath = newPath;
+                    entity.Id = newId;
+                    entity.IsCustom = false;
+                    entity.IsNewTemplate = true;
+                    if (entity.Content != null)
+                        entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
+                    db.UpsertTemplate(entity);
+
+                    if (thumbnailBytes != null)
+                    {
+                        using var ms = new MemoryStream(thumbnailBytes);
+                        db.UploadThumbnail(newId, ms);
+                    }
+                });
+
+                if (_currentTemplateId == oldId)
+                {
+                    _currentTemplateId = newId;
+                    _isCurrentTemplateCustom = false;
+                }
+
+                // 3. 刷新模板库：模板从个人图解移到在线图解
+                await RefreshTemplateLibraryAfterDataChangeAsync();
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
             }
             catch (Exception ex)
             {
@@ -532,8 +540,7 @@ namespace GeoChemistryNexus.ViewModels
             if (TryGetBuiltInDiagramHelp(out _))
             {
                 string builtInLanguage = ResolveBuiltInDiagramLanguage();
-                if (CurrentTemplate != null)
-                    CurrentTemplate.DefaultLanguage = builtInLanguage;
+                CurrentTemplate?.DefaultLanguage = builtInLanguage;
 
                 if (!string.Equals(CurrentDiagramLanguage, builtInLanguage, StringComparison.OrdinalIgnoreCase))
                 {
@@ -2144,7 +2151,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>当前绘图界面是否提供【编辑模式】（Harker 多联图、蛛网图不提供）。</summary>
         public bool IsEditModeAvailable => !IsHarkerPlotMode && !SpiderDiagramViewModel.IsSpiderPlotMode;
 
-        private void OnSpiderDiagramViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnSpiderDiagramViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SpiderDiagramViewModel.IsSpiderPlotMode))
             {
@@ -2189,14 +2196,17 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isAddingLine = false; // 标记是否正处于添加线条的模式
 
         private Coordinates? _lineStartPoint = null; // 用于存储线条的起点
-        private ScottPlot.Plottables.LinePlot? _tempLinePlot; // 用于实时预览的临时线条
 
         [ObservableProperty]
         private bool _isAddingPolygon = false; // 标记是否正处于添加多边形的模式
 
         private readonly List<Coordinates> _polygonVertices = []; // 用于存储多边形顶点的临时列表
         private ScottPlot.Plottables.Polygon? _tempPreviewPolygon; // 用于实时预览的临时多边形
-        private ScottPlot.Plottables.LinePlot? _tempRubberBandLine; // 用于预览下一段连线的"橡皮筋"/
+
+        /// <summary>
+        /// 线条 / 箭头 / 多边形共用的“蚂蚁线”预览：从锚点（线条起点、箭头起点、多边形最后一个顶点）到鼠标位置的红色虚线。
+        /// </summary>
+        private ScottPlot.Plottables.LinePlot? _tempRubberBandLine;
 
         // 用于存储当前正在编辑的模板的完整文件路径
         private string? _currentTemplateFilePath;
@@ -2207,7 +2217,6 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _isAddingArrow = false; // 标记是否处于添加箭头模式
         private Coordinates? _arrowStartPoint = null; // 存储箭头的起点
-        private ScottPlot.Plottables.Arrow? _tempArrowPlot; // 用于实时预览箭头
 
         /// <summary>底部信息栏中的添加对象提示。未进入添加模式时为空。</summary>
         [ObservableProperty]
@@ -2241,59 +2250,237 @@ namespace GeoChemistryNexus.ViewModels
         // 标志位：阻止脚本验证清除数据后 TreeView 自动选中其他节点
         private bool _isBlockingTreeViewSelection = false;
 
-        partial void OnIsAddingTextChanged(bool value)
-        {
-            if (value)
+        partial void OnIsAddingTextChanged(bool value) =>
+            OnAddObjectToolChanged(value, () =>
             {
-                ClearLayerSelection();
                 IsAddingLine = false;
                 IsAddingPolygon = false;
                 IsAddingArrow = false;
-            }
-            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon);
-            UpdateAddObjectModeStatus();
-        }
+            });
 
-        partial void OnIsAddingLineChanged(bool value)
-        {
-            if (value)
+        partial void OnIsAddingLineChanged(bool value) =>
+            OnAddObjectToolChanged(value, () =>
             {
-                ClearLayerSelection();
-                _lineStartPoint = null;
                 IsAddingText = false;
                 IsAddingPolygon = false;
                 IsAddingArrow = false;
-            }
-            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingArrow || IsAddingPolygon || IsAddingText);
-            UpdateAddObjectModeStatus();
-        }
+            });
 
-        partial void OnIsAddingPolygonChanged(bool value)
-        {
-            if (value)
+        partial void OnIsAddingPolygonChanged(bool value) =>
+            OnAddObjectToolChanged(value, () =>
             {
-                ClearLayerSelection();
-                _polygonVertices.Clear();
                 IsAddingText = false;
                 IsAddingLine = false;
                 IsAddingArrow = false;
-            }
-            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingText);
-            UpdateAddObjectModeStatus();
-        }
+            });
 
-        partial void OnIsAddingArrowChanged(bool value)
-        {
-            if (value)
+        partial void OnIsAddingArrowChanged(bool value) =>
+            OnAddObjectToolChanged(value, () =>
             {
-                ClearLayerSelection();
-                _arrowStartPoint = null;
                 IsAddingText = false;
                 IsAddingLine = false;
                 IsAddingPolygon = false;
+            });
+
+        /// <summary>当前是否处于任一“添加对象”工具（文本 / 线条 / 多边形 / 箭头）中。</summary>
+        private bool IsAnyAddObjectToolActive => IsAddingText || IsAddingLine || IsAddingPolygon || IsAddingArrow;
+
+        /// <summary>
+        /// 四种添加工具共用的状态切换逻辑：进入或退出工具时都丢弃未完成的这一笔，
+        /// 进入工具时清除选中并关闭其他工具，最后统一刷新吸附提示、光标与状态栏提示。
+        /// </summary>
+        private void OnAddObjectToolChanged(bool entering, Action deactivateOtherTools)
+        {
+            ResetDrawingPreview();
+
+            if (entering)
+            {
+                ClearLayerSelection();
+                deactivateOtherTools();
             }
-            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingLine || IsAddingPolygon || IsAddingText);
+
+            UpdatePotentialSnapPoints(IsPickingPointMode || IsAnyAddObjectToolActive);
+            UpdateAddObjectCursor();
             UpdateAddObjectModeStatus();
+        }
+
+        /// <summary>添加工具激活时使用十字光标，退出后恢复箭头（拾取模式自行管理光标）。</summary>
+        private void UpdateAddObjectCursor()
+        {
+            if (WpfPlot1 == null) return;
+
+            if (IsAnyAddObjectToolActive)
+            {
+                WpfPlot1.Cursor = Cursors.Cross;
+            }
+            else if (!IsPickingPointMode)
+            {
+                WpfPlot1.Cursor = Cursors.Arrow;
+            }
+        }
+
+        /// <summary>
+        /// 丢弃未完成的绘制：清空线条/箭头起点、多边形顶点，并移除预览用的临时图形。
+        /// </summary>
+        private void ResetDrawingPreview()
+        {
+            _lineStartPoint = null;
+            _arrowStartPoint = null;
+            _polygonVertices.Clear();
+
+            bool removed = false;
+            var plot = WpfPlot1?.Plot;
+
+            if (_tempRubberBandLine != null)
+            {
+                plot?.Remove(_tempRubberBandLine);
+                _tempRubberBandLine = null;
+                removed = true;
+            }
+
+            if (_tempPreviewPolygon != null)
+            {
+                plot?.Remove(_tempPreviewPolygon);
+                _tempPreviewPolygon = null;
+                removed = true;
+            }
+
+            if (removed) WpfPlot1?.Refresh();
+        }
+
+        /// <summary>
+        /// 绘图被整体清空重建（Plot.Clear）后，预览图形已不在图上，仅需丢弃引用，
+        /// 之后鼠标移动会按当前起点 / 顶点重新生成预览。
+        /// </summary>
+        private void DetachDrawingPreviewReferences()
+        {
+            _tempRubberBandLine = null;
+            _tempPreviewPolygon = null;
+        }
+
+        /// <summary>创建统一样式的“蚂蚁线”（红色虚线）。</summary>
+        private ScottPlot.Plottables.LinePlot AddDashedPreviewLine(Coordinates start, Coordinates end)
+        {
+            var line = WpfPlot1.Plot.Add.Line(start, end);
+            line.Color = ScottPlot.Colors.Red;
+            line.LinePattern = LinePattern.Dashed;
+            line.LineWidth = 1.5f;
+            return line;
+        }
+
+        /// <summary>按当前顶点重建多边形的虚线预览轮廓（至少 2 个顶点）。</summary>
+        private void RebuildPolygonPreview()
+        {
+            if (_tempPreviewPolygon != null)
+            {
+                WpfPlot1.Plot.Remove(_tempPreviewPolygon);
+                _tempPreviewPolygon = null;
+            }
+
+            if (_polygonVertices.Count < 2) return;
+
+            _tempPreviewPolygon = WpfPlot1.Plot.Add.Polygon([.. _polygonVertices]);
+            _tempPreviewPolygon.FillStyle.Color = ScottPlot.Colors.Transparent; // 预览时内部透明
+            _tempPreviewPolygon.LineStyle.Color = ScottPlot.Colors.Red;
+            _tempPreviewPolygon.LineStyle.Pattern = LinePattern.Dashed;
+            _tempPreviewPolygon.LineStyle.Width = 1.5f;
+        }
+
+        /// <summary>
+        /// 鼠标移动时刷新预览：线条、箭头、多边形共用同一条从锚点到鼠标的虚线。
+        /// 返回是否需要重绘。
+        /// </summary>
+        private bool UpdateDrawingPreview(Coordinates cursor)
+        {
+            Coordinates? anchor = null;
+            if (IsAddingLine) anchor = _lineStartPoint;
+            else if (IsAddingArrow) anchor = _arrowStartPoint;
+            else if (IsAddingPolygon && _polygonVertices.Count > 0) anchor = _polygonVertices[^1];
+
+            if (!anchor.HasValue) return false;
+
+            if (_tempRubberBandLine == null)
+            {
+                _tempRubberBandLine = AddDashedPreviewLine(anchor.Value, cursor);
+            }
+            else
+            {
+                // 多边形每添加一个顶点，锚点都会前移，因此起点也要同步更新
+                _tempRubberBandLine.Start = anchor.Value;
+                _tempRubberBandLine.End = cursor;
+            }
+
+            // 整体重绘后预览轮廓会丢失，这里补回
+            if (IsAddingPolygon && _tempPreviewPolygon == null && _polygonVertices.Count >= 2)
+            {
+                RebuildPolygonPreview();
+            }
+
+            return true;
+        }
+
+        /// <summary>当前这一笔是否已经开始（存在需要实时预览的锚点）。</summary>
+        private bool HasActiveDrawingAnchor =>
+            (IsAddingLine && _lineStartPoint.HasValue)
+            || (IsAddingArrow && _arrowStartPoint.HasValue)
+            || (IsAddingPolygon && _polygonVertices.Count > 0);
+
+        /// <summary>右键结束多边形：按已点击的顶点创建多边形（调用前需保证顶点数 ≥ 3），保持添加模式继续画下一个。</summary>
+        private void FinishPolygon()
+        {
+            // 绘图坐标（Log）-> 真实数据坐标；先取快照再重置本笔状态（会清空顶点并移除预览）
+            var vertices = new ObservableCollection<PointDefinition>(
+                _polygonVertices
+                    .Select(c => PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, c))
+                    .Select(c => new PointDefinition { X = c.X, Y = c.Y }));
+
+            ResetDrawingPreview();
+
+            var newPolygonDef = new PolygonDefinition
+            {
+                Vertices = vertices,
+                BorderColor = "#FF000000",
+            };
+
+            CommitDrawnLayer("polygon", layerIndex => new PolygonLayerItemViewModel(newPolygonDef, layerIndex));
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 将绘制完成的对象加入图层树并记录撤销/重做。五种对象（线条、文本、多边形、箭头、函数）共用。
+        /// </summary>
+        /// <param name="categoryKey">分类的语言键，如 "line"</param>
+        /// <param name="createLayer">依据分类内已有数量（用于默认命名序号）创建图层</param>
+        private TLayer CommitDrawnLayer<TLayer>(string categoryKey, Func<int, TLayer> createLayer)
+            where TLayer : LayerItemViewModel
+        {
+            var category = GetOrCreateCategory(LanguageService.Instance[categoryKey]);
+            var layer = createLayer(category.Children.Count);
+            EnsureLayerRefreshHandler(layer);
+            category.Children.Add(layer);
+
+            RefreshPlotFromLayers(true);
+            SelectLayer(layer);
+
+            void undo()
+            {
+                if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance[categoryKey]) is CategoryLayerItemViewModel cat)
+                {
+                    if (cat.Children.Contains(layer)) cat.Children.Remove(layer);
+                    if (cat.Children.Count == 0) LayerTree.Remove(cat);
+                }
+                RefreshPlotFromLayers(true);
+            }
+
+            void redo()
+            {
+                var cat = GetOrCreateCategory(LanguageService.Instance[categoryKey]);
+                if (!cat.Children.Contains(layer)) cat.Children.Add(layer);
+                RefreshPlotFromLayers(true);
+            }
+
+            AddUndoState(undo, redo);
+            return layer;
         }
 
         /// <summary>
@@ -3154,11 +3341,8 @@ namespace GeoChemistryNexus.ViewModels
 
             var frameAxes = CurrentTemplate!.Info.FrameAxes;
             var definition = frameAxes?.FirstOrDefault(a => a.Type == axisType);
-            if (definition == null)
-            {
-                // 尚未写入模板：仅在用户修改属性后才登记（见 RegisterFrameAxisDefinition），避免仅点击就产生“未保存修改”
-                definition = new FrameAxisDefinition { Type = axisType };
-            }
+            // 尚未写入模板：仅在用户修改属性后才登记（见 RegisterFrameAxisDefinition），避免仅点击就产生“未保存修改”
+            definition ??= new FrameAxisDefinition { Type = axisType };
 
             SelectChrome(definition);
         }
@@ -3171,7 +3355,7 @@ namespace GeoChemistryNexus.ViewModels
             var info = CurrentTemplate?.Info;
             if (info == null) return;
 
-            info.FrameAxes ??= new List<FrameAxisDefinition>();
+            info.FrameAxes ??= [];
             if (!info.FrameAxes.Contains(definition))
             {
                 info.FrameAxes.RemoveAll(a => a.Type == definition.Type);
@@ -4931,7 +5115,8 @@ namespace GeoChemistryNexus.ViewModels
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
 
             // 绘图时的吸附逻辑
-            if (IsAddingLine || IsAddingArrow || IsAddingPolygon)
+            // （文本与其他工具一致：鼠标移动时已显示吸附标记，点击时也要落在吸附点上）
+            if (IsAnyAddObjectToolActive)
             {
                 var snapPoint = GetSnapPoint(mousePixel);
                 if (snapPoint.HasValue)
@@ -4943,24 +5128,9 @@ namespace GeoChemistryNexus.ViewModels
             // 添加多边形
             if (IsAddingPolygon)
             {
-                // 添加新顶点
+                // 添加新顶点并重建虚线预览轮廓
                 _polygonVertices.Add(mouseCoordinates);
-
-                // 移除旧的预览多边形
-                if (_tempPreviewPolygon != null)
-                {
-                    WpfPlot1.Plot.Remove(_tempPreviewPolygon);
-                }
-
-                // 如果顶点数大于等于2，则可以开始预览
-                if (_polygonVertices.Count >= 2)
-                {
-                    _tempPreviewPolygon = WpfPlot1.Plot.Add.Polygon([.. _polygonVertices]);
-                    _tempPreviewPolygon.FillStyle.Color = ScottPlot.Colors.Transparent; // 预览时内部透明
-                    _tempPreviewPolygon.LineStyle.Color = ScottPlot.Colors.Red;
-                    _tempPreviewPolygon.LineStyle.Pattern = LinePattern.Dashed;
-                    _tempPreviewPolygon.LineStyle.Width = 1.5f;
-                }
+                RebuildPolygonPreview();
                 WpfPlot1.Refresh();
                 UpdateAddObjectModeStatus();
                 return; // 处理完毕，直接返回
@@ -4969,7 +5139,6 @@ namespace GeoChemistryNexus.ViewModels
             // 添加线条
             if (IsAddingLine)
             {
-
                 if (!_lineStartPoint.HasValue)
                 {
                     // 第一次点击：设置起点
@@ -4978,19 +5147,12 @@ namespace GeoChemistryNexus.ViewModels
                 else
                 {
                     // 第二次点击：设置终点，正式创建线条
-
-                    // 获取起点的真实数据值
+                    // 绘图坐标（Log）-> 真实数据坐标；三元图下该转换为恒等
                     var realStart = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, _lineStartPoint.Value);
-                    // 获取终点的真实数据值
                     var realEnd = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, mouseCoordinates);
 
-                    // 在图层树中找到 "线" 分类
-                    var linesCategory = GetOrCreateCategory(LanguageService.Instance["line"]);
-
-                    // 创建新的 LineDefinition 对象来存储线条的属性
                     var newLineDef = new LineDefinition
                     {
-                        // 转换后的真实坐标
                         Start = new PointDefinition { X = realStart.X, Y = realStart.Y },
                         End = new PointDefinition { X = realEnd.X, Y = realEnd.Y },
                         // 设置默认样式
@@ -4999,47 +5161,11 @@ namespace GeoChemistryNexus.ViewModels
                         Style = LineDefinition.LineType.Solid
                     };
 
-                    // 创建新的 LineLayerItemViewModel
-                    var lineLayer = new LineLayerItemViewModel(newLineDef, linesCategory.Children.Count);
-                    // 订阅刷新事件
-                    lineLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
+                    // 重置本笔状态（移除虚线预览），保持添加模式以便继续画下一条
+                    ResetDrawingPreview();
 
-                    // 将新图层添加到图层树
-                    linesCategory.Children.Add(lineLayer);
-
-                    // 刷新整个绘图
-                    RefreshPlotFromLayers(true);
-
-                    // 选中新添加的图层
-                    SelectLayer(lineLayer);
-
-                    // 记录 Undo/Redo
-                    void undoLine()
-                    {
-                        if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["line"]) is CategoryLayerItemViewModel cat)
-                        {
-                            if (cat.Children.Contains(lineLayer)) cat.Children.Remove(lineLayer);
-                            if (cat.Children.Count == 0) LayerTree.Remove(cat);
-                        }
-                        RefreshPlotFromLayers(true);
-                    }
-                    void redoLine()
-                    {
-                        var cat = GetOrCreateCategory(LanguageService.Instance["line"]);
-                        if (!cat.Children.Contains(lineLayer)) cat.Children.Add(lineLayer);
-                        RefreshPlotFromLayers(true);
-                    }
-                    AddUndoState(undoLine, redoLine);
-
-                    // 重置画线状态
-                    if (_tempLinePlot != null)
-                    {
-                        WpfPlot1.Plot.Remove(_tempLinePlot);
-                        _tempLinePlot = null;
-                    }
-                    _lineStartPoint = null;
-                    // IsAddingLine = false; // 保持添加模式
-                    WpfPlot1.Refresh(); // 最后刷新一次，确保临时线完全消失
+                    CommitDrawnLayer("line", layerIndex => new LineLayerItemViewModel(newLineDef, layerIndex));
+                    WpfPlot1.Refresh();
                 }
                 UpdateAddObjectModeStatus();
                 return; // 处理完毕，直接返回
@@ -5048,8 +5174,6 @@ namespace GeoChemistryNexus.ViewModels
             // 添加文本
             if (IsAddingText)
             {
-                var textCategory = GetOrCreateCategory(LanguageService.Instance["text"]);
-
                 // 确定当前模板支持的语言和默认语言
                 string defaultLang;
                 List<string> allLangs;
@@ -5093,34 +5217,9 @@ namespace GeoChemistryNexus.ViewModels
                     BorderColor = "#00FFFFFF"
                 };
 
-                // 创建新的 TextLayerItemViewModel
-                var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count, DiagramLanguage);
-                textLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
-                textCategory.Children.Add(textLayer);
-
-                RefreshPlotFromLayers(true);
-
-                // 选中新添加的图层
-                SelectLayer(textLayer);
-
-                // 记录 Undo/Redo
-                void undoText()
-                {
-                    if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["text"]) is CategoryLayerItemViewModel cat)
-                    {
-                        if (cat.Children.Contains(textLayer)) cat.Children.Remove(textLayer);
-                        if (cat.Children.Count == 0) LayerTree.Remove(cat);
-                    }
-                    RefreshPlotFromLayers(true);
-                }
-                void redoText()
-                {
-                    var cat = GetOrCreateCategory(LanguageService.Instance["text"]);
-                    if (!cat.Children.Contains(textLayer)) cat.Children.Add(textLayer);
-                    RefreshPlotFromLayers(true);
-                }
-                AddUndoState(undoText, redoText);
-
+                CommitDrawnLayer("text", layerIndex => new TextLayerItemViewModel(newTextDef, layerIndex, DiagramLanguage));
+                UpdateAddObjectModeStatus();
+                return; // 处理完毕，直接返回
             }
 
             // 添加箭头
@@ -5132,84 +5231,29 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    var startCoord = _arrowStartPoint.Value;
-                    var endCoord = mouseCoordinates;
-
-                    PointDefinition finalStartPoint;
-                    PointDefinition finalEndPoint;
-
-                    // 统一存储笛卡尔坐标（与多边形、线条等保持一致）
-                    // 对于三元图，鼠标坐标已经是笛卡尔坐标系的值，直接使用
-                    // 对于笛卡尔图，需要从绘图坐标（Log）转换为真实数据坐标
-                    if (BaseMapType == "Ternary")
-                    {
-                        // 三元图：直接使用笛卡尔坐标
-                        finalStartPoint = new PointDefinition { X = startCoord.X, Y = startCoord.Y };
-                        finalEndPoint = new PointDefinition { X = endCoord.X, Y = endCoord.Y };
-                    }
-                    else
-                    {
-                        // 笛卡尔坐标系：绘图坐标(Log) -> 真实坐标(Real)
-                        var realStart = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, startCoord);
-                        var realEnd = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, endCoord);
-
-                        finalStartPoint = new PointDefinition { X = realStart.X, Y = realStart.Y };
-                        finalEndPoint = new PointDefinition { X = realEnd.X, Y = realEnd.Y };
-                    }
-
-                    var arrowsCategory = GetOrCreateCategory(LanguageService.Instance["arrow"]);
+                    // 绘图坐标（Log）-> 真实数据坐标；三元图下该转换为恒等（与线条、多边形保持一致）
+                    var realStart = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, _arrowStartPoint.Value);
+                    var realEnd = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, mouseCoordinates);
 
                     var newArrowDef = new ArrowDefinition
                     {
-                        Start = finalStartPoint,
-                        End = finalEndPoint,
+                        Start = new PointDefinition { X = realStart.X, Y = realStart.Y },
+                        End = new PointDefinition { X = realEnd.X, Y = realEnd.Y },
                         Color = "#000000",
                         ArrowWidth = 1.5f,
                         ArrowheadWidth = 18f,
                         ArrowheadLength = 18f
                     };
 
-                    var arrowLayer = new ArrowLayerItemViewModel(newArrowDef, arrowsCategory.Children.Count);
-                    arrowLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
-                    arrowsCategory.Children.Add(arrowLayer);
+                    // 重置本笔状态（移除虚线预览），保持添加模式以便继续画下一个
+                    ResetDrawingPreview();
 
-                    RefreshPlotFromLayers(true);
-
-                    // 选中新添加的图层
-                    SelectLayer(arrowLayer);
-
-                    // 记录 Undo/Redo
-                    void undoArrow()
-                    {
-                        if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["arrow"]) is CategoryLayerItemViewModel cat)
-                        {
-                            if (cat.Children.Contains(arrowLayer)) cat.Children.Remove(arrowLayer);
-                            if (cat.Children.Count == 0) LayerTree.Remove(cat);
-                        }
-                        RefreshPlotFromLayers(true);
-                    }
-                    void redoArrow()
-                    {
-                        var cat = GetOrCreateCategory(LanguageService.Instance["arrow"]);
-                        if (!cat.Children.Contains(arrowLayer)) cat.Children.Add(arrowLayer);
-                        RefreshPlotFromLayers(true);
-                    }
-                    AddUndoState(undoArrow, redoArrow);
-
-                    // 重置箭头绘制状态
-                    if (_tempArrowPlot != null)
-                    {
-                        WpfPlot1.Plot.Remove(_tempArrowPlot);
-                        _tempArrowPlot = null;
-                    }
-                    _arrowStartPoint = null;
-                    // IsAddingArrow = false; // 保持添加模式
+                    CommitDrawnLayer("arrow", layerIndex => new ArrowLayerItemViewModel(newArrowDef, layerIndex));
                     WpfPlot1.Refresh();
                 }
                 UpdateAddObjectModeStatus();
                 return;
             }
-
         }
 
         /// <summary>
@@ -5391,191 +5435,38 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
         
-            // 处理多边形绘制完成或取消
-            if (IsAddingPolygon)
+            // 添加对象工具（线条 / 多边形 / 箭头 / 文本）共用的右键逻辑，三层优先级：
+            //   1. 这一笔已开始：多边形（≥3 点）完成，否则取消这一笔；保持工具继续添加
+            //   2. 这一笔未开始 + 有选中对象：只取消选中，保持工具
+            //   3. 这一笔未开始 + 无选中对象：退出添加工具
+            if (IsAnyAddObjectToolActive)
             {
-                // 第一层：如果已点击顶点，处理当前多边形
-                if (_polygonVertices.Count > 0)
+                if (HasActiveDrawingAnchor)
                 {
-                    // 清理预览用的“橡皮筋”线
-                    if (_tempRubberBandLine != null)
+                    if (IsAddingPolygon && _polygonVertices.Count >= 3)
                     {
-                        WpfPlot1.Plot.Remove(_tempRubberBandLine);
-                        _tempRubberBandLine = null;
+                        FinishPolygon();
                     }
-                    // 清理预览用的多边形
-                    if (_tempPreviewPolygon != null)
+                    else
                     {
-                        WpfPlot1.Plot.Remove(_tempPreviewPolygon);
-                        _tempPreviewPolygon = null;
-                    }
-                    
-                    // 如果顶点数少于3，无法构成多边形，视为取消当前多边形
-                    if (_polygonVertices.Count < 3)
-                    {
-                        _polygonVertices.Clear();
-                        WpfPlot1.Refresh();
-                        MessageHelper.Info(LanguageService.Instance["not_enough_vertices_add_polygon_canceled"]);
-                        // 保持 IsAddingPolygon = true，继续添加模式
-                        UpdateAddObjectModeStatus();
-                        return;
-                    }
-                    
-                    // 顶点数≥ 3，创建多边形
-                    // 在图层树中找到 “多边形” 分类
-                    var polygonsCategory = GetOrCreateCategory(LanguageService.Instance["polygon"]);
-                    
-                    // 使用 PlotTransformHelper 将临时绘图坐标转换为真实数据坐标
-                    var realVertices = _polygonVertices.Select(c => PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, c));
-                    
-                    // 创建 PolygonDefinition 用于存储属性
-                    var newPolygonDef = new PolygonDefinition
-                    {
-                        // 现在存入的是真实数据
-                        Vertices = new ObservableCollection<PointDefinition>(realVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y })),
-                        BorderColor = "#FF000000",
-                    };
-                    
-                    // 创建 PolygonLayerItemViewModel
-                    var polygonLayer = new PolygonLayerItemViewModel(newPolygonDef, polygonsCategory.Children.Count);
-                    polygonLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
-                    polygonsCategory.Children.Add(polygonLayer);
-                    
-                    // 刷新整个绘图
-                    RefreshPlotFromLayers(true);
-                    
-                    // 选中新添加的图层
-                    SelectLayer(polygonLayer);
-
-                    // 记录 Undo/Redo
-                    void undoPolygon()
-                    {
-                        if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["polygon"]) is CategoryLayerItemViewModel cat)
+                        bool isPolygonTooShort = IsAddingPolygon;
+                        ResetDrawingPreview();
+                        if (isPolygonTooShort)
                         {
-                            if (cat.Children.Contains(polygonLayer)) cat.Children.Remove(polygonLayer);
-                            if (cat.Children.Count == 0) LayerTree.Remove(cat);
+                            MessageHelper.Info(LanguageService.Instance["not_enough_vertices_add_polygon_canceled"]);
                         }
-                        RefreshPlotFromLayers(true);
                     }
-                    void redoPolygon()
-                    {
-                        var cat = GetOrCreateCategory(LanguageService.Instance["polygon"]);
-                        if (!cat.Children.Contains(polygonLayer)) cat.Children.Add(polygonLayer);
-                        RefreshPlotFromLayers(true);
-                    }
-                    AddUndoState(undoPolygon, redoPolygon);
-                    
-                    // 重置状态
-                    _polygonVertices.Clear();
-                    WpfPlot1.Refresh();
-                    // 保持 IsAddingPolygon = true，继续添加模式
                     UpdateAddObjectModeStatus();
                     return;
                 }
-                
-                // 第二层：未点击顶点 + 有选中对象，右键取消选中（不退出添加模式）
+
                 if (HasCancellableSelection)
                 {
                     ClearLayerSelection();  // 只清除选中状态，不影响添加模式
-                    // 保持 IsAddingPolygon = true，继续添加模式
                     return;
                 }
-                
-                // 第三层：未点击顶点 + 无选中对象，右键退出添加多边形模式
-                IsAddingPolygon = false;
-                WpfPlot1.Refresh();
-                return;
-            }
-        
-            // 处理添加线条逻辑 - 优先于取消选择
-            if (IsAddingLine)
-            {
-                // 第一层：如果已点击第一个点，右键取消当前线条对象的添加
-                if (_lineStartPoint != null)
-                {
-                    if (_tempLinePlot != null)
-                    {
-                        WpfPlot1.Plot.Remove(_tempLinePlot);
-                        _tempLinePlot = null;
-                    }
-                    _lineStartPoint = null;
-                    WpfPlot1.Refresh();
-                    // 保持 IsAddingLine = true，继续添加模式
-                    UpdateAddObjectModeStatus();
-                    return;
-                }
-                
-                // 第二层：未点击点 + 有选中对象，右键取消选中（不退出添加模式）
-                if (HasCancellableSelection)
-                {
-                    ClearLayerSelection();  // 只清除选中状态，不影响添加模式
-                    // 保持 IsAddingLine = true，继续添加模式
-                    return;
-                }
-                
-                // 第三层：未点击点 + 无选中对象，右键退出添加线条模式
-                IsAddingLine = false;
-                // 确保清除任何可能残留的临时线条
-                if (_tempLinePlot != null)
-                {
-                    WpfPlot1.Plot.Remove(_tempLinePlot);
-                    _tempLinePlot = null;
-                }
-                WpfPlot1.Refresh();
-                return;
-            }
-        
-            // 取消添加文本
-            if (IsAddingText)
-            {
-                // 第一层：有选中对象，右键取消选中（不退出添加模式）
-                if (HasCancellableSelection)
-                {
-                    ClearLayerSelection();  // 只清除选中状态，不影响添加模式
-                    // 保持 IsAddingText = true，继续添加模式
-                    return;
-                }
-                
-                // 第二层：无选中对象，右键退出添加文本模式
-                IsAddingText = false;
-                return;
-            }
-        
-            // 取消添加箭头
-            if (IsAddingArrow)
-            {
-                // 第一层：如果已点击第一个点，右键取消当前箭头对象的添加
-                if (_arrowStartPoint != null)
-                {
-                    if (_tempArrowPlot != null)
-                    {
-                        WpfPlot1.Plot.Remove(_tempArrowPlot);
-                        _tempArrowPlot = null;
-                    }
-                    _arrowStartPoint = null;
-                    WpfPlot1.Refresh();
-                    // 保持 IsAddingArrow = true，继续添加模式
-                    UpdateAddObjectModeStatus();
-                    return;
-                }
-                
-                // 第二层：未点击点 + 有选中对象，右键取消选中（不退出添加模式）
-                if (HasCancellableSelection)
-                {
-                    ClearLayerSelection();  // 只清除选中状态，不影响添加模式
-                    // 保持 IsAddingArrow = true，继续添加模式
-                    return;
-                }
-                
-                // 第三层：未点击点 + 无选中对象，右键退出添加箭头模式
-                IsAddingArrow = false;
-                // 确保清除任何可能残留的临时箭头
-                if (_tempArrowPlot != null)
-                {
-                    WpfPlot1.Plot.Remove(_tempArrowPlot);
-                    _tempArrowPlot = null;
-                }
-                WpfPlot1.Refresh();
+
+                ResetAddingModes();
                 return;
             }
         
@@ -5968,8 +5859,9 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (token.IsCancellationRequested) return null;
 
-                    // 构建模板树
+                    // 构建模板树（并补上文件夹清单中的空文件夹）
                     var node = GraphMapTemplateService.BuildTreeFromEntities(summaries);
+                    TemplateFolderService.AppendManifestFolders(node);
 
                     // -------------------------------------------------------------------------
                     // 加载服务器端哈希值并注入到节点中，确保 ServerHash 始终为原始值
@@ -6082,6 +5974,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 如果没有个人图解，创建一个空节点
                 PersonalTemplatesNode = new GraphMapTemplateNode { Name = customRoot };
             }
+            MarkCustomScope(PersonalTemplatesNode);
 
             // 2. 收藏：从数据库加载 IsFavorite = true 的模板
             LoadFavoriteTemplates();
@@ -7704,7 +7597,8 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var axis in CurrentTemplate.Info.Axes)
                 {
-                    axis.Family = ScottPlot.Fonts.Detect(axis.Label.Get(DiagramLanguage));
+                    // 标题与副标题共用同一个字体，需同时满足两者的字符
+                    axis.Family = DiagramFontHelper.DetectAxisFamily(axis, DiagramLanguage);
                 }
             }
 
@@ -7713,8 +7607,33 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var text in CurrentTemplate.Info.Texts)
                 {
-                    text.Family = ScottPlot.Fonts.Detect(text.Content.Get(DiagramLanguage));
+                    text.Family = DiagramFontHelper.Detect(text.Content.Get(DiagramLanguage), text.Family);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 属性面板里编辑了文本内容（标题、坐标轴标题 / 副标题、文本）后，按新内容重新检测对应文本对象的字体。
+        /// 之后用户仍可在属性面板里手动改字体，字体只在文本内容变化时才会被自动更新。
+        /// </summary>
+        private void AutoDetectFontForEditedText(object sender, string propertyName)
+        {
+            switch (sender)
+            {
+                case Models.TextDefinition text when propertyName == nameof(Models.TextDefinition.Content):
+                    text.Family = DiagramFontHelper.Detect(text.Content.Get(DiagramLanguage), text.Family);
+                    break;
+                case Models.TitleDefinition title when propertyName == nameof(Models.TitleDefinition.Label):
+                    title.Family = DiagramFontHelper.Detect(title.Label.Get(DiagramLanguage), title.Family);
+                    break;
+                case Models.CartesianAxisDefinition cartesian
+                    when propertyName is nameof(Models.CartesianAxisDefinition.Label) or nameof(Models.CartesianAxisDefinition.SubLabel):
+                    cartesian.Family = DiagramFontHelper.DetectAxisFamily(cartesian, DiagramLanguage);
+                    break;
+                case Models.TernaryAxisDefinition ternary
+                    when propertyName is nameof(Models.TernaryAxisDefinition.Label) or nameof(Models.TernaryAxisDefinition.SubLabel):
+                    ternary.Family = DiagramFontHelper.DetectAxisFamily(ternary, DiagramLanguage);
+                    break;
             }
         }
 
@@ -7756,7 +7675,38 @@ namespace GeoChemistryNexus.ViewModels
             // 哈克多联图的图层在各面板分组里，按宿主模板重建会把这些分组清掉。
             if (CurrentTemplate != null && !IsHarkerPlotMode)
             {
+                // 标准图解（笛卡尔 / 三元）的数据点图层只存在于图层树中，数据点本身与图解语言无关，
+                // 重建前先把“数据点”根节点摘出来（不能走 ClearLayerTree，否则会断开其事件订阅），重建后再放回。
+                // 蛛网图的样品保存在 SpiderDiagramViewModel 中，重建后会重新渲染，不需要特殊处理。
+                CategoryLayerItemViewModel? preservedDataRoot = null;
+                if (CurrentTemplate.TemplateType != "Spider"
+                    && _plottedDataRoot != null
+                    && ReferenceEquals(_plottedDataTemplate, CurrentTemplate)
+                    && LayerTree.Contains(_plottedDataRoot))
+                {
+                    preservedDataRoot = _plottedDataRoot;
+                    LayerTree.Remove(preservedDataRoot);
+                }
+
                 BuildLayerTreeFromTemplate(CurrentTemplate);
+
+                if (preservedDataRoot != null)
+                {
+                    // 节点名来自界面语言，界面语言变化时同步，保证后续按名称查找数据点节点仍然有效
+                    string dataRootName = LanguageService.Instance["data_point"];
+                    if (preservedDataRoot.Name != dataRootName)
+                    {
+                        preservedDataRoot.Name = dataRootName;
+                    }
+
+                    // 数据点优先级最高，位于图层树最后（最上层）
+                    LayerTree.Add(preservedDataRoot);
+                }
+                else
+                {
+                    _plottedDataRoot = null;
+                    _plottedDataTemplate = null;
+                }
             }
 
             // 刷新帮助文档
@@ -8155,61 +8105,15 @@ namespace GeoChemistryNexus.ViewModels
                     WpfPlot1.Cursor = Cursors.Arrow;
             }
 
-            //  如果正在添加线条且起点已确定，则实时预览线条
-            if (IsAddingLine && _lineStartPoint.HasValue)
+            // 添加线条 / 箭头 / 多边形时，统一用从锚点到鼠标的红色虚线（蚂蚁线）实时预览
+            if (UpdateDrawingPreview(mouseCoordinates))
             {
-                // 如果尚未创建临时预览线，则创建
-                if (_tempLinePlot == null)
-                {
-                    _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value, mouseCoordinates);
-                    _tempLinePlot.Color = ScottPlot.Colors.Red; // 设置预览线为红色虚线
-                    _tempLinePlot.LinePattern = LinePattern.Dashed;
-                }
-                else
-                {
-                    // 如果已存在，直接更新终点坐标，避免重复创建和移除对象
-                    _tempLinePlot.End = mouseCoordinates;
-                }
                 needRefresh = true;
             }
-            // 实时预览箭头
-            else if (IsAddingArrow && _arrowStartPoint.HasValue)
-            {
-                if (_tempArrowPlot == null)
-                {
-                    _tempArrowPlot = WpfPlot1.Plot.Add.Arrow(_arrowStartPoint.Value, mouseCoordinates);
-                    _tempArrowPlot.ArrowFillColor = ScottPlot.Colors.Red;
-                }
-                else
-                {
-                    _tempArrowPlot.Tip = mouseCoordinates;
-                }
-                needRefresh = true;
-            }
-            // 处理添加多边形时的鼠标移动预览
-            else if (IsAddingPolygon && _polygonVertices.Count > 0)
-            {
-                var lastVertex = _polygonVertices.Last();
-                // 如果橡皮筋线未创建，则创建
-                if (_tempRubberBandLine == null)
-                {
-                    _tempRubberBandLine = WpfPlot1.Plot.Add.Line(lastVertex, mouseCoordinates);
-                    _tempRubberBandLine.Color = ScottPlot.Colors.Red;
-                    _tempRubberBandLine.LinePattern = LinePattern.Dashed;
-                }
-                else
-                {
-                    // 仅更新终点
-                    _tempRubberBandLine.End = mouseCoordinates;
-                }
-                needRefresh = true;
-            }
-            
+
             if (needRefresh)
             {
-                bool isPreviewOnlyRefresh = (IsAddingLine && _lineStartPoint.HasValue)
-                    || (IsAddingArrow && _arrowStartPoint.HasValue)
-                    || (IsAddingPolygon && _polygonVertices.Count > 0);
+                bool isPreviewOnlyRefresh = HasActiveDrawingAnchor;
 
                 if (!isPreviewOnlyRefresh
                     || snapChanged
@@ -9411,7 +9315,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 只读查看官方图解模板（非开发者模式；与 EPMA、温压计允许只读查看官方模板一致）
         /// </summary>
         [RelayCommand]
-        private void ViewTemplate(TemplateCardViewModel card)
+        private static void ViewTemplate(TemplateCardViewModel card)
         {
             if (card == null || !card.TemplateId.HasValue) return;
 
@@ -9472,24 +9376,15 @@ namespace GeoChemistryNexus.ViewModels
                     var newNodeList = updatedTemplate.NodeList;
                     var languages = editor.LanguageParts.Select(l => l.Text).ToList();
 
-                    var categoryParts = editor.CategoryParts.ToList();
-                    string lastPart = categoryParts[^1].DisplayName;
-                    string secondLastPart = categoryParts[^2].DisplayName;
-                    string newGraphMapPath = $"{secondLastPart}_{lastPart}";
-
-                    // 根据新的 GraphMapPath 生成新的确定性 ID
-                    Guid oldId = entity.Id;
-                    Guid newId = GraphMapDatabaseService.GenerateId(newGraphMapPath, entity.IsCustom);
-
-                    // 检查新 ID 对应的模板是否已存在（排除当前模板自身）
-                    if (newId != oldId)
+                    // 文件夹路径 + 模板名是用户可见的唯一键；GraphMapPath 与 ID 创建后保持不变
+                    string templateName = editor.CategoryParts[^1].DisplayName;
+                    bool nameTaken = await Task.Run(() => TemplateFolderService.HasTemplateNamed(
+                        entity.IsCustom, editor.SaveLocationPath, templateName, excludeId: entity.Id));
+                    if (nameTaken)
                     {
-                        var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(newId));
-                        if (existingTemplate != null)
-                        {
-                            editWindow.ShowWarningMessage(LanguageService.Instance["BasemapExisted"]);
-                            return;
-                        }
+                        editWindow.ShowWarningMessage(LanguageService.GetString(
+                            "template_name_exists_in_folder", "A template with the same name already exists in this folder."));
+                        return;
                     }
 
                     entity.Content = updatedTemplate;
@@ -9498,8 +9393,6 @@ namespace GeoChemistryNexus.ViewModels
                     entity.Content.DefaultLanguage = languages.First();
                     entity.Version = updatedTemplate.Version;
                     entity.TemplateType = updatedTemplate.TemplateType;
-                    entity.GraphMapPath = newGraphMapPath;
-                    entity.Name = newGraphMapPath;
                     entity.LastModified = DateTime.Now;
                     entity.HelpDocuments = editor.GetHelpDocumentsForSubmit();
 
@@ -9512,47 +9405,7 @@ namespace GeoChemistryNexus.ViewModels
                         entity.Status = isHashSame ? ContentInstallStatus.UpToDate : ContentInstallStatus.Outdated;
                     }
 
-                    if (newId != oldId)
-                    {
-                        // ID 变更：需要迁移数据库记录和缩略图
-
-                        // 1. 备份缩略图
-                        byte[]? thumbnailBytes = null;
-                        using (var stream = GraphMapDatabaseService.Instance.GetThumbnail(oldId))
-                        {
-                            if (stream != null)
-                            {
-                                using var ms = new MemoryStream();
-                                stream.CopyTo(ms);
-                                thumbnailBytes = ms.ToArray();
-                            }
-                        }
-
-                        // 2. 删除旧记录
-                        GraphMapDatabaseService.Instance.DeleteTemplate(oldId);
-
-                        // 3. 使用新 ID 保存
-                        entity.Id = newId;
-                        await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
-
-                        // 4. 迁移缩略图
-                        if (thumbnailBytes != null)
-                        {
-                            using var ms = new MemoryStream(thumbnailBytes);
-                            GraphMapDatabaseService.Instance.UploadThumbnail(newId, ms);
-                        }
-
-                        // 5. 同步当前绘图编辑器的模板 ID
-                        if (_currentTemplateId == oldId)
-                        {
-                            _currentTemplateId = newId;
-                        }
-                    }
-                    else
-                    {
-                        // ID 未变更：直接更新
-                        await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
-                    }
+                    await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
 
                     TemplateState refreshedState = !entity.IsCustom
                         ? ResolveOfficialTemplateUpdateState(entity, card.ServerHash, card.ServerVersion)
@@ -9560,13 +9413,6 @@ namespace GeoChemistryNexus.ViewModels
 
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        if (newId != oldId)
-                        {
-                            card.TemplateId = newId;
-                            card.TemplatePath = newGraphMapPath;
-                            card.Name = newGraphMapPath;
-                        }
-
                         if (!entity.IsCustom)
                             card.State = refreshedState;
 
@@ -9690,6 +9536,18 @@ namespace GeoChemistryNexus.ViewModels
             _loadTemplatesCts = new System.Threading.CancellationTokenSource();
             var token = _loadTemplatesCts.Token;
 
+            try
+            {
+                await ShowSingleTemplateCardCoreAsync(templateNode, token);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested)
+            {
+                // 已被更新的一次加载取代（如刷新模板库后选中项再次变化），无需处理
+            }
+        }
+
+        private async Task ShowSingleTemplateCardCoreAsync(GraphMapTemplateNode templateNode, System.Threading.CancellationToken token)
+        {
             var cacheKey = GetTemplateCardsCacheKey(templateNode);
             if (TryGetCachedTemplateCards(cacheKey, out var cachedCards))
             {
@@ -9725,6 +9583,18 @@ namespace GeoChemistryNexus.ViewModels
             _loadTemplatesCts = new System.Threading.CancellationTokenSource();
             var token = _loadTemplatesCts.Token;
 
+            try
+            {
+                await ShowCategoryTemplateCardsCoreAsync(categoryNode, token);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested)
+            {
+                // 已被更新的一次加载取代（如刷新模板库后选中项再次变化），无需处理
+            }
+        }
+
+        private async Task ShowCategoryTemplateCardsCoreAsync(GraphMapTemplateNode categoryNode, System.Threading.CancellationToken token)
+        {
             var cacheKey = GetTemplateCardsCacheKey(categoryNode);
 
             if (TryGetCachedTemplateCards(cacheKey, out var cachedCards))
@@ -10474,6 +10344,9 @@ namespace GeoChemistryNexus.ViewModels
         private void PropertyGridModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (sender == null || string.IsNullOrWhiteSpace(e.PropertyName)) return;
+
+            // 文本内容变化时，按新内容自动设定字体（会再触发一次 Family 的属性变更并走下面的同步 / 刷新流程）
+            AutoDetectFontForEditedText(sender, e.PropertyName);
 
             // 顶端 / 右侧图框边：首次修改时才写入模板
             if (sender is FrameAxisDefinition frameAxisDefinition)
@@ -11842,6 +11715,9 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             WpfPlot1.Plot.Clear();
+
+            // 绘制中的虚线预览随之被清除，丢弃引用，由鼠标移动按当前起点重新生成
+            DetachDrawingPreviewReferences();
 
             // 重新添加吸附标记
             if (_snapMarker != null)
@@ -13667,8 +13543,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <returns>是否创建成功</returns>
         private async Task<bool> TryCreateNewTemplate(
             DiagramPlotEditorViewModel editor,
-            Action<string>? showWarningMessage = null,
-            Func<string, string, string, string, Task<bool>>? showConfirmDialogAsync = null)
+            Action<string>? showWarningMessage = null)
         {
             if (editor == null) return false;
 
@@ -13685,36 +13560,23 @@ namespace GeoChemistryNexus.ViewModels
 
             string lastPart = categoryParts[^1].DisplayName;
             string secondLastPart = categoryParts[^2].DisplayName;
-            string folderName = $"{secondLastPart}_{lastPart}";
 
-            // 1. 检查数据库中是否存在同名模板
-            var existingId = GraphMapDatabaseService.GenerateId(folderName, true);
-            var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(existingId));
-
-            if (existingTemplate != null)
+            // 1. 同一文件夹内不允许同名模板（文件夹路径 + 模板名是用户可见的唯一键）
+            var summaries = await Task.Run(() => GraphMapDatabaseService.Instance.GetSummaries());
+            if (TemplateFolderService.HasTemplateNamed(true, editor.SaveLocationPath, lastPart, summaries: summaries))
             {
-                bool shouldContinue;
-                if (showConfirmDialogAsync != null)
-                {
-                    shouldContinue = await showConfirmDialogAsync(
-                        LanguageService.Instance["tips"] ?? "Tips",
-                        LanguageService.Instance["BasemapExisted"],
-                        LanguageService.Instance["Confirm"] ?? "Confirm",
-                        LanguageService.Instance["Cancel"] ?? "Cancel");
-                }
-                else
-                {
-                    shouldContinue = await MessageHelper.ShowAsyncDialog(
-                        LanguageService.Instance["BasemapExisted"],
-                        LanguageService.Instance["Cancel"] ?? "Cancel",
-                        LanguageService.Instance["Confirm"] ?? "Confirm");
-                }
-
-                if (!shouldContinue)
-                {
-                    return false;
-                }
+                (showWarningMessage ?? MessageHelper.Warning)(LanguageService.GetString(
+                    "template_name_exists_in_folder", "A template with the same name already exists in this folder."));
+                return false;
             }
+
+            // 2. GraphMapPath（及由它生成的 ID）与其他文件夹中的模板重复时追加序号
+            var usedIds = summaries.Select(s => s.Id).ToHashSet();
+            string baseFolderName = $"{secondLastPart}_{lastPart}";
+            string folderName = baseFolderName;
+            for (int suffix = 2; usedIds.Contains(GraphMapDatabaseService.GenerateId(folderName, true)); suffix++)
+                folderName = $"{baseFolderName}_{suffix}";
+            var existingId = GraphMapDatabaseService.GenerateId(folderName, true);
 
             // 确保清除语言覆盖
             ClearDiagramLanguageContext();
@@ -13848,19 +13710,21 @@ namespace GeoChemistryNexus.ViewModels
         /// 新建底图——弹窗新建
         /// </summary>
         [RelayCommand]
-        private void NewTemplate()
+        private void NewTemplate() => OpenNewTemplateEditor(null);
+
+        /// <param name="initialFolder">预填的保存位置（个人模板文件夹）。</param>
+        private void OpenNewTemplateEditor(IReadOnlyList<CategoryPartModel>? initialFolder)
         {
             try
             {
                 var window = new DiagramPlotEditorWindow();
-                window.InitializeForCreate();
+                window.InitializeForCreate(initialFolder);
 
                 window.ConfirmCommand = new AsyncRelayCommand<DiagramPlotEditorViewModel>(async (editor) =>
                 {
                     if (editor != null && await TryCreateNewTemplate(
                         editor,
-                        window.ShowWarningMessage,
-                        window.ShowConfirmDialogAsync))
+                        window.ShowWarningMessage))
                     {
                         window.Close();
                     }
@@ -14679,6 +14543,8 @@ namespace GeoChemistryNexus.ViewModels
             // 确认数据有效后，再创建“数据点”的根节点
             var rootDataNode = GetOrCreateCategory(LanguageService.Instance["data_point"]);
             rootDataNode.IsExpanded = true;
+            _plottedDataRoot = rootDataNode;
+            _plottedDataTemplate = CurrentTemplate;
 
             var palette = new ScottPlot.Palettes.Category10();
             int colorIndex = 0;
@@ -15041,9 +14907,6 @@ namespace GeoChemistryNexus.ViewModels
                 // 计算本地文件的哈希值
                 string localHash = UpdateHelper.ComputeFileMd5(localListPath);
 
-                // 获取本地 PlotTemplateCategories.json
-                string localCategoryPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
-
                 // 从服务器获取 server_info.json
                 string jsonContent = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
 
@@ -15074,8 +14937,8 @@ namespace GeoChemistryNexus.ViewModels
                         if (!confirmUpdate) return;
                     }
 
-                    // 如果列表需要更新，执行完整的列表更新 (内部会包含分类更新)
-                    await PerformTemplateListUpdate(serverInfo.ListHash, serverInfo.ListPlotCategoriesHash);
+                    // 如果列表需要更新，执行完整的列表更新
+                    await PerformTemplateListUpdate(serverInfo.ListHash);
                 }
                 else
                 {
@@ -15094,20 +14957,6 @@ namespace GeoChemistryNexus.ViewModels
                         {
                             await RefreshTemplateLibraryAfterDataChangeAsync();
                         }
-                    }
-
-                    // 分类文件缺失或哈希与服务器不一致时静默补全 / 更新
-                    // （服务器可能只改了分类而没有改模板列表；上次随列表更新时失败的分类更新也会在这里自愈）
-                    bool isCategoryMissing = !File.Exists(localCategoryPath);
-                    bool isCategoryOutdated = !isCategoryMissing
-                        && !string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash)
-                        && !string.Equals(
-                            UpdateHelper.ComputeFileMd5(localCategoryPath),
-                            serverInfo.ListPlotCategoriesHash,
-                            StringComparison.OrdinalIgnoreCase);
-                    if (isCategoryMissing || isCategoryOutdated)
-                    {
-                        await PerformCategoryListUpdate(serverInfo.ListPlotCategoriesHash, showMessages: false);
                     }
 
                     // 仅手动检查时提示"当前模板列表已是最新版本"
@@ -15134,8 +14983,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 执行具体的列表更新逻辑
         /// </summary>
         /// <param name="expectedHash">从服务器 server_info.json 获取的期望哈希值</param>
-        /// <param name="expectedCategoryHash">从服务器 server_info.json 获取的期望分类结构哈希值</param>
-        private async Task PerformTemplateListUpdate(string? expectedHash = null, string? expectedCategoryHash = null)
+        private async Task PerformTemplateListUpdate(string? expectedHash = null)
         {
             // 生成一个唯一的临时文件路径
             string tempFilePath = Path.GetTempFileName();
@@ -15180,9 +15028,6 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 使用 Move 覆盖
                 File.Move(tempFilePath, localListPath, true);
-
-                // 更新分类结构 (静默更新)
-                await PerformCategoryListUpdate(expectedCategoryHash, showMessages: false);
 
                 // 同步本地数据库与新的模板列表（含下架删除与 FileHash 更新）
                 var syncResult = await Task.Run(() =>
@@ -15234,81 +15079,6 @@ namespace GeoChemistryNexus.ViewModels
 
 
         /// <summary>
-        /// 执行具体的类别列表更新逻辑
-        /// </summary>
-        /// <param name="expectedHash">从服务器 server_info.json 获取的期望哈希值</param>
-        /// <param name="showMessages">是否显示消息提示</param>
-        private static async Task PerformCategoryListUpdate(string? expectedHash = null, bool showMessages = true)
-        {
-            // 生成一个唯一的临时文件路径
-            string tempFilePath = Path.GetTempFileName();
-            string localListPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
-
-            try
-            {
-                await OfficialContentMirrorClient.DownloadFileAsync(
-                    OfficialContentEndpoints.PlotTemplateCategoriesFileName,
-                    tempFilePath);
-
-                // 校验数据完整性
-                if (!string.IsNullOrEmpty(expectedHash))
-                {
-                    string downloadedHash = UpdateHelper.ComputeFileMd5(tempFilePath);
-                    if (!string.Equals(downloadedHash, expectedHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new Exception(LanguageService.Instance["downloaded_file_hash_mismatch"]);
-                    }
-                }
-
-                // JSON 格式校验
-                try
-                {
-                    string jsonContent = await File.ReadAllTextAsync(tempFilePath);
-                    using var jsonDoc = JsonDocument.Parse(jsonContent);
-                }
-                catch (JsonException)
-                {
-                    throw new Exception(LanguageService.Instance["downloaded_content_not_valid_json"]);
-                }
-
-                // 校验通过，安全覆盖本地文件
-                string? dir = Path.GetDirectoryName(localListPath);
-                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-                File.Move(tempFilePath, localListPath, true);
-
-                if (showMessages)
-                {
-                    MessageHelper.Success(LanguageService.Instance["template_list_update_success_refreshing"]);
-                }
-
-                // 发送消息通知 UI 重新加载配置
-                WeakReferenceMessenger.Default.Send(new CategoryConfigUpdatedMessage("Updated"));
-            }
-            catch (Exception ex)
-            {
-                if (showMessages)
-                {
-                    MessageHelper.Error(LanguageService.Instance["update_list_file_failed"] + $" {ex.Message}");
-                }
-            }
-            finally
-            {
-                if (File.Exists(tempFilePath))
-                {
-                    try
-                    {
-                        File.Delete(tempFilePath);
-                    }
-                    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-                    {
-                        Debug.WriteLine($"[Cleanup] Failed to delete temp file '{tempFilePath}': {ex.Message}");
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// "添加箭头"按钮的命令
         /// </summary>
         [RelayCommand(CanExecute = nameof(CanAddDrawingObject))]
@@ -15323,14 +15093,8 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand(CanExecute = nameof(CanAddFunction))]
         private void AddFunction()
         {
-            // 取消高亮选择
+            // 取消高亮选择，并退出其他添加模式
             CancelSelected();
-
-            // 关闭其他模式
-            IsAddingLine = false;
-            IsAddingPolygon = false;
-            IsAddingText = false;
-            IsAddingArrow = false;
 
             // 创建默认函数对象
             var funcDef = new FunctionDefinition
@@ -15343,34 +15107,8 @@ namespace GeoChemistryNexus.ViewModels
                 Width = 2
             };
 
-            // 查找或创建函数分类
-            var funcCategory = GetOrCreateCategory(LanguageService.Instance["function"]);
-
-            // 添加图层
-            var funcLayer = new FunctionLayerItemViewModel(funcDef, funcCategory.Children.Count);
-            EnsureLayerRefreshHandler(funcLayer);
-            funcCategory.Children.Add(funcLayer);
-
-            RefreshPlotFromLayers(true);
-            SelectLayer(funcLayer);
-
-            // 记录撤销/重做
-            void undo()
-            {
-                if (LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["function"]) is CategoryLayerItemViewModel cat)
-                {
-                    if (cat.Children.Contains(funcLayer)) cat.Children.Remove(funcLayer);
-                    if (cat.Children.Count == 0) LayerTree.Remove(cat);
-                }
-                RefreshPlotFromLayers(true);
-            }
-            void redo()
-            {
-                var cat = GetOrCreateCategory(LanguageService.Instance["function"]);
-                if (!cat.Children.Contains(funcLayer)) cat.Children.Add(funcLayer);
-                RefreshPlotFromLayers(true);
-            }
-            AddUndoState(undo, redo);
+            // 加入图层树、刷新、选中并记录撤销/重做（与线条、文本等共用）
+            CommitDrawnLayer("function", layerIndex => new FunctionLayerItemViewModel(funcDef, layerIndex));
         }
 
         // 撤销/重做 栈
@@ -16396,13 +16134,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 重置所有添加绘图对象的模式
         /// </summary>
-        private void ResetEditModes()
-        {
-            IsAddingLine = false;
-            IsAddingText = false;
-            IsAddingPolygon = false;
-            IsAddingArrow = false;
-        }
+        private void ResetEditModes() => ResetAddingModes();
 
         private void CancelPendingPlotRefreshes()
         {

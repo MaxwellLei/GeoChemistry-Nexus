@@ -16,6 +16,8 @@ namespace GeoChemistryNexus.Helpers
         public const string UiScaleMode = "ui_scale_mode";
         /// <summary>主窗体侧边栏收起样式（0 / 1）</summary>
         public const string MainSidebarCollapseMode = "main_sidebar_collapse_mode";
+        /// <summary>页面切换过渡动画（True / False，默认 False）</summary>
+        public const string PageTransitionAnimation = "page_transition_animation";
         /// <summary>通知自动关闭时间（下拉框索引）</summary>
         public const string AutoOffTime = "auto_off_time";
         /// <summary>开机启动</summary>

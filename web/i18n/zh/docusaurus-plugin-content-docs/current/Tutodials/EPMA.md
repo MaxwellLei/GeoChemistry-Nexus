@@ -1,12 +1,20 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # EPMA 矿物计算
 
 **EPMA 矿物计算**用于处理电子探针分析得到的矿物成分。通过将一批分析点的氧化物含量，按所选矿物计算方法换算成矿物化学结果，供矿物鉴定、成分对比和后续地质解释使用。
 
-![plot_home_ui](/img/v0.7.1/data_preprocessing1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/epma_mineral_calculation.webp')}
+    alt="EPMA界面"
+    style={{width: '100%'}}
+  />
+</div>
 
 ## 界面
 

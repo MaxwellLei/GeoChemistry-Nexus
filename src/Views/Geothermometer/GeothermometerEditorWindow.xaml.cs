@@ -29,6 +29,7 @@ namespace GeoChemistryNexus.Views
             InitializeComponent();
             UiScaleHelper.Attach(this);
             GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+            GeoChemistryNexus.Helpers.ChildWindowPlacementHelper.Attach(this);
 
             // 无边框窗口：交给 DWM 绘制原生阴影（与 EPMA 模板编辑窗口一致）
             SourceInitialized += (_, _) =>

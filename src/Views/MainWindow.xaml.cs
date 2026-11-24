@@ -120,7 +120,6 @@ namespace GeoChemistryNexus
 
         /// <summary>首帧渲染前为 false：此阶段 DPI 变化时把系统建议矩形改为正中。</summary>
         private bool _startupCentered;
-
         /// <summary>
         /// 页面切换保护期：用户在中间手动调整过窗口大小/位置后，切换页面（尤其是首次创建的懒加载页面）
         /// 期间产生的自适应复位（回到默认 1360×780 并居中）一律不允许发生。
@@ -162,6 +161,25 @@ namespace GeoChemistryNexus
                 // 用户主动修改界面缩放，属于明确意图，不受页面切换保护期限制
                 Dispatcher.BeginInvoke(new Action(() => ApplyAdaptiveWindowSizeForCurrentMonitor(force: true)));
             });
+            WeakReferenceMessenger.Default.Register<OpenDiagramPageRequestMessage>(this, (_, __) =>
+            {
+                Dispatcher.BeginInvoke(new Action(async () => await OpenDiagramPageAsync()));
+            });
+        }
+
+        /// <summary>
+        /// 响应“打开图解页”请求：把主窗口带到前台，再转发给 ViewModel 命令导航。
+        /// </summary>
+        private async Task OpenDiagramPageAsync()
+        {
+            if (!IsVisible)
+                Show();
+            if (WindowState == WindowState.Minimized)
+                WindowState = WindowState.Normal;
+            Activate();
+
+            if (DataContext is MainWindowViewModel vm && vm.OpenPlotPageByRequestCommand.CanExecute(MyNav))
+                await vm.OpenPlotPageByRequestCommand.ExecuteAsync(MyNav);
         }
 
         /// <summary>开始页面切换保护：记录切换前用户设置的窗口位置与大小。</summary>

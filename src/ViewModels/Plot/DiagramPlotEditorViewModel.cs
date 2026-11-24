@@ -183,7 +183,44 @@ namespace GeoChemistryNexus.ViewModels
 
         public bool HasCategoryStructurePreview => CategoryParts.Count > 0;
 
-        private PlotTemplateCategoryConfig? _categoryConfig;
+        /// <summary>保存位置（文件夹各段，不含模板名）。CategoryParts = 保存位置 + 模板名。</summary>
+        private readonly List<CategoryPartModel> _folderParts = new();
+
+        /// <summary>编辑模式载入的模板名各语言原值；用户改名后不再沿用。</summary>
+        private Dictionary<string, string>? _loadedTemplateNames;
+
+        private bool _isUpdatingCategoryParts;
+        private bool _isLoadingTemplateName;
+
+        /// <summary>保存位置或模板名变化时，所有语言的分类路径都按新位置重写（而不只是默认语言）。</summary>
+        private bool _syncAllCategoryLanguages;
+
+        [ObservableProperty]
+        private string _templateName = string.Empty;
+
+        /// <summary>新建的模板总是个人模板；编辑时跟随模板本身。</summary>
+        public bool IsCustomTemplateScope => _editEntity?.IsCustom ?? true;
+
+        /// <summary>保存位置在当前界面语言下的路径，用于文件夹选择器定位。</summary>
+        public IReadOnlyList<string> SaveLocationPath => _folderParts.Select(p => p.DisplayName).ToList();
+
+        public bool HasSaveLocation => _folderParts.Count > 0;
+
+        public string SaveLocationDisplay
+        {
+            get
+            {
+                if (_folderParts.Count == 0)
+                    return string.Empty;
+                return string.Join(" › ", new[] { TemplateFolderService.GetRootName(IsCustomTemplateScope) }
+                    .Concat(_folderParts.Select(p => p.DisplayName)));
+            }
+        }
+
+        private bool HasTemplateName => !string.IsNullOrWhiteSpace(TemplateName);
+
+        private bool HasCompleteCategory => HasSaveLocation && HasTemplateName;
+
         private GraphMapTemplate? _workingTemplate;
         private GraphMapTemplateEntity? _editEntity;
         private bool _suppressTranslationRebuild;
@@ -272,7 +309,6 @@ namespace GeoChemistryNexus.ViewModels
             WindowTitle = LanguageService.Instance["new_template"] ?? "New Diagram";
             InitializePlotTypes();
             RefreshAvailableLanguageOptions();
-            LoadCategories();
             LanguageParts.CollectionChanged += (_, _) =>
             {
                 if (!_bulkLanguageUpdate)
@@ -281,6 +317,7 @@ namespace GeoChemistryNexus.ViewModels
             TranslationDisplayRows.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasTranslationContent));
             CategoryParts.CollectionChanged += (_, _) =>
             {
+                if (_isUpdatingCategoryParts) return;
                 RebuildCategoryStructurePreview();
                 RebuildTranslationPreview();
                 RefreshTemplateStatus();
@@ -359,7 +396,8 @@ namespace GeoChemistryNexus.ViewModels
             SelectAllLanguagesCommand.NotifyCanExecuteChanged();
         }
 
-        public void InitializeForCreate()
+        /// <param name="initialFolder">从模板库「在此新建图解」进入时预填的保存位置。</param>
+        public void InitializeForCreate(IReadOnlyList<CategoryPartModel>? initialFolder = null)
         {
             Mode = DiagramPlotEditorMode.Create;
             WindowTitle = LanguageService.Instance["new_template"] ?? "New Diagram";
@@ -370,6 +408,8 @@ namespace GeoChemistryNexus.ViewModels
             ClearAll();
             TryAddLanguage(AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage));
             SelectPlotType("2D_Plot");
+            if (initialFolder is { Count: > 0 })
+                ApplySaveLocation(initialFolder);
             SelectedSectionIndex = 0;
             NotifyVersionPropertiesChanged();
             InitializeTemplateStatus(newTemplate: true);
@@ -410,22 +450,7 @@ namespace GeoChemistryNexus.ViewModels
                     EnsureDefaultLanguageFirst(_workingTemplate.DefaultLanguage);
                     UpdateLanguageDefaultStatus();
 
-                    string defaultLang = DefaultLanguageCode;
-                    if (!string.IsNullOrEmpty(defaultLang) &&
-                        _workingTemplate.NodeList?.Translations != null &&
-                        _workingTemplate.NodeList.Translations.TryGetValue(defaultLang, out var path))
-                    {
-                        var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(p => p.Trim());
-                        foreach (var part in parts)
-                        {
-                            CategoryParts.Add(new CategoryPartModel
-                            {
-                                DisplayName = part,
-                                LocalizedNames = null
-                            });
-                        }
-                    }
+                    LoadCategoryFromNodeList(_workingTemplate.NodeList);
 
                     TranslationTable = DiagramTemplateTranslationHelper.BuildTranslationTable(
                         _workingTemplate,
@@ -571,7 +596,11 @@ namespace GeoChemistryNexus.ViewModels
         public void ClearAll()
         {
             LanguageParts.Clear();
+            _folderParts.Clear();
+            _loadedTemplateNames = null;
+            SetTemplateNameSilently(string.Empty);
             CategoryParts.Clear();
+            NotifySaveLocationChanged();
             TranslationTable = null;
             IsTranslationSectionEnabled = false;
             IsHelpSectionEnabled = false;
@@ -752,60 +781,142 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        public bool TryAddCategory(string text, Dictionary<string, string>? localizedNames = null)
+        /// <summary>按文件夹选择器返回的路径设置保存位置。</summary>
+        public void SelectSaveLocation(IReadOnlyList<string> folderPath)
         {
-            if (string.IsNullOrWhiteSpace(text)) return false;
+            var folder = TemplateFolderService.FindFolder(IsCustomTemplateScope, folderPath);
+            if (folder == null || folder.IsRoot)
+                return;
 
-            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
-            if (text.IndexOfAny(invalidChars) >= 0)
+            ApplySaveLocation(TemplateFolderService.BuildCategoryParts(folder));
+        }
+
+        public void ApplySaveLocation(IReadOnlyList<CategoryPartModel> folderParts)
+        {
+            _folderParts.Clear();
+            foreach (var part in folderParts)
+                _folderParts.Add(CloneCategoryPart(part));
+
+            RebuildCategoryParts(syncAllLanguages: true);
+        }
+
+        partial void OnTemplateNameChanged(string value)
+        {
+            if (_isLoadingTemplateName)
+                return;
+
+            _loadedTemplateNames = null;
+            RebuildCategoryParts(syncAllLanguages: true);
+        }
+
+        private void SetTemplateNameSilently(string value)
+        {
+            _isLoadingTemplateName = true;
+            try
             {
-                MessageHelper.Error(LanguageService.Instance["invalid_filename_char"]);
-                return false;
+                TemplateName = value;
             }
-
-            CategoryParts.Add(new CategoryPartModel
+            finally
             {
-                DisplayName = text.Trim(),
-                LocalizedNames = localizedNames
-            });
-            return true;
+                _isLoadingTemplateName = false;
+            }
         }
 
-        public void RemoveCategory(CategoryPartModel item)
+        /// <summary>编辑模式：从模板 NodeList 拆出保存位置（各段带多语言名）和模板名。</summary>
+        private void LoadCategoryFromNodeList(LocalizedString? nodeList)
         {
-            if (item != null)
-                CategoryParts.Remove(item);
-        }
+            _folderParts.Clear();
+            _loadedTemplateNames = null;
 
-        public List<Dictionary<string, string>>? GetCategorySuggestions()
-        {
-            if (_categoryConfig == null) return null;
-            int levelIndex = CategoryParts.Count + 1;
-            string levelKey = $"Level{levelIndex}";
-            return _categoryConfig.TryGetValue(levelKey, out var list) ? list : null;
-        }
-
-        public void ReloadCategories() => LoadCategories();
-
-        public IReadOnlyList<CategoryStructureSelectNode> GetExistingCategoryStructureTree()
-        {
-            var entities = GraphMapDatabaseService.Instance.GetSummaries();
-            Guid? excludeId = _editEntity?.Id;
-            return PlotCategoryStructureHelper.BuildSelectableStructureTree(entities, excludeId);
-        }
-
-        public void ApplyExistingCategoryStructure(IReadOnlyList<CategoryPartModel> parts)
-        {
-            CategoryParts.Clear();
-            foreach (var part in parts)
+            var display = TemplateFolderService.GetDisplaySegments(nodeList);
+            if (display.Length > 0)
             {
-                CategoryParts.Add(new CategoryPartModel
+                var perLanguage = new List<(string Lang, string[] Segments)>();
+                foreach (var (lang, path) in nodeList?.Translations ?? new Dictionary<string, string>())
                 {
-                    DisplayName = part.DisplayName,
-                    LocalizedNames = part.LocalizedNames
-                });
+                    var segments = TemplateFolderService.SplitPath(path);
+                    if (segments.Length == display.Length)
+                        perLanguage.Add((lang, segments));
+                }
+
+                for (int i = 0; i < display.Length - 1; i++)
+                {
+                    var names = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (var (lang, segments) in perLanguage)
+                        names[lang] = segments[i];
+
+                    _folderParts.Add(new CategoryPartModel
+                    {
+                        DisplayName = display[i],
+                        LocalizedNames = names.Count > 0 ? names : null
+                    });
+                }
+
+                var leafNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var (lang, segments) in perLanguage)
+                    leafNames[lang] = segments[^1];
+                _loadedTemplateNames = leafNames.Count > 0 ? leafNames : null;
             }
+
+            SetTemplateNameSilently(display.Length > 0 ? display[^1] : string.Empty);
+            RebuildCategoryParts(syncAllLanguages: false);
         }
+
+        private void RebuildCategoryParts(bool syncAllLanguages)
+        {
+            _isUpdatingCategoryParts = true;
+            try
+            {
+                CategoryParts.Clear();
+                foreach (var part in _folderParts)
+                    CategoryParts.Add(CloneCategoryPart(part));
+
+                if (HasTemplateName)
+                {
+                    CategoryParts.Add(new CategoryPartModel
+                    {
+                        DisplayName = TemplateName.Trim(),
+                        LocalizedNames = _loadedTemplateNames == null
+                            ? null
+                            : new Dictionary<string, string>(_loadedTemplateNames, StringComparer.OrdinalIgnoreCase)
+                    });
+                }
+            }
+            finally
+            {
+                _isUpdatingCategoryParts = false;
+            }
+
+            NotifySaveLocationChanged();
+
+            _syncAllCategoryLanguages = syncAllLanguages;
+            try
+            {
+                RebuildCategoryStructurePreview();
+                RebuildTranslationPreview();
+            }
+            finally
+            {
+                _syncAllCategoryLanguages = false;
+            }
+            RefreshTemplateStatus();
+        }
+
+        private void NotifySaveLocationChanged()
+        {
+            OnPropertyChanged(nameof(SaveLocationPath));
+            OnPropertyChanged(nameof(HasSaveLocation));
+            OnPropertyChanged(nameof(SaveLocationDisplay));
+            OnPropertyChanged(nameof(IsCustomTemplateScope));
+        }
+
+        private static CategoryPartModel CloneCategoryPart(CategoryPartModel part) => new()
+        {
+            DisplayName = part.DisplayName,
+            LocalizedNames = part.LocalizedNames == null
+                ? null
+                : new Dictionary<string, string>(part.LocalizedNames, StringComparer.OrdinalIgnoreCase)
+        };
 
         [RelayCommand]
         private void ExportTranslations()
@@ -910,9 +1021,21 @@ namespace GeoChemistryNexus.ViewModels
                 return false;
             }
 
-            if (CategoryParts.Count < 2)
+            if (!HasSaveLocation)
             {
-                errorMessage = LanguageService.Instance["category_structure_min_two"] ?? string.Empty;
+                errorMessage = LanguageService.GetString("template_save_location_required", "Please choose where to save the template.");
+                return false;
+            }
+
+            if (!HasTemplateName)
+            {
+                errorMessage = LanguageService.GetString("template_name_required", "Please enter a template name.");
+                return false;
+            }
+
+            if (!TemplateFolderService.IsValidName(TemplateName.Trim()))
+            {
+                errorMessage = LanguageService.GetString("invalid_filename_char", "The name contains invalid characters.");
                 return false;
             }
 
@@ -1178,7 +1301,7 @@ namespace GeoChemistryNexus.ViewModels
             for (int i = 0; i < CategoryParts.Count; i++)
             {
                 var part = CategoryParts[i];
-                bool isLeaf = i == CategoryParts.Count - 1;
+                bool isLeaf = i == CategoryParts.Count - 1 && HasTemplateName;
                 var node = new GraphMapTemplateNode
                 {
                     Name = GetCategoryPartDisplayName(part, previewLanguage),
@@ -1214,7 +1337,7 @@ namespace GeoChemistryNexus.ViewModels
             IsTranslationSectionEnabled = true;
             IsScriptSectionEnabled = true;
 
-            if (languages.Count == 0 || CategoryParts.Count < 2)
+            if (languages.Count == 0 || !HasCompleteCategory)
             {
                 TranslationTable = null;
                 return;
@@ -1250,8 +1373,17 @@ namespace GeoChemistryNexus.ViewModels
                         DiagramTemplateTranslationHelper.ApplyTranslationTable(TranslationTable, draft);
                 }
 
-                TranslationTable = DiagramTemplateTranslationHelper.SyncTableLanguages(
+                if (_syncAllCategoryLanguages)
+                {
+                    draft.NodeList ??= new LocalizedString();
+                    OverwriteCategoryNodeList(draft.NodeList, categoryNodeList, languages);
+                }
+
+                var table = DiagramTemplateTranslationHelper.SyncTableLanguages(
                     TranslationTable, languages, draft);
+                if (_syncAllCategoryLanguages)
+                    ApplyCategoryPathToTable(table, draft.NodeList, languages);
+                TranslationTable = table;
                 _workingTemplate = draft;
                 ApplyPatchToWorkingTemplate();
                 ApplyClockwiseToWorkingTemplate();
@@ -1500,6 +1632,43 @@ namespace GeoChemistryNexus.ViewModels
             target.Default = defaultLang;
         }
 
+        /// <summary>
+        /// 保存位置或模板名变化时，所有语言路径都以文件夹的多语言名称重建，避免其他语言残留旧位置。
+        /// </summary>
+        private static void OverwriteCategoryNodeList(
+            LocalizedString target,
+            LocalizedString rebuilt,
+            IList<string> languages)
+        {
+            if (languages.Count == 0) return;
+
+            target.Translations ??= new Dictionary<string, string>();
+            foreach (var lang in languages)
+            {
+                if (rebuilt.Translations.TryGetValue(lang, out var path))
+                    target.Translations[lang] = path;
+            }
+            target.Default = languages[0];
+        }
+
+        private static void ApplyCategoryPathToTable(DataTable table, LocalizedString? nodeList, IList<string> languages)
+        {
+            if (nodeList?.Translations == null) return;
+
+            foreach (DataRow row in table.Rows)
+            {
+                if (!string.Equals(row[DiagramTemplateTranslationHelper.TranslationKeyColumn] as string,
+                        "categoryPath", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                foreach (var lang in languages)
+                {
+                    if (table.Columns.Contains(lang) && nodeList.Translations.TryGetValue(lang, out var path))
+                        row[lang] = path;
+                }
+            }
+        }
+
         private void SyncWorkingTemplateFromTable()
         {
             if (_workingTemplate == null || TranslationTable == null) return;
@@ -1604,11 +1773,6 @@ namespace GeoChemistryNexus.ViewModels
                     : filled >= total ? EpmaLocalizationColumnState.Complete
                     : EpmaLocalizationColumnState.Partial;
             }
-        }
-
-        private void LoadCategories()
-        {
-            _categoryConfig = PlotCategoryHelper.LoadConfig();
         }
 
         private void InitializePlotTypes()

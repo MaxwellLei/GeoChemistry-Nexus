@@ -113,8 +113,10 @@ public static class EpmaScriptText
     {
         if (value.ValueKind == JsonValueKind.Object)
         {
-            string language = CultureInfo.CurrentUICulture.Name;
-            if (value.TryGetProperty(language, out var text) || value.TryGetProperty(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, out text)
+            // 以软件语言为准而不是线程文化：线程文化可能尚未同步（启动阶段/后台线程），会导致卡片停留在默认语言
+            string language = GeoChemistryNexus.Services.LanguageService.CurrentLanguage;
+            string baseLanguage = language.Split('-')[0];
+            if (value.TryGetProperty(language, out var text) || value.TryGetProperty(baseLanguage, out text)
                 || value.TryGetProperty("en-US", out text) || value.TryGetProperty("en", out text)) return Format(text);
             return value.EnumerateObject().Select(p => Format(p.Value)).FirstOrDefault() ?? "";
         }

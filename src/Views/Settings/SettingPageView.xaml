@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="900"
       UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
@@ -85,8 +86,12 @@
     </Border>
 
     <!-- Content Area -->
-    <Grid Grid.Row="1" Grid.Column="1" Background="#F5F5F7">
-        <Frame Name="SettingNav" NavigationUIVisibility="Hidden" BorderThickness="0"/>
+    <Grid Grid.Row="1" Grid.Column="1" Background="#F5F5F7" ClipToBounds="True">
+        <Frame Name="SettingNav" NavigationUIVisibility="Hidden" BorderThickness="0" Background="Transparent">
+            <i:Interaction.Behaviors>
+                <helpers:FrameNavigationTransitionBehavior/>
+            </i:Interaction.Behaviors>
+        </Frame>
     </Grid>
 
 </Grid>

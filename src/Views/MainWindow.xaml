@@ -9,10 +9,11 @@
         xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
         xmlns:converter="clr-namespace:GeoChemistryNexus.Converter"
         xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}"
         WindowStartupLocation="Manual" Loaded="Window_Loaded" Closing="Window_Closing" SourceInitialized="Window_SourceInitialized"
-        Title="{Binding Title}" Height="780" Width="1360" MinHeight="500" MinWidth="800" BorderThickness="0">
+        Title="{Binding Title}" Height="750" Width="1360" MinHeight="500" MinWidth="800" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
         <!-- CaptionHeight=0：页面顶部的工具栏按钮需要可直接点击；拖动由 WindowDragHelper 附加属性提供 -->
@@ -646,6 +647,7 @@
                             <!-- Plot -->
                             <RadioButton Name="RadioButton2" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
                                          Command="{Binding PlotPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         IsChecked="{Binding IsPlotPageSelected, Mode=TwoWay}"
                                          ToolTip="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
                                 <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
                                     <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.Plot}"/>
@@ -758,7 +760,7 @@
                 </Border>
 
                 <!-- Navigation Content -->
-                <Border x:Name="NavContentBorder" Grid.Column="1">
+                <Border x:Name="NavContentBorder" Grid.Column="1" Background="#F5F5F7">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="10"/>
@@ -779,7 +781,16 @@
                             <Binding Path="CornerRadius" RelativeSource="{RelativeSource Self}"/>
                         </MultiBinding>
                     </Border.Clip>
-                    <Frame Name="MyNav" NavigationUIVisibility="Hidden" Background="White"/>
+                    <Grid>
+                        <!-- 页面顶栏静态底衬：模块切换渐显期间保持 44px 顶栏底色与分割线稳定不断裂 -->
+                        <Border Height="44" VerticalAlignment="Top" Background="#F2F2F7"
+                                BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" IsHitTestVisible="False"/>
+                        <Frame Name="MyNav" NavigationUIVisibility="Hidden" BorderThickness="0" Background="Transparent">
+                            <i:Interaction.Behaviors>
+                                <helpers:FrameNavigationTransitionBehavior SplitPageHeader="True"/>
+                            </i:Interaction.Behaviors>
+                        </Frame>
+                    </Grid>
                 </Border>
             </Grid>
             

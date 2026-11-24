@@ -1,0 +1,34 @@
+{
+  "home.button.content": {
+    "message": "Começar o tutorial do GeoChemistry Nexus - 5min ⏱️",
+    "description": "Link label for the GeoChemistry Nexus tutorial"
+  },
+  "home.button.getStarted": {
+    "message": "Começar"
+  },
+  "home.button.github": {
+    "message": "Ver o GitHub"
+  },
+  "home.tagline": {
+    "message": "A ferramenta de próxima geração para diagramas de discriminação e cálculos de geoquímica e petrologia — a melhor companhia dos geocientistas",
+    "description": "The tagline of the site"
+  },
+  "Comprehensive Plotting Toolkit": {
+    "message": "Kit completo de ferramentas de plotagem"
+  },
+  "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
+    "message": "O GeoChemistry Nexus traz um módulo integrado de plotagem de geociências, com modelos de discriminação de ambiente tectônico, classificação de rochas e outros. Oferece um fluxo de trabalho completo, da importação dos dados à exportação com qualidade de publicação (com suporte a SVG)."
+  },
+  "Excel-like Geothermometers": {
+    "message": "Geotermômetros no estilo do Excel"
+  },
+  "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
+    "message": "Faça cálculos de geotermômetros de minerais como zircão e biotita em uma interface intuitiva, no estilo do Excel. Use modelos integrados ou funções personalizadas (como =FuncName(args)) para acelerar a sua pesquisa, sem precisar de conhecimentos de programação."
+  },
+  "Customizable & Extensible": {
+    "message": "Altamente personalizável e extensível"
+  },
+  "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
+    "message": "Crie e compartilhe os seus próprios modelos de diagrama com o nosso sistema de extensão baseado em JSON/ZIP. A plataforma oferece modelos em vários idiomas, scripts personalizados (JavaScript) e integração direta com softwares de terceiros como Inkscape e CorelDRAW."
+  }
+}

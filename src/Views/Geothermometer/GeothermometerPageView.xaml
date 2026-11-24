@@ -1061,12 +1061,12 @@
                                   Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <!-- 筛选按钮（实心主题色 + 已选数量角标） -->
-                    <Grid Grid.Column="1" Width="32" Height="32" VerticalAlignment="Center">
+                    <Grid Grid.Column="1" Width="28" Height="28" VerticalAlignment="Center">
                         <Button x:Name="TagFilterButton"
                                 Style="{StaticResource GeoTFilterButtonStyle}"
                                 Command="{Binding ToggleTagFilterMenuCommand}"
                                 ToolTip="{Binding [geo_tooltip_tag_filter], Source={x:Static lg:LanguageService.Instance}, FallbackValue=按标签筛选}">
-                            <TextBlock Text="&#xe8b6;" FontFamily="{StaticResource IconFont}" FontSize="15"/>
+                            <TextBlock Text="&#xe8b6;" FontFamily="{StaticResource IconFont}" FontSize="13"/>
                         </Button>
 
                         <Border MinWidth="17" Height="17" CornerRadius="9"

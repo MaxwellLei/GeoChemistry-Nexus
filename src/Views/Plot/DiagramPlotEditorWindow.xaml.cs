@@ -29,6 +29,7 @@ namespace GeoChemistryNexus.Views
             InitializeComponent();
             UiScaleHelper.Attach(this);
             GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+            ChildWindowPlacementHelper.Attach(this);
             EditorControl.ViewModel.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == nameof(DiagramPlotEditorViewModel.WindowTitle))
@@ -73,9 +74,9 @@ namespace GeoChemistryNexus.Views
         private void MaximizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
-        public void InitializeForCreate()
+        public void InitializeForCreate(System.Collections.Generic.IReadOnlyList<CategoryPartModel>? initialFolder = null)
         {
-            EditorControl.InitializeForCreate();
+            EditorControl.InitializeForCreate(initialFolder);
         }
 
         public void InitializeForEdit(GraphMapTemplateEntity entity)

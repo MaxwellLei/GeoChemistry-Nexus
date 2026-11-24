@@ -43,6 +43,12 @@
   text-align: center;
 }
 
+/* Sidebar: indent child docs so they sit clearly under their category
+   (category titles carry an emoji, children do not) */
+.theme-doc-sidebar-menu .menu__list {
+  padding-left: 2rem;
+}
+
 /* Doc page: spacing between sidebar, content, and TOC */
 :root {
   --gn-doc-layout-gap-left: 4rem;

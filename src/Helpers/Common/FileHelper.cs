@@ -141,6 +141,16 @@ public class FileHelper
         }
     }
 
+    //获取多个文件路径——带有格式限制；用户取消时返回空数组
+    public static string[] GetFilePaths(string filter, System.Windows.Window? owner = null)
+    {
+        OpenFileDialog openFileDialog = new() { Filter = filter, Multiselect = true };
+        var dialogOwner = owner ?? Application.Current.MainWindow;
+        return openFileDialog.ShowDialog(dialogOwner) == true
+            ? openFileDialog.FileNames
+            : System.Array.Empty<string>();
+    }
+
     /// <summary>
     /// 获取文件保存路径 —— 带文件过滤器
     /// </summary>

@@ -47,6 +47,7 @@ namespace GeoChemistryNexus.Models
                 if (SetProperty(ref _graphMapPath, value))
                 {
                     OnPropertyChanged(nameof(TemplateCount));
+                    OnPropertyChanged(nameof(IsFolder));
                 }
             }
         }
@@ -71,6 +72,15 @@ namespace GeoChemistryNexus.Models
         /// 标识是否为自定义模板
         /// </summary>
         public bool IsCustomTemplate { get; set; }
+
+        /// <summary>
+        /// 是否位于个人图解树中（文件夹节点也会标记），用于决定右键菜单可用的文件夹操作
+        /// </summary>
+        [JsonIgnore]
+        public bool IsCustomScope { get; set; }
+
+        [JsonIgnore]
+        public bool IsFolder => string.IsNullOrEmpty(GraphMapPath);
 
         /// <summary>
         /// 是否展开

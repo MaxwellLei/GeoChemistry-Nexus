@@ -12,6 +12,7 @@ namespace GeoChemistryNexus.Views
         {
             InitializeComponent();
             UiScaleHelper.Attach(this);
+            ChildWindowPlacementHelper.Attach(this);
         }
 
         private void OnCloseClick(object sender, RoutedEventArgs e)

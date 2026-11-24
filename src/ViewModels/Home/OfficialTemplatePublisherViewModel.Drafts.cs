@@ -26,7 +26,7 @@ namespace GeoChemistryNexus.ViewModels
             AppCultureRegistry.GetOptions(false);
 
         /// <summary>
-        /// 当前正在编辑的内容语言。公告、导航链接、分类共用同一个，切换一次所有编辑器一起变。
+        /// 当前正在编辑的内容语言。公告、导航链接、矿物分类共用同一个，切换一次所有编辑器一起变。
         /// </summary>
         [ObservableProperty]
         private string selectedEditLanguage = AppCultureRegistry.DefaultContentLanguage;
@@ -37,7 +37,6 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             SelectedHomeLinksLanguage = value;
-            SelectedPlotCategoriesLanguage = value;
             SelectedGeoTMineralCategoriesLanguage = value;
             SelectedAnnouncementsLanguage = value;
             RefreshAnnouncementTranslationChips();
@@ -47,7 +46,8 @@ namespace GeoChemistryNexus.ViewModels
         // ───────────────────────── 发布单状态 ─────────────────────────
 
         private bool AnnouncementPackHasChanges =>
-            AnnouncementHasRemoteChanges || MinimumSupportedVersionHasRemoteChanges || LatestAppVersionHasRemoteChanges;
+            AnnouncementHasRemoteChanges || MinimumSupportedVersionHasRemoteChanges || LatestAppVersionHasRemoteChanges
+            || InstallerHasRemoteChanges;
 
         private bool HomeLinksPackHasChanges => HomeLinksHasRemoteChanges;
 
@@ -213,7 +213,6 @@ namespace GeoChemistryNexus.ViewModels
             None = 0,
             Announcements = 1,
             HomeLinks = 2,
-            PlotCategories = 4,
             GeoTCategories = 8
         }
 
@@ -272,8 +271,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (pending.HasFlag(PublisherDraftKinds.HomeLinks))
                     SaveHomeLinksToLocal();
-                if (pending.HasFlag(PublisherDraftKinds.PlotCategories))
-                    SavePlotCategoriesToLocal();
                 if (pending.HasFlag(PublisherDraftKinds.GeoTCategories))
                     SaveGeoTMineralCategoriesToLocal();
                 if (pending.HasFlag(PublisherDraftKinds.Announcements))
@@ -315,6 +312,9 @@ namespace GeoChemistryNexus.ViewModels
                 },
                 MinimumSupportedVersion = MinimumSupportedVersionText ?? string.Empty,
                 LatestAppVersion = LatestAppVersionText ?? string.Empty,
+                FullInstallerSha256 = FullInstallerSha256Text ?? string.Empty,
+                LiteInstallerSha256 = LiteInstallerSha256Text ?? string.Empty,
+                RequiredRuntimeMajor = RequiredRuntimeMajorText ?? string.Empty,
                 LegacyText = AnnouncementText ?? string.Empty
             };
 
@@ -355,6 +355,11 @@ namespace GeoChemistryNexus.ViewModels
                 ReplaceAnnouncementEntries(draft.Catalog);
                 MinimumSupportedVersionText = draft.MinimumSupportedVersion ?? string.Empty;
                 LatestAppVersionText = draft.LatestAppVersion ?? string.Empty;
+                FullInstallerSha256Text = draft.FullInstallerSha256 ?? string.Empty;
+                LiteInstallerSha256Text = draft.LiteInstallerSha256 ?? string.Empty;
+                RequiredRuntimeMajorText = string.IsNullOrWhiteSpace(draft.RequiredRuntimeMajor)
+                    ? DefaultRequiredRuntimeMajorText
+                    : draft.RequiredRuntimeMajor;
                 AnnouncementText = draft.LegacyText ?? string.Empty;
                 UpdateServerConfigChangeState();
                 return true;
@@ -380,6 +385,15 @@ namespace GeoChemistryNexus.ViewModels
 
         [JsonPropertyName("latestAppVersion")]
         public string LatestAppVersion { get; set; } = string.Empty;
+
+        [JsonPropertyName("fullInstallerSha256")]
+        public string FullInstallerSha256 { get; set; } = string.Empty;
+
+        [JsonPropertyName("liteInstallerSha256")]
+        public string LiteInstallerSha256 { get; set; } = string.Empty;
+
+        [JsonPropertyName("requiredRuntimeMajor")]
+        public string RequiredRuntimeMajor { get; set; } = string.Empty;
 
         [JsonPropertyName("legacyText")]
         public string LegacyText { get; set; } = string.Empty;

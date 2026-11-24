@@ -1,6 +1,8 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # 图解
 
@@ -54,7 +56,13 @@ sidebar_position: 3
 2.  **打开图解**：用于临时打开图解模板；仅支持 `.diag.zip` 文件。
 3.  **导入图解**：用于将外部图解模板包（`.diag.zip`）导入本地我的模板列表。
 
-![graphic_menu_bar](/img/v0.9.0/en-US/graphic_menu_bar.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/graphic_menu_bar.webp')}
+    alt="图解菜单栏"
+    style={{width: '50%'}}
+  />
+</div>
 
 ### 图解操作界面
 
@@ -96,7 +104,7 @@ sidebar_position: 3
 
 **默认渲染顺序（从上到下）：`数据点 > 文本 > 箭头 > 函数 > 线条 > 多边形 > 坐标轴`**。
 
-![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
+![tutorial_plot5](/img/v0.9.0/en-US/diagrammatic_object_selection_example.webp)
 
 当您在图层面板中选择一个元素时，它将在画布上高亮显示，而其他元素变为半透明以减少干扰。属性面板随后将显示该元素的相关属性。 🔍
 
@@ -115,18 +123,14 @@ sidebar_position: 3
 1. 从 **图解模板库** 中选择一个图解模板进入图解擦欧总页面。例如：选择 TAS 图解。
 2. 当我们需要输入数据的时候，需要从图解模式，切换到数据模式。
    
-   ![tutorial_plot6](/img/v0.7.1/tutorial_plot6.webp)
+   ![tutorial_plot6](/img/v0.9.0/en-US/diagram_data_input.webp)
 
 
 对于 TAS 图解，必须要输入的是四列数据：`Category`, `SiO2`, `K2O`, 和 `Na2O`。其中`Category` 标题列用于对数据进行分组并生成图例；`Sample`列用标识数据样本标签，不会参与任何计算（可以为空）；其他元素的单位是 `wt.%`。而当然，如果你不清楚这个图解到底输入的数据是什么，什么单位，图解怎么用等，可以点击图解区域右上角的图解帮助按钮查看关于该图解的说明文档。
 
-   ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
-3. 了解需求后，输入你的数据点击数据面板右上角的投点按钮以绘制数据点。如果数据输入有问题，在修改数据后，重新点击投点即可。
-   
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot8.webp)
-   
+3. 了解需求后，输入你的数据点击数据面板右上角的投点按钮以绘制数据点。如果数据输入有问题，在修改数据后，重新点击投点即可。![tutorial_plot8](/img/v0.9.0/en-US/data_plotting.webp)
 4. **导出图解**。我们提供了一个**快捷复制图解投图结果到粘贴板功能按钮**。还有一个**正式导出功能**。在正式导出面板中，我们支持导出图片格式为 `jpg`，`png`，`bmp`，`svg`。在科研绘图需要矢量图的情况下，我们推荐使用 `svg` 格式。同时我们也支持**直接将结果联动到第三方作图软件中**，无需经过导出再导入这一中间步骤。第三方软件内置推荐的是：**CoreIDRAW，Inkscape，Adobe llustrator**。我们推荐使用 Inkscape 联动进行后期二次科研修图会更佳。当然我们也支持自定义一个其他第三方作图软件，前提是该软件支持`svg` 矢量图格式。研究人员只需在设置中，指定作图软件程序路径即可。
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot10.webp)
+   ![tutorial_plot8](/img/v0.9.0/en-US/export_diagram.webp)
 
 ### 补充说明
 
@@ -134,4 +138,10 @@ sidebar_position: 3
 
 例如：发表中国期刊发表论文的图解需要使用中文语言版本，在英文 SCI/IE 等期刊上发表需要使用英文版本的图解。你可以通过点击图解工具栏右上角的图解来一键切换对应语言版本的图解。
 
-![tutorial_plot9](/img/v0.7.1/tutorial_plot9.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/switch_graphic_language.webp')}
+    alt="切换图解语言"
+    style={{width: '60%'}}
+  />
+</div>

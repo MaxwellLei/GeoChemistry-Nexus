@@ -158,12 +158,41 @@ namespace GeoChemistryNexus.Services
                 {
                     MessageHelper.Info(LanguageService.Instance["downloading_ellipsis"] ?? "Downloading...");
 
-                    await UpdateHelper.DownloadInstallerAsync(
-                        updateInfo.InstallerDownloadUrl,
-                        installerPath,
-                        progress,
-                        fallbackDownloadUrl: updateInfo.FallbackInstallerDownloadUrl,
-                        expectedSha256: updateInfo.InstallerSha256);
+                    try
+                    {
+                        await UpdateHelper.DownloadInstallerAsync(
+                            updateInfo.InstallerDownloadUrl,
+                            installerPath,
+                            progress,
+                            fallbackDownloadUrl: updateInfo.FallbackInstallerDownloadUrl,
+                            expectedSha256: updateInfo.InstallerSha256);
+                    }
+                    catch (Exception liteEx) when (updateInfo.IsLiteInstaller)
+                    {
+                        // 精简版两个下载源都失败（或校验不通过）时，回退到内置运行时的完整版。
+                        Debug.WriteLine($"[AppUpdateService] Lite installer download failed, falling back to full installer: {liteEx.Message}");
+
+                        if (!updateInfo.TrySwitchToFullInstaller())
+                            throw;
+
+                        installerPath = UpdateHelper.GetInstallerDownloadPath(updateInfo.InstallerFileName);
+                        progress?.Report(0);
+
+                        if (UpdateHelper.TryGetCachedInstallerPath(updateInfo, out string cachedFullPath))
+                        {
+                            installerPath = cachedFullPath;
+                            progress?.Report(100);
+                        }
+                        else
+                        {
+                            await UpdateHelper.DownloadInstallerAsync(
+                                updateInfo.InstallerDownloadUrl,
+                                installerPath,
+                                progress,
+                                fallbackDownloadUrl: updateInfo.FallbackInstallerDownloadUrl,
+                                expectedSha256: updateInfo.InstallerSha256);
+                        }
+                    }
                 }
 
                 string shutdownMessage = LanguageService.Instance["update_download_confirm_shutdown"]
@@ -179,15 +208,6 @@ namespace GeoChemistryNexus.Services
                     MessageHelper.Info(LanguageService.Instance["update_installer_saved"]
                         ?? $"Installer saved to: {installerPath}");
                     return;
-                }
-
-                try
-                {
-                    await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
-                }
-                catch
-                {
-                    // 忽略更新 PlotTemplateCategories.json 的错误
                 }
 
                 UpdateHelper.LaunchInstallerAndShutdown(installerPath);

@@ -2,6 +2,8 @@
 sidebar_position: 6
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # Niggli 标准矿物计算
 
 **Niggli 标准矿物计算**对同一行全岩氧化物做两套结果：
@@ -13,7 +15,13 @@ Catanorm 由 Paul Niggli（1948）与 Tom F. W. Barth（1948）建立。它按�
 
 算法参考 GCDkit 的分子标准矿物流程，并重新实现；其中白榴石进一步去硅的产物记入钾霞石 `Kp`。
 
-![Niggli 标准矿物计算界面](/img/v0.9.0/niggli-result.png)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/niggli.webp')}
+    alt="niggli界面"
+    style={{width: '100%'}}
+  />
+</div>
 
 ## 界面
 

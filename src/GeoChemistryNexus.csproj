@@ -49,7 +49,6 @@
     <None Remove="Data\Documents\template.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\GeoChemistryNexus_Icon.ico" />
-    <None Remove="Data\PlotData\PlotTemplateCategories.json" />
     <None Remove="Data\Plugins\GeoTMineralCategories.json" />
     <None Remove="Data\Config\App.config" />
   </ItemGroup>
@@ -61,9 +60,6 @@
     <Resource Include="Data\Icon\iconfont.ttf" />
     <Resource Include="Data\Icon\GeoChemistryNexus_Icon.ico" />
     <Resource Include="Data\Image\Startup\rock-thin-section.png" />
-    <Content Include="Data\PlotData\PlotTemplateCategories.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Data\Plugins\GeoTMineralCategories.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

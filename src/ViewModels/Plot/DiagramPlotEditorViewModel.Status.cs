@@ -36,8 +36,12 @@ namespace GeoChemistryNexus.ViewModels
                         AddText(items, "language_setting_duplicate_found");
                 }
 
-                if (CategoryParts.Count < 2)
-                    AddText(items, "category_structure_min_two");
+                if (!HasSaveLocation)
+                    AddText(items, "template_save_location_required");
+                if (!HasTemplateName)
+                    AddText(items, "template_name_required");
+                else if (!TemplateFolderService.IsValidName(TemplateName.Trim()))
+                    AddText(items, "invalid_filename_char");
 
                 if (Mode == DiagramPlotEditorMode.Create && string.IsNullOrEmpty(SelectedPlotType))
                     Add("epma_editor_state_required", Label("plot_type"));
@@ -45,7 +49,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (PatchVersion < 0)
                     AddText(items, "geo_validate_version_format");
 
-                // 分类未满两级时还没有工作模板，脚本和数据列尚未生成，不提前报缺失。
+                // 未选保存位置或未填模板名时还没有工作模板，脚本和数据列尚未生成，不提前报缺失。
                 if (ScriptDefinition != null || DataSeriesColumns.Count > 0)
                 {
                     AddDataSeriesStatus(items);

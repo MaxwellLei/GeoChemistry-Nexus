@@ -1,52 +1,71 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Einstellungen
 
-Der Einstellungsbereich der Software ist vielfältig und wird mit wachsendem Funktionsumfang um weitere Personalisierungsoptionen ergänzt.
+Der Einstellungsbereich der Software ist sehr vielfältig und wird mit der Erweiterung der Funktionen um weitere persönliche Optionen ergänzt.
 
 ## Allgemeine Programmeinstellungen
 
-Die Einstellungen gliedern sich hauptsächlich in vier Bereiche: Dateipfade, Internationalisierung und Personalisierung, Benachrichtigungen und Sonstiges. Nachfolgend eine kurze Übersicht der wichtigsten Optionen:
+Die Einstellungen gliedern sich vor allem in vier Teile: Dateipfade, Internationalisierung und Personalisierung, Meldungen und Weiteres. Unten folgt eine kurze Erläuterung der wichtigsten Einstellungen:
 
-![tutorial_settings1](/img/v0.7.1/tutorial_settings1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/setting.webp')}
+    alt="Allgemeine Einstellungen"
+    style={{width: '100%'}}
+  />
+</div>
 
-### 🌍 Sprache & Erscheinungsbild
+### 🌍 Sprache und Erscheinungsbild
 
--   **Sprache**: Derzeit werden Vereinfachtes Chinesisch, Traditionelles Chinesisch, Englisch, Deutsch, Spanisch, Japanisch, Koreanisch und Russisch unterstützt.
--   **Start-Hintergrundbild**: Hintergrundbild beim Start der Software.
+-   **Sprache**: Derzeit werden vereinfachtes Chinesisch, traditionelles Chinesisch, Englisch, Deutsch, Spanisch, Japanisch, Koreanisch, Russisch, Französisch und Portugiesisch unterstützt.
+-   **UI-Skalierung**: verschiedene Skalierungseinstellungen für Bildschirme mit unterschiedlicher Auflösung. In der Regel genügt die Vorgabe.
 
 :::info
 
-Zur Sprachunterstützung: Wenn Sie bei der Lokalisierung für Ihr Land mithelfen möchten, laden wir Sie herzlich zur Übersetzungsarbeit ein! Die meisten Übersetzungen wurden KI-unterstützt erstellt — einzelne Passagen können ungenau sein. Ihre Hilfe ist sehr willkommen und wird geschätzt.
+Wenn Sie die Lokalisierung für Ihr Land unterstützen möchten, laden wir Sie herzlich ein, an unserer Übersetzungsarbeit mitzuwirken. Der größte Teil der derzeitigen Übersetzung entstand mit Unterstützung durch KI. Das bedeutet, dass einzelne Stellen ungenau sein können. Ihre Hilfe wird sehr benötigt und ist willkommen.
 
 :::
 
-### 🗨️ Benachrichtigungen
+### 🗨️ Meldungen
 
--   **Automatisches Schließen**: Dauer, nach der Benachrichtigungs-Pop-ups während des Betriebs automatisch geschlossen werden. Fehler- und Warnmeldungen müssen manuell geschlossen werden.
+-   **Dauer bis zum automatischen Schließen**: Dauer, nach der Meldungsfenster während der Laufzeit der Software automatisch geschlossen werden. Fehler- und Warnmeldungen müssen manuell geschlossen werden.
 
-### ⚙️ Sonstiges
+### ⚙️ Weiteres
 
--   **Mit System starten**: Die Software startet automatisch mit dem System.
--   **Entwicklermodus**: Bietet Entwicklern Debug-Funktionen. Nicht-Entwicklern wird empfohlen, diesen Modus nicht zu aktivieren, um Fehlbedienungen zu vermeiden.
--   **Automatische Update-Prüfung**: Beim Start wird automatisch auf Updates geprüft.
--   **Beenden-Modus**: Die Software kann auf zwei Arten beendet werden: direkt beenden oder in den System-Tray minimieren. Bei Minimierung in den Tray können Sie per Rechtsklick auf das Tray-Symbol „Beenden“ wählen.
+-   **Mit dem System starten**: Die Software startet automatisch beim Systemstart.
+-   **Automatisch nach Aktualisierungen suchen**: Die Software sucht beim Start automatisch nach Aktualisierungen.
+-   **Art des Beendens**: Die Software kann auf zwei Arten beendet werden: unmittelbar beenden oder in den Infobereich minimieren. Wenn Sie die Minimierung in den Infobereich wählen, klicken Sie mit der rechten Maustaste auf das Symbol im Infobereich und wählen Beenden, um die Software zu schließen.
 
-## Einstellungen des Diagrammmoduls
+## Einstellungen des Zeichenmoduls
 
-Die Einstellungen des Diagrammmoduls betreffen ausschließlich Funktionen innerhalb dieses Moduls, unter anderem:
+Die Einstellungen des Zeichenmoduls betreffen eigens die Funktionen innerhalb des Zeichenmoduls, einschließlich, aber nicht beschränkt auf:
 
-*   Konfiguration von Pfaden zu Drittanbieter-Programmen
-*   Standard-Drittanbieter-Programm
-*   Standardsprache beim Laden von Diagrammen
-*   Automatische Aktualisierung von Diagrammvorlagen und Kategoriestruktur
+*   Konfiguration der Programmpfade von Drittanbietern
+*   Standardprogramm eines Drittanbieters
+*   Standardsprache, mit der Diagramme geladen werden
+*   Automatische Aktualisierung von Diagrammvorlagen und Klassifikationsstruktur
 
-![tutorial_settings2](/img/v0.7.1/tutorial_settings2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/diagram_settings.webp')}
+    alt="Diagrammeinstellungen"
+    style={{width: '100%'}}
+  />
+</div>
 
-## Über uns
+## Über
 
-Die „Über uns“-Seite des Programms.
+Alle Personen, die zu dieser Software beigetragen haben, werden auf dieser Seite genannt und mit Dank bedacht. Formen des Beitrags sind einschließlich, aber nicht beschränkt auf Funktionsvorschläge, Rückmeldungen zu Problemen, Korrekturlesen von Oberfläche und Übersetzung sowie weitere Unterstützung und Hilfe, die der Verbesserung und Weiterentwicklung der Software dienen.
 
-![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/about.webp')}
+    alt="Einstellungen zu Über"
+    style={{width: '100%'}}
+  />
+</div>

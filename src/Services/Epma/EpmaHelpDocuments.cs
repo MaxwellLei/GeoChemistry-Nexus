@@ -52,10 +52,10 @@ public static class EpmaHelpDocuments
     {
         var documents = Read(help);
         if (documents.Count == 0) return null;
-        var culture = CultureInfo.CurrentUICulture;
-        foreach (string code in new[] { culture.Name, culture.TwoLetterISOLanguageName, "en-US", "en" })
+        string language = GeoChemistryNexus.Services.LanguageService.CurrentLanguage;
+        string baseLanguage = language.Split('-')[0];
+        foreach (string code in new[] { language, baseLanguage, "en-US", "en" })
             if (code.Length > 0 && documents.TryGetValue(code, out var text)) return text;
-        string baseLanguage = culture.TwoLetterISOLanguageName;
         foreach (var pair in documents)
             if (pair.Key.Split('-')[0].Equals(baseLanguage, StringComparison.OrdinalIgnoreCase)) return pair.Value;
         return documents.Values.First();

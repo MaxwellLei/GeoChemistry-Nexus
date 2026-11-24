@@ -1,62 +1,107 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Geothermobarometer
 
-In frühen Versionen wurde dieses Modul kurz als **GTM** bezeichnet. Später hieß es Geothermometer und trägt nun den offiziellen Namen Geothermobarometer.
+In frühen Versionen wurde dieses Modul kurz **GTM** genannt. Später wurde es zum Geothermometer und trägt heute den förmlichen Namen Geothermobarometer.
 
-Frühe Versionen umfassten geologische Thermometer für Zirkon, Sphalerit, Quarz, Xenotim, Chlorit und Biotit. Das neue Geothermobarometer-Modul wird derzeit noch angepasst und wird in Kürze synchronisiert.
+Frühe Versionen enthielten Geothermometer-Berechnungen für Minerale wie Zirkon, Sphalerit, Quarz, Xenotim, Chlorit und Biotit. Das Geothermobarometer der neuen Version wird noch angepasst und aktualisiert und wird in Kürze nachgezogen.
 
-## 🌟 Merkmale
+## Oberfläche
 
-Das Geothermobarometer-Modul orientiert sich von Anfang an **am Excel-Prinzip**, um die Einarbeitung zu erleichtern. **Es gibt zwei Hauptnutzungsformen:**
+Das Modul Geothermobarometer gliedert sich insgesamt in zwei Teile:
 
-1. **Integrierte Cloud-Vorlagen**: Standardmäßig sind **Cloud-Vorlagen** für Nutzer nicht editierbar und werden offiziell gepflegt. Bei Internetverbindung erhalten Sie die neuesten Geothermobarometer-Vorlagen ohne Software-Update. Forschende können passende Vorlagen suchen, Daten gemäß Anleitung eintragen und berechnen. **Diese Methode ist direkter und schneller — Programmierkenntnisse sind nicht erforderlich.**
-2. **Unabhängiges Fenster**: Über die Menüleiste **Datei → Unabhängige Tabelle öffnen** lässt sich ein separates Fenster öffnen. Dort können Forschende benutzerdefinierte Berechnungen mit verschiedenen Geothermobarometern kombinieren. Die zugehörigen Funktionen finden Sie in den fortgeschrittenen Anleitungen. **Diese Methode ist komplexer, aber flexibler.**
+1. Links befindet sich die **Liste der Geothermobarometer-Vorlagen**. Hier können Sie eine für Sie passende Geothermobarometer-Vorlage suchen, oder Sie können eine eigene Berechnungsvorlage für ein Geothermobarometer erstellen.
+2. Rechts befindet sich die **Hilfedokumentation der derzeit ausgewählten Geothermobarometer-Vorlage**.
 
-Das Modul erlaubt zudem das Erstellen eigener Geothermobarometer. Als Paket exportiert können Sie diese an andere Forschende weitergeben.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/geothermobarometer_interface.webp')}
+    alt="Oberfläche des Geothermobarometers"
+    style={{width: '100%'}}
+  />
+</div>
 
-![gtm_ui](/img/v0.7.1/geothermobarometer1.webp)
+## Funktionen
 
-## Anwendungsbeispiel Geothermobarometer
+Das Modul Geothermobarometer ist von Anfang an **der Form von Excel nachempfunden**, um die Einstiegshürde zu senken. **Geothermobarometer werden vor allem in zwei Formen verwendet**:
 
-### Integrierte Vorlagen verwenden
+1. **Online-Geothermobarometer-Vorlagen**: Die standardmäßigen **Online-Geothermobarometer-Vorlagen** können Sie nicht ändern, die Umsetzungslogik des Algorithmus aber einsehen. Sie können, ohne die Software zu aktualisieren, bei bestehender Netzwerkverbindung weitere neueste Vorlagen für Geothermobarometer beziehen. Forschende können suchen, filtern und eine für sie passende Vorlage wählen und die Daten gemäß dem Inhalt der Anleitung eintragen und berechnen. **Dieser Weg ist unmittelbarer und schneller und erfordert keine Programmierkenntnisse.**
+2. **Eigenständiges Berechnungsfenster**: Forschende können über die obere Menüleiste **Datei -> Eigenständige Tabelle öffnen** ein eigenständiges Berechnungsfenster öffnen. Im eigenständigen Fenster dürfen Forschende selbst programmieren und verschiedene Geothermobarometer zu einer kombinierten Berechnung verwenden. Die Funktionen, die den einzelnen Geothermobarometern entsprechen, finden Sie im Teil der fortgeschrittenen Tutorials. **Dieser Weg ist komplexer und vergleichsweise flexibel.**
 
-Wählen Sie zunächst im Geothermometer-Modul über die Menüleiste die gewünschte Berechnungsvorlage:
+Natürlich erlaubt das Modul Geothermobarometer den Forschenden auch, ein eigenes benutzerdefiniertes Geothermobarometer zu erstellen. Eine fertig erstellte Geothermobarometer-Vorlage lässt sich exportieren und an andere Forschende verteilen, damit diese sie schnell verwenden können.
 
-![gtm_ui](/img/v0.7.1/geothermobarometer2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/export_geothermobarometer_template.webp')}
+    alt="Geothermobarometer exportieren"
+    style={{width: '45%'}}
+  />
+</div>
 
-Anschließend erscheint eine seitliche Bestätigungsleiste; nach Bestätigung wird die vorherige Vorlagenberechnung zurückgesetzt und überschrieben (falls zuvor ein anderes Thermobarometer gewählt wurde).
+## Anwendungsbeispiel
 
-![gtm_ui](/img/v0.7.1/geothermobarometer3.webp)
+### Eine Online-Geothermobarometer-Vorlage verwenden
 
-Als Nächstes erscheint eine Beispielvorlage für ein Thermometer. Tragen Sie die entsprechenden Daten ein und nutzen Sie den „Klicken und Ziehen“-Füllgriff (ähnlich wie in Excel), um Berechnungen automatisch auszuführen (siehe Animation unten).
+Filtern und wählen Sie zunächst im Modul Geothermobarometer in der linken Seitenleiste die entsprechende Berechnungsvorlage:
 
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/Example.gif)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/select_and_apply_thermobarometer_template.webp')}
+    alt="Geothermobarometer auswählen"
+    style={{width: '100%'}}
+  />
+</div>
 
-Neuere Versionen unterstützen zudem die Anzeige interner Berechnungsdetails. Markieren Sie eine Datenzeile mit der Maus, um Zwischenergebnisse im unteren Bereich einzusehen.
+Im rechten Bereich können Sie die Erläuterungsdokumentation dieser Vorlage ansehen. Die obere Leiste zeigt außerdem Titel und Schlagwörter der derzeit ausgewählten Geothermobarometer-Vorlage. Nachdem Sie die passende Geothermobarometer-Vorlage gewählt haben, klicken Sie in der oberen Leiste auf die Schaltfläche **Anwenden**, um zur Berechnungsoberfläche des Geothermobarometers zu gelangen.
 
-![gtm_ui](/img/v0.7.1/geothermobarometer4.webp)
+In der Oberfläche des Geothermobarometers sehen Sie die entsprechenden Eingabespalten. Sie können auch in der oberen Leiste auf die Schaltfläche **Beispiel** klicken, um Beispieldaten zu laden. Sie müssen nur die Daten entsprechend den Anforderungen der Spaltenüberschriften eintragen und anschließend **die Berechnungsformel kopieren** oder **das Ausfüllkästchen durch „Klicken und Ziehen“ verwenden** (ähnlich wie in Excel), um die Berechnung automatisch abzuschließen (wie in der folgenden Animation gezeigt).
 
-### Unabhängiges Fenster — benutzerdefinierte Funktionen
+> Zu beachten ist: Die Spalte `Sample` nimmt an der Berechnung nicht teil. Sie dient nur als Kommentar zur Kennzeichnung der Datenprobe.
 
-Wie oben beschrieben, öffnen Sie über **Datei → Unabhängige Tabelle öffnen** ein separates Fenster.
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/calculate_thermobarometer_using_formula.webp')}
+    alt="Geothermobarometer mit einer Formel berechnen"
+    style={{width: '80%'}}
+  />
+</div>
 
-Die unabhängige Tabelle ist leer und enthält einige einfache Symbolleisten-Schaltflächen.
+Die Geothermobarometer der aktuellen Version unterstützen außerdem das Ansehen der internen Berechnungsdetails.
 
-![gtm_ui](/img/v0.7.1/geothermobarometer5.webp)
+Sie können die entsprechende Datenzeile mit der Maus auswählen, oben auf die Schaltfläche **Prüfen** klicken und im eingeblendeten Seitenbereich die Details der Zwischenergebnisse ansehen.
 
-Die Nutzung entspricht dem **täglichen Arbeiten mit Excel: Beliebige Werte eingeben und mit `=Funktionsname(Übergabeparameter)` Funktionen aufrufen.**
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/thermobarometer_calculation_details.webp')}
+    alt="Berechnungsdetails des Geothermobarometers"
+    style={{width: '100%'}}
+  />
+</div>
 
-Der Unterschied: Geothermobarometer-Berechnungen sind als Funktionen registriert; Forschende können Berechnungen flexibel anpassen — u. a. Vergleiche mehrerer Thermobarometer. In Standardvorlagen lassen sich nicht gleichzeitig mehrere Ergebnisse berechnen (außer nacheinander pro Vorlage). Im unabhängigen Fenster können Sie mehrere Geothermobarometer-Funktionen in derselben Tabelle definieren und nutzen.
+### Eigenständiges Fenster – benutzerdefinierte Funktionen
+
+Wie zuvor beschrieben, öffnen Sie über die Menüleiste **Datei -> Freie Tabelle öffnen** ein eigenständiges freies Fenster.
+
+Die Tabelle des eigenständigen Fensters ist eine leere Tabelle und enthält einige einfache Schaltflächen der Symbolleiste.
+
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/thermobarometer_free_form.webp')}
+    alt="Freie Berechnungstabelle des Geothermobarometers"
+    style={{width: '100%'}}
+  />
+</div>
+
+Die Tabelle des eigenständigen Fensters verwenden Sie wie eine **alltägliche Excel-Tabelle: Sie können beliebige Zahlen eingeben und eine Funktion aufrufen, indem Sie `=Funktionsname(Übergabeparameter)` eingeben**.
+
+Der Unterschied besteht darin, dass unsere Geothermobarometer-Berechnungen als entsprechende Berechnungsfunktionen registriert sind. Forschende können den Inhalt der Berechnung nach Bedarf flexibler selbst festlegen. Sie können sogar **in derselben Tabelle die Ergebnisse mehrerer Geothermobarometer vergleichen**.
 
 :::note
 
-**Im unabhängigen Fenster können Zwischenberechnungen einzelner Datenzeilen nicht angezeigt werden.**
+Zu beachten ist: **In der Tabelle des eigenständigen Fensters lässt sich der Berechnungsverlauf der Zwischenschritte der entsprechenden Datenzeile nicht ansehen.**
 
 :::
-
----
-
-Wir laden Mitwirkende herzlich ein, gemeinsam ein besseres Software-Erlebnis zu schaffen. 🤝😊

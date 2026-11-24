@@ -296,10 +296,6 @@
             </Setter>
         </Style>
 
-        <Style x:Key="CategoryTokenStyle" TargetType="Border" BasedOn="{StaticResource TokenBorderStyle}">
-            <Setter Property="Background" Value="#FFF4EB"/>
-        </Style>
-
         <Style x:Key="FooterButtonStyle" TargetType="Button">
             <Setter Property="MinWidth" Value="96"/>
             <Setter Property="Height" Value="34"/>
@@ -318,43 +314,6 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.9"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="CategorySelectButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="32"/>
-            <Setter Property="MinWidth" Value="0"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ModernCardBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{StaticResource ModernTextPrimaryBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6"
-                                ToolTip="{TemplateBinding ToolTip}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#F2F2F7"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#C7C7CC"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#E5E5EA"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -606,51 +565,35 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0">
-                                    <ItemsControl ItemsSource="{Binding CategoryParts}" Margin="0,0,0,0" ClipToBounds="False">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Style="{StaticResource CategoryTokenStyle}">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding DisplayName}" Style="{StaticResource TokenLabelStyle}" Foreground="#FF6B00"/>
-                                                        <Button Tag="{Binding}" Click="RemoveCategory_Click"
-                                                                Style="{StaticResource TokenCloseButtonStyle}" Foreground="#FF6B00"/>
-                                                    </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <Grid Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding [template_save_location], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Save location'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                               Margin="0,0,0,6"/>
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <ComboBox x:Name="CategoryCombo"
-                                                     Grid.Column="0"
-                                                     IsEditable="True"
-                                                     StaysOpenOnEdit="True"
-                                                     local:ControlAssist.Placeholder="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
-                                                     DisplayMemberPath="DisplayName"
-                                                     SelectedValuePath="DisplayName"
-                                                     SelectionChanged="CategoryCombo_SelectionChanged"
-                                                     PreviewKeyDown="CategoryCombo_PreviewKeyDown"
-                                                     Style="{StaticResource DiagramEditorComboBoxStyle}"/>
+                                        <TextBox Grid.Column="0"
+                                                 IsReadOnly="True"
+                                                 Style="{StaticResource DialogTextBoxStyle}"
+                                                 Text="{Binding SaveLocationDisplay, Mode=OneWay}"
+                                                 ToolTip="{Binding SaveLocationDisplay}"
+                                                 local:ControlAssist.Placeholder="{Binding [template_save_location_placeholder], Source={x:Static lg:LanguageService.Instance}, FallbackValue='No folder selected'}"/>
                                         <Button Grid.Column="1"
                                                 Margin="8,0,0,0"
-                                                Style="{StaticResource CategorySelectButtonStyle}"
-                                                Click="SelectExistingCategoryStructure_Click"
-                                                ToolTip="{Binding [select_existing_category_structure_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Select a category path from existing diagram templates.'}">
-                                            <TextBlock Text="&#xe71b;"
-                                                       FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"
-                                                       FontSize="14"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center"/>
-                                        </Button>
+                                                Style="{StaticResource DialogButtonStyle}"
+                                                Click="SelectSaveLocation_Click"
+                                                Content="{Binding [template_save_location_choose], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Choose…'}"/>
                                     </Grid>
+
+                                    <TextBlock Text="{Binding [template_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Template name'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                               Margin="0,14,0,6"/>
+                                    <TextBox Style="{StaticResource DialogTextBoxStyle}"
+                                             Text="{Binding TemplateName, UpdateSourceTrigger=PropertyChanged, Delay=400}"
+                                             local:ControlAssist.Placeholder="{Binding [template_name_placeholder], Source={x:Static lg:LanguageService.Instance}, FallbackValue='e.g. Author (Year) Diagram name'}"/>
                                 </StackPanel>
 
                                 <Border Grid.Column="2"
@@ -708,9 +651,9 @@
                                 </MultiBinding>
                             </Grid.Clip>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="267"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="268"/>
+                                <ColumnDefinition Width="201"/>
                             </Grid.ColumnDefinitions>
 
                             <ListBox x:Name="PlotTypeList"

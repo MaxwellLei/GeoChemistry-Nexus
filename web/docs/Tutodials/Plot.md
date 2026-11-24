@@ -1,155 +1,147 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
-# Diagram Templates
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
-This section introduces the software's built-in **geoscience diagram module**. It covers the classification, management, and extension mechanism (JSON/ZIP) of the **template library**, provides a detailed analysis of the **diagram interface** layout (menu bar, toolbar, layer list, property panel) and its core operation features (such as data import, layer editing, visual settings, and third-party software integration), and offers a **complete workflow guide** from selecting a template to exporting the final chart. 🌍
+# Diagrams
 
-## Goals
-
-On the diagram plotting page, we will integrate more foundational geoscience templates, including but not limited to: tectonic setting discrimination diagrams, rock classification diagrams, and basic geothermometer diagrams. **Our ultimate goal is to create a comprehensive plotting toolkit for the geosciences, providing maximum convenience for researchers.** 🧪
-
-Template classification logic is currently organized by discipline:
-
-![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
+In the diagram module we will bring together more basic geoscience diagram templates, including but not limited to tectonic-setting discrimination diagrams and rock-classification diagrams. **Our final goal is a comprehensive diagram-frame and plotting toolkit for the geosciences, and the greatest convenience we can offer researchers.** 🧪
 
 :::info
 
-As templates are updated, certain classification structures may change.
-
-We welcome valuable feedback during use to improve the usability and convenience of the software. 🌹
+If you research geological diagrams or a related field and want to promote your own diagram, please contact us. We will help your diagram reach a wider research community and further improve how widely and how effectively the work is shared.
 
 :::
 
-## Quick Start
+## Quick start
 
-### Template Library
+The diagram module has two main parts: the diagram template library and the diagram operation page. First choose the diagram type you need in the template library, then open the corresponding operation page to enter data, work with the diagram, and export the result.
 
-We divide the diagram module into three categories: **Built-in Cloud Templates**, **Personal Custom Templates**, and **Built-in Tool Templates**.
+### Template library
 
-**Built-in Cloud Templates**: Continuously updated and maintained by us. Users do not need to update the software; when connected to the network, they can obtain updated diagram templates, ensuring they always have the most comprehensive and authoritative template resources.
+The diagram module is divided into three groups: **Online cloud templates**, **My templates**, and **Tool diagram templates**.
 
-**Personal Custom Templates**: Suitable for scenarios where the required template is not found in the official library, or when custom templates need to be created for specific research needs. Users can not only create these templates themselves, but also export them for easy sharing with other researchers, promoting academic exchange and dissemination.
+**Online cloud templates** are updated and maintained by us on an ongoing basis. You do not need to update the software. While you are online, you can obtain updated diagram templates and keep the most complete and authoritative template set.
 
-> *In the future, we plan to establish a dedicated diagram template community where users can easily create, upload, share, and download various **personal custom templates**, further enhancing the system's flexibility and extensibility.*
+**My templates** are for cases where a custom template is needed for a specific study. You can create these templates yourself and export them so they are easy to share with other researchers, which supports academic exchange and dissemination.
 
-**Built-in Tool Templates**: Non-standard cloud template diagram tools are separated out individually. Currently includes: **REE spider diagram, trace element spider diagram, and Harker diagram**.
+> *In the future we plan to build a dedicated diagram-template community, where users can easily create, upload, share, and download **personal custom templates**, and make the system more flexible and extensible.*
+
+**Tool diagram templates** set the fixed, routine diagrams apart. They currently include the **REE spider diagram, the trace-element spider diagram, and the Harker multi-panel diagram**, plus ordinary two-dimensional and ternary scatter plots.
 
 #### Interface
 
-By default, the plotting module displays the built-in geoscience template library upon entry. The interface is divided into three main parts:
+By default, the plotting module opens on the built-in geoscience template library. The interface has three main parts:
 
-*   **Left - Template List**: Displays all template hierarchy levels and corresponding templates, including the custom template list.
-*   **Upper Right - Navigation Bar**: Updates based on the hierarchy selected in the template list to display content at different levels.
-*   **Lower Right - Template Cards**: Displays diagram cards under the current level, including name and preview image.
+* **Left — diagram categories**: every template level and the templates under it, including the custom template list.
+* **Right — diagram cards**: the diagram cards at the current level, including the name and a preview image.
+* **Top — navigation bar**: the software uses a borderless design, so the top navigation bar carries part of each page’s function. On the diagram page it shows the current diagram template path, diagram template search, and related functions.
 
-![tutorial_plot2](/img/v0.7.1/tutorial_plot2.webp)
+![graphical_interface](/img/v0.9.0/en-US/graphical_interface.webp)
 
-Select and click a template card with the mouse to enter the specific diagram operation interface. Of course, you can also right-click a diagram card to export the corresponding diagram for sharing with other researchers. Or choose to favorite a diagram for quick access next time. Personal custom diagrams can be deleted via right-click.
-
-:::tip
-
-You can press the <kbd>ctrl</kbd> key to quickly delete/favorite diagram cards.
-
-:::
-
-Under local network conditions, users can manually check and update the built-in template list through the menu bar, or enable automatic checking in settings to ensure the latest resources are obtained.
-
-#### Top Menu Bar
-
-Menu bar functions are divided into two categories:
-
-1.  **File**: Mainly used for creating, opening, and importing templates.
-    1.  **New Template**: Used to create custom charts; click this button to open an interactive dialog.
-    2.  **Open Template**: Used to temporarily open a template; supports `json` files and `zip` resource packages.
-    3.  **Import Template**: Used to import external template packages (`zip`) into the local custom template list.
-2.  **Template**: Mainly used for built-in template updates. **Check Built-in Cloud Template Updates**: Used to obtain the latest template list and updates.
+Choose a suitable diagram template and click its card to open the diagram operation page. You can also right-click a diagram template card for more actions, such as export, delete, and favorite.
 
 :::tip
 
-You can also directly drag diagram template files to the designated location to import diagram templates.
+Press the right <kbd>Alt</kbd> key to quickly delete or favorite a diagram template.
 
 :::
 
-### Diagram Operation Interface
+#### Top menu bar
+
+The **File** menu in the top bar contains:
+
+1. **New Diagram**: create a custom diagram template.
+2. **Open Diagram**: open a diagram template temporarily. Only `.diag.zip` files are supported.
+3. **Import Diagram**: import an external diagram template package (`.diag.zip`) into the local My Templates list.
+
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/graphic_menu_bar.webp')}
+    alt="Diagram menu bar"
+    style={{width: '50%'}}
+  />
+</div>
+
+### Diagram operation page
 
 #### Interface
 
-The diagram interface is divided into five main parts:
+The diagram page has five main parts:
 
--   **Toolbar**: Includes shortcut buttons and three function tabs: Plot, Data, and Edit.
--   **Layer List (Objects)**: List of drawing elements on the template. Click an element to modify its properties.
--   **Plot Canvas**: Central area for viewing charts, importing data, visual settings, and viewing template documentation.
--   **Status Bar**: Displays basic plotting information, including current chart language and coordinate information.
--   **Property Panel**: Displays properties of the selected drawing element (such as color, size) to achieve the desired visual effect.
+- **Toolbar**: shortcut buttons and three function tabs: Plot, Data, and Edit.
+- **Layer list (objects)**: the list of drawing elements on the template. Click an element to edit its properties.
+- **Drawing canvas**: the central area for viewing the chart, importing data, visual settings, and the template description.
+- **Status bar**: basic drawing information, including the current diagram language and coordinates.
+- **Property panel**: properties of the selected drawing element, such as color and size, so you can get the visual result you want.
 
-![tutorial_plot3](/img/v0.7.1/tutorial_plot3.webp)
+![graphical_operation_interface](/img/v0.9.0/en-US/graphical_operation_interface.webp)
 
-#### Diagram Toolbar
+#### Diagram toolbar
 
-The toolbar consists of a series of **shortcut buttons**. Including but not limited to:
+The toolbar is a set of **shortcut buttons**. The main ones are:
 
-1. Return to diagram template library
-2. Switch diagram state (diagram mode, data mode, edit mode)
-3. Various diagram property panels and operation tools, etc.
+1. Return to the diagram template library
+2. Switch the working state (diagram mode, data mode, edit mode)
+3. Diagram property panels, operation tools, and related controls
 
-See the figure below for detailed functions.
+See the figure below for the detailed functions.
 
-![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
+![graphical_toolbar](/img/v0.9.0/en-US/graphical_toolbar.webp)
 
-### Layer List
+### Layer list
 
-Drawing elements are divided into 7 categories:
+Drawing elements fall into 7 groups:
 
--   **Line**: Defines basic map boundaries or line segments.
--   **Text**: Labels and annotations.
--   **Polygon**: Closed shapes within the chart.
--   **Arrow**: Directional drawing objects.
--   **Function**: Allows users to input custom mathematical functions and domains.
--   **Axes**: Chart coordinate axes.
--   **Data Point**: Elements representing imported data.
+- **Line**: defines basic diagram boundaries or line segments.
+- **Text**: labels and annotations.
+- **Polygon**: closed shapes inside the chart.
+- **Arrow**: directed drawing objects.
+- **Function**: lets the user enter a custom mathematical function and its domain.
+- **Axes**: the axes of the chart.
+- **Data point**: elements that represent imported data.
 
-**Default render order (top to bottom): `Text > Arrow > Point > Function > Line > Polygon > Axes`**.
+**Default render order (top to bottom): `Data points > Text > Arrows > Functions > Lines > Polygons > Axes`.**
 
-![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
+![tutorial_plot5](/img/v0.9.0/en-US/diagrammatic_object_selection_example.webp)
 
-When you select an element in the layer panel, it will be highlighted on the canvas while other elements become semi-transparent to reduce distraction. The property panel will then display the relevant properties of that element. 🔍
+When you select an element in the layer panel, it is highlighted on the canvas, and the other elements become translucent so they are less distracting. The property panel then shows the properties of that element. 🔍
 
-Modify these properties to achieve your desired visual style.
+You can change these properties to reach the visual style you want.
 
 :::tip
 
-To deselect all elements, simply right-click anywhere on the canvas or use the **Deselect** button on the toolbar.
+To deselect every element, **right-click anywhere on the canvas** or use the **Deselect** button on the toolbar.
 
 :::
 
-### Property Panel & Chart Guide
-
-## Diagram Usage Example
+## Examples
 
 ### Example
 
-1. Select a template from the **Template Library** to enter the plotting page. For example: select the TAS diagram.
-2. When we need to input data, switch from diagram mode to data mode.
+1. From the **diagram template library**, choose a diagram template and open the diagram operation page. For example, choose the TAS diagram.
+2. When you need to enter data, switch from diagram mode to data mode.
    
-   ![tutorial_plot6](/img/v0.7.1/tutorial_plot6.webp)
+   ![tutorial_plot6](/img/v0.9.0/en-US/diagram_data_input.webp)
 
 
-   For the TAS diagram, four columns of data are required: `Category`, `SiO2`, `K2O`, and `Na2O`. The unit is `wt.%`. The `Category` header column is used to group data and generate the legend. Of course, if you are unsure what data to input, what units to use, or how to use the diagram, you can click the diagram help button in the upper right corner of the diagram area to view the documentation for that diagram.
+For a TAS diagram, four columns must be entered: `Category`, `SiO2`, `K2O`, and `Na2O`. The `Category` column groups the data and builds the legend. The `Sample` column labels each data sample and does not take part in any calculation (it may be left empty). The other elements use the unit `wt.%`. If you are not sure what data this diagram expects, which units it uses, or how to use the diagram, click the diagram help button at the upper right of the diagram area to open its description.
 
-   ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
-3. After understanding the requirements, input your data and click the plot button in the upper right corner of the data panel to draw data points. If there is a problem with the data input, simply re-click plot after modifying the data.
-   
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot8.webp)
-   
-4. **Export diagram**. We provide a **quick copy diagram plot result to clipboard function button**. There is also a **formal export function**. In the formal export panel, we support exporting image formats as `jpg`, `png`, `bmp`, and `svg`. For scientific plotting requiring vector graphics, we recommend using the `svg` format. We also support **directly linking results to third-party plotting software**, without the intermediate step of export then import. Built-in recommended third-party software: **CoreIDRAW, Inkscape, Adobe llustrator**. We recommend using Inkscape for linked post-processing for better scientific figure editing. Of course, we also support customizing other third-party plotting software, provided the software supports the `svg` vector format. Researchers only need to specify the plotting software program path in settings.
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot10.webp)
+3. Once you know what is required, enter your data and click the plot button at the upper right of the data panel to draw the data points. If the data input is wrong, correct the data and click plot again. ![tutorial_plot8](/img/v0.9.0/en-US/data_plotting.webp)
+4. **Export the diagram**. We provide a **shortcut button that copies the plotted diagram to the clipboard**, and a **formal export**. In the formal export panel, image formats `jpg`, `png`, `bmp`, and `svg` are supported. When a scientific figure needs to be a vector graphic, we recommend `svg`. We also support **sending the result directly to a third-party drawing program**, without the intermediate step of exporting and then importing. The built-in third-party recommendations are **CorelDRAW, Inkscape, and Adobe Illustrator**. We recommend linking to Inkscape for later scientific editing. You can also set another third-party drawing program, provided that program supports the `svg` vector format. In Settings, specify the path of that drawing program.
+   ![tutorial_plot8](/img/v0.9.0/en-US/export_diagram.webp)
 
-### Additional Notes
+### Additional notes
 
-Diagram templates themselves support multilingual switching, meaning: one diagram can be switched to multiple language versions to meet internationalization needs.
+A diagram template can switch languages. One diagram can be shown in several language versions, for international use.
 
-For example: diagrams for domestic Chinese journals need to use the Chinese version, while publications in English SCI/IE journals need the English version. You can switch to the corresponding language version of the diagram by clicking the diagram language button in the upper right corner of the diagram toolbar.
+For example, a diagram for a paper in a Chinese journal needs the Chinese language version, and publication in an English-language journal such as SCI/IE needs the English version of the diagram. Click the control at the upper right of the diagram toolbar to switch the diagram to the corresponding language in one click.
 
-![tutorial_plot9](/img/v0.7.1/tutorial_plot9.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/switch_graphic_language.webp')}
+    alt="Switch diagram language"
+    style={{width: '60%'}}
+  />
+</div>

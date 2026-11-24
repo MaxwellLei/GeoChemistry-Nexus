@@ -2,37 +2,37 @@
 sidebar_position: 4
 ---
 
-# 💌 Invitation Letter
+# 💌 Invitation
 
 🔍 We welcome more researchers to join us! 🤝
 
-💪 Let's collaborate to maintain and update geochemical calculation methods and other plotting templates! 📊
+💪 Let us maintain and update geochemical calculation methods and other plotting templates together! 📊
 
-✨ Let's work together to make the software more powerful and easier to use! 😊
+✨ Let us make the software more powerful and easier to use! 😊
 
 :::info
 
-All contributors will be listed in our contributor list. If you have a personal website or related links, with your permission, we will include them as well.
+Every contributor will be listed in our contributor list. If you have a personal website or a related link, we will include it as well, with your permission.
 
 :::
 
-## 🌟 Calculation Methods & Feature Requests
+**Email:** [maxwelllei@qq.com](mailto:maxwelllei@qq.com)
 
-In the field of geochemistry, the accuracy and efficiency of calculation methods are crucial. **If you have in-depth knowledge and experience in geochemical calculations, or your research involves specific calculation methods, we sincerely invite you to contribute to our project**. Your expertise will help enhance the computational capabilities of our software, ensuring it better meets the needs of the research community! Your participation will also provide valuable support for new users, helping them make full use of our tools.
+## 🌟 Calculation methods and feature requests
+
+In geochemistry, the accuracy and efficiency of calculation methods matter a great deal. **If you have deep knowledge and experience in geochemical calculation, or if your research involves a specific calculation method, we sincerely invite you to contribute to this project.** Your expertise will help strengthen the software’s calculation capability and make it serve the research community better. Your participation will also give new users valuable support and help them make full use of the tools.
 
 ## 💻 Developers
 
-Our software is developed in `C#`, based on modern `MVVM` architecture and `WPF` technology, ensuring excellent maintainability and extensibility. In addition, we plan to introduce `Python` in the future to implement certain features for more flexible and diverse functionality. **If you are an experienced `C#` or `Python` developer, we warmly welcome you to join our project team. Whether you want to contribute code, design user interfaces, or perform feature testing, your participation will make our software better**.
+The software is developed in `C#`, on a modern `MVVM` architecture and `WPF`, which keeps it maintainable and extensible. We also plan to introduce `Python` later for some features, so the software can do more, in more flexible ways. **If you are an experienced `C#` or `Python` developer, we warmly welcome you to the project team. Whether you want to contribute code, design the user interface, or test features, your participation will make the software better.**
 
 ![Software framework](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/Software_Framework.png)
 
 ## 🌍 Translation
 
-To enable more users worldwide to use our software, we aim to provide more localized language versions. **If you are fluent in multiple languages and willing to participate in localization work, we warmly welcome your contribution**. Your hard work will help us create a more inclusive and accessible product that attracts researchers from different language backgrounds. Please contact us, and let's work together to improve the usability of the software!
+To let more people around the world use the software, we aim to provide more localized languages. **If you know several languages well and are willing to help with localization, we warmly welcome your contribution.** Your work will help us build a more inclusive and accessible product and reach researchers from different language backgrounds. Please contact us, and let us improve the usability of the software together.
 
----
-
-## 🙏 Special Thanks
+## 🙏 Special thanks
 
 See [Special Thanks](./Special%20Thanks).
 

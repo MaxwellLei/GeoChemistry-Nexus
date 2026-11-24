@@ -240,15 +240,20 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void NavigateToPage(Frame nav, object pageContent)
         {
+            if (nav == null || ReferenceEquals(nav.Content, pageContent))
+                return;
+
             nav.Navigate(pageContent);
-            // 清除后退栈，防止页面在内存中堆积
-            while (nav.CanGoBack)
+            // 延后到空闲阶段清理后退栈与回收内存，避免阻塞进场过渡动画帧
+            nav.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
             {
-                nav.RemoveBackEntry();
-            }
-            // 强制垃圾回收以释放未被引用的页面内存
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+                while (nav.CanGoBack)
+                {
+                    nav.RemoveBackEntry();
+                }
+
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized, blocking: false);
+            }));
         }
 
         /// <summary>
@@ -319,7 +324,27 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void SettingPage(Frame nav)
         {
-            nav.Navigate(SettingPageView.GetPage());
+            NavigateToPage(nav, SettingPageView.GetPage());
+        }
+
+        /// <summary>
+        /// 侧边栏「绘图」项是否处于选中状态（与 RadioButton 双向绑定，供其他窗口请求跳转时同步选中态）
+        /// </summary>
+        [ObservableProperty]
+        private bool _isPlotPageSelected;
+
+        /// <summary>
+        /// 其他窗口（如官方发布器）请求打开图解页：同步侧边栏选中状态后导航。
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private async Task OpenPlotPageByRequest(Frame nav)
+        {
+            if (nav == null)
+                return;
+
+            IsPlotPageSelected = true;
+            await PlotPage(nav);
         }
 
         /// <summary>

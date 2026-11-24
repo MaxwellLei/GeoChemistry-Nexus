@@ -4,6 +4,7 @@ using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
+using GeoChemistryNexus.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,13 +46,6 @@ namespace GeoChemistryNexus.Controls
             ViewModel = new DiagramPlotEditorViewModel();
             DataContext = ViewModel;
 
-            RefreshCategorySuggestions();
-
-            WeakReferenceMessenger.Default.Register<CategoryConfigUpdatedMessage>(this, (_, _) =>
-            {
-                Application.Current.Dispatcher.Invoke(ViewModel.ReloadCategories);
-            });
-
             ViewModel.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == nameof(DiagramPlotEditorViewModel.SelectedSectionIndex))
@@ -73,7 +67,8 @@ namespace GeoChemistryNexus.Controls
             ViewModel.Release();
         }
 
-        public void InitializeForCreate() => ViewModel.InitializeForCreate();
+        public void InitializeForCreate(IReadOnlyList<CategoryPartModel>? initialFolder = null) =>
+            ViewModel.InitializeForCreate(initialFolder);
 
         public void InitializeForEdit(Models.GraphMapTemplateEntity entity) => ViewModel.InitializeForEdit(entity);
 
@@ -115,71 +110,17 @@ namespace GeoChemistryNexus.Controls
                 ViewModel.RemoveLanguage(item);
         }
 
-        private void CategoryCombo_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void SelectSaveLocation_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key != Key.Enter) return;
-            if (ViewModel.TryAddCategory(CategoryCombo.Text?.Trim() ?? string.Empty))
-                CategoryCombo.Text = string.Empty;
-            e.Handled = true;
-        }
-
-        private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!CategoryCombo.IsDropDownOpen)
+            var pickerViewModel = new FolderPickerDialogViewModel(new FolderPickerOptions
             {
-                CategoryCombo.SelectedIndex = -1;
-                return;
-            }
-
-            if (CategoryCombo.SelectedItem is CategoryDisplayItem item &&
-                ViewModel.TryAddCategory(item.DisplayName, item.OriginalObject as Dictionary<string, string>))
-            {
-                CategoryCombo.SelectedIndex = -1;
-                CategoryCombo.Text = string.Empty;
-            }
-
-            RefreshCategorySuggestions();
-        }
-
-        private void RemoveCategory_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button { Tag: CategoryPartModel item })
-            {
-                ViewModel.RemoveCategory(item);
-                RefreshCategorySuggestions();
-            }
-        }
-
-        private void SelectExistingCategoryStructure_Click(object sender, RoutedEventArgs e)
-        {
-            var tree = ViewModel.GetExistingCategoryStructureTree();
-            var dialog = new CategoryStructureSelectDialog(tree, Window.GetWindow(this));
-            if (dialog.ShowDialog() != true || dialog.SelectedNode == null)
-                return;
-
-            var parts = PlotCategoryStructureHelper.BuildCategoryPartsFromSelection(dialog.SelectedNode);
-            if (parts.Count == 0)
-                return;
-
-            ViewModel.ApplyExistingCategoryStructure(parts);
-            CategoryCombo.Text = string.Empty;
-            RefreshCategorySuggestions();
-        }
-
-        private void RefreshCategorySuggestions()
-        {
-            var list = ViewModel.GetCategorySuggestions();
-            if (list == null)
-            {
-                CategoryCombo.ItemsSource = null;
-                return;
-            }
-
-            CategoryCombo.ItemsSource = list.Select(c => new CategoryDisplayItem
-            {
-                DisplayName = PlotCategoryHelper.GetName(c),
-                OriginalObject = c
-            }).ToList();
+                IsCustom = ViewModel.IsCustomTemplateScope,
+                Title = LanguageService.GetString("template_save_location_choose_title", "Choose save location"),
+                InitialPath = ViewModel.SaveLocationPath
+            });
+            var dialog = new FolderPickerWindow(pickerViewModel, Window.GetWindow(this));
+            if (dialog.ShowDialog() == true && dialog.SelectedPath != null)
+                ViewModel.SelectSaveLocation(dialog.SelectedPath);
         }
 
         public void Confirm()
@@ -192,12 +133,6 @@ namespace GeoChemistryNexus.Controls
         {
             if (CancelCommand?.CanExecute(ViewModel) ?? true)
                 CancelCommand?.Execute(ViewModel);
-        }
-
-        private class CategoryDisplayItem
-        {
-            public string DisplayName { get; set; } = string.Empty;
-            public object? OriginalObject { get; set; }
         }
     }
 }

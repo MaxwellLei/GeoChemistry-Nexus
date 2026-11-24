@@ -71,7 +71,6 @@ namespace GeoChemistryNexus.Services
             {
                 (Local: publishResult.GraphMapListPath, Key: OfficialContentEndpoints.GraphMapListFileName),
                 (Local: publishResult.HomeLinksCatalogPath, Key: OfficialContentEndpoints.HomeLinksCatalogFileName),
-                (Local: publishResult.CategoriesPath, Key: OfficialContentEndpoints.PlotTemplateCategoriesFileName),
                 (Local: publishResult.ServerInfoPath, Key: OfficialContentEndpoints.ServerInfoFileName)
             };
 
@@ -605,7 +604,6 @@ namespace GeoChemistryNexus.Services
             {
                 publishResult.GraphMapListPath,
                 publishResult.HomeLinksCatalogPath,
-                publishResult.CategoriesPath,
                 publishResult.ServerInfoPath
             };
 

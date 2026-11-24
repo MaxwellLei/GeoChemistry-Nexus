@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "v0.9.0",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial": {
+    "message": "📝 Базовые руководства",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial.link.generated-index.title": {
+    "message": "Обзор базовых руководств",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials": {
+    "message": "🌟 Продвинутые руководства",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
+    "message": "Обзор продвинутых руководств",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  }
+}

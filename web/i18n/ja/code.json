@@ -1,31 +1,35 @@
 {
+  "home.button.content": {
+    "message": "GeoChemistry Nexus のチュートリアルを始める - 5min ⏱️",
+    "description": "Link label for the GeoChemistry Nexus tutorial"
+  },
   "home.button.getStarted": {
-    "message": "はじめる"
+    "message": "使い始める"
   },
   "home.button.github": {
-    "message": "GitHub で見る"
+    "message": "GitHub を見る"
   },
   "home.tagline": {
-    "message": "次世代の地球化学・岩石学 判別図・計算ツール — 地球科学者の頼れるパートナー",
+    "message": "次世代の地球化学・岩石学向け判別図および計算ツール —— 地球科学者の最良のパートナー",
     "description": "The tagline of the site"
   },
   "Comprehensive Plotting Toolkit": {
-    "message": "包括的な作図ツールキット"
+    "message": "包括的な作図ツールボックス"
   },
   "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
-    "message": "GeoChemistry Nexus には、構造環境判別図、岩石分類図などのテンプレートを備えた地球科学図解モジュールが内蔵されています。データインポートから出版品質のエクスポート（SVG 対応）まで、完全なワークフローを提供します。"
+    "message": "GeoChemistry Nexus には地球科学の作図モジュールが内蔵されており、構造環境の判別や岩石分類などのテンプレートが含まれています。データのインポートから出版品質の書き出し（SVG に対応）まで、一連のワークフローを提供します。"
   },
   "Excel-like Geothermometers": {
-    "message": "Excel 風地質温度計"
+    "message": "Excel 風の地質温度計"
   },
   "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
-    "message": "直感的な Excel 風インターフェースで、ジルコンやバイオタイトなどの地質温度計計算を実行できます。内蔵テンプレートやカスタム関数（例：=FuncName(args)）を使用して、プログラミングスキルなしで研究を加速できます。"
+    "message": "直感的な Excel 風のインターフェースで、ジルコンや黒雲母などの鉱物の地質温度計を計算します。内蔵テンプレートやカスタム関数（例：=FuncName(args)）を使い、プログラミングの技能がなくても研究を加速できます。"
   },
   "Customizable & Extensible": {
-    "message": "カスタマイズ可能・拡張可能"
+    "message": "高度にカスタマイズでき、拡張できます"
   },
   "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
-    "message": "JSON/ZIP ベースの拡張システムで独自の図解テンプレートを作成・共有できます。多言語テンプレート、カスタムスクリプト（JavaScript）、Inkscape や CorelDRAW などのサードパーティソフトとのシームレスな連携をサポートします。"
+    "message": "JSON/ZIP ベースの拡張システムを使って、独自の図テンプレートを作成し、共有できます。多言語テンプレートとカスタムスクリプト（JavaScript）に対応し、Inkscape や CorelDRAW などのサードパーティソフトウェアとシームレスに連携します。"
   },
   "theme.navbar.mobileLanguageDropdown.label": {
     "message": "言語",

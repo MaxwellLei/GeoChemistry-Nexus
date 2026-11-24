@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "v0.9.0",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial": {
+    "message": "📝 Tutoriais básicos",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial.link.generated-index.title": {
+    "message": "Visão geral dos tutoriais básicos",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials": {
+    "message": "🌟 Tutoriais avançados",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
+    "message": "Visão geral dos tutoriais avançados",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  }
+}

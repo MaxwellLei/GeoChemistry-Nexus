@@ -124,8 +124,272 @@
             </Setter>
         </Style>
 
+        <!-- 模板右键菜单：模板卡片与左侧树模板节点共用；DataContext 为 TemplateCardViewModel，PlacementTarget.Tag 为 MainPlotViewModel -->
+        <ContextMenu x:Key="TemplateCardContextMenu" x:Shared="False">
+            <!--收藏/取消收藏-->
+            <MenuItem Command="{Binding PlacementTarget.Tag.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Header" Value="{Binding [favorite],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Style.Triggers>
+                            <!-- 如果已经收藏，显示"取消收藏" -->
+                            <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                <Setter Property="Header" Value="{Binding [unfavorite],Source={x:Static lg:LanguageService.Instance}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <Separator/>
+            <!--编辑图解模板-->
+            <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" 
+                      Command="{Binding PlacementTarget.Tag.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <!-- 个人图解显示编辑选项 -->
+                            <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <!-- 开发者模式下非个人图解才显示编辑选项 -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                            <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--移动到其他文件夹（可见性与编辑一致）-->
+            <MenuItem Header="{Binding [folder_move_to],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Move To…'}"
+                      Command="{Binding PlacementTarget.Tag.MoveTemplateToFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--只读查看官方图解模板 (非开发者模式 + 已下载的官方图解)-->
+            <MenuItem Header="{Binding [ctx_view],Source={x:Static lg:LanguageService.Instance}}"
+                      Command="{Binding PlacementTarget.Tag.ViewTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                    <Condition Binding="{Binding IsNotDownloaded}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--导出图解模板 (未下载的官方图解隐藏)-->
+            <MenuItem Header="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}}" 
+                      Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <!-- 非开发者模式下隐藏导出 -->
+                            <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--强制更新 (开发者模式 + 官方图解)-->
+            <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
+                      Command="{Binding PlacementTarget.Tag.ForceUpdateTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                            <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--转换为内置模板 (开发者模式)-->
+            <MenuItem Header="{Binding [convert_to_builtin_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='转换为内置模板'}"
+                      Command="{Binding PlacementTarget.Tag.ConvertToBuiltInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="True"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <!--降级为个人图解 (开发者模式 + 官方图解)-->
+            <MenuItem Header="{Binding [demote_to_custom_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='降级为个人图解'}"
+                      Command="{Binding PlacementTarget.Tag.DemoteToCustomCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                    <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
+                            <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" 
+                      Tag="Danger"
+                      Command="{Binding PlacementTarget.Tag.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+        </ContextMenu>
+
+        <!-- 模板树文件夹节点右键菜单：DataContext 为节点，PlacementTarget.Tag 为 MainPlotViewModel -->
+        <ContextMenu x:Key="TemplateTreeNodeContextMenu" x:Shared="False">
+            <ContextMenu.Resources>
+                <Style x:Key="FolderOnlyMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFolder}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContextMenu.Resources>
+            <!--在此新建图解（仅个人图解文件夹）-->
+            <MenuItem Header="{Binding [folder_new_template_here],Source={x:Static lg:LanguageService.Instance}, FallbackValue='New Diagram Here'}"
+                      Command="{Binding PlacementTarget.Tag.NewTemplateInFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding IsCustomScope}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <MenuItem Header="{Binding [folder_new_subfolder],Source={x:Static lg:LanguageService.Instance}, FallbackValue='New Subfolder'}"
+                      Style="{StaticResource FolderOnlyMenuItemStyle}"
+                      Command="{Binding PlacementTarget.Tag.NewSubFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"/>
+            <MenuItem Header="{Binding [folder_rename],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Rename'}"
+                      Style="{StaticResource FolderOnlyMenuItemStyle}"
+                      Command="{Binding PlacementTarget.Tag.RenameFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"/>
+            <MenuItem Header="{Binding [folder_move_to],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Move To…'}"
+                      Style="{StaticResource FolderOnlyMenuItemStyle}"
+                      Command="{Binding PlacementTarget.Tag.MoveFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"/>
+            <MenuItem Header="{Binding [folder_delete],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Delete Folder'}"
+                      Tag="Danger"
+                      Style="{StaticResource FolderOnlyMenuItemStyle}"
+                      Command="{Binding PlacementTarget.Tag.DeleteFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      CommandParameter="{Binding}"/>
+        </ContextMenu>
+
         <HierarchicalDataTemplate x:Key="MacSidebarTemplateNodeTemplate" ItemsSource="{Binding Children}">
-            <Grid Background="Transparent">
+            <Grid ContextMenuOpening="TemplateTreeNode_ContextMenuOpening">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                        <Setter Property="ContextMenu" Value="{StaticResource TemplateTreeNodeContextMenu}"/>
+                        <Style.Triggers>
+                            <!-- 模板节点与右侧模板卡片使用同一套右键菜单 -->
+                            <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                                <Setter Property="ContextMenu" Value="{StaticResource TemplateCardContextMenu}"/>
+                            </DataTrigger>
+                            <!-- 官方图解的文件夹操作仅开发者模式可用 -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=TreeView}}" Value="Official"/>
+                                    <Condition Binding="{Binding DataContext.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=TreeView}}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ContextMenu" Value="{x:Null}"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <Viewbox Margin="0,0,7,0">
                     <Viewbox.Style>
@@ -880,8 +1144,8 @@
                                                                 </Style>
                                                             </TextBlock.Style>
                                                         </TextBlock>
-                                                        <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="12"/>
-                                                        <TextBlock Grid.Column="2" FontSize="11" Margin="10,0,0,0" Opacity="0.7">
+                                                        <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Grid.Column="2" FontSize="11" Margin="28,0,0,0" Opacity="0.7">
                                                             <TextBlock.Style>
                                                                 <Style TargetType="TextBlock">
                                                                     <Setter Property="Text" Value="{Binding Code}"/>
@@ -973,10 +1237,27 @@
                         </Grid>
 
                         <!-- 官方图解 -->
-                        <Button Style="{StaticResource DiagramLibraryCategoryButtonStyle}"
-                                Tag="{Binding IsOfficialRootActive}"
+                        <Button Tag="{Binding IsOfficialRootActive}"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Official">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource DiagramLibraryCategoryButtonStyle}">
+                                    <Style.Triggers>
+                                        <!-- 开发者模式：可在官方图解根目录新建文件夹 -->
+                                        <DataTrigger Binding="{Binding IsDeveloperMode}" Value="True">
+                                            <Setter Property="ContextMenu">
+                                                <Setter.Value>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="{Binding [folder_new_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='New Folder'}"
+                                                                  Command="{Binding NewRootFolderCommand}"
+                                                                  CommandParameter="Official"/>
+                                                    </ContextMenu>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -1034,6 +1315,15 @@
                                 Tag="{Binding IsPersonalRootActive}"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Personal">
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding [create_new_diagram_template],Source={x:Static lg:LanguageService.Instance}, FallbackValue='New Diagram'}"
+                                              Command="{Binding NewTemplateCommand}"/>
+                                    <MenuItem Header="{Binding [folder_new_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='New Folder'}"
+                                              Command="{Binding NewRootFolderCommand}"
+                                              CommandParameter="Personal"/>
+                                </ContextMenu>
+                            </Button.ContextMenu>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -1295,6 +1585,7 @@
                                 </Border>
                             <Border x:Name="TemplateCardRoot" HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch" Margin="0"
+                                    ContextMenu="{StaticResource TemplateCardContextMenu}"
                                     Tag="{Binding DataContext, ElementName=TemplateCardsControl}">
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource TemplateCardStyle}">
@@ -1325,173 +1616,6 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
-                                <Border.ContextMenu>
-                                    <ContextMenu>
-                                        <!--收藏/取消收藏-->
-                                        <MenuItem Command="{Binding PlacementTarget.Tag.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Header" Value="{Binding [favorite],Source={x:Static lg:LanguageService.Instance}}"/>
-                                                    <Style.Triggers>
-                                                        <!-- 如果已经收藏，显示"取消收藏" -->
-                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                                            <Setter Property="Header" Value="{Binding [unfavorite],Source={x:Static lg:LanguageService.Instance}}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <Separator/>
-                                        <!--编辑图解模板-->
-                                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Command="{Binding PlacementTarget.Tag.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <!-- 个人图解显示编辑选项 -->
-                                                        <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                        <!-- 开发者模式下非个人图解才显示编辑选项 -->
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
-                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <!--只读查看官方图解模板 (非开发者模式 + 已下载的官方图解)-->
-                                        <MenuItem Header="{Binding [ctx_view],Source={x:Static lg:LanguageService.Instance}}"
-                                                  Command="{Binding PlacementTarget.Tag.ViewTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                                <Condition Binding="{Binding IsNotDownloaded}" Value="False"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <!--导出图解模板 (未下载的官方图解隐藏)-->
-                                        <MenuItem Header="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <!-- 非开发者模式下隐藏导出 -->
-                                                        <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="False">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <!--强制更新 (开发者模式 + 官方图解)-->
-                                        <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
-                                                  Command="{Binding PlacementTarget.Tag.ForceUpdateTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
-                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <!--转换为内置模板 (开发者模式)-->
-                                        <MenuItem Header="{Binding [convert_to_builtin_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='转换为内置模板'}"
-                                                  Command="{Binding PlacementTarget.Tag.ConvertToBuiltInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="True"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <!--降级为个人图解 (开发者模式 + 官方图解)-->
-                                        <MenuItem Header="{Binding [demote_to_custom_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='降级为个人图解'}"
-                                                  Command="{Binding PlacementTarget.Tag.DemoteToCustomCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                        <!-- 未下载的官方图解没有本地内容，隐藏该项 -->
-                                                        <DataTrigger Binding="{Binding IsNotDownloaded}" Value="True">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Tag="Danger"
-                                                  Command="{Binding PlacementTarget.Tag.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}">
-                                            <MenuItem.Style>
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </Border.ContextMenu>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseLeftButtonUp">
                                         <i:InvokeCommandAction Command="{Binding CardClickCommand}"/>

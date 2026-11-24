@@ -1,6 +1,8 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # 地质温压计
 
@@ -15,6 +17,14 @@ sidebar_position: 4
 1. 左侧是**温压计模板列表**，您可以在这里查找适合您的温压计模板，或者您可以创建自己的温压计计算模板。
 2. 右侧是**当前选中的温压计模板的帮助说明文档**
 
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/geothermobarometer_interface.webp')}
+    alt="地质温压计界面"
+    style={{width: '100%'}}
+  />
+</div>
+
 ## 功能
 
 地质温压计模块设计之初就**仿照 Excel 的形式**，来降低用户的上手成本。**主要是分为两种形式来使用温压计**：
@@ -24,7 +34,13 @@ sidebar_position: 4
 
 当然，地质温压计模块也允许研究人员创建自己的自定义地质温压计。通过可以将制作好的地质温压计模板导出分发给其他研究人员快速使用。
 
-![gtm_ui](/img/v0.7.1/geothermobarometer1.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/export_geothermobarometer_template.webp')}
+    alt="导出地质温压计"
+    style={{width: '45%'}}
+  />
+</div>
 
 ## 使用示例
 
@@ -32,23 +48,39 @@ sidebar_position: 4
 
 首先，在地质温度计模块内，从左侧边栏筛选并选择相应的计算模板：
 
-![gtm_ui](/img/v0.7.1/geothermobarometer2.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/select_and_apply_thermobarometer_template.webp')}
+    alt="选择地质温压计"
+    style={{width: '100%'}}
+  />
+</div>
 
 你可以在右侧面板查看该模板的说明文档，顶部栏也会显示当前选中的地质温压计模板的标题和标签。在你选择好对应的温压计模板后，你可以点击顶部栏的**应用**按钮。来进入温压计计算界面。
-
-![gtm_ui](/img/v0.7.1/geothermobarometer3.webp)
 
 在温压计界面，可以看到对应的输入列，当然你也可以点击顶部栏的**示例**按钮来加载示例数据。您只需要根据列标题的要求填入相应的数据，然后**复制计算公式**或者**使用“点击并拖动”填充柄**（类似于 Excel）自动完成计算（如下面的动画示例所示）。
 
 > 需要说明的是`Sample`列不参与计算，只做注释以标识数据的样本
 
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/Example.gif)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/calculate_thermobarometer_using_formula.webp')}
+    alt="使用公式计算温压计"
+    style={{width: '80%'}}
+  />
+</div>
 
 当然，现在版本的温压计已支持查看内部计算详情。
 
 您可以通过鼠标选中对应数据行，点击顶部**检查**按钮，在弹出的侧边栏查看中间结果详情。
 
-![gtm_ui](/img/v0.7.1/geothermobarometer4.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/thermobarometer_calculation_details.webp')}
+    alt="温压计计算详情"
+    style={{width: '100%'}}
+  />
+</div>
 
 ### 独立窗口-自定义函数
 
@@ -56,7 +88,13 @@ sidebar_position: 4
 
 独立窗体表格是一个空表格，并包含有一些简单的工具条按钮。
 
-![gtm_ui](/img/v0.7.1/geothermobarometer5.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/thermobarometer_free_form.webp')}
+    alt="温压计自由计算表格"
+    style={{width: '100%'}}
+  />
+</div>
 
 在使用独立窗口表格就和我们日常**使用 Excel 表格一样，可以输入任意数值，通过输入`=函数名称(传递参数)` 来调用函数**。
 

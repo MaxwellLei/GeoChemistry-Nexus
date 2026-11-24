@@ -1,31 +1,35 @@
 {
+  "home.button.content": {
+    "message": "GeoChemistry Nexus Tutorial starten – 5 Min. ⏱️",
+    "description": "Link label for the GeoChemistry Nexus tutorial"
+  },
   "home.button.getStarted": {
-    "message": "Los geht's"
+    "message": "Jetzt starten"
   },
   "home.button.github": {
-    "message": "Auf GitHub ansehen"
+    "message": "GitHub ansehen"
   },
   "home.tagline": {
-    "message": "Diskriminierungsdiagramme und Berechnungstool der nächsten Generation für Geochemie und Petrologie – Der beste Freund des Geowissenschaftlers",
+    "message": "Werkzeug der nächsten Generation für Diskriminierungsdiagramme und Berechnungen in Geochemie und Petrologie — der beste Begleiter für Geowissenschaftler",
     "description": "The tagline of the site"
   },
   "Comprehensive Plotting Toolkit": {
-    "message": "Umfassendes Plot-Toolkit"
+    "message": "Umfassender Werkzeugkasten für Diagramme"
   },
   "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
-    "message": "GeoChemistry Nexus enthält ein integriertes geowissenschaftliches Plot-Modul mit Vorlagen für tektonische Diskriminierungsdiagramme, Gesteinsklassifikation und mehr. Es bietet einen kompletten Workflow vom Datenimport bis zum Export in Publikationsqualität (SVG unterstützt)."
+    "message": "GeoChemistry Nexus enthält ein integriertes geowissenschaftliches Zeichenmodul mit Vorlagen für die Diskriminierung tektonischer Milieus, die Gesteinsklassifikation und weiteres. Es bietet einen vollständigen Arbeitsablauf vom Datenimport bis zum Export in Publikationsqualität (SVG wird unterstützt)."
   },
   "Excel-like Geothermometers": {
     "message": "Excel-ähnliche Geothermometer"
   },
   "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
-    "message": "Führen Sie Geothermometer-Berechnungen für Minerale wie Zirkon und Biotit über eine intuitive, Excel-ähnliche Oberfläche durch. Nutzen Sie integrierte Vorlagen oder benutzerdefinierte Funktionen (z. B. =FunktionsName(args)), um Ihre Forschung zu beschleunigen, ohne Programmierkenntnisse zu benötigen."
+    "message": "Berechnen Sie Geothermometer für Minerale wie Zirkon und Biotit über eine intuitive, Excel-ähnliche Oberfläche. Nutzen Sie integrierte Vorlagen oder benutzerdefinierte Funktionen (z. B. =FuncName(args)), um Ihre Forschung ohne Programmierkenntnisse zu beschleunigen."
   },
   "Customizable & Extensible": {
-    "message": "Anpassbar & Erweiterbar"
+    "message": "Stark anpassbar und erweiterbar"
   },
   "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
-    "message": "Erstellen und teilen Sie Ihre eigenen Diagrammvorlagen mit unserem JSON/ZIP-basierten Erweiterungssystem. Die Plattform unterstützt mehrsprachige Vorlagen, benutzerdefinierte Skripte (JavaScript) und eine nahtlose Integration mit Drittanbietersoftware wie Inkscape und CorelDRAW."
+    "message": "Erstellen und teilen Sie Ihre eigenen Diagrammvorlagen mit unserem auf JSON/ZIP basierenden Erweiterungssystem. Die Plattform unterstützt mehrsprachige Vorlagen, benutzerdefinierte Skripte (JavaScript) und die nahtlose Einbindung von Drittanbietersoftware wie Inkscape und CorelDRAW."
   },
   "theme.ErrorPageContent.title": {
     "message": "Die Seite ist abgestürzt.",

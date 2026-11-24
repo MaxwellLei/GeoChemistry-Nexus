@@ -115,6 +115,12 @@
                     <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="移除">
                         <Setter Property="Background" Value="#FFEFED"/>
                     </DataTrigger>
+                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="已下架">
+                        <Setter Property="Background" Value="#FFEFED"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="路径变更">
+                        <Setter Property="Background" Value="#FFF4E5"/>
+                    </DataTrigger>
                     <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="有改动">
                         <Setter Property="Background" Value="#FFF4E5"/>
                     </DataTrigger>
@@ -239,7 +245,7 @@
                                 <RadioButton Style="{StaticResource PublisherNavButton}" GroupName="PublisherSection" Content="导航链接"
                                              IsChecked="{Binding IsHomeLinksSection, Mode=TwoWay}"/>
                                 <TextBlock Style="{StaticResource PublisherNavCaption}" Text="官方模板"/>
-                                <RadioButton Style="{StaticResource PublisherNavButton}" GroupName="PublisherSection" Content="图解与分类"
+                                <RadioButton Style="{StaticResource PublisherNavButton}" GroupName="PublisherSection" Content="图解"
                                              IsChecked="{Binding IsDiagramsSection, Mode=TwoWay}"/>
                                 <RadioButton Style="{StaticResource PublisherNavButton}" GroupName="PublisherSection" Content="温压计与矿物分类"
                                              IsChecked="{Binding IsGeothermometersSection, Mode=TwoWay}"/>
@@ -359,7 +365,7 @@
                                 </Grid.ColumnDefinitions>
                                 <CheckBox VerticalAlignment="Center" IsChecked="{Binding PublishDiagrams}"/>
                                 <StackPanel Grid.Column="1" Margin="12,0">
-                                    <TextBlock Text="图解与分类" FontWeight="SemiBold"/>
+                                    <TextBlock Text="图解" FontWeight="SemiBold"/>
                                     <TextBlock Text="{Binding DiagramReleaseStatus}" FontSize="12" Foreground="#5C677A" Margin="0,4,0,0"/>
                                 </StackPanel>
                                 <Border Grid.Column="2" Style="{StaticResource PublisherStateChip}" Tag="{Binding DiagramReleaseChip}">
@@ -437,6 +443,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="12"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,0,0,6" Text="最低支持版本"/>
@@ -445,6 +453,38 @@
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,0,0,6" Text="最新版本"/>
                                     <TextBox Text="{Binding LatestAppVersionText, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="4">
+                                    <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,0,0,6"
+                                               ToolTip="新版软件目标框架的 .NET 主版本号，例如 net10.0 就填 10。只有用户本机已装该主版本的 Desktop 运行时才会下载精简版"
+                                               Text="所需运行时主版本"/>
+                                    <TextBox Text="{Binding RequiredRuntimeMajorText, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- 安装包校验：一次选择完整版和精简版安装包，按文件名自动区分并计算 SHA256，发布时随最新版本写入 server_info.json -->
+                            <DockPanel Margin="0,14,0,6">
+                                <Button DockPanel.Dock="Right" Style="{StaticResource PublisherToolButton}" Margin="0"
+                                        Content="选择安装包"
+                                        ToolTip="可一次选两个文件（按住 Ctrl 多选）：文件名以 -lite 结尾的是精简版，其余为完整版，自动计算各自的 SHA256"
+                                        Command="{Binding SelectInstallersCommand}"/>
+                                <TextBlock Style="{StaticResource WidgetFieldLabel}" VerticalAlignment="Center" Text="安装包校验"/>
+                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,0,0,6" Text="完整版 SHA256"/>
+                                    <TextBox Text="{Binding FullInstallerSha256Text, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,4,0,0" Text="{Binding FullInstallerFileLabel}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,0,0,6" Text="精简版 SHA256（留空表示本次没有精简版）"/>
+                                    <TextBox Text="{Binding LiteInstallerSha256Text, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Style="{StaticResource WidgetFieldLabel}" Margin="0,4,0,0" Text="{Binding LiteInstallerFileLabel}"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -930,7 +970,7 @@
                     </Grid.RowDefinitions>
                     <DockPanel Margin="0,0,0,12">
                         <Button DockPanel.Dock="Right" Style="{StaticResource PublisherPrimaryButton}" Margin="0" Content="发布本页"
-                                ToolTip="只发布图解与分类，不影响发布单里其他条目的勾选"
+                                ToolTip="只发布图解，不影响发布单里其他条目的勾选"
                                 Command="{Binding PublishSectionOnlyCommand}" CommandParameter="diagrams"
                                 IsEnabled="{Binding CanPublishSection}"/>
                         <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Content="本次发布" IsChecked="{Binding PublishDiagrams}"/>
@@ -951,60 +991,65 @@
                         <Border Grid.Column="2" Style="{StaticResource WidgetCard}" Margin="0" Padding="0">
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top" Margin="12,12,12,8">
-                                    <TextBlock Text="分类" FontWeight="SemiBold" Margin="0,0,0,8"/>
-                                    <WrapPanel>
-                                        <Button Content="Level1" Command="{Binding SetPlotCategoryLevelCommand}" CommandParameter="Level1">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource PublisherFilterButton}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedPlotCategoryLevel}" Value="Level1">
-                                                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                        <Button Content="Level2" Command="{Binding SetPlotCategoryLevelCommand}" CommandParameter="Level2">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource PublisherFilterButton}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedPlotCategoryLevel}" Value="Level2">
-                                                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                        <Button Content="Level3" Command="{Binding SetPlotCategoryLevelCommand}" CommandParameter="Level3">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource PublisherFilterButton}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedPlotCategoryLevel}" Value="Level3">
-                                                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                        <Button Style="{StaticResource PublisherToolButton}" Content="添加" Command="{Binding AddPlotCategoryEntryCommand}"/>
-                                        <Button Style="{StaticResource PublisherDangerToolButton}" Content="删除" Command="{Binding RemovePlotCategoryEntryCommand}"/>
-                                        <Button Style="{StaticResource PublisherToolButton}" Content="保存" Command="{Binding SavePlotCategoriesDraftCommand}"/>
-                                        <Button Style="{StaticResource PublisherToolButton}" Content="导出" Command="{Binding ExportPlotCategoriesCommand}"/>
-                                        <Button Style="{StaticResource PublisherToolButton}" Content="导入" Command="{Binding ImportPlotCategoriesCommand}"/>
-                                    </WrapPanel>
+                                    <DockPanel Margin="0,0,0,6">
+                                        <Button DockPanel.Dock="Right" Style="{StaticResource PublisherToolButton}" Margin="8,0,0,0" Content="在图解页打开"
+                                                ToolTip="文件夹结构只在图解页右键修改（需要开发者模式），改完回来点“刷新预览”"
+                                                Command="{Binding OpenDiagramPageCommand}"/>
+                                        <Button DockPanel.Dock="Right" Style="{StaticResource PublisherToolButton}" Margin="8,0,0,0" Content="导入"
+                                                ToolTip="导入翻译好的文件夹名称（按 key 匹配，会改写官方图解的路径）"
+                                                IsEnabled="{Binding IsNotBusy}"
+                                                Command="{Binding ImportDiagramFolderNamesCommand}"/>
+                                        <Button DockPanel.Dock="Right" Style="{StaticResource PublisherToolButton}" Margin="8,0,0,0" Content="导出"
+                                                ToolTip="导出全部官方图解文件夹的多语言名称，可在外部批量翻译后再导入"
+                                                IsEnabled="{Binding IsNotBusy}"
+                                                Command="{Binding ExportDiagramFolderNamesCommand}"/>
+                                        <TextBlock Text="路径结构" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    </DockPanel>
                                 </StackPanel>
-                                <ScrollViewer DockPanel.Dock="Bottom" Height="248" VerticalScrollBarVisibility="Auto" Margin="12,0,12,12"
-                                              Visibility="{Binding HasSelectedPlotCategory, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <ItemsControl ItemsSource="{Binding SelectedPlotCategoryEntry.LanguageFields}"
-                                                  ItemTemplate="{StaticResource CategoryLanguageTemplate}"/>
-                                </ScrollViewer>
-                                <ListBox Style="{StaticResource WidgetListBox}" Margin="12,0"
-                                         ItemsSource="{Binding PlotCategoryEntries}"
-                                         SelectedItem="{Binding SelectedPlotCategoryEntry}"
-                                         DisplayMemberPath="DisplayTitle"/>
+                                <TextBlock DockPanel.Dock="Top" Style="{StaticResource WidgetHint}" Margin="12,8" TextWrapping="Wrap"
+                                           Text="还没有预览数据，点右上角“刷新预览”。"
+                                           Visibility="{Binding HasDiagramPathTree, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                <TreeView Margin="8,0,8,8" BorderThickness="0" Background="Transparent"
+                                          ItemsSource="{Binding DiagramPathTree}"
+                                          Visibility="{Binding HasDiagramPathTree, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TreeView.ItemContainerStyle>
+                                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                        </Style>
+                                    </TreeView.ItemContainerStyle>
+                                    <TreeView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                            <StackPanel Margin="0,3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B7;" Foreground="#8B93A7"
+                                                               VerticalAlignment="Center" Margin="0,0,6,0"
+                                                               Visibility="{Binding IsFolder, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                    <Border Style="{StaticResource PublisherStateChip}" Tag="{Binding ActionLabel}" Margin="0,0,8,0"
+                                                            Visibility="{Binding HasStatus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock FontSize="12" Text="{Binding ActionLabel}"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsFolder}" Value="True">
+                                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Summary}" FontSize="11" Foreground="#8B93A7"
+                                                               VerticalAlignment="Center" Margin="10,0,0,0"
+                                                               Visibility="{Binding HasSummary, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Detail}" FontSize="11" Foreground="#8B93A7" Margin="0,2,0,0"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Visibility="{Binding HasDetail, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            </StackPanel>
+                                        </HierarchicalDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
                             </DockPanel>
                         </Border>
                     </Grid>

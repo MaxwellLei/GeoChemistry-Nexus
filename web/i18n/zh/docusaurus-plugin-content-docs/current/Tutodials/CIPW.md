@@ -2,11 +2,19 @@
 sidebar_position: 5
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # CIPW 标准矿物计算
 
 **CIPW 标准矿物计算**把全岩主量元素氧化物（wt%）换算成一组理想化的标准矿物。结果用于火成岩对比、硅饱和度与铝饱和度判别。CIPW Norm 由 Cross、Iddings、Pirsson 与 Washington 于 1902 年提出。本模块在类 Excel 表格中批量计算，并给出每一行的诊断与质量平衡。
 
-![CIPW 标准矿物计算界面](/img/v0.9.0/cipw-result.png)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/cipw.webp')}
+    alt="CIPW界面"
+    style={{width: '100%'}}
+  />
+</div>
 
 ## 界面
 

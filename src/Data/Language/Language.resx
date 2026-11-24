@@ -993,9 +993,6 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Select a group first.</value>
   </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>Plot categories editor reloaded.</value>
-  </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>GeoT mineral categories editor reloaded.</value>
   </data>
@@ -1078,7 +1075,7 @@
     <value>Force Update</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Upgrade to online diagram template</value>
+    <value>Upgrade</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Remove online diagram template</value>
@@ -1418,9 +1415,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Edit failed: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>Plot categories changed; including diagram index files in this publish.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>GeoT mineral tags changed; this release will include the geothermobarometer index files.</value>
@@ -1791,7 +1785,7 @@
     <value>Delete</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Upgrade to online geothermobarometer template</value>
+    <value>Upgrade</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Apply</value>
@@ -4522,6 +4516,8 @@ Replace the installed package? Different methods must use different IDs.</value>
   <data name="epma_editor_id_exists" xml:space="preserve"><value>This template ID already exists. Use a new unique ID in Basic information.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Personal template</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Official template</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>Online</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>My</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Edit calculation template</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Official templates can be viewed, copied and tested. Enable developer mode to edit.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>An existing template ID cannot be changed.</value></data>
@@ -4544,7 +4540,7 @@ Replace the installed package? Different methods must use different IDs.</value>
   <data name="epma_library_delete" xml:space="preserve"><value>Delete</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Export</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Upgrade to online calculation template</value>
+    <value>Upgrade</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Remove online calculation template</value>
@@ -5005,4 +5001,196 @@ Replace the installed package? Different methods must use different IDs.</value>
   <data name="table_col_sample" xml:space="preserve"><value>Sample</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Category</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>List updated: {0} added / {1} updatable / {2} removed</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>It is already in this location.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Folder created.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Delete Folder</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>Delete the folder "{0}"?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>Delete the folder "{0}" and the {1} template(s) in it? This cannot be undone.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Folder deleted.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>A folder cannot be moved into itself or one of its subfolders.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Moved successfully.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Move To</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Move To…</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Enter the folder name for each language. Empty languages fall back to an existing name.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>A folder with the same name already exists here.</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Please enter a folder name.</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>New Folder…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>New Subfolder</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>New Diagram Here</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>New Folder</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>The folder no longer exists. Please refresh and try again.</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Folder renamed.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Rename Folder</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Please select a folder.</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Folder name</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Enter a folder name</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>UI language</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Localized names</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Optional: name the folder separately for other languages</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} filled</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Create in: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Current: {0}</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Names entered in {0} languages</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Empty languages use an existing name.</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Choose a destination folder</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Moving folder</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Moving diagram</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>{0} diagram(s)</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Search folders…</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>No folders match "{0}"</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>Moving</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>The root folder cannot be selected. Please choose a folder.</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Only empty official folders can be deleted.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Download all templates in this folder before changing it.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Template name</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>A template with the same name already exists in this folder.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>e.g. Author (Year) Diagram name</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Please enter a template name.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Save location</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Choose…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Choose Save Location</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>No folder selected</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Please choose where to save the template.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>The same folder in the online diagram templates already has a template with this name. Rename or move it before promoting.</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Item to Move</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Move To</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Selected Location</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="page_transition_animation" xml:space="preserve">
+    <value>Page Transition Animation</value>
+  </data>
+  <data name="page_transition_animation_hint" xml:space="preserve">
+    <value>Play smooth animations when switching pages; enabling this may affect performance</value>
+  </data>
 </root>

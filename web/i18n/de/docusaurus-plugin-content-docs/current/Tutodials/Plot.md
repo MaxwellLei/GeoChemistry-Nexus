@@ -1,155 +1,147 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
-# Diagrammvorlagen
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Dieser Abschnitt stellt das integrierte **Geowissenschaftliche Diagrammmodul** der Software vor. Er behandelt die Klassifizierung, Verwaltung und Erweiterungsmechanismen (JSON/ZIP) der **Vorlagenbibliothek**, analysiert detailliert das Layout der **Diagrammoberfläche** (Menüleiste, Symbolleiste, Ebenenliste, Eigenschaftsfenster) und deren Kernfunktionen (wie Datenimport, Ebenenbearbeitung, visuelle Einstellungen und Integration von Drittanbietersoftware) und bietet einen **vollständigen Workflow-Leitfaden** von der Vorlagenauswahl bis zum Export des endgültigen Diagramms. 🌍
+# Diagramme
 
-## Ziele
-
-Auf der Diagrammzeichnungsseite werden wir weitere grundlegende geowissenschaftliche Vorlagen integrieren, einschließlich, aber nicht beschränkt auf: Tektonische Umgebungsdiskriminierungsdiagramme, Gesteinsklassifizierungsdiagramme und grundlegende Geothermometerdiagramme. **Unser ultimatives Ziel ist es, ein umfassendes Zeichenwerkzeug für die Geowissenschaften zu schaffen und Forschenden maximalen Komfort zu bieten.** 🧪
-
-Die Klassifizierungslogik für Vorlagen ist derzeit nach Fachdisziplin organisiert:
-
-![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
+Im Diagrammmodul führen wir weitere grundlegende geowissenschaftliche Diagrammvorlagen zusammen, einschließlich, aber nicht beschränkt auf Diskriminationsdiagramme tektonischer Milieus, Gesteinsklassifikationsdiagramme und weitere. **Unser endgültiges Ziel ist, für die Geowissenschaften einen umfassenden Werkzeugkasten aus Diagrammrahmen und Zeichnen zu schaffen und den Forschenden die größtmögliche Erleichterung zu bieten.** 🧪
 
 :::info
 
-Da Vorlagen aktualisiert werden, können sich bestimmte Klassifizierungsstrukturen ändern.
-
-Wir begrüßen wertvolles Feedback während der Nutzung, um die Benutzerfreundlichkeit und den Komfort der Software zu verbessern. 🌹
+Wenn Sie in der Forschung zu geologischen Diagrammen und verwandten Gebieten arbeiten und Ihre Diagrammergebnisse bekannt machen möchten, nehmen Sie gern Kontakt mit uns auf. Wir helfen dabei, dass Ihre Diagrammergebnisse einen weiteren Kreis der Forschung erreichen, und steigern so Reichweite und Wirkung der wissenschaftlichen Ergebnisse.
 
 :::
 
 ## Schnellstart
 
+Das Diagrammmodul unserer Software besteht vor allem aus zwei Teilen: der Bibliothek der Diagrammvorlagen und der Bedienoberfläche des Diagramms. Sie können zuerst in der Bibliothek der Diagrammvorlagen den benötigten Diagrammtyp wählen und anschließend in die entsprechende Bedienoberfläche gelangen, um Dateneingabe, Bearbeitung des Diagramms, Export der Ergebnisse und weitere Vorgänge abzuschließen.
+
 ### Vorlagenbibliothek
 
-Wir unterteilen das Diagrammmodul in drei Kategorien: **Integrierte Cloud-Vorlagen**, **Persönliche benutzerdefinierte Vorlagen** und **Integrierte Werkzeugvorlagen**.
+Wir gliedern das Diagrammmodul in drei große Gruppen: **Online-Cloud-Vorlagen**, **Meine Vorlagen** und **Werkzeug-Diagrammvorlagen**.
 
-**Integrierte Cloud-Vorlagen**: Werden von uns kontinuierlich aktualisiert und gepflegt. Nutzer müssen die Software nicht aktualisieren; bei Internetverbindung können sie aktualisierte Diagrammvorlagen abrufen und stets über die umfassendsten und maßgeblichsten Vorlagenressourcen verfügen.
+**Online-Cloud-Vorlagen**: werden von uns fortlaufend aktualisiert und gepflegt. Sie müssen die Software nicht aktualisieren. Bei bestehender Netzwerkverbindung erhalten Sie aktualisierte Diagrammvorlagen und verfügen so stets über die umfassendsten und maßgeblichen Vorlagenressourcen.
 
-**Persönliche benutzerdefinierte Vorlagen**: Geeignet für Szenarien, in denen die benötigte Vorlage nicht in der offiziellen Bibliothek gefunden wird oder benutzerdefinierte Vorlagen für spezifische Forschungsbedürfnisse erstellt werden müssen. Nutzer können diese Vorlagen nicht nur selbst erstellen, sondern auch exportieren, um sie einfach mit anderen Forschenden zu teilen und den akademischen Austausch zu fördern.
+**Meine Vorlagen**: eignet sich, wenn für einen bestimmten Forschungsbedarf eigene Vorlagen erstellt werden sollen. Sie können diese Vorlagen nicht nur selbst erstellen, sondern auch exportieren, um sie anderen Forschenden leicht weiterzugeben und so den wissenschaftlichen Austausch und die Verbreitung zu fördern.
 
-> *In Zukunft planen wir den Aufbau einer dedizierten Diagrammvorlagen-Community, in der Nutzer verschiedene **persönliche benutzerdefinierte Vorlagen** einfach erstellen, hochladen, teilen und herunterladen können, um die Flexibilität und Erweiterbarkeit des Systems weiter zu steigern.*
+> *Künftig planen wir, eine eigene Community für Diagrammvorlagen aufzubauen. Benutzerinnen und Benutzer können dort verschiedene **persönliche benutzerdefinierte Vorlagen** leicht erstellen, hochladen, teilen und herunterladen und so Flexibilität und Erweiterbarkeit des Systems weiter stärken.*
 
-**Integrierte Werkzeugvorlagen**: Nicht standardmäßige Cloud-Diagrammwerkzeuge werden separat ausgelagert. Derzeit umfasst dies: **REE-Spinnendiagramm, Spurenelement-Spinnendiagramm und Harker-Diagramm**.
+**Werkzeug-Diagrammvorlagen**: feste, übliche Diagramme werden gesondert herausgelöst. Derzeit enthalten sind **Spiderdiagramm der Seltenerdelemente, Spiderdiagramm der Spurenelemente, Harker-Mehrfachdiagramm** sowie die üblichen zweidimensionalen und ternären Streudiagramme.
 
 #### Oberfläche
 
-Standardmäßig zeigt das Zeichenmodul beim Betreten die integrierte geowissenschaftliche Vorlagenbibliothek an. Die Oberfläche ist in drei Hauptbereiche unterteilt:
+Standardmäßig zeigt das Zeichenmodul beim Öffnen die eingebaute Bibliothek geowissenschaftlicher Vorlagen. Die Oberfläche gliedert sich in drei Hauptteile:
 
-*   **Links – Vorlagenliste**: Zeigt alle Vorlagenhierarchien und entsprechende Vorlagen an, einschließlich der benutzerdefinierten Vorlagenliste.
-*   **Oben rechts – Navigationsleiste**: Aktualisiert sich basierend auf der in der Vorlagenliste gewählten Hierarchie, um Inhalte auf verschiedenen Ebenen anzuzeigen.
-*   **Unten rechts – Vorlagenkarten**: Zeigt die Diagrammkarten der aktuellen Ebene an, einschließlich Name und Vorschaubild.
+*   **Links – Diagrammklassifikation**: zeigt alle Vorlagenhierarchien und die entsprechenden Vorlagen, einschließlich der Liste benutzerdefinierter Vorlagen.
+*   **Rechts – Diagrammkarten**: zeigt die Diagrammkarten der aktuellen Hierarchie, einschließlich Name und Vorschaubild.
+*   **Oben – Navigationsleiste**: Die Software verwendet ein rahmenloses Design, daher übernimmt die Navigationsleiste oben einen Teil der Funktionen jeder Seite. In der Diagrammoberfläche zeigt die obere Navigationsleiste den aktuellen Pfad der Diagrammvorlage sowie Funktionen wie die Suche nach Diagrammvorlagen.
 
-![tutorial_plot2](/img/v0.7.1/tutorial_plot2.webp)
+![graphical_interface](/img/v0.9.0/en-US/graphical_interface.webp)
 
-Wählen Sie eine Vorlagenkarte mit der Maus aus und klicken Sie darauf, um die spezifische Diagrammoberfläche aufzurufen. Sie können auch per Rechtsklick auf eine Diagrammkarte das entsprechende Diagramm exportieren, um es mit anderen Forschenden zu teilen. Oder favorisieren Sie ein Diagramm für den schnellen Zugriff beim nächsten Mal. Persönliche benutzerdefinierte Diagramme können per Rechtsklick gelöscht werden.
+Wählen Sie eine passende Diagrammvorlage. Ein Klick auf die Karte der Diagrammvorlage öffnet die Bedienoberfläche des Diagramms. Bei der Karte einer Diagrammvorlage können Sie auch mit der rechten Maustaste weitere Vorgänge ausführen, etwa Exportieren, Löschen und Favorit.
 
 :::tip
 
-Sie können die <kbd>Strg</kbd>-Taste gedrückt halten, um Diagrammkarten schnell zu löschen oder zu favorisieren.
+Mit der rechten <kbd>Alt</kbd>-Taste lassen sich Diagrammvorlagen schnell löschen oder als Favorit setzen.
 
 :::
-
-Unter lokalen Netzwerkbedingungen können Nutzer die integrierte Vorlagenliste manuell über die Menüleiste prüfen und aktualisieren oder in den Einstellungen die automatische Prüfung aktivieren, um stets die neuesten Ressourcen zu erhalten.
 
 #### Obere Menüleiste
 
-Die Menüleistenfunktionen sind in zwei Kategorien unterteilt:
+Die obere Menüleiste **Datei** enthält:
 
-1.  **Datei**: Hauptsächlich zum Erstellen, Öffnen und Importieren von Vorlagen.
-    1.  **Neue Vorlage**: Zum Erstellen benutzerdefinierter Diagramme; ein Klick öffnet ein interaktives Dialogfenster.
-    2.  **Vorlage öffnen**: Zum vorübergehenden Öffnen einer Vorlage; unterstützt `json`-Dateien und `zip`-Ressourcenpakete.
-    3.  **Vorlage importieren**: Zum Importieren externer Vorlagenpakete (`zip`) in die lokale benutzerdefinierte Vorlagenliste.
-2.  **Vorlage**: Hauptsächlich für Updates integrierter Vorlagen. **Integrierte Cloud-Vorlagen auf Updates prüfen**: Zum Abrufen der neuesten Vorlagenliste und Updates.
+1.  **Neues Diagramm**: dient dem Erstellen einer benutzerdefinierten Diagrammvorlage.
+2.  **Diagramm öffnen**: dient dem vorübergehenden Öffnen einer Diagrammvorlage; unterstützt werden nur Dateien `.diag.zip`.
+3.  **Diagramm importieren**: dient dem Import eines externen Pakets einer Diagrammvorlage (`.diag.zip`) in die lokale Liste Meine Vorlagen.
 
-:::tip
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/graphic_menu_bar.webp')}
+    alt="Menüleiste der Diagramme"
+    style={{width: '50%'}}
+  />
+</div>
 
-Sie können Diagrammvorlagendateien auch direkt an die vorgesehene Stelle ziehen, um Diagrammvorlagen zu importieren.
-
-:::
-
-### Diagrammoberfläche
+### Bedienoberfläche des Diagramms
 
 #### Oberfläche
 
-Die Diagrammoberfläche ist in fünf Hauptbereiche unterteilt:
+Die Diagrammoberfläche gliedert sich in fünf Hauptteile:
 
--   **Symbolleiste**: Enthält Schnellzugriffsschaltflächen und drei Funktionsregisterkarten: Zeichnen, Daten und Bearbeiten.
--   **Ebenenliste (Objekte)**: Liste der Zeichnungselemente auf der Vorlage. Durch Klicken auf ein Element können Sie dessen Eigenschaften ändern.
--   **Zeichenfläche**: Zentraler Bereich zum Anzeigen des Diagramms, Importieren von Daten, visuellen Einstellungen und Anzeigen der Vorlagendokumentation.
--   **Statusleiste**: Zeigt grundlegende Zeicheninformationen an, einschließlich der aktuellen Diagrammsprache und Koordinateninformationen.
--   **Eigenschaftsfenster**: Zeigt die Eigenschaften des ausgewählten Zeichnungselements (z. B. Farbe, Größe) an, um den gewünschten visuellen Effekt zu erzielen.
+-   **Symbolleiste**: umfasst Kurzschaltflächen und drei Funktionsregisterkarten: Zeichnen, Daten und Bearbeiten.
+-   **Ebenenliste (Objekte)**: Liste der Zeichenelemente auf der Vorlage. Ein Klick auf ein Element erlaubt es, seine Eigenschaften zu ändern.
+-   **Zeichenfläche**: der zentrale Bereich zum Ansehen des Diagramms, zum Importieren von Daten, zu visuellen Einstellungen und zum Ansehen der Vorlagenerläuterung.
+-   **Statusleiste**: zeigt grundlegende Zeicheninformationen, einschließlich der aktuellen Diagrammsprache und der Koordinateninformationen.
+-   **Eigenschaftenbereich**: zeigt die Eigenschaften des ausgewählten Zeichenelements, etwa Farbe und Größe, um die gewünschte visuelle Wirkung zu erreichen.
 
-![tutorial_plot3](/img/v0.7.1/tutorial_plot3.webp)
+![graphical_operation_interface](/img/v0.9.0/en-US/graphical_operation_interface.webp)
 
 #### Diagramm-Symbolleiste
 
-Die Symbolleiste besteht aus einer Reihe von **Schnellzugriffsschaltflächen**. Dazu gehören unter anderem:
+Die Symbolleiste besteht aus einer Reihe von **Kurzschaltflächen**. Vor allem sind dies:
 
-1. Zurück zur Diagrammvorlagenbibliothek
-2. Diagrammstatus wechseln (Diagrammmodus, Datenmodus, Bearbeitungsmodus)
-3. Verschiedene Diagramm-Eigenschaftspanels und Bedienwerkzeuge usw.
+1. Zurück zur Bibliothek der Diagrammvorlagen
+2. Wechsel des Bedienzustands (Diagrammmodus, Datenmodus, Bearbeitungsmodus)
+3. Verschiedene Eigenschaftenbereiche und Bedienwerkzeuge des Diagramms
 
-Detaillierte Funktionen siehe Abbildung unten.
+Die Funktionen im Einzelnen zeigt die folgende Abbildung.
 
-![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
+![graphical_toolbar](/img/v0.9.0/en-US/graphical_toolbar.webp)
 
 ### Ebenenliste
 
-Zeichnungselemente sind in 7 Kategorien unterteilt:
+Die Zeichenelemente gliedern sich in 7 große Gruppen:
 
--   **Line (Linie)**: Definiert grundlegende Kartenbegrenzungen oder Liniensegmente.
+-   **Line (Linie)**: legt die grundlegende Diagrammgrenze oder ein Liniensegment fest.
 -   **Text (Text)**: Beschriftungen und Anmerkungen.
--   **Polygon (Polygon)**: Geschlossene Formen innerhalb des Diagramms.
--   **Arrow (Pfeil)**: Gerichtete Zeichnungsobjekte.
--   **Function (Funktion)**: Ermöglicht die Eingabe benutzerdefinierter mathematischer Funktionen und Definitionsbereiche.
--   **Axes (Achsen)**: Koordinatenachsen des Diagramms.
+-   **Polygon (Polygon)**: geschlossene Formen innerhalb des Diagramms.
+-   **Arrow (Pfeil)**: gerichtete Zeichenobjekte.
+-   **Function (Funktion)**: erlaubt die Eingabe einer benutzerdefinierten mathematischen Funktion und eines Definitionsbereichs.
+-   **Axes (Koordinatenachsen)**: die Koordinatenachsen des Diagramms.
 -   **Data Point (Datenpunkt)**: Elemente, die importierte Daten darstellen.
 
-**Standard-Renderreihenfolge (von oben nach unten): `Text > Pfeil > Punkt > Funktion > Linie > Polygon > Achsen`**.
+**Standardmäßige Renderreihenfolge (von oben nach unten): `Datenpunkt > Text > Pfeil > Funktion > Linie > Polygon > Koordinatenachsen`.**
 
-![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
+![tutorial_plot5](/img/v0.9.0/en-US/diagrammatic_object_selection_example.webp)
 
-Wenn Sie ein Element im Ebenenpanel auswählen, wird es auf der Zeichenfläche hervorgehoben, während andere Elemente halbtransparent werden, um Ablenkungen zu reduzieren. Das Eigenschaftsfenster zeigt anschließend die relevanten Eigenschaften dieses Elements an. 🔍
+Wenn Sie im Ebenenbereich ein Element auswählen, wird es auf der Zeichenfläche hervorgehoben, während die übrigen Elemente halbtransparent werden, um Störungen zu verringern. Der Eigenschaftenbereich zeigt anschließend die zugehörigen Eigenschaften dieses Elements. 🔍
 
-Passen Sie diese Eigenschaften an, um Ihren gewünschten visuellen Stil zu erreichen.
+Sie können diese Eigenschaften ändern, um den gewünschten visuellen Stil zu erreichen.
 
 :::tip
 
-Um alle Elemente abzuwählen, klicken Sie einfach mit der rechten Maustaste irgendwo auf die Zeichenfläche oder verwenden Sie die Schaltfläche **Abwählen** in der Symbolleiste.
+Um die Auswahl aller Elemente aufzuheben, **klicken Sie mit der rechten Maustaste auf eine beliebige Stelle der Zeichenfläche** oder verwenden Sie die Schaltfläche **Auswahl aufheben** in der Symbolleiste.
 
 :::
 
-### Eigenschaftsfenster & Diagrammleitfaden
-
-## Anwendungsbeispiel Diagramm
+## Anwendungsbeispiel
 
 ### Beispiel
 
-1. Wählen Sie eine Vorlage aus der **Vorlagenbibliothek**, um die Zeichenseite aufzurufen. Beispiel: TAS-Diagramm auswählen.
-2. Wenn Daten eingegeben werden müssen, wechseln Sie vom Diagrammmodus in den Datenmodus.
+1. Wählen Sie in der **Bibliothek der Diagrammvorlagen** eine Diagrammvorlage und gelangen Sie auf die Diagramm-Arbeitsseite. Zum Beispiel: Wählen Sie das TAS-Diagramm.
+2. Wenn Daten eingegeben werden sollen, wechseln Sie vom Diagrammmodus in den Datenmodus.
    
-   ![tutorial_plot6](/img/v0.7.1/tutorial_plot6.webp)
+   ![tutorial_plot6](/img/v0.9.0/en-US/diagram_data_input.webp)
 
 
-   Für das TAS-Diagramm sind vier Datenspalten erforderlich: `Category`, `SiO2`, `K2O` und `Na2O`. Die Einheit ist `wt.%`. Die Spalte `Category` dient der Gruppierung der Daten und der Erstellung der Legende. Wenn Sie unsicher sind, welche Daten eingegeben werden sollen, welche Einheiten gelten oder wie das Diagramm verwendet wird, können Sie auf die Diagrammhilfe-Schaltfläche oben rechts im Diagrammbereich klicken, um die Dokumentation zu diesem Diagramm anzuzeigen.
+Für das TAS-Diagramm müssen vier Datenspalten eingegeben werden: `Category`, `SiO2`, `K2O` und `Na2O`. Die Überschriftsspalte `Category` dient dazu, die Daten zu gruppieren und eine Legende zu erzeugen. Die Spalte `Sample` kennzeichnet die Datenprobe und nimmt an keiner Berechnung teil (sie darf leer sein). Die Einheit der übrigen Elemente ist `wt.%`. Wenn Ihnen nicht klar ist, welche Daten dieses Diagramm erwartet, welche Einheit gilt und wie das Diagramm zu verwenden ist, klicken Sie auf die Hilfe-Schaltfläche des Diagramms oben rechts im Diagrammbereich und sehen Sie die Erläuterungsdokumentation zu diesem Diagramm an.
 
-   ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
-3. Nachdem Sie die Anforderungen verstanden haben, geben Sie Ihre Daten ein und klicken Sie auf die Projektionsschaltfläche oben rechts im Datenpanel, um Datenpunkte zu zeichnen. Bei fehlerhaften Eingaben klicken Sie nach der Korrektur einfach erneut auf Projektion.
-   
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot8.webp)
-   
-4. **Diagramm exportieren**. Wir bieten eine **Schnellschaltfläche zum Kopieren des Diagrammergebnisses in die Zwischenablage**. Außerdem gibt es eine **formale Exportfunktion**. Im formalen Exportpanel unterstützen wir die Bildformate `jpg`, `png`, `bmp` und `svg`. Für wissenschaftliche Abbildungen mit Vektorgrafiken empfehlen wir das `svg`-Format. Wir unterstützen auch die **direkte Verknüpfung der Ergebnisse mit Drittanbieter-Zeichensoftware**, ohne den Zwischenschritt Export und erneuter Import. Empfohlene integrierte Drittanbieter-Software: **CorelDRAW, Inkscape, Adobe Illustrator**. Für die nachträgliche wissenschaftliche Bearbeitung empfehlen wir die Verknüpfung mit Inkscape. Selbstverständlich unterstützen wir auch benutzerdefinierte Drittanbieter-Zeichensoftware, sofern diese das `svg`-Vektorformat unterstützt. Forschende müssen nur in den Einstellungen den Programmpfad der Zeichensoftware angeben.
-   ![tutorial_plot8](/img/v0.7.1/tutorial_plot10.webp)
+3. Geben Sie nach dem Verständnis der Anforderungen Ihre Daten ein und klicken Sie auf die Plot-Schaltfläche oben rechts im Datenbereich, um die Datenpunkte zu zeichnen. Wenn die Dateneingabe fehlerhaft ist, ändern Sie die Daten und klicken Sie erneut auf Plotten.![tutorial_plot8](/img/v0.9.0/en-US/data_plotting.webp)
+4. **Diagramm exportieren**. Wir stellen eine **Kurzschaltfläche bereit, die das Plottergebnis des Diagramms in die Zwischenablage kopiert**. Außerdem gibt es eine **reguläre Exportfunktion**. Im Bereich des regulären Exports unterstützen wir die Bildformate `jpg`, `png`, `bmp` und `svg`. Wenn für wissenschaftliche Abbildungen eine Vektorgrafik benötigt wird, empfehlen wir das Format `svg`. Zugleich unterstützen wir auch, **das Ergebnis unmittelbar an eine Zeichensoftware eines Drittanbieters zu übergeben**, ohne den Zwischenschritt des Exportierens und erneuten Importierens. Als Drittanbietersoftware fest eingebaut und empfohlen werden: **CorelDRAW, Inkscape, Adobe Illustrator**. Für die nachträgliche wissenschaftliche Überarbeitung der Abbildung empfehlen wir die Anbindung an Inkscape. Natürlich unterstützen wir auch, eine andere Zeichensoftware eines Drittanbieters selbst festzulegen, vorausgesetzt, diese Software unterstützt das Vektorformat `svg`. Die Forschenden müssen in den Einstellungen lediglich den Programmpfad der Zeichensoftware angeben.
+   ![tutorial_plot8](/img/v0.9.0/en-US/export_diagram.webp)
 
-### Zusätzliche Hinweise
+### Ergänzende Erläuterung
 
-Diagrammvorlagen unterstützen selbst den mehrsprachigen Wechsel, d. h. ein Diagramm kann in mehrere Sprachversionen umgeschaltet werden, um Internationalisierungsbedürfnisse zu erfüllen.
+Die Diagrammvorlage selbst unterstützt den Wechsel der Sprache, das heißt: Ein Diagramm lässt sich in mehrere Sprachversionen umschalten, um den Bedarf der Internationalisierung zu erfüllen.
 
-Beispiel: Für Veröffentlichungen in chinesischen Fachzeitschriften wird die chinesische Version benötigt, für englische SCI/IE-Zeitschriften die englische Version. Sie können über die Sprachschaltfläche oben rechts in der Diagramm-Symbolleiste zur entsprechenden Sprachversion wechseln.
+Zum Beispiel benötigt ein Diagramm für eine Veröffentlichung in einer chinesischen Zeitschrift die chinesische Sprachversion, für eine Veröffentlichung in einer englischsprachigen Zeitschrift wie SCI/IE die englische Version des Diagramms. Sie können die Sprachversion des Diagramms mit einem Klick über das Bedienelement oben rechts in der Diagramm-Symbolleiste umschalten.
 
-![tutorial_plot9](/img/v0.7.1/tutorial_plot9.webp)
+<div className="text--center">
+  <img
+    src={useBaseUrl('/img/v0.9.0/en-US/switch_graphic_language.webp')}
+    alt="Diagrammsprache wechseln"
+    style={{width: '60%'}}
+  />
+</div>

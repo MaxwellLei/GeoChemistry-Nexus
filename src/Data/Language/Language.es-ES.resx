@@ -253,7 +253,7 @@
     <value>Agregar enlace</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
-    <value>Actualizar a plantilla de geotermobarómetro en línea</value>
+    <value>Actualizar</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Validación fallida:</value>
@@ -713,9 +713,6 @@
   </data>
   <data name="edit_failed" xml:space="preserve">
     <value>Error al editar: </value>
-  </data>
-  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
-    <value>Las categorías de diagramas cambiaron; esta publicación incluirá los archivos de índice de diagramas.</value>
   </data>
   <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
     <value>Las etiquetas minerales de GeoT cambiaron; esta publicación incluirá los archivos de índice del geotermobarómetro.</value>
@@ -2137,7 +2134,7 @@
     <value>Forzar actualización</value>
   </data>
   <data name="convert_to_builtin_template" xml:space="preserve">
-    <value>Actualizar a plantilla de diagrama en línea</value>
+    <value>Actualizar</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
     <value>Quitar plantilla de diagrama en línea</value>
@@ -2570,9 +2567,6 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>Texto</value>
-  </data>
-  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
-    <value>El editor de categorías de diagramas se recargó.</value>
   </data>
   <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
     <value>El editor de categorías minerales de GeoT se recargó.</value>
@@ -4856,6 +4850,8 @@ Importado: {3} (v{4})
   <data name="epma_editor_id_exists" xml:space="preserve"><value>Este identificador de plantilla ya existe. Use otro en la información básica.</value></data>
   <data name="epma_library_personal" xml:space="preserve"><value>Plantilla personal</value></data>
   <data name="epma_library_official" xml:space="preserve"><value>Plantilla oficial</value></data>
+  <data name="epma_library_recent_online" xml:space="preserve"><value>En línea</value></data>
+  <data name="epma_library_recent_my" xml:space="preserve"><value>Mis</value></data>
   <data name="epma_editor_edit_title" xml:space="preserve"><value>Editar plantilla de cálculo</value></data>
   <data name="epma_editor_readonly_hint" xml:space="preserve"><value>Las plantillas oficiales solo se pueden ver, copiar y probar. Active el modo de desarrollador para editarlas.</value></data>
   <data name="epma_editor_fixed_id" xml:space="preserve"><value>Al editar una plantilla existente no se puede cambiar el identificador único.</value></data>
@@ -4877,7 +4873,7 @@ Importado: {3} (v{4})
   <data name="epma_library_delete" xml:space="preserve"><value>Eliminar</value></data>
   <data name="epma_library_export" xml:space="preserve"><value>Exportar</value></data>
   <data name="epma_library_promote" xml:space="preserve">
-    <value>Actualizar a plantilla de cálculo en línea</value>
+    <value>Actualizar</value>
   </data>
   <data name="epma_library_remove_official" xml:space="preserve">
     <value>Quitar plantilla de cálculo en línea</value>
@@ -5127,4 +5123,192 @@ Importado: {3} (v{4})
   <data name="table_col_sample" xml:space="preserve"><value>Muestra</value></data>
   <data name="table_col_category" xml:space="preserve"><value>Grupo</value></data>
   <data name="template_list_sync_light_tip" xml:space="preserve"><value>Lista actualizada: {0} nuevas / {1} actualizables / {2} retiradas</value></data>
+  <data name="page_transition_animation" xml:space="preserve"><value>Animación de transición de página</value></data>
+  <data name="page_transition_animation_hint" xml:space="preserve"><value>Reproducir animaciones suaves al cambiar de página; activarla puede afectar al rendimiento</value></data>
+  <data name="folder_already_in_location" xml:space="preserve">
+    <value>Ya está en esta ubicación.</value>
+  </data>
+  <data name="folder_create_success" xml:space="preserve">
+    <value>Carpeta creada.</value>
+  </data>
+  <data name="folder_delete" xml:space="preserve">
+    <value>Eliminar carpeta</value>
+  </data>
+  <data name="folder_delete_confirm" xml:space="preserve">
+    <value>¿Eliminar la carpeta «{0}»?</value>
+  </data>
+  <data name="folder_delete_confirm_with_templates" xml:space="preserve">
+    <value>¿Eliminar la carpeta «{0}» y las {1} plantillas que contiene? Esta acción no se puede deshacer.</value>
+  </data>
+  <data name="folder_delete_success" xml:space="preserve">
+    <value>Carpeta eliminada.</value>
+  </data>
+  <data name="folder_move_into_self" xml:space="preserve">
+    <value>Una carpeta no se puede mover dentro de sí misma ni de una de sus subcarpetas.</value>
+  </data>
+  <data name="folder_move_success" xml:space="preserve">
+    <value>Movido correctamente.</value>
+  </data>
+  <data name="folder_move_title" xml:space="preserve">
+    <value>Mover a</value>
+  </data>
+  <data name="folder_move_to" xml:space="preserve">
+    <value>Mover a…</value>
+  </data>
+  <data name="folder_name_collapse" xml:space="preserve">
+    <value>Contraer</value>
+  </data>
+  <data name="folder_name_create" xml:space="preserve">
+    <value>Crear</value>
+  </data>
+  <data name="folder_name_create_in" xml:space="preserve">
+    <value>Crear en: {0}</value>
+  </data>
+  <data name="folder_name_current_location" xml:space="preserve">
+    <value>Actual: {0}</value>
+  </data>
+  <data name="folder_name_dialog_hint" xml:space="preserve">
+    <value>Escriba el nombre de la carpeta para cada idioma. Los idiomas vacíos usan un nombre existente.</value>
+  </data>
+  <data name="folder_name_exists" xml:space="preserve">
+    <value>Ya existe aquí una carpeta con el mismo nombre.</value>
+  </data>
+  <data name="folder_name_expand" xml:space="preserve">
+    <value>Expandir</value>
+  </data>
+  <data name="folder_name_fallback_hint" xml:space="preserve">
+    <value>Los idiomas vacíos usan un nombre existente.</value>
+  </data>
+  <data name="folder_name_filled_count" xml:space="preserve">
+    <value>{0} / {1} completados</value>
+  </data>
+  <data name="folder_name_footer_filled" xml:space="preserve">
+    <value>Nombres escritos en {0} idiomas</value>
+  </data>
+  <data name="folder_name_label" xml:space="preserve">
+    <value>Nombre de la carpeta</value>
+  </data>
+  <data name="folder_name_multilang_desc" xml:space="preserve">
+    <value>Opcional: asigne un nombre distinto a la carpeta para otros idiomas</value>
+  </data>
+  <data name="folder_name_multilang_title" xml:space="preserve">
+    <value>Nombres localizados</value>
+  </data>
+  <data name="folder_name_placeholder" xml:space="preserve">
+    <value>Escriba un nombre de carpeta</value>
+  </data>
+  <data name="folder_name_required" xml:space="preserve">
+    <value>Escriba un nombre de carpeta.</value>
+  </data>
+  <data name="folder_name_save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="folder_name_ui_language" xml:space="preserve">
+    <value>Idioma de la interfaz</value>
+  </data>
+  <data name="folder_new_here" xml:space="preserve">
+    <value>Nueva carpeta…</value>
+  </data>
+  <data name="folder_new_subfolder" xml:space="preserve">
+    <value>Nueva subcarpeta</value>
+  </data>
+  <data name="folder_new_template_here" xml:space="preserve">
+    <value>Nuevo diagrama aquí</value>
+  </data>
+  <data name="folder_new_title" xml:space="preserve">
+    <value>Nueva carpeta</value>
+  </data>
+  <data name="folder_not_found" xml:space="preserve">
+    <value>La carpeta ya no existe. Actualice e inténtelo de nuevo.</value>
+  </data>
+  <data name="folder_picker_destination" xml:space="preserve">
+    <value>Destino</value>
+  </data>
+  <data name="folder_picker_move" xml:space="preserve">
+    <value>Mover</value>
+  </data>
+  <data name="folder_picker_moving_folder" xml:space="preserve">
+    <value>Moviendo carpeta</value>
+  </data>
+  <data name="folder_picker_moving_template" xml:space="preserve">
+    <value>Moviendo diagrama</value>
+  </data>
+  <data name="folder_picker_moving_title" xml:space="preserve">
+    <value>Elemento a mover</value>
+  </data>
+  <data name="folder_picker_no_match" xml:space="preserve">
+    <value>Ninguna carpeta coincide con «{0}»</value>
+  </data>
+  <data name="folder_picker_root_not_allowed" xml:space="preserve">
+    <value>No se puede seleccionar la carpeta raíz. Elija una carpeta.</value>
+  </data>
+  <data name="folder_picker_search_placeholder" xml:space="preserve">
+    <value>Buscar carpetas…</value>
+  </data>
+  <data name="folder_picker_selected_title" xml:space="preserve">
+    <value>Ubicación seleccionada</value>
+  </data>
+  <data name="folder_picker_subtitle" xml:space="preserve">
+    <value>Elija una carpeta de destino</value>
+  </data>
+  <data name="folder_picker_tag_current" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="folder_picker_tag_moving" xml:space="preserve">
+    <value>En movimiento</value>
+  </data>
+  <data name="folder_picker_target_title" xml:space="preserve">
+    <value>Mover a</value>
+  </data>
+  <data name="folder_picker_template_count" xml:space="preserve">
+    <value>{0} diagrama(s)</value>
+  </data>
+  <data name="folder_rename" xml:space="preserve">
+    <value>Cambiar nombre</value>
+  </data>
+  <data name="folder_rename_success" xml:space="preserve">
+    <value>Carpeta renombrada.</value>
+  </data>
+  <data name="folder_rename_title" xml:space="preserve">
+    <value>Cambiar nombre de la carpeta</value>
+  </data>
+  <data name="folder_select_target" xml:space="preserve">
+    <value>Seleccione una carpeta.</value>
+  </data>
+  <data name="official_folder_not_empty" xml:space="preserve">
+    <value>Solo se pueden eliminar las carpetas oficiales vacías.</value>
+  </data>
+  <data name="official_folder_requires_download" xml:space="preserve">
+    <value>Descargue todas las plantillas de esta carpeta antes de modificarla.</value>
+  </data>
+  <data name="promote_template_name_exists" xml:space="preserve">
+    <value>La misma carpeta de las plantillas de diagrama en línea ya contiene una plantilla con este nombre. Cámbiele el nombre o muévala antes de actualizarla.</value>
+  </data>
+  <data name="template_name" xml:space="preserve">
+    <value>Nombre de la plantilla</value>
+  </data>
+  <data name="template_name_exists_in_folder" xml:space="preserve">
+    <value>Ya existe una plantilla con el mismo nombre en esta carpeta.</value>
+  </data>
+  <data name="template_name_placeholder" xml:space="preserve">
+    <value>p. ej. Autor (año) Nombre del diagrama</value>
+  </data>
+  <data name="template_name_required" xml:space="preserve">
+    <value>Escriba un nombre de plantilla.</value>
+  </data>
+  <data name="template_save_location" xml:space="preserve">
+    <value>Ubicación de guardado</value>
+  </data>
+  <data name="template_save_location_choose" xml:space="preserve">
+    <value>Elegir…</value>
+  </data>
+  <data name="template_save_location_choose_title" xml:space="preserve">
+    <value>Elegir ubicación de guardado</value>
+  </data>
+  <data name="template_save_location_placeholder" xml:space="preserve">
+    <value>Ninguna carpeta seleccionada</value>
+  </data>
+  <data name="template_save_location_required" xml:space="preserve">
+    <value>Elija dónde guardar la plantilla.</value>
+  </data>
 </root>

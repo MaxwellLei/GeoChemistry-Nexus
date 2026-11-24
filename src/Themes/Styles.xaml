@@ -678,8 +678,13 @@
                     <Border Background="Transparent">
                         <Path x:Name="Arrow" Data="M 0,0 L 4,4 L 8,0" Width="8" Height="4.5" Stretch="Uniform"
                               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"
+                              RenderTransformOrigin="0.5,0.5"
                               Stroke="{StaticResource AppTextSecondaryBrush}" StrokeThickness="1.3"
-                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round">
+                            <Path.RenderTransform>
+                                <RotateTransform x:Name="ArrowRotate" Angle="0"/>
+                            </Path.RenderTransform>
+                        </Path>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -687,6 +692,21 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource ThemeAccentBrush}"/>
+                            <!-- 展开时箭头翻转 180° -->
+                            <Trigger.EnterActions>
+                                <BeginStoryboard><Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="ArrowRotate" Storyboard.TargetProperty="Angle" To="180" Duration="0:0:0.18">
+                                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard></BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard><Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="ArrowRotate" Storyboard.TargetProperty="Angle" To="0" Duration="0:0:0.18">
+                                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard></BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -798,6 +818,25 @@
                                     SnapsToDevicePixels="True"
                                     MinWidth="{Binding ActualWidth, ElementName=Root}"
                                     MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <!-- 弹层出现：淡入 + 自上方轻微滑入（与 ContextMenu 保持一致的手感） -->
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.14"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                 From="-4" To="0" Duration="0:0:0.16">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
                                 <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                                               HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                               VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
@@ -1353,6 +1392,25 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{Binding Path=(ctrl:ControlAssist.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                             Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <!-- 提示出现：淡入 + 自下方轻微上浮 -->
+                        <Border.RenderTransform>
+                            <TranslateTransform/>
+                        </Border.RenderTransform>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.15"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                         From="3" To="0" Duration="0:0:0.18">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
                         <ContentPresenter/>
                     </Border>
                 </ControlTemplate>
@@ -3193,6 +3251,25 @@
                                 <Border.Effect>
                                     <DropShadowEffect Color="#16204A" Opacity="0.13" BlurRadius="18" ShadowDepth="5" Direction="270"/>
                                 </Border.Effect>
+                                <!-- 弹层出现：淡入 + 自上方轻微滑入 -->
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.14"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                 From="-4" To="0" Duration="0:0:0.16">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
                                 <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                                               HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                               VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
@@ -7640,6 +7717,237 @@
     </Style>
 
     <!-- ====================================================================
+         文件夹对话框（移动到 / 新建 / 重命名文件夹）：在轻量对话框样式基础上的补充样式。
+         视觉规格对应 Design/folder-dialogs-redesign.html。
+         ==================================================================== -->
+    <!-- 文件夹对话框输入框：TextBox 会自行把 Padding 应用到内容区，模板边框不能再套一次 Padding，否则光标比占位提示文字靠右；
+         占位提示文字用 Margin 对齐同一个 Padding，使提示文字与光标/输入文字起点一致 -->
+    <Style x:Key="FolderDialogTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource DialogTextBoxStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{Binding Path=(ctrl:ControlAssist.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                          HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                          VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <TextBlock x:Name="Placeholder" Visibility="Collapsed" IsHitTestVisible="False"
+                                       Margin="{TemplateBinding Padding}"
+                                       Text="{Binding Path=(ctrl:ControlAssist.Placeholder), RelativeSource={RelativeSource TemplatedParent}}"
+                                       Foreground="{StaticResource AppTextHintBrush}"
+                                       HorizontalAlignment="Left" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AppBorderStrongBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 名称输入框：数据上下文提供 HasError 时，出错显示红色边框 -->
+    <Style x:Key="DialogNameTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FolderDialogTextBoxStyle}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding HasError}" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource AppDangerBrush}"/>
+                <Setter Property="Background" Value="#FFF8F8"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- 对话框搜索框（右侧放大镜） -->
+    <Style x:Key="DialogSearchTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource AppSearchTextBoxStyle}">
+        <Setter Property="Background" Value="#F8FAFC"/>
+        <Setter Property="BorderBrush" Value="#E2E8F0"/>
+        <Setter Property="Foreground" Value="#1E293B"/>
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="11,0,0,0"/>
+        <Setter Property="ctrl:ControlAssist.CornerRadius" Value="9"/>
+        <!-- 同 FolderDialogTextBoxStyle：内容区自带 Padding，占位提示文字用 Margin 对齐，避免光标靠右 -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{Binding Path=(ctrl:ControlAssist.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                              VerticalAlignment="Center"/>
+                                <TextBlock x:Name="Placeholder" Visibility="Collapsed" IsHitTestVisible="False"
+                                           Margin="{TemplateBinding Padding}"
+                                           Text="{Binding Path=(ctrl:ControlAssist.Placeholder), RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="{StaticResource AppTextHintBrush}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                            <TextBlock x:Name="SearchGlyph" Grid.Column="1" Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="12" Margin="0,0,10,0" VerticalAlignment="Center" IsHitTestVisible="False"
+                                       Foreground="{StaticResource AppTextSecondaryBrush}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AppBorderStrongBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                            <Setter TargetName="SearchGlyph" Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 对话框内的提示条：警告（默认）/ 错误 -->
+    <Style x:Key="DialogNoteStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="9"/>
+        <Setter Property="Padding" Value="10,7"/>
+        <Setter Property="Background" Value="#FFF6E3"/>
+        <Setter Property="TextElement.Foreground" Value="#A8670A"/>
+    </Style>
+    <Style x:Key="DialogErrorNoteStyle" TargetType="Border" BasedOn="{StaticResource DialogNoteStyle}">
+        <Setter Property="Background" Value="#FDECEE"/>
+        <Setter Property="TextElement.Foreground" Value="#B42331"/>
+    </Style>
+
+    <!-- 文件夹名称多语言表格的单元格输入框：沿用多语言表公共输入框（EpmaLocInputBox），数据上下文为 FolderLanguageNameItem；校验出错时整格变红 -->
+    <Style x:Key="FolderLocCellInput" TargetType="TextBox" BasedOn="{StaticResource EpmaLocInputBox}">
+        <Setter Property="Text" Value="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5,0"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding HasError}" Value="True">
+                <Setter Property="Background" Value="#FDECEE"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- 文件夹选择树的小标签（“移动中”“当前位置”）；选中行内自动变为白底半透明 -->
+    <Style x:Key="FolderPickerTagStyle" TargetType="Border">
+        <Setter Property="Margin" Value="8,0,0,0"/>
+        <Setter Property="Padding" Value="7,0"/>
+        <Setter Property="Height" Value="17"/>
+        <Setter Property="CornerRadius" Value="9"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="#F1F5F9"/>
+        <Setter Property="TextElement.Foreground" Value="#64748B"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                <Setter Property="Background" Value="#33FFFFFF"/>
+                <Setter Property="TextElement.Foreground" Value="White"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="FolderPickerMovingTagStyle" TargetType="Border" BasedOn="{StaticResource FolderPickerTagStyle}">
+        <Setter Property="Background" Value="#FFF6E3"/>
+        <Setter Property="TextElement.Foreground" Value="#A8670A"/>
+    </Style>
+
+    <!-- 文件夹选择树节点：与资源库侧边栏一致（圆角行，选中为主题色实心）；数据上下文为 FolderPickerNodeViewModel -->
+    <Style x:Key="FolderPickerTreeViewItemStyle" TargetType="TreeViewItem">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+        <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource DiagramLibraryTextBrush}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,1,0,0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TreeViewItem">
+                    <StackPanel>
+                        <Border x:Name="Row" Height="32" CornerRadius="8" Padding="6,0,9,0"
+                                Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <i:Interaction.Behaviors>
+                                <helpers:TreeViewItemExpandBehavior />
+                            </i:Interaction.Behaviors>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="Expander" Style="{StaticResource DiagramLibraryExpanderStyle}"
+                                              IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                              ClickMode="Press" Margin="0,0,2,0" VerticalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header" VerticalAlignment="Center"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost" Margin="16,0,0,0"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="True"/>
+                                <Condition SourceName="Row" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Row" Property="Background" Value="{StaticResource DiagramLibraryHoverBrush}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Row" Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <!-- 只淡化本行，避免子节点逐级叠乘透明度 -->
+                            <Setter TargetName="Row" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!-- 搜索过滤：不匹配的节点折叠 -->
+            <DataTrigger Binding="{Binding IsFilterVisible}" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ====================================================================
          属性面板（Inspector）：圆角卡片 + 卡片内标题，字段统一为浅灰填充圆角输入框。
          用于 Controls/DiagramEditor 下的各个属性面板；视觉规格对应 Design/PropertyPanels/index.html。
          ==================================================================== -->
@@ -8029,6 +8337,25 @@
                                 <Border.Effect>
                                     <DropShadowEffect Color="#000000" Opacity="0.14" BlurRadius="16" ShadowDepth="3" Direction="270"/>
                                 </Border.Effect>
+                                <!-- 弹层出现：淡入 + 自上方轻微滑入 -->
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.14"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                 From="-4" To="0" Duration="0:0:0.16">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
                                 <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                                               HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                               VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">

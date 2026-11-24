@@ -1,0 +1,34 @@
+{
+  "home.button.content": {
+    "message": "Начать руководство GeoChemistry Nexus — 5 мин ⏱️",
+    "description": "Link label for the GeoChemistry Nexus tutorial"
+  },
+  "home.button.getStarted": {
+    "message": "Начать работу"
+  },
+  "home.button.github": {
+    "message": "Открыть GitHub"
+  },
+  "home.tagline": {
+    "message": "Инструмент нового поколения для дискриминационных диаграмм и расчётов в геохимии и петрологии — лучший помощник специалиста по наукам о Земле",
+    "description": "The tagline of the site"
+  },
+  "Comprehensive Plotting Toolkit": {
+    "message": "Полный набор инструментов построения диаграмм"
+  },
+  "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
+    "message": "В GeoChemistry Nexus встроен модуль построения диаграмм для наук о Земле с шаблонами дискриминации тектонических обстановок, классификации пород и другими. Предлагается полный ход работы — от импорта данных до экспорта публикационного качества (поддерживается SVG)."
+  },
+  "Excel-like Geothermometers": {
+    "message": "Геотермометры в стиле Excel"
+  },
+  "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
+    "message": "Выполняйте расчёты геотермометров для таких минералов, как циркон и биотит, в наглядном интерфейсе в стиле Excel. Используйте встроенные шаблоны или пользовательские функции (например, =FuncName(args)), чтобы ускорить исследование, не владея навыками программирования."
+  },
+  "Customizable & Extensible": {
+    "message": "Широкие возможности настройки и расширения"
+  },
+  "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
+    "message": "Создавайте собственные шаблоны диаграмм и делитесь ими с помощью нашей системы расширений на основе JSON/ZIP. Платформа поддерживает многоязычные шаблоны, пользовательские скрипты (JavaScript) и бесшовную интеграцию со сторонними программами, такими как Inkscape и CorelDRAW."
+  }
+}

@@ -1031,6 +1031,7 @@ namespace GeoChemistryNexus.Views
             {
                 _popOutWindow.Owner = mainWindow;
             }
+            ChildWindowPlacementHelper.Attach(_popOutWindow);
             WindowActivationHelper.AttachOwnerFocusPreservation(_popOutWindow, mainWindow);
 
             // 3. 将 WpfPlot1 放入新窗口
@@ -1183,6 +1184,23 @@ namespace GeoChemistryNexus.Views
         {
             // 完全阻止自动滚动行为，保持滚动条在当前位置（默认最左侧）
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// 模板树的模板节点与右侧卡片共用右键菜单：菜单的 DataContext 需要是对应的模板卡片
+        /// </summary>
+        private void TemplateTreeNode_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (sender is not FrameworkElement { DataContext: GraphMapTemplateNode { IsFolder: false } node, ContextMenu: { } menu })
+                return;
+
+            var card = viewModel.GetTemplateCardForNode(node);
+            if (card == null)
+            {
+                e.Handled = true;
+                return;
+            }
+            menu.DataContext = card;
         }
 
         /// <summary>

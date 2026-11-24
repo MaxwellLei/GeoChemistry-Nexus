@@ -1,5 +1,7 @@
+using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
@@ -59,6 +61,28 @@ namespace GeoChemistryNexus.Models
         public string? PreserveLatestAppVersion { get; set; }
     }
 
+    /// <summary>
+    /// 随软件新版本一起写入 server_info.json 的安装包信息：完整版/精简版的 SHA256 和所需运行时主版本。
+    /// </summary>
+    public class AppInstallerReleaseInfo
+    {
+        /// <summary>完整版安装包 SHA256，空串表示不写校验值。</summary>
+        public string FullSha256 { get; set; } = string.Empty;
+
+        /// <summary>精简版安装包 SHA256，空串表示本次没有精简版。</summary>
+        public string LiteSha256 { get; set; } = string.Empty;
+
+        /// <summary>所需 .NET 运行时主版本，0 表示不启用精简版。</summary>
+        public int RequiredRuntimeMajor { get; set; }
+
+        public void ApplyTo(ServerInfo serverInfo)
+        {
+            serverInfo.LatestAppInstallerSha256 = FullSha256 ?? string.Empty;
+            serverInfo.LatestAppInstallerLiteSha256 = LiteSha256 ?? string.Empty;
+            serverInfo.RequiredRuntimeMajor = RequiredRuntimeMajor;
+        }
+    }
+
     public class PublishResult
     {
         public string OutputDirectory { get; set; } = string.Empty;
@@ -69,7 +93,6 @@ namespace GeoChemistryNexus.Models
         public string HomeLinksCatalogPath { get; set; } = string.Empty;
         public string HomeLinksHash { get; set; } = string.Empty;
         public string ServerInfoPath { get; set; } = string.Empty;
-        public string CategoriesPath { get; set; } = string.Empty;
         public string ManifestPath { get; set; } = string.Empty;
         public string ListHash { get; set; } = string.Empty;
         public string MinimumSupportedVersion { get; set; } = string.Empty;
@@ -88,6 +111,15 @@ namespace GeoChemistryNexus.Models
         public string LocalHash { get; set; } = string.Empty;
         public string RemoteHash { get; set; } = string.Empty;
         public PublishAction Action { get; set; }
+
+        /// <summary>本地图解的多级路径（NodeList）；仅图解预览填充。</summary>
+        public LocalizedString? LocalNodeList { get; set; }
+
+        /// <summary>线上 GraphMapList 里记录的多级路径（NodeList）；新增项为空。</summary>
+        public LocalizedString? RemoteNodeList { get; set; }
+
+        /// <summary>本地与线上的路径不一致（改过文件夹名或移动过位置）。</summary>
+        public bool PathChanged { get; set; }
     }
 
     public class PublishPreview
@@ -98,6 +130,9 @@ namespace GeoChemistryNexus.Models
         public List<PublishPreviewItem> UnchangedItems { get; set; } = new();
 
         public int PendingChangeCount => NewItems.Count + UpdatedItems.Count + RemovedItems.Count;
+
+        /// <summary>更新项中路径发生变化的数量（是 UpdatedItems 的子集）。</summary>
+        public int PathChangedCount => UpdatedItems.Count(item => item.PathChanged);
     }
 
     public class GeothermometerPublishResult

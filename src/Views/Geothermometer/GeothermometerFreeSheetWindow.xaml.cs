@@ -26,6 +26,7 @@ namespace GeoChemistryNexus.Views
             InitializeComponent();
             UiScaleHelper.Attach(this);
             GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+            GeoChemistryNexus.Helpers.ChildWindowPlacementHelper.Attach(this);
             _viewModel = new GeothermometerFreeSheetViewModel();
             DataContext = _viewModel;
 

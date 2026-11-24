@@ -1,0 +1,262 @@
+<Window x:Class="GeoChemistryNexus.Views.FolderNameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+        xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:FolderNameDialogViewModel}"
+        Title="{Binding Title}"
+        Width="480" SizeToContent="Height"
+        WindowStyle="None" ResizeMode="NoResize"
+        Background="#F5F7FA"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        UseLayoutRounding="True" FontSize="13"
+        Foreground="#263549"
+        TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
+
+    <!-- 与「新建图解」窗口一致的原生无边框窗口：44 高的顶栏可拖动，阴影由 DWM 绘制；固定大小，不可缩放 -->
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44" ResizeBorderThickness="0" CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+            <!-- 多语言表格的一列：表头（语言名称 + 默认标记 + 已填写圆点）+ 名称输入格；冻结列与滚动列共用 -->
+            <DataTemplate x:Key="LanguageColumnTemplate" DataType="{x:Type vm:FolderLanguageNameItem}">
+                <Border Style="{StaticResource LocCellBox}" Width="170">
+                    <StackPanel>
+                        <DockPanel Height="40" Margin="14,0,10,0" LastChildFill="True">
+                            <Ellipse DockPanel.Dock="Right" Width="6" Height="6" Margin="8,0,0,0" VerticalAlignment="Center"
+                                     Fill="{DynamicResource ThemeAccentBrush}"
+                                     Visibility="{Binding IsFilled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <Border DockPanel.Dock="Right" Margin="6,0,0,0" Height="16" Padding="6,0" VerticalAlignment="Center"
+                                    Background="{DynamicResource ThemeAccentTintBrush}" CornerRadius="4"
+                                    Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock VerticalAlignment="Center" FontSize="10.5" FontWeight="Medium"
+                                           Foreground="{DynamicResource ThemeAccentBrush}"
+                                           Text="{Binding [epma_editor_default_badge],Source={x:Static lg:LanguageService.Instance}}"/>
+                            </Border>
+                            <TextBlock Text="{Binding DisplayName}" ToolTip="{Binding Code}" VerticalAlignment="Center"
+                                       FontSize="12.5" Foreground="#1D1D1F" TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+                        <Border Height="46" Padding="6,4">
+                            <TextBox Style="{StaticResource FolderLocCellInput}"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶栏：左侧标题，右侧创建 / 保存按钮与关闭按钮 -->
+        <Border Grid.Row="0" BorderBrush="#DFE5ED" BorderThickness="0,0,0,1">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Style="{StaticResource EditorAction}" VerticalAlignment="Center" IsDefault="True"
+                            Command="{Binding ConfirmCommand}"
+                            Content="{Binding ConfirmText}"
+                            Background="{DynamicResource ThemeAccentBrush}" Foreground="White"
+                            BorderBrush="{DynamicResource ThemeAccentBrush}" Padding="16,5"/>
+                    <Border Width="1" Height="18" Background="#DFE5ED" Margin="12,0,8,0"/>
+                    <Button Style="{StaticResource EditorCaptionClose}" Content="&#xeaf2;" IsCancel="True"
+                            Command="{Binding CancelCommand}"
+                            AutomationProperties.Name="{Binding [close],Source={x:Static lg:LanguageService.Instance}}"
+                            ToolTip="{Binding [close],Source={x:Static lg:LanguageService.Instance}}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,12,0">
+                    <Viewbox Width="15" Height="15" Margin="0,0,9,0">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="{Binding IconData}" Stroke="{DynamicResource ThemeAccentBrush}" StrokeThickness="1.8"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <!-- 展开多语言表格后显示：导入 / 导出（与新建图解的多语言页顶栏一致） -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0"
+                                shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                Visibility="{Binding IsMultiLanguageExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Button Style="{StaticResource EpmaLocButton}" Command="{Binding ImportTranslationsCommand}"
+                                Content="{Binding [epma_loc_import],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Button Style="{StaticResource EpmaLocButton}" Margin="8,0,0,0" Command="{Binding ExportTranslationsCommand}"
+                                Content="{Binding [epma_loc_export],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- 内容区 -->
+        <StackPanel Grid.Row="1" Margin="24,18,24,24">
+            <!-- 基本信息 -->
+            <TextBlock Style="{StaticResource GeoTSectionHeading}" Margin="4,0,0,8"
+                       Text="{Binding [epma_editor_nav_basic],Source={x:Static lg:LanguageService.Instance}}"/>
+            <Border Style="{StaticResource GeoTSectionCard}" Padding="16">
+                <StackPanel>
+                    <!-- 位置（只读） -->
+                    <TextBlock Text="{Binding LocationLabel}" FontSize="12" Foreground="#66768B" Margin="0,0,0,6"/>
+                    <Grid>
+                        <TextBox Style="{StaticResource FolderDialogTextBoxStyle}" IsReadOnly="True" Focusable="False"
+                                 Padding="30,0,10,0" Text="{Binding LocationText, Mode=OneWay}"
+                                 ToolTip="{Binding LocationText}"/>
+                        <Viewbox Width="15" Height="15" Margin="11,0,0,0" HorizontalAlignment="Left"
+                                 VerticalAlignment="Center" IsHitTestVisible="False">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M22,19 A2,2 0 0 1 20,21 L4,21 A2,2 0 0 1 2,19 L2,5 A2,2 0 0 1 4,3 L9,3 L11,6 L20,6 A2,2 0 0 1 22,8 Z"
+                                      Stroke="{DynamicResource ThemeAccentBrush}" StrokeThickness="1.8"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+
+                    <!-- 名称（当前界面语言，必填） -->
+                    <Grid Margin="0,14,0,6">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12" Foreground="#66768B"
+                                       Text="{Binding [folder_name_label],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <TextBlock Text="*" Foreground="#DB3340" Margin="3,0,0,0"/>
+                        </StackPanel>
+                        <!-- 当前输入框对应的语言 -->
+                        <Border HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="10" Padding="9,1"
+                                Background="{DynamicResource ThemeAccentSoftBrush}"
+                                BorderBrush="{DynamicResource ThemeAccentSoftBorderBrush}" BorderThickness="1">
+                            <TextBlock Text="{Binding PrimaryLanguageTag}" FontSize="11" FontWeight="Medium"
+                                       Foreground="{DynamicResource ThemeAccentBrush}"/>
+                        </Border>
+                    </Grid>
+                    <TextBox x:Name="PrimaryBox" DataContext="{Binding PrimaryItem}"
+                             Style="{StaticResource DialogNameTextBoxStyle}"
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             controls:ControlAssist.Placeholder="{Binding [folder_name_placeholder],Source={x:Static lg:LanguageService.Instance}}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 多语言名称：小标题 + 展开 / 收起 -->
+            <Grid Margin="4,18,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource GeoTSectionHeading}"
+                           Text="{Binding [folder_name_multilang_title],Source={x:Static lg:LanguageService.Instance}}"/>
+                <TextBlock Grid.Column="1" Margin="8,0,8,0" FontSize="11.5" Foreground="#8793A3"
+                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                           Text="{Binding [folder_name_multilang_desc],Source={x:Static lg:LanguageService.Instance}}"/>
+                <Button Grid.Column="2" Style="{StaticResource EditorLink}" MinHeight="0"
+                        Command="{Binding ToggleMultiLanguageCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ExpandToggleText}" VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="9" Margin="5,1,0,0"
+                                   VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="0"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMultiLanguageExpanded}" Value="True">
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- 多语言表格（展开后显示）：表头为软件支持的各语言，下方一行输入各语言的名称；样式与图解编辑的多语言表一致 -->
+            <Border Style="{StaticResource GeoTSectionCard}"
+                    Visibility="{Binding IsMultiLanguageExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                <!-- 按住 Shift 滚动鼠标滚轮：横向滚动右侧的语言列（冻结列上滚动同样生效） -->
+                <Grid helpers:ScrollWheelBehavior.ShiftHorizontalTarget="{Binding ElementName=LanguageTableScroll}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 表头底色（跟随卡片上方圆角） -->
+                    <Border Grid.ColumnSpan="2" Background="#F8F9FB" BorderBrush="#0F000000" BorderThickness="0,0,0,1"
+                            CornerRadius="11,11,0,0"/>
+
+                    <!-- 冻结列：默认语言（当前界面语言）；右侧加粗分界线提示此处为冻结位置 -->
+                    <Border Grid.RowSpan="2" Panel.ZIndex="1" BorderBrush="#C3C9D4" BorderThickness="0,0,2,0">
+                        <ContentControl Content="{Binding PrimaryItem}" ContentTemplate="{StaticResource LanguageColumnTemplate}"
+                                        Margin="-1,0,0,0" Focusable="False" IsTabStop="False"/>
+                    </Border>
+
+                    <!-- 其余语言：取自软件支持的语言列表，横向滚动 -->
+                    <ScrollViewer x:Name="LanguageTableScroll" Grid.Column="1" Grid.RowSpan="2"
+                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding OtherLanguages}" ItemTemplate="{StaticResource LanguageColumnTemplate}"
+                                      Focusable="False" Margin="-1,0,0,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- 导入 / 导出结果 -->
+            <TextBlock Margin="4,10,0,0" FontSize="12" TextWrapping="Wrap"
+                       Text="{Binding TransferMessage}"
+                       Visibility="{Binding HasTransferMessage, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#66768B"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding TransferIsError}" Value="True">
+                                <Setter Property="Foreground" Value="#DB3340"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <!-- 校验提示 -->
+            <Border Style="{StaticResource DialogErrorNoteStyle}" Margin="0,14,0,0"
+                    Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,2,8,0" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}" FontSize="12" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
