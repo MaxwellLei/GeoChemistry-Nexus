@@ -864,15 +864,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Basemap file already exists, do you want to overwrite? 的本地化字符串。
-        /// </summary>
-        internal static string BasemapExisted {
-            get {
-                return ResourceManager.GetString("BasemapExisted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Batch Download Cancelled 的本地化字符串。
         /// </summary>
         internal static string batch_download_cancelled {
@@ -1274,15 +1265,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Category structure must be greater than or equal to 2! 的本地化字符串。
-        /// </summary>
-        internal static string category_structure_min_two {
-            get {
-                return ResourceManager.GetString("category_structure_min_two", resourceCulture);
             }
         }
         
@@ -2528,7 +2510,7 @@ namespace GeoChemistryNexus.Data.Language {
         ///    • Orthoclase (Or) → Leucite (Le)
         ///    • Wollastonite (Wo) → Larnite (Cs)
         ///    • Diopside/Hedenbergite (Di+Hd) → Larnite (Cs) + Olivine (Fo+Fa)
-        ///    • Leucite (Le [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    • Leucite (Le) → Pseudol [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cipw_step8_detail {
             get {
@@ -4083,15 +4065,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string enter_category_structure {
             get {
                 return ResourceManager.GetString("enter_category_structure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Enter a level and press Enter to add. 的本地化字符串。
-        /// </summary>
-        internal static string enter_level_add {
-            get {
-                return ResourceManager.GetString("enter_level_add", resourceCulture);
             }
         }
         
@@ -6070,15 +6043,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Export Diagram Template 的本地化字符串。
-        /// </summary>
-        internal static string export_diagram_template {
-            get {
-                return ResourceManager.GetString("export_diagram_template", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Export failed: 的本地化字符串。
         /// </summary>
         internal static string export_failed {
@@ -6547,33 +6511,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Create in: {0} 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_create_in {
-            get {
-                return ResourceManager.GetString("folder_name_create_in", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Current: {0} 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_current_location {
-            get {
-                return ResourceManager.GetString("folder_name_current_location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Enter the folder name for each language. Empty languages fall back to an existing name. 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_dialog_hint {
-            get {
-                return ResourceManager.GetString("folder_name_dialog_hint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 A folder with the same name already exists here. 的本地化字符串。
         /// </summary>
         internal static string folder_name_exists {
@@ -6588,33 +6525,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string folder_name_expand {
             get {
                 return ResourceManager.GetString("folder_name_expand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Empty languages use an existing name. 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_fallback_hint {
-            get {
-                return ResourceManager.GetString("folder_name_fallback_hint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {0} / {1} filled 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_filled_count {
-            get {
-                return ResourceManager.GetString("folder_name_filled_count", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Names entered in {0} languages 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_footer_filled {
-            get {
-                return ResourceManager.GetString("folder_name_footer_filled", resourceCulture);
             }
         }
         
@@ -6669,24 +6579,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string folder_name_save {
             get {
                 return ResourceManager.GetString("folder_name_save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 UI language 的本地化字符串。
-        /// </summary>
-        internal static string folder_name_ui_language {
-            get {
-                return ResourceManager.GetString("folder_name_ui_language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 New Folder… 的本地化字符串。
-        /// </summary>
-        internal static string folder_new_here {
-            get {
-                return ResourceManager.GetString("folder_new_here", resourceCulture);
             }
         }
         
@@ -6804,15 +6696,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string folder_picker_selected_title {
             get {
                 return ResourceManager.GetString("folder_picker_selected_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Choose a destination folder 的本地化字符串。
-        /// </summary>
-        internal static string folder_picker_subtitle {
-            get {
-                return ResourceManager.GetString("folder_picker_subtitle", resourceCulture);
             }
         }
         
@@ -7182,15 +7065,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_ctx_edit {
             get {
                 return ResourceManager.GetString("geo_ctx_edit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Export Package 的本地化字符串。
-        /// </summary>
-        internal static string geo_ctx_export_zip {
-            get {
-                return ResourceManager.GetString("geo_ctx_export_zip", resourceCulture);
             }
         }
         
@@ -12541,7 +12415,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated 的本地化字符串。
+        ///   查找类似 Desilication Step 5: Leucite -&gt; Kaliophilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated 的本地化字符串。
         /// </summary>
         internal static string niggli_step5_lc_kp_done {
             get {
@@ -12550,7 +12424,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), all Lc converted, remaining deficit D = {0}% 的本地化字符串。
+        ///   查找类似 Desilication Step 5: Leucite -&gt; Kaliophilite (Lc → Kp), all Lc converted, remaining deficit D = {0}% 的本地化字符串。
         /// </summary>
         internal static string niggli_step5_lc_kp_part {
             get {
@@ -14609,15 +14483,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Properties 的本地化字符串。
-        /// </summary>
-        internal static string position {
-            get {
-                return ResourceManager.GetString("position", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Page switched. Preparing interface content... 的本地化字符串。
         /// </summary>
         internal static string preparing_interface_content_status {
@@ -15055,42 +14920,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string select_an_object {
             get {
                 return ResourceManager.GetString("select_an_object", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 No existing category structures found. 的本地化字符串。
-        /// </summary>
-        internal static string select_existing_category_structure_empty {
-            get {
-                return ResourceManager.GetString("select_existing_category_structure_empty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Select a category path from existing diagram templates. You can continue adding custom levels afterward. 的本地化字符串。
-        /// </summary>
-        internal static string select_existing_category_structure_prompt {
-            get {
-                return ResourceManager.GetString("select_existing_category_structure_prompt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Select Category Structure 的本地化字符串。
-        /// </summary>
-        internal static string select_existing_category_structure_title {
-            get {
-                return ResourceManager.GetString("select_existing_category_structure_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Select a category path from existing diagram templates 的本地化字符串。
-        /// </summary>
-        internal static string select_existing_category_structure_tooltip {
-            get {
-                return ResourceManager.GetString("select_existing_category_structure_tooltip", resourceCulture);
             }
         }
         

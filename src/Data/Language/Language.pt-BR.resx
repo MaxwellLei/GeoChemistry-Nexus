@@ -160,9 +160,6 @@
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Confirmar a exclusão?</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>O arquivo de mapa-base já existe. Substituir?</value>
-  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>Configurações gerais</value>
   </data>
@@ -360,9 +357,6 @@
   <data name="type" xml:space="preserve">
     <value>Tipo</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Propriedades</value>
-  </data>
   <data name="content" xml:space="preserve">
     <value>Conteúdo</value>
   </data>
@@ -453,26 +447,11 @@
   <data name="enter_category_structure" xml:space="preserve">
     <value>Categoria do diagrama</value>
   </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>Escolher um caminho de categoria nos modelos de diagramas existentes</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>Escolher estrutura existente</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>Escolha um caminho de categoria nos modelos de diagramas existentes. Depois, você pode adicionar níveis personalizados.</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>Nenhuma estrutura de categoria disponível.</value>
-  </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>Prévia da categoria</value>
   </data>
   <data name="category_structure_preview_empty" xml:space="preserve">
     <value>A prévia da estrutura aparecerá aqui depois que você adicionar níveis.</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Digite um nível e pressione Enter para adicionar.</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>Tipo de diagrama</value>
@@ -482,9 +461,6 @@
   </data>
   <data name="all_fields_required" xml:space="preserve">
     <value>Todos os campos são obrigatórios!</value>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>A estrutura de categoria deve ser maior ou igual a 2!</value>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>Nenhum modelo para salvar ou caminho não indicado. Use Salvar como.</value>
@@ -1067,9 +1043,6 @@
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Importar diagrama</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Exportar modelo de diagrama</value>
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>Forçar atualização</value>
@@ -1774,9 +1747,6 @@
   </data>
   <data name="geo_ctx_edit" xml:space="preserve">
     <value>Editar</value>
-  </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Exportar pacote</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
     <value>Remover modelo de geotermobarômetro online</value>
@@ -3967,10 +3937,10 @@
     <value>Fe³⁺ e Fe²⁺ formam magnetita (Mt); o Fe³⁺ excedente forma hematita (Hm). Ca, Mg e Fe²⁺ formam wollastonita (Wo), enstatita (En) e ferrossilita (Fs). En e Fs constituem ortopiroxênio (Hy). Wo e Hy combinam-se em proporção equimolar para formar diopsídio (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>Dessilicação, etapa 5: leucita -&gt; kalsilita (Lc → Kp), Lc consumido: {0}%, déficit de sílica totalmente eliminado</value>
+    <value>Dessilicação, etapa 5: leucita -&gt; kaliofilita (Lc → Kp), Lc consumido: {0}%, déficit de sílica totalmente eliminado</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>Dessilicação, etapa 5: leucita -&gt; kalsilita (Lc → Kp), todo o Lc foi convertido, déficit restante D = {0}%</value>
+    <value>Dessilicação, etapa 5: leucita -&gt; kaliofilita (Lc → Kp), todo o Lc foi convertido, déficit restante D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>Distribuição dos óxidos de ferro e dos piroxênios</value>
@@ -5029,29 +4999,11 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   <data name="folder_name_create" xml:space="preserve">
     <value>Criar</value>
   </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>Criar em: {0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>Atual: {0}</value>
-  </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>Informe o nome da pasta para cada idioma. Idiomas em branco usam um nome existente.</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>Já existe uma pasta com o mesmo nome aqui.</value>
   </data>
   <data name="folder_name_expand" xml:space="preserve">
     <value>Expandir</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>Idiomas em branco usam um nome existente.</value>
-  </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} preenchidos</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>Nomes informados em {0} idiomas</value>
   </data>
   <data name="folder_name_label" xml:space="preserve">
     <value>Nome da pasta</value>
@@ -5070,12 +5022,6 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>Salvar</value>
-  </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>Idioma da interface</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>Nova pasta…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>Nova subpasta</value>
@@ -5115,9 +5061,6 @@ Substituir o pacote existente? Métodos de cálculo diferentes devem usar IDs di
   </data>
   <data name="folder_picker_selected_title" xml:space="preserve">
     <value>Local selecionado</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>Escolha uma pasta de destino</value>
   </data>
   <data name="folder_picker_tag_current" xml:space="preserve">
     <value>Atual</value>

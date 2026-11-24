@@ -153,9 +153,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Ungültiges Versionsformat. Nur x.x.x ist zulässig (z. B. 1.0.0, 1.2.3).</value>
   </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
-  </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>Jahr darf nicht leer sein.</value>
   </data>
@@ -260,9 +257,6 @@
   </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Kopfzeile darf nicht leer sein.</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Ebene eingeben und Enter drücken.</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Löschen</value>
@@ -697,7 +691,7 @@
     <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Ausrichtung</value>
+    <value>Ankerposition</value>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
     <value>2D-Koordinatendiagramm</value>
@@ -827,9 +821,6 @@
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>Neues ternäres Phasendiagramm</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Eigenschaften</value>
-  </data>
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>Alternierende Füllung aktivieren</value>
   </data>
@@ -898,18 +889,6 @@
   </data>
   <data name="enter_category_structure" xml:space="preserve">
     <value>Diagrammkategorie</value>
-  </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>Kategoriepfad aus vorhandenen Diagrammvorlagen auswählen</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>Kategoriestruktur auswählen</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>Wählen Sie einen Kategoriepfad aus vorhandenen Diagrammvorlagen. Anschließend können Sie eigene Ebenen hinzufügen.</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>Keine vorhandenen Kategoriestrukturen gefunden.</value>
   </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>Kategorievorschau</value>
@@ -1235,9 +1214,6 @@
   <data name="plot_defaults" xml:space="preserve">
     <value>Plot-Standardeinstellungen</value>
   </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Paket exportieren</value>
-  </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>Nebenstrichstil</value>
   </data>
@@ -1396,9 +1372,6 @@
   <data name="cipw_step9_title" xml:space="preserve">
     <value>Ergebnisausgabe</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>Basiskartendatei existiert bereits. Überschreiben?</value>
-  </data>
   <data name="format" xml:space="preserve">
     <value>Format</value>
   </data>
@@ -1545,9 +1518,6 @@
   </data>
   <data name="template_ready" xml:space="preserve">
     <value>Vorlage bereit!</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage exportieren</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Beschreibung</value>
@@ -4083,10 +4053,10 @@
     <value>Fe³⁺ bildet mit Fe²⁺ Magnetit (Mt); überschüssiges Fe³⁺ bildet Hämatit (Hm). Ca, Mg und Fe²⁺ bilden Wollastonit (Wo), Enstatit (En) und Ferrosilit (Fs). En und Fs bilden Orthopyroxen (Hy). Wo und Hy verbinden sich äquimolar zu Diopsid (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>Entkieselung Schritt 5: Leuzit -&gt; Kalsilit (Lc → Kp), {0}% Lc verbraucht, Kieselsäuredefizit vollständig behoben</value>
+    <value>Entkieselung Schritt 5: Leuzit -&gt; Kaliophilit (Lc → Kp), {0}% Lc verbraucht, Kieselsäuredefizit vollständig behoben</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>Entkieselung Schritt 5: Leuzit -&gt; Kalsilit (Lc → Kp), gesamter Lc umgewandelt, Restdefizit D = {0}%</value>
+    <value>Entkieselung Schritt 5: Leuzit -&gt; Kaliophilit (Lc → Kp), gesamter Lc umgewandelt, Restdefizit D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>Zuordnung von Eisenoxiden und Pyroxenen</value>
@@ -5161,29 +5131,11 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   <data name="folder_name_create" xml:space="preserve">
     <value>Erstellen</value>
   </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>Erstellen in: {0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>Aktuell: {0}</value>
-  </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>Geben Sie den Ordnernamen für jede Sprache ein. Leere Sprachen verwenden einen vorhandenen Namen.</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>Hier existiert bereits ein Ordner mit demselben Namen.</value>
   </data>
   <data name="folder_name_expand" xml:space="preserve">
     <value>Ausklappen</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>Leere Sprachen verwenden einen vorhandenen Namen.</value>
-  </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} ausgefüllt</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>Namen in {0} Sprachen eingegeben</value>
   </data>
   <data name="folder_name_label" xml:space="preserve">
     <value>Ordnername</value>
@@ -5202,12 +5154,6 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>Speichern</value>
-  </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>Oberflächensprache</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>Neuer Ordner…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>Neuer Unterordner</value>
@@ -5247,9 +5193,6 @@ Das vorhandene Paket ersetzen? Verschiedene Methoden benötigen unterschiedliche
   </data>
   <data name="folder_picker_selected_title" xml:space="preserve">
     <value>Ausgewählter Ort</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>Zielordner auswählen</value>
   </data>
   <data name="folder_picker_tag_current" xml:space="preserve">
     <value>Aktuell</value>

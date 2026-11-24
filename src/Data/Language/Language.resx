@@ -160,9 +160,6 @@
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Are you sure you want to delete?</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>Basemap file already exists, do you want to overwrite?</value>
-  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>General Settings</value>
   </data>
@@ -360,9 +357,6 @@
   <data name="type" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Properties</value>
-  </data>
   <data name="content" xml:space="preserve">
     <value>Content</value>
   </data>
@@ -453,26 +447,11 @@
   <data name="enter_category_structure" xml:space="preserve">
     <value>Diagram category</value>
   </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>Select a category path from existing diagram templates</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>Select Category Structure</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>Select a category path from existing diagram templates. You can continue adding custom levels afterward.</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>No existing category structures found.</value>
-  </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>Category preview</value>
   </data>
   <data name="category_structure_preview_empty" xml:space="preserve">
     <value>Add levels to preview the category hierarchy.</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Enter a level and press Enter to add.</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>Diagram type</value>
@@ -482,9 +461,6 @@
   </data>
   <data name="all_fields_required" xml:space="preserve">
     <value>All fields are required!</value>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>Category structure must be greater than or equal to 2!</value>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>No savable template or save path specified. Please use Save As to save.</value>
@@ -1067,9 +1043,6 @@
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Import Diagram</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Export Diagram Template</value>
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>Force Update</value>
@@ -1774,9 +1747,6 @@
   </data>
   <data name="geo_ctx_edit" xml:space="preserve">
     <value>Edit</value>
-  </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Export Package</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
     <value>Remove online geothermobarometer template</value>
@@ -3967,10 +3937,10 @@
     <value>Fe3+ and Fe2+ form Magnetite (Mt) and Hematite (Hm). Ca, Mg, and Fe2+ form Wollastonite (Wo), Enstatite (En), and Ferrosilite (Fs). En + Fs form Orthopyroxene (Hy). Wo and Hy combine to form Diopside (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated</value>
+    <value>Desilication Step 5: Leucite -&gt; Kaliophilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), all Lc converted, remaining deficit D = {0}%</value>
+    <value>Desilication Step 5: Leucite -&gt; Kaliophilite (Lc → Kp), all Lc converted, remaining deficit D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>Allocation of iron oxides and pyroxenes</value>
@@ -5031,17 +5001,11 @@ Replace the installed package? Different methods must use different IDs.</value>
   <data name="folder_move_to" xml:space="preserve">
     <value>Move To…</value>
   </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>Enter the folder name for each language. Empty languages fall back to an existing name.</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>A folder with the same name already exists here.</value>
   </data>
   <data name="folder_name_required" xml:space="preserve">
     <value>Please enter a folder name.</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>New Folder…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>New Subfolder</value>
@@ -5073,38 +5037,17 @@ Replace the installed package? Different methods must use different IDs.</value>
   <data name="folder_name_placeholder" xml:space="preserve">
     <value>Enter a folder name</value>
   </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>UI language</value>
-  </data>
   <data name="folder_name_multilang_title" xml:space="preserve">
     <value>Localized names</value>
   </data>
   <data name="folder_name_multilang_desc" xml:space="preserve">
     <value>Optional: name the folder separately for other languages</value>
   </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} filled</value>
-  </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>Create in: {0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>Current: {0}</value>
-  </data>
   <data name="folder_name_create" xml:space="preserve">
     <value>Create</value>
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>Save</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>Names entered in {0} languages</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>Empty languages use an existing name.</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>Choose a destination folder</value>
   </data>
   <data name="folder_picker_moving_folder" xml:space="preserve">
     <value>Moving folder</value>

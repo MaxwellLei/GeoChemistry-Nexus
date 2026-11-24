@@ -153,9 +153,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Неверный формат версии. Допустим только x.x.x (например, 1.0.0, 1.2.3).</value>
   </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>Структура категорий должна быть &gt;= 2!</value>
-  </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>Год не может быть пустым.</value>
   </data>
@@ -260,9 +257,6 @@
   </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Заголовки не могут быть пустыми.</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Введите уровень и нажмите Enter для добавления.</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
@@ -697,10 +691,10 @@
     <value>Текущий список шаблонов актуален.</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Привязка</value>
+    <value>Положение якоря</value>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2D График</value>
+    <value>Двумерный координатный график</value>
   </data>
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Не рекомендуется для обычных пользователей; это может привести к возникновению ненужных проблем.</value>
@@ -827,9 +821,6 @@
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>Новая тройная диаграмма</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Свойства</value>
-  </data>
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>Включить чередующуюся заливку</value>
   </data>
@@ -898,18 +889,6 @@
   </data>
   <data name="enter_category_structure" xml:space="preserve">
     <value>Категория диаграммы</value>
-  </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>Выбрать путь категории из существующих шаблонов диаграмм</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>Выбор структуры категорий</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>Выберите путь категории из существующих шаблонов диаграмм. После выбора можно продолжить добавлять пользовательские уровни.</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>Доступные структуры категорий не найдены.</value>
   </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>Предпросмотр категории</value>
@@ -1235,9 +1214,6 @@
   <data name="plot_defaults" xml:space="preserve">
     <value>Настройки графика по умолчанию</value>
   </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Экспортировать пакет</value>
-  </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>Стиль вспомогательных делений</value>
   </data>
@@ -1396,9 +1372,6 @@
   <data name="cipw_step9_title" xml:space="preserve">
     <value>Вывод результатов</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>Файл подложки уже существует, перезаписать?</value>
-  </data>
   <data name="format" xml:space="preserve">
     <value>Формат</value>
   </data>
@@ -1545,9 +1518,6 @@
   </data>
   <data name="template_ready" xml:space="preserve">
     <value>Шаблон готов!</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Экспорт шаблона диаграммы</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Описание</value>
@@ -4082,10 +4052,10 @@
     <value>Fe³⁺ с Fe²⁺ образует магнетит (Mt), избыток Fe³⁺ — гематит (Hm). Ca, Mg и Fe²⁺ образуют волластонит (Wo), энстатит (En) и ферросилит (Fs). En и Fs составляют ортопироксен (Hy). Wo и Hy в эквимолярном отношении образуют диопсид (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), израсходовано {0}% Lc, дефицит кремния полностью устранен</value>
+    <value>Десилификация Шаг 5: Лейцит -&gt; Калиофилит (Lc → Kp), израсходовано {0}% Lc, дефицит кремния полностью устранен</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), весь Lc превращен, остаточный дефицит D = {0}%</value>
+    <value>Десилификация Шаг 5: Лейцит -&gt; Калиофилит (Lc → Kp), весь Lc превращен, остаточный дефицит D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>Распределение оксидов железа и пироксенов</value>
@@ -5160,29 +5130,11 @@
   <data name="folder_name_create" xml:space="preserve">
     <value>Создать</value>
   </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>Создать в: {0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>Текущее: {0}</value>
-  </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>Введите имя папки для каждого языка. Пустые языки используют уже существующее имя.</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>Папка с таким именем уже есть здесь.</value>
   </data>
   <data name="folder_name_expand" xml:space="preserve">
     <value>Развернуть</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>Пустые языки используют уже существующее имя.</value>
-  </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} заполнено</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>Имена введены для {0} языков</value>
   </data>
   <data name="folder_name_label" xml:space="preserve">
     <value>Имя папки</value>
@@ -5201,12 +5153,6 @@
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>Сохранить</value>
-  </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>Язык интерфейса</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>Новая папка…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>Новая подпапка</value>
@@ -5246,9 +5192,6 @@
   </data>
   <data name="folder_picker_selected_title" xml:space="preserve">
     <value>Выбранное расположение</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>Выберите папку назначения</value>
   </data>
   <data name="folder_picker_tag_current" xml:space="preserve">
     <value>Текущее</value>

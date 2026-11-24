@@ -160,9 +160,6 @@
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Confirmer la suppression ?</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>Le fichier de fond de carte existe déjà. L'écraser ?</value>
-  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>Paramètres généraux</value>
   </data>
@@ -360,9 +357,6 @@
   <data name="type" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Propriétés</value>
-  </data>
   <data name="content" xml:space="preserve">
     <value>Contenu</value>
   </data>
@@ -453,26 +447,11 @@
   <data name="enter_category_structure" xml:space="preserve">
     <value>Catégorie du diagramme</value>
   </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>Choisir un chemin de catégorie parmi les modèles de diagrammes existants</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>Choisir une structure existante</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>Choisissez un chemin de catégorie parmi les modèles de diagrammes existants. Vous pourrez ensuite ajouter des niveaux personnalisés.</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>Aucune structure de catégorie disponible.</value>
-  </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>Aperçu de la catégorie</value>
   </data>
   <data name="category_structure_preview_empty" xml:space="preserve">
     <value>L'aperçu de la structure s'affichera ici après l'ajout de niveaux.</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Saisissez un niveau, puis appuyez sur Enter pour l'ajouter.</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>Type de diagramme</value>
@@ -482,9 +461,6 @@
   </data>
   <data name="all_fields_required" xml:space="preserve">
     <value>Tous les champs sont obligatoires !</value>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>La structure de catégorie doit être supérieure ou égale à 2 !</value>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>Aucun modèle à enregistrer ou chemin non indiqué. Utilisez Enregistrer sous.</value>
@@ -1067,9 +1043,6 @@
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Importer un diagramme</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Exporter le modèle de diagramme</value>
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>Forcer la mise à jour</value>
@@ -1774,9 +1747,6 @@
   </data>
   <data name="geo_ctx_edit" xml:space="preserve">
     <value>Modifier</value>
-  </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Exporter le paquet</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
     <value>Retirer le modèle de géothermobaromètre en ligne</value>
@@ -3967,10 +3937,10 @@
     <value>Fe³⁺ et Fe²⁺ forment la magnétite (Mt) ; le Fe³⁺ en excès forme l’hématite (Hm). Ca, Mg et Fe²⁺ forment respectivement la wollastonite (Wo), l’enstatite (En) et la ferrosilite (Fs). En et Fs constituent l’orthopyroxène (Hy). Wo et Hy se combinent à parts molaires égales pour former le diopside (Di).</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>Désilication, étape 5 : leucite -&gt; kalsilite (Lc → Kp), Lc consommé : {0} %, déficit de silice entièrement éliminé</value>
+    <value>Désilication, étape 5 : leucite -&gt; kaliophilite (Lc → Kp), Lc consommé : {0} %, déficit de silice entièrement éliminé</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>Désilication, étape 5 : leucite -&gt; kalsilite (Lc → Kp), tout le Lc est converti, déficit restant D = {0} %</value>
+    <value>Désilication, étape 5 : leucite -&gt; kaliophilite (Lc → Kp), tout le Lc est converti, déficit restant D = {0} %</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>Répartition des oxydes de fer et des pyroxènes</value>
@@ -5029,29 +4999,11 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   <data name="folder_name_create" xml:space="preserve">
     <value>Créer</value>
   </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>Créer dans : {0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>Actuel : {0}</value>
-  </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>Saisissez le nom du dossier pour chaque langue. Les langues laissées vides reprennent un nom existant.</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>Un dossier du même nom existe déjà ici.</value>
   </data>
   <data name="folder_name_expand" xml:space="preserve">
     <value>Développer</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>Les langues laissées vides utilisent un nom existant.</value>
-  </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} renseignés</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>Noms saisis pour {0} langues</value>
   </data>
   <data name="folder_name_label" xml:space="preserve">
     <value>Nom du dossier</value>
@@ -5070,12 +5022,6 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>Enregistrer</value>
-  </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>Langue de l'interface</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>Nouveau dossier…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>Nouveau sous-dossier</value>
@@ -5115,9 +5061,6 @@ Remplacer le paquet existant ? Des méthodes de calcul différentes doivent util
   </data>
   <data name="folder_picker_selected_title" xml:space="preserve">
     <value>Emplacement sélectionné</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>Choisir un dossier de destination</value>
   </data>
   <data name="folder_picker_tag_current" xml:space="preserve">
     <value>Actuel</value>

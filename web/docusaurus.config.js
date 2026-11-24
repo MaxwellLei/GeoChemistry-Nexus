@@ -5,7 +5,28 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import fs from 'node:fs';
+import path from 'node:path';
 
+/**
+ * Per-locale homepage copy.
+ * Docusaurus builds each locale separately, so we alias `@gn/homeCopy` to the
+ * current locale's file only. The other 9 languages never reach the browser.
+ * @type {import('@docusaurus/types').PluginModule}
+ */
+function homeCopyAliasPlugin(context) {
+  const locale = context.i18n.currentLocale;
+  const dir = path.join(context.siteDir, 'src', 'data', 'home');
+  const target = fs.existsSync(path.join(dir, `${locale}.js`))
+    ? path.join(dir, `${locale}.js`)
+    : path.join(dir, 'en.js');
+  return {
+    name: 'gn-home-copy-alias',
+    configureWebpack() {
+      return {resolve: {alias: {'@gn/homeCopy': target}}};
+    },
+  };
+}
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -123,6 +144,8 @@ const config = {
   },
 
 
+
+  plugins: [homeCopyAliasPlugin],
 
   presets: [
     [

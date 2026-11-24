@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import Link from '@docusaurus/Link';
+import {Link as RouterLink} from 'react-router-dom';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
@@ -15,10 +17,34 @@ import {
   TAS_MULTILINGUAL,
   MARQUEE_ROW_1,
   MARQUEE_ROW_2,
-  HOMEPAGE_COPY,
 } from '@site/src/data/homepageI18n';
+// Resolved at build time to src/data/home/<current locale>.js (see docusaurus.config.js)
+import HOME_COPY from '@gn/homeCopy';
 
 import './studioHome.css';
+
+/**
+ * Internal doc link WITHOUT viewport prefetch.
+ * Docusaurus' <Link> prefetches every internal link as soon as it scrolls into
+ * view, which competes with the homepage's own assets. Here we only warm the
+ * target route on hover / touch (user intent), and keep SPA navigation plus the
+ * broken-link check.
+ */
+function HomeLink({to, children, ...rest}) {
+  const href = useBaseUrl(to, {forcePrefix: true});
+  const brokenLinks = useBrokenLinks();
+  brokenLinks.collectLink(href);
+  const warm = () => {
+    if (typeof window !== 'undefined' && window.docusaurus) {
+      window.docusaurus.preload(href);
+    }
+  };
+  return (
+    <RouterLink to={href} onMouseEnter={warm} onTouchStart={warm} {...rest}>
+      {children}
+    </RouterLink>
+  );
+}
 
 function NexusCrystalLogo({size = 28, rx = 44}) {
   return (
@@ -52,7 +78,7 @@ function StudioHomepageContent() {
     [rootBaseUrl],
   );
 
-  const copy = HOMEPAGE_COPY[currentLocale] || HOMEPAGE_COPY.en;
+  const copy = HOME_COPY;
   const currentLocaleInfo =
     LOCALE_LIST.find((item) => item.locale === currentLocale) || LOCALE_LIST[2];
 
@@ -222,7 +248,7 @@ function StudioHomepageContent() {
             <a href="#features">{copy.nav.features}</a>
             <a href="#toolkit">{copy.nav.toolkit}</a>
             <a href="#roadmap">{copy.nav.roadmap}</a>
-            <Link to="/docs/intro">{copy.nav.docs}</Link>
+            <HomeLink to="/docs/intro">{copy.nav.docs}</HomeLink>
           </nav>
 
           <div className="nav-right">
@@ -374,10 +400,10 @@ function StudioHomepageContent() {
               <span>{copy.nav.roadmap}</span>
               <span>→</span>
             </a>
-            <Link to="/docs/intro" onClick={() => setMobileMenuOpen(false)}>
+            <HomeLink to="/docs/intro" onClick={() => setMobileMenuOpen(false)}>
               <span>{copy.nav.docsMobile}</span>
               <span>↗</span>
-            </Link>
+            </HomeLink>
           </nav>
           <div className="mobile-nav-actions">
             <a
@@ -427,9 +453,9 @@ function StudioHomepageContent() {
                 rel="noopener noreferrer">
                 {copy.hero.primaryBtn}
               </a>
-              <Link className="gn-btn gn-btn-secondary gn-btn-lg" to="/docs/intro">
+              <HomeLink className="gn-btn gn-btn-secondary gn-btn-lg" to="/docs/intro">
                 {copy.hero.secondaryBtn}
-              </Link>
+          </HomeLink>
             </div>
 
             {/* Segmented Control + Uncropped Desktop Window */}
@@ -475,9 +501,9 @@ function StudioHomepageContent() {
                     <strong>{currentTab.strong}</strong>
                     {currentTab.desc}
                   </div>
-                  <Link className="win-doc-link" to={currentTab.docTo}>
+                  <HomeLink className="win-doc-link" to={currentTab.docTo}>
                     {copy.hero.tutorialLink}
-                  </Link>
+          </HomeLink>
                 </div>
               </div>
             </div>
@@ -538,7 +564,7 @@ function StudioHomepageContent() {
             </div>
           </div>
         </div>
-
+        
         {/* Bento Highlights */}
         <section className="block block-alt" id="features">
           <div className="gn-container">
@@ -976,9 +1002,9 @@ function StudioHomepageContent() {
                   }}>
                   {copy.toolkit.note}
                 </p>
-                <Link className="gn-btn gn-btn-secondary gn-btn-sm" to="/docs/Tutodials/Home">
+                <HomeLink className="gn-btn gn-btn-secondary gn-btn-sm" to="/docs/Tutodials/Home">
                   {copy.toolkit.docBtn}
-                </Link>
+                </HomeLink>
               </div>
             </div>
           </div>
@@ -1032,11 +1058,11 @@ function StudioHomepageContent() {
                   rel="noopener noreferrer">
                   {copy.cta.primaryBtn}
                 </a>
-                <Link
+                <HomeLink
                   className="gn-btn gn-btn-secondary gn-btn-lg"
                   to="/docs/Invitation Letter">
                   {copy.cta.secondaryBtn}
-                </Link>
+                </HomeLink>
               </div>
               <div className="contact-pills-light">
                 <button
@@ -1079,7 +1105,7 @@ function StudioHomepageContent() {
               <ul>
                 {copy.footer.col1.map((item, idx) => (
                   <li key={idx}>
-                    <Link to={item.to}>{item.label}</Link>
+                    <HomeLink to={item.to}>{item.label}</HomeLink>
                   </li>
                 ))}
               </ul>
@@ -1090,7 +1116,7 @@ function StudioHomepageContent() {
               <ul>
                 {copy.footer.col2.map((item, idx) => (
                   <li key={idx}>
-                    <Link to={item.to}>{item.label}</Link>
+                    <HomeLink to={item.to}>{item.label}</HomeLink>
                   </li>
                 ))}
               </ul>
@@ -1109,7 +1135,7 @@ function StudioHomepageContent() {
                         {item.label}
                       </a>
                     ) : (
-                      <Link to={item.to}>{item.label}</Link>
+                      <HomeLink to={item.to}>{item.label}</HomeLink>
                     )}
                   </li>
                 ))}
@@ -1123,15 +1149,12 @@ function StudioHomepageContent() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
   );
 }
 
 export default function Home() {
-  const {
-    i18n: {currentLocale},
-  } = useDocusaurusContext();
-  const copy = HOMEPAGE_COPY[currentLocale] || HOMEPAGE_COPY.en;
+  const copy = HOME_COPY;
 
   return (
     <LayoutProvider>

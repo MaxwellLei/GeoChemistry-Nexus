@@ -153,9 +153,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>版本格式不正確，只允許 x.x.x 格式（如 1.0.0、1.2.3）。</value>
   </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>分類結構必須大於等於2！</value>
-  </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>年份不能為空。</value>
   </data>
@@ -266,9 +263,6 @@
   </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>表頭不能為空。</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>輸入一個層級後按 Enter 鍵新增。</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>刪除</value>
@@ -833,9 +827,6 @@
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>新增三元相圖</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>屬性</value>
-  </data>
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>啟用交替填充</value>
   </data>
@@ -904,18 +895,6 @@
   </data>
   <data name="enter_category_structure" xml:space="preserve">
     <value>圖解分類</value>
-  </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>從已有圖解範本中選擇一個分類路徑</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>選擇已有分類結構</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>從已有圖解範本中選擇一個分類路徑，選擇後可在其後繼續輸入自訂層級。</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>未找到可用的分類結構。</value>
   </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>分類預覽</value>
@@ -1244,9 +1223,6 @@
   <data name="plot_defaults" xml:space="preserve">
     <value>繪圖預設設定</value>
   </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>匯出套件</value>
-  </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>次刻度樣式</value>
   </data>
@@ -1405,9 +1381,6 @@
   <data name="cipw_step9_title" xml:space="preserve">
     <value>結果輸出</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>底圖檔案已經存在，是否覆蓋？</value>
-  </data>
   <data name="format" xml:space="preserve">
     <value>格式</value>
   </data>
@@ -1554,9 +1527,6 @@
   </data>
   <data name="template_ready" xml:space="preserve">
     <value>範本就緒！</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>匯出圖解範本</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>描述</value>
@@ -4363,7 +4333,7 @@
     <value>地學常規溫度與地溫梯度主流單位</value>
   </data>
   <data name="geo_u_kelvin_name" xml:space="preserve">
-    <value>克氏溫標 (K)</value>
+    <value>克耳文 (K)</value>
   </data>
   <data name="geo_u_kelvin_desc" xml:space="preserve">
     <value>熱力學狀態方程式與絕對溫標 (0 ℃ = 273.15 K)</value>
@@ -5148,17 +5118,11 @@
   <data name="folder_move_to" xml:space="preserve">
     <value>移動到…</value>
   </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>為每種語言填寫資料夾名稱，留空的語言將使用已有名稱。</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>此處已存在同名資料夾。</value>
   </data>
   <data name="folder_name_required" xml:space="preserve">
     <value>請輸入資料夾名稱。</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>新增資料夾…</value>
   </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>新增子資料夾</value>
@@ -5190,38 +5154,17 @@
   <data name="folder_name_placeholder" xml:space="preserve">
     <value>請輸入資料夾名稱</value>
   </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>介面語言</value>
-  </data>
   <data name="folder_name_multilang_title" xml:space="preserve">
     <value>多語言名稱</value>
   </data>
   <data name="folder_name_multilang_desc" xml:space="preserve">
     <value>選填，為其他介面語言單獨命名</value>
   </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>已填 {0} / {1}</value>
-  </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>將建立在：{0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>目前：{0}</value>
-  </data>
   <data name="folder_name_create" xml:space="preserve">
     <value>建立</value>
   </data>
   <data name="folder_name_save" xml:space="preserve">
     <value>儲存</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>已填寫 {0} 種語言的名稱</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>留空的語言將使用已有名稱。</value>
-  </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>選擇目標資料夾</value>
   </data>
   <data name="folder_picker_moving_folder" xml:space="preserve">
     <value>正在移動資料夾</value>

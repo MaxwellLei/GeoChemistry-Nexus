@@ -153,9 +153,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>バージョン形式が正しくありません。x.x.x のみ許可されます（例：1.0.0、1.2.3）。</value>
   </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>分類構造は2以上である必要があります！</value>
-  </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>年を空にできません。</value>
   </data>
@@ -217,7 +214,7 @@
     <value>{0} 個の地質温圧計をダウンロードしました</value>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>図解ガイド</value>
+    <value>ダイアグラムガイド</value>
   </data>
   <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
     <value>ドキュメントを読んだ後、OK をクリックして続行します。</value>
@@ -226,7 +223,7 @@
     <value>一括ダウンロード中</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
-    <value>図解ガイド</value>
+    <value>ダイアグラムガイド</value>
   </data>
   <data name="line_type_dot" xml:space="preserve">
     <value>点線</value>
@@ -261,9 +258,6 @@
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>ヘッダーを空にできません。</value>
   </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>レベルを入力してEnterキーを押すと追加されます。</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>削除</value>
   </data>
@@ -286,7 +280,7 @@
     <value>リストファイルの更新に失敗しました</value>
   </data>
   <data name="click_help_for_guide" xml:space="preserve">
-    <value>ボタンをクリックして図解ドキュメントを表示</value>
+    <value>ボタンをクリックしてダイアグラムドキュメントを表示</value>
   </data>
   <data name="Placeholder_Component_A" xml:space="preserve">
     <value>A</value>
@@ -313,7 +307,7 @@
     <value>新規地質温圧計</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
-    <value>図解言語を切り替え</value>
+    <value>ダイアグラム言語を切り替え</value>
   </data>
   <data name="missing_columns" xml:space="preserve">
     <value>列が不足しています</value>
@@ -376,7 +370,7 @@
     <value>起動を試みています</value>
   </data>
   <data name="diagram" xml:space="preserve">
-    <value>図解</value>
+    <value>ダイアグラム</value>
   </data>
   <data name="geo_msg_checking_update" xml:space="preserve">
     <value>更新を確認中...</value>
@@ -385,7 +379,7 @@
     <value>関数を追加 (Ctrl+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
-    <value>図解テンプレートを編集</value>
+    <value>ダイアグラムテンプレートを編集</value>
   </data>
   <data name="cipw_references_content" xml:space="preserve">
     <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
@@ -407,7 +401,7 @@
 （チタン石とルチルは灰長石の割り当て後に生成されます。長石の手順を参照）</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>図解テンプレートのソースファイルが存在しません</value>
+    <value>ダイアグラムテンプレートのソースファイルが存在しません</value>
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>既に存在します。上書きしますか？</value>
@@ -419,13 +413,13 @@
     <value>温圧計を編集</value>
   </data>
   <data name="official_templates" xml:space="preserve">
-    <value>オンライン図解テンプレート</value>
+    <value>オンラインダイアグラムテンプレート</value>
   </data>
   <data name="geo_validate_reference_required" xml:space="preserve">
     <value>参考文献を空にできません。</value>
   </data>
   <data name="diagram_script_properties" xml:space="preserve">
-    <value>図解スクリプトプロパティ</value>
+    <value>ダイアグラムスクリプトプロパティ</value>
   </data>
   <data name="zoom_type" xml:space="preserve">
     <value>ズームタイプ</value>
@@ -440,10 +434,10 @@
     <value>スクリプト内で trace(...) 関数を使用して計算過程を記録できます。</value>
   </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>マイ図解テンプレート</value>
+    <value>マイダイアグラムテンプレート</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
-    <value>図解テンプレートの読み込みに失敗しました</value>
+    <value>ダイアグラムテンプレートの読み込みに失敗しました</value>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
     <value>テンプレートが正常に保存されました！</value>
@@ -455,7 +449,7 @@
     <value>新規地質温圧計</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>図解をインポート</value>
+    <value>ダイアグラムをインポート</value>
   </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>数式が無効です</value>
@@ -509,7 +503,7 @@
     <value>全てのテンプレート</value>
   </data>
   <data name="personal_templates" xml:space="preserve">
-    <value>マイ図解テンプレート</value>
+    <value>マイダイアグラムテンプレート</value>
   </data>
   <data name="geo_step_basic" xml:space="preserve">
     <value>基本情報</value>
@@ -533,7 +527,7 @@
     <value>下線 (Ctrl+U)</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
-    <value>図解テンプレートを新規作成</value>
+    <value>ダイアグラムテンプレートを新規作成</value>
   </data>
   <data name="background_fill" xml:space="preserve">
     <value>背景の塗りつぶし</value>
@@ -578,7 +572,7 @@
     <value>サンプルデータを入力（花崗岩、玄武岩、安山岩）</value>
   </data>
   <data name="diagram_title_properties" xml:space="preserve">
-    <value>図解タイトルプロパティ</value>
+    <value>ダイアグラムタイトルプロパティ</value>
   </data>
   <data name="update_available_click_to_download" xml:space="preserve">
     <value>新しいバージョンが利用可能です。クリックして更新してください</value>
@@ -625,10 +619,10 @@
 	ソフトウェアをより強力で使いやすいものにしていきましょう！</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>GeoChemistry Nexus は、地球化学・岩石学研究向けの統合ワークベンチです。試料データのインポート、前処理・補正、判別図の作成、地質温圧計計算、CIPW 標準鉱物計算、PNG/SVG などのエクスポートを同一インターフェースに集約し、クラウドテンプレート生態系とコミュニティ協力により、図解とアルゴリズムを継続的に更新し、より多くの研究者へ迅速に届けます。</value>
+    <value>GeoChemistry Nexus は、地球化学・岩石学研究向けの統合ワークベンチです。試料データのインポート、前処理・補正、判別図の作成、地質温圧計計算、CIPW 標準鉱物計算、PNG/SVG などのエクスポートを同一インターフェースに集約し、クラウドテンプレート生態系とコミュニティ協力により、ダイアグラムとアルゴリズムを継続的に更新し、より多くの研究者へ迅速に届けます。</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>次世代の地球化学・岩石学図解および計算ワークベンチ</value>
+    <value>次世代の地球化学・岩石学ダイアグラムおよび計算ワークベンチ</value>
   </data>
   <data name="about_email" xml:space="preserve">
     <value>メール</value>
@@ -649,7 +643,7 @@
     <value>エラー: {0}</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>図解テンプレートの更新を自動的に確認</value>
+    <value>ダイアグラムテンプレートの更新を自動的に確認</value>
   </data>
   <data name="content" xml:space="preserve">
     <value>内容</value>
@@ -731,8 +725,8 @@
     • 曹長石（Ab） → 霞石（Ne）
     • 正長石（Or） → 白榴石（Le）
     • 珪灰石（Wo） → ラルナイト（Cs）
-    • 透輝石/ヘデン輝石（Di+Hd） → ラルナイト（Cs）+ かんらん石（Fo+Fa）
-    • 白榴石（Le） → 仮白榴石（Kp）</value>
+    • 透輝石/ヘデンベルグ輝石（Di+Hd） → ラルナイト（Cs）+ かんらん石（Fo+Fa）
+    • 白榴石（Le） → 偽白榴石（Kp）</value>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>データ列が定義されていません</value>
@@ -774,10 +768,10 @@
     <value>有効なデータ行が検出されません。先に酸化物含有量を入力してください.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
-    <value>現在の図解バージョン</value>
+    <value>現在のダイアグラムバージョン</value>
   </data>
   <data name="independent_diagram_window" xml:space="preserve">
-    <value>独立した図解ウィンドウ</value>
+    <value>独立したダイアグラムウィンドウ</value>
   </data>
   <data name="cipw_diag_alumina_saturation" xml:space="preserve">
     <value>アルミナ飽和度</value>
@@ -826,9 +820,6 @@
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>新規三元相図</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>プロパティ</value>
   </data>
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>交互塗りつぶしを有効化</value>
@@ -897,19 +888,7 @@
     <value>横方向</value>
   </data>
   <data name="enter_category_structure" xml:space="preserve">
-    <value>図解カテゴリ</value>
-  </data>
-  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
-    <value>既存の図解テンプレートから分類パスを選択</value>
-  </data>
-  <data name="select_existing_category_structure_title" xml:space="preserve">
-    <value>既存の分類構造を選択</value>
-  </data>
-  <data name="select_existing_category_structure_prompt" xml:space="preserve">
-    <value>既存の図解テンプレートから分類パスを選択してください。選択後、続けてカスタム階層を追加できます。</value>
-  </data>
-  <data name="select_existing_category_structure_empty" xml:space="preserve">
-    <value>利用可能な分類構造が見つかりません。</value>
+    <value>ダイアグラムカテゴリ</value>
   </data>
   <data name="category_structure_preview" xml:space="preserve">
     <value>分類プレビュー</value>
@@ -939,7 +918,7 @@
     <value>テンプレートの削除に成功しました</value>
   </data>
   <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>このカスタム図解テンプレートを削除してもよろしいですか？</value>
+    <value>このカスタムダイアグラムテンプレートを削除してもよろしいですか？</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
     <value>地質温圧計</value>
@@ -963,7 +942,7 @@
     <value>デフォルトのサードパーティエディタ</value>
   </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>図解テンプレートを読み込めませんでした：</value>
+    <value>ダイアグラムテンプレートを読み込めませんでした：</value>
   </data>
   <data name="font_style" xml:space="preserve">
     <value>フォントスタイル</value>
@@ -1062,7 +1041,7 @@
     <value>飽和</value>
   </data>
   <data name="custom_diagram_template" xml:space="preserve">
-    <value>カスタム図解テンプレート</value>
+    <value>カスタムダイアグラムテンプレート</value>
   </data>
   <data name="font_name" xml:space="preserve">
     <value>フォント名</value>
@@ -1071,7 +1050,7 @@
     <value>フォントサイズ</value>
   </data>
   <data name="open_diagram_template" xml:space="preserve">
-    <value>図解を開く</value>
+    <value>ダイアグラムを開く</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>データをクリアしました.</value>
@@ -1092,7 +1071,7 @@
     <value>情報</value>
   </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>無効な図解テンプレートファイルです。図解JSONファイルが見つかりません。</value>
+    <value>無効なダイアグラムテンプレートファイルです。ダイアグラムJSONファイルが見つかりません。</value>
   </data>
   <data name="cipw_step9_detail" xml:space="preserve">
     <value>• 各鉱物のモル数にモル質量を乗じて標準鉱物の質量を算出
@@ -1150,7 +1129,7 @@
     <value>頂点</value>
   </data>
   <data name="new_template" xml:space="preserve">
-    <value>新規図解テンプレート</value>
+    <value>新規ダイアグラムテンプレート</value>
   </data>
   <data name="point_count" xml:space="preserve">
     <value>サンプリング点</value>
@@ -1180,10 +1159,10 @@
     <value>左側のパネルから温圧計を選択してください</value>
   </data>
   <data name="popup_diagram_window" xml:space="preserve">
-    <value>図解ウィンドウをポップアップ</value>
+    <value>ダイアグラムウィンドウをポップアップ</value>
   </data>
   <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>デフォルトの図解展開レベル</value>
+    <value>デフォルトのダイアグラム展開レベル</value>
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>現在のテンプレートに未保存の内容があります。保存しますか？</value>
@@ -1235,9 +1214,6 @@
   <data name="plot_defaults" xml:space="preserve">
     <value>描画のデフォルト設定</value>
   </data>
-  <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>パッケージをエクスポート</value>
-  </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>副目盛のスタイル</value>
   </data>
@@ -1281,7 +1257,7 @@
     <value>最大化</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>図解テンプレートファイルが見つかりません。インストールが完全か確認するか、アプリケーションを再インストールしてください。</value>
+    <value>ダイアグラムテンプレートファイルが見つかりません。インストールが完全か確認するか、アプリケーションを再インストールしてください。</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>ダウンロードが必要な新しいテンプレートはありません</value>
@@ -1396,9 +1372,6 @@
   <data name="cipw_step9_title" xml:space="preserve">
     <value>結果出力</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>ベースマップファイルは既に存在します。上書きしますか？</value>
-  </data>
   <data name="format" xml:space="preserve">
     <value>形式</value>
   </data>
@@ -1415,7 +1388,7 @@
     <value>カスタム温圧計に降格しました</value>
   </data>
   <data name="plot_type" xml:space="preserve">
-    <value>図解タイプ</value>
+    <value>ダイアグラムタイプ</value>
   </data>
   <data name="image_copied_to_clipboard" xml:space="preserve">
     <value>画像がクリップボードにコピーされました</value>
@@ -1424,13 +1397,13 @@
     <value>更新</value>
   </data>
   <data name="diagram_legend_properties" xml:space="preserve">
-    <value>図解凡例プロパティ</value>
+    <value>ダイアグラム凡例プロパティ</value>
   </data>
   <data name="downloaded_content_not_valid_json" xml:space="preserve">
     <value>ダウンロードされたコンテンツは有効なJSON形式ではありません。</value>
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>図解テンプレートファイルが破損しているか、有効な図解テンプレートJSONファイルが含まれていません。</value>
+    <value>ダイアグラムテンプレートファイルが破損しているか、有効なダイアグラムテンプレートJSONファイルが含まれていません。</value>
   </data>
   <data name="linear" xml:space="preserve">
     <value>線形</value>
@@ -1499,7 +1472,7 @@
     <value>参考文献 *</value>
   </data>
   <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>現在の図解テンプレートに未保存の内容があります。保存しますか？</value>
+    <value>現在のダイアグラムテンプレートに未保存の内容があります。保存しますか？</value>
   </data>
   <data name="offset" xml:space="preserve">
     <value>オフセット</value>
@@ -1545,9 +1518,6 @@
   </data>
   <data name="template_ready" xml:space="preserve">
     <value>テンプレートの準備ができました！</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>図解テンプレートをエクスポート</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>説明</value>
@@ -1652,7 +1622,7 @@
     <value>サポートされていないファイル形式</value>
   </data>
   <data name="file_drop_diagram_kicker" xml:space="preserve">
-    <value>図解</value>
+    <value>ダイアグラム</value>
   </data>
   <data name="file_drop_geothermometer_kicker" xml:space="preserve">
     <value>地質温圧計</value>
@@ -1661,7 +1631,7 @@
     <value>EPMA</value>
   </data>
   <data name="file_drop_diagram_sub" xml:space="preserve">
-    <value>図解テンプレート。複数のファイルを一度にドロップできます。</value>
+    <value>ダイアグラムテンプレート。複数のファイルを一度にドロップできます。</value>
   </data>
   <data name="file_drop_geothermometer_sub" xml:space="preserve">
     <value>地質温圧計パッケージ。複数のファイルを一度にドロップできます。</value>
@@ -1703,7 +1673,7 @@
     <value>更新の確認に失敗しました</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>図解テンプレートでスクリプトが定義されていません</value>
+    <value>ダイアグラムテンプレートでスクリプトが定義されていません</value>
   </data>
   <data name="confirm_delete_row" xml:space="preserve">
     <value>選択した行を削除してもよろしいですか？</value>
@@ -1718,10 +1688,10 @@
     <value>外部アプリケーション</value>
   </data>
   <data name="diagram_grid_properties" xml:space="preserve">
-    <value>図解グリッドプロパティ</value>
+    <value>ダイアグラムグリッドプロパティ</value>
   </data>
   <data name="diagram_template_export_success" xml:space="preserve">
-    <value>図解テンプレートのエクスポートに成功しました</value>
+    <value>ダイアグラムテンプレートのエクスポートに成功しました</value>
   </data>
   <data name="cipw_row_format" xml:space="preserve">
     <value>{0} 行目</value>
@@ -1799,7 +1769,7 @@
     <value>表示する</value>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>図解描画</value>
+    <value>ダイアグラム描画</value>
   </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>現在のソフトウェア温圧計バージョン</value>
@@ -1855,7 +1825,7 @@
 • 芒硝（Th）: SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>図解描画設定</value>
+    <value>ダイアグラム描画設定</value>
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>ヘルプドキュメント</value>
@@ -2023,7 +1993,7 @@
     <value>サムネイルのアップロードに失敗しました：{0}</value>
   </data>
   <data name="plot_type_2d_description" xml:space="preserve">
-    <value>散布図、折れ線、関数、およびほとんどの図解テンプレート向けの標準 X-Y プロットに適しています。</value>
+    <value>散布図、折れ線、関数、およびほとんどのダイアグラムテンプレート向けの標準 X-Y プロットに適しています。</value>
   </data>
   <data name="plot_type_ternary_description" xml:space="preserve">
     <value>三成分組成、相図、端成分混合関係の表現に適しています。</value>
@@ -2062,7 +2032,7 @@
     <value>すべて解除</value>
   </data>
   <data name="set_default_diagram_language" xml:space="preserve">
-    <value>デフォルト図解言語に設定</value>
+    <value>デフォルトダイアグラム言語に設定</value>
   </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>多言語</value>
@@ -2098,19 +2068,19 @@
     <value>お気に入りのテンプレートはまだありません。テンプレートを右クリックして追加できます。</value>
   </data>
   <data name="diagram_hint_no_official" xml:space="preserve">
-    <value>このカテゴリにオンライン図解テンプレートはありません。</value>
+    <value>このカテゴリにオンラインダイアグラムテンプレートはありません。</value>
   </data>
   <data name="diagram_hint_no_personal" xml:space="preserve">
-    <value>個人図解はまだありません。「ファイル」メニューから新規作成またはインポートしてください。</value>
+    <value>個人ダイアグラムはまだありません。「ファイル」メニューから新規作成またはインポートしてください。</value>
   </data>
   <data name="diagram_hint_no_recents" xml:space="preserve">
-    <value>最近使用した図解テンプレートはまだありません。</value>
+    <value>最近使用したダイアグラムテンプレートはまだありません。</value>
   </data>
   <data name="diagram_hint_no_search_results" xml:space="preserve">
     <value>検索条件に一致するテンプレートがありません。</value>
   </data>
   <data name="diagram_hint_no_templates" xml:space="preserve">
-    <value>利用可能な図解テンプレートがありません。</value>
+    <value>利用可能なダイアグラムテンプレートがありません。</value>
   </data>
   <data name="diagram_translation_export" xml:space="preserve">
     <value>エクスポート</value>
@@ -2137,16 +2107,16 @@
     <value>アップグレード</value>
   </data>
   <data name="demote_to_custom_template" xml:space="preserve">
-    <value>オンライン図解テンプレートを解除</value>
+    <value>オンラインダイアグラムテンプレートを解除</value>
   </data>
   <data name="confirm_demote_diagram_template" xml:space="preserve">
-    <value>この図解を公式ライブラリから削除しますか？個人の図解になり、次回のリリースには含まれません。同じパスの個人の図解は置き換えられます。</value>
+    <value>このダイアグラムを公式ライブラリから削除しますか？個人のダイアグラムになり、次回のリリースには含まれません。同じパスの個人のダイアグラムは置き換えられます。</value>
   </data>
   <data name="confirm_demote_geothermometer" xml:space="preserve">
     <value>この温圧計を公式ライブラリから削除しますか？カスタム温圧計になり、次回のリリースには含まれません。</value>
   </data>
   <data name="template_demote_success" xml:space="preserve">
-    <value>個人の図解に降格しました</value>
+    <value>個人のダイアグラムに降格しました</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>強制更新</value>
@@ -2275,7 +2245,7 @@
     <value>お知らせをエクスポート中...</value>
   </data>
   <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
-    <value>図解をエクスポート中...</value>
+    <value>ダイアグラムをエクスポート中...</value>
   </data>
   <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
     <value>地質温圧計をエクスポート中...</value>
@@ -2302,7 +2272,7 @@
     <value>公式パブリッシャー</value>
   </data>
   <data name="official_template_publisher_desc" xml:space="preserve">
-    <value>公式コンテンツ（図解、地質温圧計、ホームリンク、お知らせ）をエクスポートして COS に公開</value>
+    <value>公式コンテンツ（ダイアグラム、地質温圧計、ホームリンク、お知らせ）をエクスポートして COS に公開</value>
   </data>
   <data name="ree_spider_diagram" xml:space="preserve">
     <value>REE スパイダー図</value>
@@ -2365,7 +2335,7 @@
     <value>通知を閉じる</value>
   </data>
   <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
-    <value>図解・データ・編集の各モードを循環して切り替えます。</value>
+    <value>ダイアグラム・データ・編集の各モードを循環して切り替えます。</value>
   </data>
   <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
     <value>モードを循環切り替え</value>
@@ -2383,7 +2353,7 @@
     <value>斜体</value>
   </data>
   <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
-    <value>プロット領域の左半分を中クリックで前のモード、右半分を中クリックで次のモードに切り替えます（図解 ↔ データ ↔ 編集）。</value>
+    <value>プロット領域の左半分を中クリックで前のモード、右半分を中クリックで次のモードに切り替えます（ダイアグラム ↔ データ ↔ 編集）。</value>
   </data>
   <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
     <value>プロット左半分 / 右半分を中クリック</value>
@@ -2422,10 +2392,10 @@
     <value>やり直し</value>
   </data>
   <data name="shortcut_action_save_plot_desc" xml:space="preserve">
-    <value>現在の図解またはテンプレート内容を保存します。</value>
+    <value>現在のダイアグラムまたはテンプレート内容を保存します。</value>
   </data>
   <data name="shortcut_action_save_plot_name" xml:space="preserve">
-    <value>図解を保存</value>
+    <value>ダイアグラムを保存</value>
   </data>
   <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
     <value>データモードパネルに切り替えます。</value>
@@ -2434,10 +2404,10 @@
     <value>データモードに切り替え</value>
   </data>
   <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
-    <value>図解モードパネルに切り替えます。</value>
+    <value>ダイアグラムモードパネルに切り替えます。</value>
   </data>
   <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
-    <value>図解モードに切り替え</value>
+    <value>ダイアグラムモードに切り替え</value>
   </data>
   <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
     <value>編集モードパネルに切り替えます。</value>
@@ -2482,7 +2452,7 @@
     <value>通知</value>
   </data>
   <data name="shortcut_group_plot_desc" xml:space="preserve">
-    <value>図解編集ページで主に機能するショートカットです。</value>
+    <value>ダイアグラム編集ページで主に機能するショートカットです。</value>
   </data>
   <data name="shortcut_group_plot_title" xml:space="preserve">
     <value>プロットエディタ</value>
@@ -2512,7 +2482,7 @@
     <value>プロットに含める元素を選択してください。下のリストは現在のプロット順序を示し、右のボタンで横軸の配置を調整できます。</value>
   </data>
   <data name="tool_diagrams_section" xml:space="preserve">
-    <value>ツール図解</value>
+    <value>ツールダイアグラム</value>
   </data>
   <data name="trace_element_spider_diagram" xml:space="preserve">
     <value>微量元素スパイダー図</value>
@@ -2710,7 +2680,7 @@
     <value>霞石</value>
   </data>
   <data name="cipw_mineral_Kp" xml:space="preserve">
-    <value>仮白榴石</value>
+    <value>偽白榴石</value>
   </data>
   <data name="cipw_mineral_Ac" xml:space="preserve">
     <value>アクマイト</value>
@@ -2872,7 +2842,7 @@
   </data>
   <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
 
-    <value>起動時に図解テンプレートの更新を自動的に確認する</value>
+    <value>起動時にダイアグラムテンプレートの更新を自動的に確認する</value>
 
   </data>
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
@@ -2896,12 +2866,12 @@
   </data>
   <data name="current_diagram_version_hint" xml:space="preserve">
 
-    <value>このアプリケーションがサポートする図解テンプレート形式バージョン（読み取り専用）</value>
+    <value>このアプリケーションがサポートするダイアグラムテンプレート形式バージョン（読み取り専用）</value>
 
   </data>
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
 
-    <value>図解カテゴリツリーの既定の展開深さ</value>
+    <value>ダイアグラムカテゴリツリーの既定の展開深さ</value>
 
   </data>
   <data name="default_third_party_editor_hint" xml:space="preserve">
@@ -3229,7 +3199,7 @@
   </data>
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
-    <value>ライブラリ内の図解テンプレートカードの表示サイズ</value>
+    <value>ライブラリ内のダイアグラムテンプレートカードの表示サイズ</value>
 
   </data>
   <data name="ui_scale_mode" xml:space="preserve">
@@ -3275,7 +3245,7 @@
     <value>やり直し (Ctrl+Y)</value>
   </data>
   <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
-    <value>図解モード (Alt+1)</value>
+    <value>ダイアグラムモード (Alt+1)</value>
   </data>
   <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
     <value>データモード (Alt+2)</value>
@@ -4082,10 +4052,10 @@
     <value>Fe³⁺ は Fe²⁺ と結合して磁鉄鉱 (Mt) を作り、余った Fe³⁺ は赤鉄鉱 (Hm) になります。Ca、Mg、Fe²⁺ はそれぞれ珪灰石 (Wo)、頑火輝石 (En)、鉄輝石 (Fs) を形成し、En と Fs は斜方輝石 (Hy) を構成します。Wo と Hy が等モルで結合して透輝石 (Di) になります。</value>
   </data>
   <data name="niggli_step5_lc_kp_done" xml:space="preserve">
-    <value>脱珪反応 Step 5: 白榴石 -&gt; カルシライト (Lc → Kp)、Lc {0}% を消費、ケイ酸欠乏を完全に解消</value>
+    <value>脱珪反応 Step 5: 白榴石 -&gt; カリオフィライト (Lc → Kp)、Lc {0}% を消費、ケイ酸欠乏を完全に解消</value>
   </data>
   <data name="niggli_step5_lc_kp_part" xml:space="preserve">
-    <value>脱珪反応 Step 5: 白榴石 -&gt; カルシライト (Lc → Kp)、すべての Lc が転換、残余欠乏 D = {0}%</value>
+    <value>脱珪反応 Step 5: 白榴石 -&gt; カリオフィライト (Lc → Kp)、すべての Lc が転換、残余欠乏 D = {0}%</value>
   </data>
   <data name="niggli_step5_title" xml:space="preserve">
     <value>鉄酸化物と輝石類鉱物の分配</value>
@@ -4641,7 +4611,7 @@
     <value>テンプレートのスタイル</value>
   </data>
   <data name="template_card_appearance_hint" xml:space="preserve">
-    <value>図解テンプレートライブラリの表示スタイルを切り替えます</value>
+    <value>ダイアグラムテンプレートライブラリの表示スタイルを切り替えます</value>
   </data>
   <data name="template_card_appearance_regular" xml:space="preserve">
     <value>通常</value>
@@ -5097,19 +5067,19 @@
   <data name="harker_export_format" xml:space="preserve"><value>ハーカー図ではこの書き出し形式に対応していません（png / jpg / bmp / webp）。</value></data>
   <data name="harker_plot_mismatch" xml:space="preserve"><value>Harker：WpfPlot1.Plot が先頭パネルと一致しません。書き出しやマウス操作がずれることがあります。</value></data>
   <data name="official_publisher_diagrams_not_downloaded" xml:space="preserve">
-    <value>{0} 件のオンライン図解テンプレートが未ダウンロードのため、公開できません：{1}。先にダウンロードしてください。</value>
+    <value>{0} 件のオンラインダイアグラムテンプレートが未ダウンロードのため、公開できません：{1}。先にダウンロードしてください。</value>
   </data>
   <data name="diagram_update_overwrite_confirm" xml:space="preserve">
     <value>更新すると「{0}」が公式バージョンで上書きされます（ローカルの変更を含む）。続行しますか？</value>
   </data>
   <data name="confirm_promote_diagram_template" xml:space="preserve">
-    <value>この図解をオンライン図解テンプレートにアップグレードしますか？公式ライブラリと一緒に公開されます。</value>
+    <value>このダイアグラムをオンラインダイアグラムテンプレートにアップグレードしますか？公式ライブラリと一緒に公開されます。</value>
   </data>
   <data name="confirm_promote_geothermometer" xml:space="preserve">
     <value>「{0}」をオンライン温度圧力計テンプレートにアップグレードしますか？公式ライブラリと一緒に公開されます。</value>
   </data>
   <data name="view_diagram_template" xml:space="preserve">
-    <value>図解テンプレートを表示（読み取り専用）</value>
+    <value>ダイアグラムテンプレートを表示（読み取り専用）</value>
   </data>
   <data name="ctx_view" xml:space="preserve">
     <value>表示</value>
@@ -5160,29 +5130,11 @@
   <data name="folder_name_create" xml:space="preserve">
     <value>作成</value>
   </data>
-  <data name="folder_name_create_in" xml:space="preserve">
-    <value>作成先：{0}</value>
-  </data>
-  <data name="folder_name_current_location" xml:space="preserve">
-    <value>現在：{0}</value>
-  </data>
-  <data name="folder_name_dialog_hint" xml:space="preserve">
-    <value>言語ごとにフォルダー名を入力してください。空欄の言語は既存の名前を使用します。</value>
-  </data>
   <data name="folder_name_exists" xml:space="preserve">
     <value>同じ名前のフォルダーが既にここにあります。</value>
   </data>
   <data name="folder_name_expand" xml:space="preserve">
     <value>展開</value>
-  </data>
-  <data name="folder_name_fallback_hint" xml:space="preserve">
-    <value>空欄の言語は既存の名前を使用します。</value>
-  </data>
-  <data name="folder_name_filled_count" xml:space="preserve">
-    <value>{0} / {1} 入力済み</value>
-  </data>
-  <data name="folder_name_footer_filled" xml:space="preserve">
-    <value>{0} 言語分の名前を入力済み</value>
   </data>
   <data name="folder_name_label" xml:space="preserve">
     <value>フォルダー名</value>
@@ -5202,17 +5154,11 @@
   <data name="folder_name_save" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="folder_name_ui_language" xml:space="preserve">
-    <value>表示言語</value>
-  </data>
-  <data name="folder_new_here" xml:space="preserve">
-    <value>新しいフォルダー…</value>
-  </data>
   <data name="folder_new_subfolder" xml:space="preserve">
     <value>新しいサブフォルダー</value>
   </data>
   <data name="folder_new_template_here" xml:space="preserve">
-    <value>ここに新しい図解</value>
+    <value>ここに新しいダイアグラム</value>
   </data>
   <data name="folder_new_title" xml:space="preserve">
     <value>新しいフォルダー</value>
@@ -5230,7 +5176,7 @@
     <value>移動中のフォルダー</value>
   </data>
   <data name="folder_picker_moving_template" xml:space="preserve">
-    <value>移動中の図解</value>
+    <value>移動中のダイアグラム</value>
   </data>
   <data name="folder_picker_moving_title" xml:space="preserve">
     <value>移動する項目</value>
@@ -5247,9 +5193,6 @@
   <data name="folder_picker_selected_title" xml:space="preserve">
     <value>選択した場所</value>
   </data>
-  <data name="folder_picker_subtitle" xml:space="preserve">
-    <value>移動先フォルダーを選択</value>
-  </data>
   <data name="folder_picker_tag_current" xml:space="preserve">
     <value>現在</value>
   </data>
@@ -5260,7 +5203,7 @@
     <value>移動先</value>
   </data>
   <data name="folder_picker_template_count" xml:space="preserve">
-    <value>図解 {0} 個</value>
+    <value>ダイアグラム {0} 個</value>
   </data>
   <data name="folder_rename" xml:space="preserve">
     <value>名前の変更</value>
@@ -5281,16 +5224,16 @@
     <value>変更する前に、このフォルダー内のテンプレートをすべてダウンロードしてください。</value>
   </data>
   <data name="promote_template_name_exists" xml:space="preserve">
-    <value>オンライン図解テンプレートの同じフォルダーに、同じ名前のテンプレートが既にあります。アップグレードする前に、名前を変更するか移動してください。</value>
+    <value>オンラインダイアグラムテンプレートの同じフォルダーに、同じ名前のテンプレートが既にあります。アップグレードする前に、名前を変更するか移動してください。</value>
   </data>
   <data name="template_name" xml:space="preserve">
     <value>テンプレート名</value>
   </data>
   <data name="template_name_exists_in_folder" xml:space="preserve">
-    <value>このフォルダーには同じ名前の図解テンプレートが既にあります。</value>
+    <value>このフォルダーには同じ名前のダイアグラムテンプレートが既にあります。</value>
   </data>
   <data name="template_name_placeholder" xml:space="preserve">
-    <value>例：著者 (年) 図解名</value>
+    <value>例：著者 (年) ダイアグラム名</value>
   </data>
   <data name="template_name_required" xml:space="preserve">
     <value>テンプレート名を入力してください。</value>
