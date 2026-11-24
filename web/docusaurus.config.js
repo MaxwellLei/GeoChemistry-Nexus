@@ -28,6 +28,51 @@ function homeCopyAliasPlugin(context) {
   };
 }
 
+const GA_ID = 'G-XKH32ZMLQP';
+
+/**
+ * Deferred Google Analytics.
+ * The official gtag plugin puts preconnect + <script async> in <head>, which
+ * stalls first paint where Google is unreachable (e.g. mainland China).
+ * Here <head> only gets a tiny stub that queues gtag() calls; the real gtag.js
+ * is injected after window "load" + browser idle time (max ~4 s later).
+ * @type {import('@docusaurus/types').PluginModule}
+ */
+function deferredGtagPlugin(context) {
+  if (process.env.NODE_ENV !== 'production') return {name: 'gn-deferred-gtag'};
+  const loader = `
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+window.gtag=gtag;
+gtag('js',new Date());
+gtag('config','${GA_ID}');
+(function(){
+  var loaded=false;
+  function load(){
+    if(loaded)return; loaded=true;
+    var s=document.createElement('script');
+    s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
+    document.head.appendChild(s);
+  }
+  function schedule(){
+    if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:4000});}
+    else{setTimeout(load,2500);}
+  }
+  if(document.readyState==='complete'){schedule();}
+  else{window.addEventListener('load',schedule,{once:true});}
+})();`;
+  return {
+    name: 'gn-deferred-gtag',
+    getClientModules() {
+      return [path.join(context.siteDir, 'src', 'clientModules', 'gtagRoute.js')];
+    },
+    injectHtmlTags() {
+      return {headTags: [{tagName: 'script', innerHTML: loader}]};
+    },
+  };
+}
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
@@ -145,7 +190,7 @@ const config = {
 
 
 
-  plugins: [homeCopyAliasPlugin],
+  plugins: [homeCopyAliasPlugin, deferredGtagPlugin],
 
   presets: [
     [
@@ -199,9 +244,7 @@ const config = {
           customCss: './src/css/custom.css',
         },
         // Google Analytics 4 (数据流: geochemistry-nexus.pages.dev)
-        gtag: {
-          trackingID: 'G-XKH32ZMLQP',
-        },
+        // 已改为 deferredGtagPlugin 延迟加载，不再使用内置 gtag 预设（会在 <head> 同步预连接 Google）。
       }),
     ],
   ],

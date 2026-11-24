@@ -296,7 +296,7 @@ function StudioHomepageContent() {
                     })}`;
                     const isActive = item.locale === currentLocale;
                     return (
-                      <Link
+          <Link
                         key={item.locale}
                         to={targetTo}
                         target="_self"
@@ -305,7 +305,7 @@ function StudioHomepageContent() {
                         onClick={() => setLocaleOpen(false)}>
                         <span>{item.label}</span>
                         <small>{item.badge}</small>
-                      </Link>
+          </Link>
                     );
                   })}
                 </div>
