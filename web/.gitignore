@@ -8,6 +8,9 @@
 .docusaurus
 .cache-loader
 
+# Local helper scripts (CDN packing), not part of the repo
+/scripts
+
 # Misc
 .DS_Store
 .env.local

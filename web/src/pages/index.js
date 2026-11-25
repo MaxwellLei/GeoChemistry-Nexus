@@ -70,12 +70,18 @@ function centerPillInBar(btnEl) {
 function StudioHomepageContent() {
   const {
     i18n: {currentLocale},
+    siteConfig,
   } = useDocusaurusContext();
   const alternatePageUtils = useAlternatePageUtils();
-  const rootBaseUrl = useBaseUrl('/');
+  // Homepage screenshots: served from the object-storage bucket of this locale
+  // (zh-Hans -> Beijing, others -> Hong Kong; see docusaurus.config.js), or from this
+  // site's own /img/... when the CDN is switched off.
+  const cdnBases = (siteConfig.customFields && siteConfig.customFields.cdnBases) || {};
+  const cdnBase = (cdnBases[currentLocale] || cdnBases.default || '').replace(/\/+$/, '');
   const withBase = useCallback(
-    (p) => `${rootBaseUrl.replace(/\/$/, '')}${p}`,
-    [rootBaseUrl],
+    // p always starts with "/img/..."; default-locale root copy is shared by every locale
+    (p) => (cdnBase ? `${cdnBase}${p}` : p),
+    [cdnBase],
   );
 
   const copy = HOME_COPY;
@@ -302,7 +308,15 @@ function StudioHomepageContent() {
                         target="_self"
                         autoAddBaseUrl={false}
                         className={`locale-opt${isActive ? ' active' : ''}`}
-                        onClick={() => setLocaleOpen(false)}>
+                        onClick={() => {
+                          try {
+                            // remember the manual choice so the root-page auto redirect respects it
+                            window.localStorage.setItem('gn-locale-pref', item.locale);
+                          } catch (e) {
+                            /* storage unavailable */
+                          }
+                          setLocaleOpen(false);
+                        }}>
                         <span>{item.label}</span>
                         <small>{item.badge}</small>
           </Link>

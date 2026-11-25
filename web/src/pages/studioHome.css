@@ -83,6 +83,8 @@ html {
 }
 
 .gn-studio-root .gn-container {
+  width: 100%;
+  box-sizing: border-box;
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 28px;
@@ -349,6 +351,11 @@ html {
 
 /* Hero */
 .gn-studio-root .hero {
+  /* Infima defines a global `.hero { display:flex; align-items:center }`, which makes
+     the child container shrink-to-fit its content (≈1000px) on phones. Reset it. */
+  display: block;
+  width: 100%;
+  min-width: 0;
   padding: 68px 0 84px;
   text-align: center;
   background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(54, 69, 216, 0.08), transparent 70%);
@@ -1706,5 +1713,73 @@ html {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+  }
+}
+
+
+/* ---- Extra-narrow phones: keep the navbar pill and long CTA labels inside the viewport ---- */
+@media (max-width: 680px) {
+  .gn-studio-root .gn-navbar {
+    min-width: 0;
+    gap: 8px;
+  }
+  .gn-studio-root .brand {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+  .gn-studio-root .nav-right {
+    flex-shrink: 0;
+  }
+  /* Long localized button labels may wrap instead of overflowing the pill */
+  .gn-studio-root .hero-actions .gn-btn,
+  .gn-studio-root .cta-d-actions .gn-btn {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+    padding: 12px 18px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 420px) {
+  .gn-studio-root .nav-wrap {
+    padding: 10px 10px 0;
+  }
+  .gn-studio-root .gn-navbar {
+    padding: 0 6px 0 10px;
+    gap: 6px;
+  }
+  .gn-studio-root .brand {
+    font-size: 0.86rem;
+    gap: 6px;
+  }
+  .gn-studio-root .brand svg {
+    width: 22px;
+    height: 22px;
+  }
+  .gn-studio-root .nav-right {
+    gap: 6px;
+  }
+  .gn-studio-root .locale-trigger {
+    padding: 6px 9px;
+    gap: 5px;
+    font-size: 0.74rem;
+  }
+  .gn-studio-root .locale-trigger svg {
+    width: 13px;
+    height: 13px;
+  }
+  .gn-studio-root .mobile-menu-btn {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 350px) {
+  .gn-studio-root .brand {
+    font-size: 0.8rem;
+  }
+  .gn-studio-root .locale-trigger svg {
+    display: none;
   }
 }

@@ -31,7 +31,7 @@ function homeCopyAliasPlugin(context) {
 const GA_ID = 'G-XKH32ZMLQP';
 
 /**
- * Deferred Google Analytics.
+ * Deferred Google Analytics + Cloudflare Web Analytics (no third-party script blocks hydration).
  * The official gtag plugin puts preconnect + <script async> in <head>, which
  * stalls first paint where Google is unreachable (e.g. mainland China).
  * Here <head> only gets a tiny stub that queues gtag() calls; the real gtag.js
@@ -54,6 +54,11 @@ gtag('config','${GA_ID}');
     s.async=true;
     s.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
     document.head.appendChild(s);
+    var b=document.createElement('script');
+    b.defer=true;
+    b.src='https://static.cloudflareinsights.com/beacon.min.js';
+    b.setAttribute('data-cf-beacon','{"token": "c8b9a5804d4d43d4bcb7bd59266e7eab"}');
+    document.head.appendChild(b);
   }
   function schedule(){
     if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:4000});}
@@ -73,6 +78,103 @@ gtag('config','${GA_ID}');
   };
 }
 
+/**
+ * First-visit language redirect (browser language based).
+ * Runs only on the site root ("/"), which is the English default locale.
+ *  - same-origin referrer (user is navigating inside the site)  -> never redirect
+ *  - localStorage "gn-locale-pref" (set by the homepage language menu) -> honour it
+ *  - otherwise map navigator.languages (first entry that is supported) to a locale
+ *  - English as first preference -> stay
+ * Explicit locale URLs such as /zh-Hans/ are never touched.
+ * @type {import('@docusaurus/types').PluginModule}
+ */
+function langRedirectPlugin(context) {
+  // Only the default-locale build (served at "/") needs this; other locales have baseUrl "/<locale>/".
+  if (context.i18n.currentLocale !== context.i18n.defaultLocale) {
+    return {name: 'gn-lang-redirect'};
+  }
+  const root = '/';
+  const script = `
+(function(){try{
+  var p=location.pathname;
+  if(p!=='${root}'&&p!=='${root}index.html')return;
+  var r=document.referrer;
+  if(r){try{if(new URL(r).origin===location.origin)return;}catch(e){}}
+  if(sessionStorage.getItem('gn-lang-redirected'))return;
+  var ok={'zh-Hans':1,'zh-Hant':1,'de-DE':1,'ja-JP':1,'ko-KR':1,'es-ES':1,'ru-RU':1,'fr-FR':1,'pt-BR':1};
+  var target=null,pref=null;
+  try{pref=localStorage.getItem('gn-locale-pref');}catch(e){}
+  if(pref){ if(ok[pref])target=pref; }
+  else{
+    var m={de:'de-DE',ja:'ja-JP',ko:'ko-KR',es:'es-ES',ru:'ru-RU',fr:'fr-FR',pt:'pt-BR'};
+    var langs=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||''];
+    for(var i=0;i<langs.length;i++){
+      var l=String(langs[i]).toLowerCase().split(';')[0].replace('_','-'),b=l.split('-')[0];
+      if(b==='en')break;
+      if(b==='zh'){target=/(^|-)(tw|hk|mo|hant)(-|$)/.test(l)?'zh-Hant':'zh-Hans';break;}
+      if(m[b]){target=m[b];break;}
+    }
+  }
+  if(!target)return;
+  sessionStorage.setItem('gn-lang-redirected','1');
+  location.replace('${root}'+target+'/'+location.search+location.hash);
+}catch(e){}})();`;
+  return {
+    name: 'gn-lang-redirect',
+    injectHtmlTags() {
+      return {headTags: [{tagName: 'script', innerHTML: script}]};
+    },
+  };
+}
+
+/**
+ * Static assets on object storage (COS), chosen per locale:
+ *   zh-Hans      -> Beijing bucket   (mainland China users)
+ *   all others   -> Hong Kong bucket
+ * Both buckets must contain the output of `npm run pack:cdn` (folder `cdn-upload/`) under /Web, i.e.
+ *   <base>/assets/...   and   <base>/img/v0.9.0/en-US/...
+ *  - webpack publicPath   -> lazy JS chunks, CSS and hashed images load from the bucket
+ *  - postBuild            -> rewrites <script src> / <link href> of every built HTML page
+ *  - customFields.cdnBases-> homepage screenshots use the bucket (picked per locale in src/pages/index.js)
+ * Set env GN_CDN_OFF=1 to build a self-contained site (assets served from the site itself).
+ */
+const CDN_BASES = {
+  'zh-Hans': 'https://geochemistrynexus-cn-1303234197.cos.ap-beijing.myqcloud.com/Web',
+  default: 'https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Web',
+};
+const CDN_ENABLED = !process.env.GN_CDN_OFF;
+const cdnBaseFor = (locale) =>
+  CDN_ENABLED ? (CDN_BASES[locale] || CDN_BASES.default).replace(/\/+$/, '') : '';
+
+function cdnAssetsPlugin(context) {
+  const CDN_BASE = cdnBaseFor(context.i18n.currentLocale);
+  if (!CDN_BASE) return {name: 'gn-cdn-assets'};
+  const walk = (dir) =>
+    fs.readdirSync(dir, {withFileTypes: true}).flatMap((e) => {
+      const p = path.join(dir, e.name);
+      return e.isDirectory() ? walk(p) : p.endsWith('.html') ? [p] : [];
+    });
+  return {
+    name: 'gn-cdn-assets',
+    configureWebpack(_config, isServer) {
+      return isServer ? {} : {output: {publicPath: `${CDN_BASE}/`}};
+    },
+    async postBuild({outDir, baseUrl}) {
+      const esc = baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(`(src|href)="${esc}assets/`, 'g');
+      let n = 0;
+      for (const file of walk(outDir)) {
+        const html = fs.readFileSync(file, 'utf8');
+        const out = html.replace(re, `$1="${CDN_BASE}/assets/`);
+        if (out !== html) {
+          fs.writeFileSync(file, out);
+          n += 1;
+        }
+      }
+      console.log(`[gn-cdn-assets] ${context.i18n.currentLocale}: rewrote asset URLs in ${n} html files -> ${CDN_BASE}`);
+    },
+  };
+}
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
@@ -95,17 +197,8 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Cloudflare Web Analytics (与 Google Tag Manager / GA 可同时使用)
-  headTags: [
-    {
-      tagName: 'script',
-      attributes: {
-        defer: 'true',
-        src: 'https://static.cloudflareinsights.com/beacon.min.js',
-        'data-cf-beacon': '{"token": "c8b9a5804d4d43d4bcb7bd59266e7eab"}',
-      },
-    },
-  ],
+  // Cloudflare Web Analytics 已移入 deferredGtagPlugin 一并延迟加载：
+  // 放在 <head> 的 defer 脚本会排在 main.js 之前执行，国内一旦卡住就会阻塞 React 激活（点击无响应）。
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -190,7 +283,10 @@ const config = {
 
 
 
-  plugins: [homeCopyAliasPlugin, deferredGtagPlugin],
+  plugins: [homeCopyAliasPlugin, deferredGtagPlugin, langRedirectPlugin, cdnAssetsPlugin],
+
+  // Empty string => assets are served from this site itself (default).
+  customFields: {cdnBases: CDN_ENABLED ? CDN_BASES : {}},
 
   presets: [
     [
