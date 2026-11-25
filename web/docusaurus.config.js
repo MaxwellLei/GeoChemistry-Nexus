@@ -128,53 +128,18 @@ function langRedirectPlugin(context) {
 }
 
 /**
- * Static assets on object storage (COS), chosen per locale:
+ * Homepage screenshots on object storage (COS), chosen per locale:
  *   zh-Hans      -> Beijing bucket   (mainland China users)
  *   all others   -> Hong Kong bucket
- * Both buckets must contain the output of `npm run pack:cdn` (folder `cdn-upload/`) under /Web, i.e.
- *   <base>/assets/...   and   <base>/img/v0.9.0/en-US/...
- *  - webpack publicPath   -> lazy JS chunks, CSS and hashed images load from the bucket
- *  - postBuild            -> rewrites <script src> / <link href> of every built HTML page
- *  - customFields.cdnBases-> homepage screenshots use the bucket (picked per locale in src/pages/index.js)
- * Set env GN_CDN_OFF=1 to build a self-contained site (assets served from the site itself).
+ * Only images live there: <base>/img/v0.9.0/en-US/...  (src/pages/index.js reads customFields.cdnBases).
+ * JS / CSS are served by the site itself (Cloudflare Pages), as usual.
+ * Set env GN_CDN_OFF=1 to serve the images from the site itself as well.
  */
 const CDN_BASES = {
   'zh-Hans': 'https://geochemistrynexus-cn-1303234197.cos.ap-beijing.myqcloud.com/Web',
   default: 'https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Web',
 };
 const CDN_ENABLED = !process.env.GN_CDN_OFF;
-const cdnBaseFor = (locale) =>
-  CDN_ENABLED ? (CDN_BASES[locale] || CDN_BASES.default).replace(/\/+$/, '') : '';
-
-function cdnAssetsPlugin(context) {
-  const CDN_BASE = cdnBaseFor(context.i18n.currentLocale);
-  if (!CDN_BASE) return {name: 'gn-cdn-assets'};
-  const walk = (dir) =>
-    fs.readdirSync(dir, {withFileTypes: true}).flatMap((e) => {
-      const p = path.join(dir, e.name);
-      return e.isDirectory() ? walk(p) : p.endsWith('.html') ? [p] : [];
-    });
-  return {
-    name: 'gn-cdn-assets',
-    configureWebpack(_config, isServer) {
-      return isServer ? {} : {output: {publicPath: `${CDN_BASE}/`}};
-    },
-    async postBuild({outDir, baseUrl}) {
-      const esc = baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const re = new RegExp(`(src|href)="${esc}assets/`, 'g');
-      let n = 0;
-      for (const file of walk(outDir)) {
-        const html = fs.readFileSync(file, 'utf8');
-        const out = html.replace(re, `$1="${CDN_BASE}/assets/`);
-        if (out !== html) {
-          fs.writeFileSync(file, out);
-          n += 1;
-        }
-      }
-      console.log(`[gn-cdn-assets] ${context.i18n.currentLocale}: rewrote asset URLs in ${n} html files -> ${CDN_BASE}`);
-    },
-  };
-}
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
@@ -283,7 +248,7 @@ const config = {
 
 
 
-  plugins: [homeCopyAliasPlugin, deferredGtagPlugin, langRedirectPlugin, cdnAssetsPlugin],
+  plugins: [homeCopyAliasPlugin, deferredGtagPlugin, langRedirectPlugin],
 
   // Empty string => assets are served from this site itself (default).
   customFields: {cdnBases: CDN_ENABLED ? CDN_BASES : {}},
