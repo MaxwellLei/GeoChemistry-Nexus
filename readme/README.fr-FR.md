@@ -51,10 +51,25 @@ Articulé autour d'une boucle complète « Géochimie sur roche totale — Miné
 
 Rendez-vous sur [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) pour télécharger le dernier installateur Windows. Aucune configuration Python / R ou autre environnement externe n'est requise.
 
+### 📥 Quel installateur choisir ?
+
+Chaque version propose deux installateurs aux fonctionnalités strictement identiques. La seule différence : le runtime .NET est-il inclus ou non ?
+
+| Installateur | Exemple de nom de fichier | Description | Recommandé pour |
+| :--- | :--- | :--- | :--- |
+| ✅ **Complet (recommandé)** | `GeoChemistryNexus-Setup-<version>-x64.exe` | Inclut le .NET 10 Desktop Runtime ; s'il est absent de l'ordinateur, l'installateur l'installe automatiquement en mode silencieux | La plupart des utilisateurs, surtout lors d'une première installation ou si l'on ne sait pas si .NET est déjà installé |
+| 🪶 **Allégé (Lite)** | `GeoChemistryNexus-Setup-<version>-x64-lite.exe` | Le nom du fichier se termine par `-lite` ; **n'inclut pas** le runtime .NET, d'où un téléchargement bien plus léger | Utilisateurs ayant déjà le [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0), ou souhaitant économiser de la bande passante |
+
+> [!NOTE]
+> - L'installateur Lite vérifie d'abord la présence du .NET 10 Desktop Runtime. **S'il n'est pas détecté, un message s'affiche et l'installation est interrompue sans écrire aucun fichier.** Téléchargez alors l'installateur Complet, ou installez vous-même le runtime .NET puis relancez Lite.
+> - Dans le doute, téléchargez simplement l'installateur **Complet**.
+
+### 💻 Configuration requise
+
 | Élément | Spécification |
 | :--- | :--- |
 | 🖥️ **Système d'exploitation** | Windows 7 SP1 / Windows 10 / Windows 11 (64 bits x64) |
-| ⚙️ **Environnement d'exécution** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚙️ **Environnement d'exécution** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) (inclus et installé automatiquement par l'installateur Complet ; à installer au préalable avec Lite) |
 | ⚡ **Taille du logiciel** | Client principal env. `9 MB` (version sans le runtime .NET inclus) |
 
 ## 🗺️ Feuille de route

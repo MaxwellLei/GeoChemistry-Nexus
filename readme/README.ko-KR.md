@@ -51,10 +51,25 @@
 
 [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)에서 최신 Windows 설치 파일을 다운로드하세요. Python / R 등 별도의 외부 환경을 구성할 필요가 없습니다.
 
+### 📥 설치 파일 선택 방법
+
+각 버전은 두 가지 설치 파일로 제공되며 기능은 완전히 동일합니다. 차이점은 .NET 런타임 포함 여부뿐입니다.
+
+| 설치 파일 | 파일 이름 예시 | 설명 | 추천 대상 |
+| :--- | :--- | :--- | :--- |
+| ✅ **전체 버전 (권장)** | `GeoChemistryNexus-Setup-<버전>-x64.exe` | .NET 10 데스크톱 런타임을 포함합니다. PC에 설치되어 있지 않으면 설치 프로그램이 자동으로 무인 설치합니다 | 대부분의 사용자, 특히 처음 설치하거나 .NET 설치 여부를 모르는 사용자 |
+| 🪶 **경량 버전 (Lite)** | `GeoChemistryNexus-Setup-<버전>-x64-lite.exe` | 파일 이름이 `-lite`로 끝나며 .NET 런타임을 **포함하지 않아** 용량이 훨씬 작습니다 | 이미 [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0)이 설치된 사용자, 다운로드 용량을 절약하고 싶은 사용자 |
+
+> [!NOTE]
+> - 경량 버전은 실행 시 먼저 .NET 10 데스크톱 런타임이 설치되어 있는지 확인합니다. **감지되지 않으면 안내 메시지를 표시하고 파일을 전혀 쓰지 않은 채 설치를 종료합니다.** 이 경우 전체 버전을 다운로드하거나, .NET 런타임을 직접 설치한 뒤 다시 실행하세요.
+> - 어떤 것을 선택할지 모르겠다면 **전체 버전**을 다운로드하세요.
+
+### 💻 실행 환경
+
 | 항목 | 사양 요구사항 |
 | :--- | :--- |
 | 🖥️ **운영체제** | Windows 7 SP1 / Windows 10 / Windows 11 (64비트 x64) |
-| ⚙️ **실행 환경** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚙️ **실행 환경** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) (전체 버전 설치 파일은 포함 및 자동 설치, 경량 버전은 사전에 직접 설치 필요) |
 | ⚡ **소프트웨어 용량** | 클라이언트 본체 약 `9 MB` (.NET 런타임 미포함 버전) |
 
 ## 🗺️ 로드맵

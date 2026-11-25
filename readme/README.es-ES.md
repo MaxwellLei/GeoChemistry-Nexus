@@ -51,10 +51,25 @@ Diseñado como un ciclo completo de «Geoquímica de roca total — Mineralogía
 
 Visite [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) para descargar el último instalador para Windows. No requiere configurar Python / R ni otros entornos externos.
 
+### 📥 ¿Qué instalador elegir?
+
+Cada versión incluye dos instaladores con exactamente las mismas funciones. La única diferencia es si incorporan o no el runtime de .NET:
+
+| Instalador | Nombre de archivo de ejemplo | Descripción | Recomendado para |
+| :--- | :--- | :--- | :--- |
+| ✅ **Completo (recomendado)** | `GeoChemistryNexus-Setup-<versión>-x64.exe` | Incluye el .NET 10 Desktop Runtime; si no está instalado en el equipo, el instalador lo instala de forma automática y silenciosa | La mayoría de usuarios, sobre todo en una primera instalación o si no se sabe si .NET ya está instalado |
+| 🪶 **Lite** | `GeoChemistryNexus-Setup-<versión>-x64-lite.exe` | El nombre del archivo termina en `-lite`; **no incluye** el runtime de .NET, por lo que la descarga es mucho menor | Usuarios que ya tienen el [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) o que quieren ahorrar datos |
+
+> [!NOTE]
+> - El instalador Lite comprueba primero si el .NET 10 Desktop Runtime está instalado. **Si no lo detecta, muestra un aviso y cancela la instalación sin escribir ningún archivo.** En ese caso, descargue el instalador Completo o instale usted mismo el runtime de .NET y vuelva a ejecutar Lite.
+> - Si no está seguro de cuál elegir, descargue simplemente el instalador **Completo**.
+
+### 💻 Requisitos del sistema
+
 | Elemento | Especificación |
 | :--- | :--- |
 | 🖥️ **Sistema operativo** | Windows 7 SP1 / Windows 10 / Windows 11 (64 bits x64) |
-| ⚙️ **Entorno de ejecución** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚙️ **Entorno de ejecución** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) (incluido e instalado automáticamente por el instalador Completo; con Lite debe instalarse previamente) |
 | ⚡ **Tamaño del paquete** | Cliente base aprox. `9 MB` (versión sin el runtime de .NET incluido) |
 
 ## 🗺️ Hoja de ruta

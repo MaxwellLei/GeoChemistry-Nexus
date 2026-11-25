@@ -51,10 +51,25 @@
 
 前往 [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) 下载最新 Windows 安装包。无需配置任何 Python / R 等环境。
 
+### 📥 如何选择安装包
+
+每个版本提供两种安装包，功能完全一致，区别仅在于是否内置 .NET 运行时：
+
+| 安装包 | 文件名示例 | 说明 | 适用人群 |
+| :--- | :--- | :--- | :--- |
+| ✅ **完整版（推荐）** | `GeoChemistryNexus-Setup-<版本>-x64.exe` | 内置 .NET 10 桌面运行时；若本机尚未安装，安装程序会自动静默安装，无需手动操作 | 大多数用户，尤其是首次安装、不确定电脑是否已装 .NET 的用户 |
+| 🪶 **精简版（Lite）** | `GeoChemistryNexus-Setup-<版本>-x64-lite.exe` | 文件名带 `-lite`，**不含** .NET 运行时，安装包体积小得多 | 已安装 [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) 的用户，或希望节省下载流量的用户 |
+
+> [!NOTE]
+> - 运行精简版时，安装程序会先检测本机是否已安装 .NET 10 桌面运行时。**若未检测到，将提示并终止安装（不会写入任何文件）**，此时请改用完整版安装包，或先自行安装 .NET 运行时后再重试。
+> - 若不确定该选哪个，直接下载**完整版**即可。
+
+### 💻 运行环境
+
 | 项目 | 规格要求 |
 | :--- | :--- |
 | 🖥️ **操作系统** | Windows 7 SP1 / Windows 10 / Windows 11（64 位 x64） |
-| ⚙️ **运行环境** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚙️ **运行环境** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0)（完整版安装包已内置并自动安装，精简版需自行预先安装） |
 | ⚡ **软件体积** | 客户端本体约 `9 MB`（不含 .NET 运行时版本） |
 
 ## 🗺️ 路线图

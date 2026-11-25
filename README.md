@@ -51,10 +51,25 @@ Built around a complete **"Whole-Rock Geochemistry — Micro-Area Mineralogy —
 
 Visit [**GitHub Releases**](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) to download the latest Windows installer. No Python / R or other external environments required.
 
+### 📥 Which Installer Should I Choose?
+
+Each release ships two installers with identical features. The only difference is whether the .NET runtime is bundled:
+
+| Installer | Example file name | Description | Best for |
+| :--- | :--- | :--- | :--- |
+| ✅ **Full (recommended)** | `GeoChemistryNexus-Setup-<version>-x64.exe` | Bundles the .NET 10 Desktop Runtime; if it is not found on your PC, the installer installs it silently and automatically | Most users, especially first-time installs or anyone unsure whether .NET is already installed |
+| 🪶 **Lite** | `GeoChemistryNexus-Setup-<version>-x64-lite.exe` | File name ends with `-lite`; **does not** include the .NET runtime, so the download is much smaller | Users who already have the [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0), or who want to save bandwidth |
+
+> [!NOTE]
+> - The Lite installer first checks for the .NET 10 Desktop Runtime. **If it is not detected, setup shows a prompt and exits without writing any files.** In that case, download the Full installer instead, or install the .NET runtime yourself and run Lite again.
+> - Not sure which one to pick? Just download the **Full** installer.
+
+### 💻 System Requirements
+
 | Item | Specification |
 | :--- | :--- |
 | 🖥️ **Operating System** | Windows 7 SP1 / Windows 10 / Windows 11 (64-bit x64) |
-| ⚙️ **Runtime** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| ⚙️ **Runtime** | [.NET 10.0 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) (bundled and auto-installed by the Full installer; must be installed beforehand for Lite) |
 | ⚡ **Package Size** | Client core approx. `9 MB` (framework-dependent build without .NET runtime) |
 
 ## 🗺️ Roadmap
